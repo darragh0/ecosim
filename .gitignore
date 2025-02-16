@@ -6,3 +6,4 @@ target/
 
 # Files
 *.iml
+run.sh
