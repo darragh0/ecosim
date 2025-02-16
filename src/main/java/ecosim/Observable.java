@@ -1,6 +1,6 @@
-package ecosim.ecosystem;
+package ecosim;
 
-public interface Subject {
+public interface Observable {
     void registerObservers();
     void unregisterObservers();
     void notifyObservers();

@@ -1,4 +1,4 @@
-package ecosim.ecosystem;
+package ecosim;
 
 public enum Season {
     SPRING,

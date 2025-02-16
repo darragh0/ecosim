@@ -1,6 +1,6 @@
-package ecosim.ecosystem;
+package ecosim;
 
-public class Environment implements Subject {
+public class Environment implements Observable {
     private WeatherManager.Weather weather;
     private WeatherManager weatherManager;
     private Season season;

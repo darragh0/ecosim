@@ -1,13 +1,11 @@
-package ecosim.ecosystem;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+package ecosim;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Biome {
     private final String name;
-    private ArrayList<String> nativeAnimals;
-    private ArrayList<String> nativePlants;
+    private List<String> nativeAnimals;
+    private List<String> nativePlants;
 
 
     public Biome(String name) {
@@ -23,19 +21,19 @@ public class Biome {
     }
 
     public void setupBiome(){
-        loadNativeAnimals();
-        loadNativePlants();
+        this.loadNativeAnimals();
+        this.loadNativePlants();
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
-    public ArrayList<String> getNativeAnimals() {
-        return nativeAnimals;
+    public List<String> getNativeAnimals() {
+        return this.nativeAnimals;
     }
 
-    public ArrayList<String> getNativePlants() {
-        return nativePlants;
+    public List<String> getNativePlants() {
+        return this.nativePlants;
     }
 }

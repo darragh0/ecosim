@@ -1,4 +1,4 @@
-package ecosim.ecosystem;
+package ecosim;
 import java.util.HashMap;
 import java.util.Map;
 

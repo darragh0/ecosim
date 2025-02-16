@@ -1,4 +1,4 @@
-package ecosim.ecosystem;
+package ecosim;
 
 public class EcosystemManager {
     private final Environment environment;
