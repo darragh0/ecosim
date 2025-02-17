@@ -20,7 +20,7 @@ public class WeatherManager {
 
 
     private Map<Weather, Double> weatherProbabilities;
-    private static final Logger LOGGER = Logger.getLogger(WeatherManager.class.getName());
+    private static final Logger LOGGER = LoggerManager.getLogger();
 
 
     public WeatherManager() {

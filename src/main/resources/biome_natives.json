@@ -1,0 +1,10 @@
+{
+  "GRASSLAND": {
+    "ANIMALS": ["Rabbit", "Deer", "Lion", "Fox", "Owl"],
+    "PLANTS": ["Tree", "Bush", "Wild Flower"]
+  },
+  "DESERT": {
+    "ANIMALS": ["Lizard", "Camel", "Snake", "Cactus Mouse", "Eagle"],
+    "PLANTS": ["Cactus", "Succulent", "Shrub"]
+  }
+}
