@@ -1,5 +1,6 @@
 package ecosim.enm;
 
+
 public enum Direction {
     NORTH(0, 1),
     EAST(1, 0),
@@ -9,7 +10,7 @@ public enum Direction {
     private final int dx;
     private final int dy;
 
-    Direction(int dx, int dy) {
+    Direction(final int dx, final int dy) {
         this.dx = dx;
         this.dy = dy;
     }

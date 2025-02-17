@@ -1,4 +1,4 @@
-package ecosim.enm;
+package ecosim;
 
 
 public class Coords {
@@ -6,7 +6,7 @@ public class Coords {
     private int x;
     private int y;
 
-    public Coords(int x, int y) {
+    public Coords(final int x, final int y) {
         this.x = x;
         this.y = y;
     }
@@ -19,11 +19,11 @@ public class Coords {
         return this.y;
     }
 
-    public void setX(int x) {
+    public void setX(final int x) {
         this.x = x;
     }
 
-    public void setY(int y) {
+    public void setY(final int y) {
         this.y = y;
     }
 

@@ -15,19 +15,19 @@ public class Grid {
 
     private final Entity[][] data;
 
-    public Grid(int width, int height) {
+    public Grid(final int width, final int height) {
         this.data = new Entity[height][width];
     }
 
-    public void add(Entity entity) {
+    public void add(final Entity entity) {
         this.data[entity.getY()][entity.getX()] = entity;
     }
 
-    public void rmv(Entity entity) {
+    public void rmv(final Entity entity) {
         this.data[entity.getY()][entity.getX()] = null;
     }
 
-    public Optional<Entity> getCell(int x, int y) {
+    public Optional<Entity> getCell(final int x, final int y) {
         return Optional.ofNullable(this.data[y][x]);
     }
 

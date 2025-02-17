@@ -23,7 +23,7 @@ public class Map {
     private final int height;
     private final Grid grid;
 
-    private Map(final int width, int height) {
+    private Map(final int width, final int height) {
         this.width = width;
         this.height = height;
         this.grid = new Grid(width, height);
@@ -45,7 +45,7 @@ public class Map {
         return x > -1 && x < this.width && y > -1 && y < this.height;
     }
 
-    public void addEntity(Entity entity) {
+    public void addEntity(final Entity entity) {
         if (!inBounds(entity.getX(), entity.getY()))
             // TODO: Throw error?
             return;
@@ -53,7 +53,7 @@ public class Map {
         this.grid.add(entity);
     }
 
-    public void moveEntity(Entity entity, Direction dir) {
+    public void moveEntity(final Entity entity, final Direction dir) {
         final int x = entity.getX() + dir.getDx();
         final int y = entity.getY() + dir.getDy();
 
