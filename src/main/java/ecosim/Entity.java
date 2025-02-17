@@ -1,7 +1,6 @@
 package ecosim;
 
 
-import ecosim.enm.Coords;
 import ecosim.enm.Direction;
 import ecosim.map.Map;
 
