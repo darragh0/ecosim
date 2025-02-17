@@ -1,0 +1,63 @@
+{
+  "GRASSLAND": {
+    "SPRING": {
+      "SUNNY": 0.35,
+      "RAINY": 0.4,
+      "CLOUDY": 0.15,
+      "DRY": 0.05,
+      "SNOWY": 0.05
+    },
+    "SUMMER": {
+      "SUNNY": 0.55,
+      "RAINY": 0.15,
+      "CLOUDY": 0.15,
+      "DRY": 0.15,
+      "SNOWY": 0.0
+    },
+    "AUTUMN": {
+      "SUNNY": 0.25,
+      "RAINY": 0.5,
+      "CLOUDY": 0.2,
+      "DRY": 0.05,
+      "SNOWY": 0.0
+    },
+    "WINTER": {
+      "SUNNY": 0.05,
+      "RAINY": 0.2,
+      "CLOUDY": 0.3,
+      "DRY": 0.15,
+      "SNOWY": 0.3
+    }
+  },
+  "DESERT": {
+    "SPRING": {
+      "SUNNY": 0.6,
+      "RAINY": 0.1,
+      "CLOUDY": 0.2,
+      "DRY": 0.1,
+      "SNOWY": 0.0
+    },
+    "SUMMER": {
+      "SUNNY": 0.8,
+      "RAINY": 0.05,
+      "CLOUDY": 0.1,
+      "DRY": 0.05,
+      "SNOWY": 0.0
+    },
+    "AUTUMN": {
+      "SUNNY": 0.5,
+      "RAINY": 0.1,
+      "CLOUDY": 0.3,
+      "DRY": 0.1,
+      "SNOWY": 0.0
+    },
+    "WINTER": {
+      "SUNNY": 0.4,
+      "RAINY": 0.05,
+      "CLOUDY": 0.4,
+      "DRY": 0.15,
+      "SNOWY": 0.0
+    }
+  }
+}
+

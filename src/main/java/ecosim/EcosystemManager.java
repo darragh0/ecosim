@@ -13,7 +13,7 @@ public class EcosystemManager {
         // TODO: implement the environment and biome setup
     }
 
-    public void runSimulation(){
+    public void run(){
         // TODO: implement creating the main simulation to run everything
     }
 
