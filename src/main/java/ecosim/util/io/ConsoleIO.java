@@ -21,25 +21,22 @@ public final class ConsoleIO {
     }
 
     /**
-     * Apply `prettify` to the given string & print it to stdout.
+     * Apply `prettify` to the given format string and arguments, 
+     * then print the result to stdout.
      * 
      * @see #prettify(String, Object...)
      */
-    public static void print(String str, final Object... formatArgs) {
-        System.out.print(prettify(str, formatArgs));
+    public static void prettyPrint(String format, Object... args) {
+        System.out.print(prettify(format, args));
     }
 
     /** 
-     * Same as `print` but w/ a newline. 
+     * Same as `prettyPrint`, but adds a newline.
      * 
-     * @see #print(String, Object...)
+     * @see #prettyPrint(String, Object...)
      */
-    public static void println(String str, final Object... formatArgs) {
-        System.out.println(prettify(str, formatArgs));
-    }
-
-    public static void println() {
-        System.out.println();
+    public static void prettyPrintln(String format, Object... args) {
+        System.out.println(prettify(format, args));
     }
 
     /** Print red text to stderr. */
@@ -50,52 +47,6 @@ public final class ConsoleIO {
     /** @see #printErr(String, Object...) */
     public static void printErr(Throwable e) {
         printErr(e.getMessage());
-    }
-
-    /** Prompt user for a string input & return it. */
-    public static String strInput(String prompt) {
-        print(prompt);
-        return scanner.nextLine().trim();
-    }
-
-    /**
-     * Prompt user for an integer input.
-     * 
-     * @param prompt    Message to display to user
-     * @param min       Min. allowed integer
-     * @param max       Max. allowed integer
-     *
-     * @return input
-     */
-    public static int intInput(String prompt, int min, int max) {
-        if (min > max) {
-            throw new IllegalArgumentException("Min cannot be greater than max");
-        }
-
-        int number;
-        while (true) {
-            print(prompt);
-            try {
-                number = Integer.parseInt(scanner.nextLine().trim());
-            } catch (NumberFormatException e) {
-                printErr("Enter a number");
-                continue;
-            }
-
-            if (number < min || number > max) {
-                printErr("Enter a number between %d-%d", min, max);
-            } else {
-                return number;
-            }
-        }
-    }
-
-
-    /**
-     * @see #intInput(String, int, int)
-     */
-    public static int intInput(String prompt) {
-        return intInput(prompt, Integer.MIN_VALUE, Integer.MAX_VALUE);
     }
 
     /**
