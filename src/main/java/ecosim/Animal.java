@@ -1,10 +1,6 @@
 package ecosim;
 
 public abstract class Animal extends Organism {
-    protected enum Size {
-        SMALL, MEDIUM, LARGE
-    }
-
     protected enum ActivityType {
         DIURNAL, NOCTURNAL
     }
