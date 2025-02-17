@@ -1,18 +1,18 @@
 package ecosim;
 
 public class LowFertilityDecorator extends AnimalDecorator {
-    private float adjustment = 0.8f;
+    private float adjustment = 0.2f;
 
     public LowFertilityDecorator(Animal animal) {
         super(animal);
     }
 
     public float getSurvivalChance() {
-        return 1.0f;
+        return animal.getSurvivalChance();
     }
 
     public float getReproductiveChance() {
-        return adjustment;
+        return animal.getReproductiveChance() - adjustment;
     }
     
 }

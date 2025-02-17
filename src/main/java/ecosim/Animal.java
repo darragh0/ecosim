@@ -18,6 +18,8 @@ public abstract class Animal extends Organism {
     protected ActivityType activityType;
     protected ConsciousState awakeState;
     protected boolean canHibernate;
+    protected float survivalChance;
+    protected float reproductiveChance;
 
     public Animal(float maxHealth, int x, int y, int nutritionalValue, Size size, Diet diet, ActivityType activityType,
             boolean canHibernate) {
@@ -27,6 +29,8 @@ public abstract class Animal extends Organism {
         this.activityType = activityType;
         this.canHibernate = canHibernate;
         this.awakeState = new Conscious();
+        this.survivalChance = 0.5f;
+        this.reproductiveChance = 0.5f;
     }
 
     public Diet getDiet() {
@@ -57,4 +61,11 @@ public abstract class Animal extends Organism {
         awakeState.move();
     }
 
+    public float getSurvivalChance() {
+        return survivalChance;
+    }
+
+    public float getReproductiveChance() {
+        return reproductiveChance;
+    }
 }
