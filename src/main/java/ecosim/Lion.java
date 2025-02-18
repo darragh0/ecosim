@@ -2,7 +2,7 @@ package ecosim;
 
 public class Lion extends Carnivore {
     public Lion(int x, int y) {
-        super(30, x, y, 15, Size.LARGE, ActivityType.DIURNAL, false);
+        super(x, y, Size.LARGE, ActivityType.DIURNAL, false);
     }
 
     @Override

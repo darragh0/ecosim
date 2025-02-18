@@ -2,7 +2,7 @@ package ecosim;
 
 public class CactusMouse extends Herbivore {
     public CactusMouse(int x, int y) {
-        super(10, x, y, 5, Size.SMALL, ActivityType.NOCTURNAL, true);
+        super(x, y, Size.SMALL, ActivityType.NOCTURNAL, true);
     }
 
     @Override

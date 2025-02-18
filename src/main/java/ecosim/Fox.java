@@ -2,7 +2,7 @@ package ecosim;
 
 public class Fox extends Carnivore {
     public Fox(int x, int y) {
-        super(20, x, y, 10, Size.MEDIUM, ActivityType.NOCTURNAL, false);
+        super(x, y, Size.MEDIUM, ActivityType.NOCTURNAL, false);
     }
 
     @Override

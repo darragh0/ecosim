@@ -17,9 +17,8 @@ public abstract class Animal extends Organism {
     protected float survivalChance;
     protected float reproductiveChance;
 
-    public Animal(float maxHealth, int x, int y, int nutritionalValue, Size size, Diet diet, ActivityType activityType,
-            boolean canHibernate) {
-        super(maxHealth, x, y, nutritionalValue);
+    public Animal(int x, int y, Size size, Diet diet, ActivityType activityType, boolean canHibernate) {
+        super(size.getMaxHealth(), x, y, size.getNutritionalValue());
         this.size = size;
         this.diet = diet;
         this.activityType = activityType;
@@ -63,5 +62,9 @@ public abstract class Animal extends Organism {
 
     public float getReproductiveChance() {
         return reproductiveChance;
+    }
+
+    public boolean isEdible(Organism organism) {
+        return false;
     }
 }
