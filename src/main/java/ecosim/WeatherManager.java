@@ -1,6 +1,5 @@
 package ecosim;
-import org.json.JSONException;
-import org.json.JSONObject;
+
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -9,15 +8,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
-public class WeatherManager {
-    public enum Weather {
-        RAINY,
-        SUNNY,
-        DRY,
-        CLOUDY,
-        SNOWY
-    }
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import ecosim.enm.Weather;
+
+
+public class WeatherManager {
 
     private Map<Weather, Double> weatherProbabilities;
     private static final Logger LOGGER = LoggerManager.getLogger();
@@ -33,7 +30,8 @@ public class WeatherManager {
         Map<Weather, Double> tempProbabilities = new HashMap<>();
 
         try {
-            String content = new String(Files.readAllBytes(Paths.get("src/main/resources/weather_probabilities.json")));
+            String content =
+                new String(Files.readAllBytes(Paths.get("src/main/resources/json/weather_probabilities.json")));
             JSONObject json = new JSONObject(content);
 
             if (json.has(upperBiome)) {
@@ -73,7 +71,7 @@ public class WeatherManager {
 
     public static void main(String[] args) {
         WeatherManager wm = new WeatherManager();
-        wm.loadWeatherProbabilities("GRASSLAND" , "WINTER");
+        wm.loadWeatherProbabilities("GRASSLAND", "WINTER");
         System.out.println(wm.getRandomWeather());
     }
 
