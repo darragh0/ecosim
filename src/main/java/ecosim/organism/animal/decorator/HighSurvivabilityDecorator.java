@@ -13,12 +13,12 @@ public class HighSurvivabilityDecorator extends AnimalDecorator {
 
     @Override
     public float getSurvivalChance() {
-        return animal.getSurvivalChance() + adjustment;
+        return this.animal.getSurvivalChance() + this.adjustment;
     }
 
     @Override
     public float getReproductiveChance() {
-        return animal.getReproductiveChance();
+        return this.animal.getReproductiveChance();
     }
 
 }
