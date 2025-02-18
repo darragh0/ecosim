@@ -1,15 +1,17 @@
 package ecosim;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.*;
+import java.util.logging.Logger;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 
 public class Biome {
     private final String name;
@@ -28,7 +30,7 @@ public class Biome {
     public void loadNativeAnimals() {
         String biome = this.name.toUpperCase();
         try {
-            String content = new String(Files.readAllBytes(Paths.get("src/main/resources/biome_natives.json")));
+            String content = new String(Files.readAllBytes(Paths.get("src/main/resources/json/biome_natives.json")));
             JSONObject json = new JSONObject(content);
             if (json.has(biome)) {
                 JSONObject biomeData = json.getJSONObject(biome);
@@ -90,4 +92,5 @@ public class Biome {
     public List<String> getNativePlants() {
         return this.nativePlants;
     }
+
 }

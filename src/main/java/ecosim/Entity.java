@@ -2,6 +2,7 @@ package ecosim;
 
 
 import ecosim.enm.Direction;
+import ecosim.map.Coords;
 import ecosim.map.Map;
 
 
