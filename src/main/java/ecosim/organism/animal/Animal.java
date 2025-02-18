@@ -31,7 +31,7 @@ public abstract class Animal extends Organism {
     }
 
     public Animal(Animal animal) {
-        this(animal.x, animal.y, animal.size, animal.diet, animal.activityType, animal.canHibernate);
+        this(animal.getX(), animal.getY(), animal.size, animal.diet, animal.activityType, animal.canHibernate);
     }
 
     public Diet getDiet() {
