@@ -8,17 +8,7 @@ public class HighFertilityDecorator extends AnimalDecorator {
 
     public HighFertilityDecorator(Animal animal) {
         super(animal);
-        this.adjustment = 0.2f;
-    }
-
-    @Override
-    public float getSurvivalChance() {
-        return this.animal.getSurvivalChance() + this.adjustment;
-    }
-
-    @Override
-    public float getReproductiveChance() {
-        return this.animal.getReproductiveChance();
+        this.reproductiveChance += 0.2f;
     }
 
 }

@@ -60,11 +60,11 @@ public abstract class Animal extends Organism {
     }
 
     public float getSurvivalChance() {
-        return survivalChance;
+        return this.survivalChance;
     }
 
     public float getReproductiveChance() {
-        return reproductiveChance;
+        return this.reproductiveChance;
     }
 
     public boolean isEdible(Organism organism) {
