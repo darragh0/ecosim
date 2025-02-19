@@ -38,7 +38,7 @@ public final class SplashScreen {
     }
 
     public static void show() {
-        final int gap = getTermHeight() - TITLE_HEIGHT - GRAPHIC_HEIGHT;
+        final int gap = getTermHeight() - TITLE_HEIGHT - GRAPHIC_HEIGHT - 1;
 
         clearTerminal();
         prettyPrintCenter(TITLE);
