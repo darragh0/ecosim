@@ -3,7 +3,7 @@ package ecosim.map;
 
 import java.util.Optional;
 
-import ecosim.Entity;
+import ecosim.organism.Organism;
 
 
 /**
@@ -13,21 +13,21 @@ import ecosim.Entity;
  */
 public class Grid {
 
-    private final Entity[][] data;
+    private final Organism[][] data;
 
     public Grid(final int width, final int height) {
-        this.data = new Entity[height][width];
+        this.data = new Organism[height][width];
     }
 
-    public void add(final Entity entity) {
-        this.data[entity.getY()][entity.getX()] = entity;
+    public void add(final Organism org) {
+        this.data[org.getY()][org.getX()] = org;
     }
 
-    public void rmv(final Entity entity) {
-        this.data[entity.getY()][entity.getX()] = null;
+    public void rmv(final Organism org) {
+        this.data[org.getY()][org.getX()] = null;
     }
 
-    public Optional<Entity> getCell(final int x, final int y) {
+    public Optional<Organism> getCell(final int x, final int y) {
         return Optional.ofNullable(this.data[y][x]);
     }
 
