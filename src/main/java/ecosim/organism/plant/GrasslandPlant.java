@@ -1,7 +1,13 @@
 package ecosim.organism.plant;
 
 
-public class GrasslandPlant extends Plant {
+public abstract class GrasslandPlant extends Plant {
+
+    public GrasslandPlant(PlantSize size, int x, int y) {
+        super(size, x, y);
+           
+    }
+    
     @Override
     public void updateGrowthRate(/* Weather weather */) {
         System.out.println("Updating growth rate for DesertPlant based on weather");

@@ -1,13 +1,14 @@
 package ecosim.organism.plant;
 
-
 public class Cactus extends DesertPlant {
-    private PlantSize size;
-
-    public Cactus() {
-        this.size = PlantSize.SMALL;
+    public Cactus(PlantSize size, int x, int y) {
+        super(size, x, y);
     }
 
+    @Override
+    public void updateGrowthRate(/* Weather weather */) {
+        System.out.println("Updating growth rate for Cactus based on weather");
+    }
 }
 
 
