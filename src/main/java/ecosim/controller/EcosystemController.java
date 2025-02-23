@@ -14,6 +14,6 @@ public class EcosystemController {
 
     public void run(){
         // sample code of how the controller interacts with the model and view
-        ecosystemView.displayDailyReport(ecosystemManager.generateDailyReport());
+        ecosystemView.displayDailyReport(ecosystemManager);
     }
 }
