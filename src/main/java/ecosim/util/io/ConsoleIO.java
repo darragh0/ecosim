@@ -1,8 +1,13 @@
 package ecosim.util.io;
 
 
+import java.io.IOException;
 import java.util.Scanner;
 import java.util.Stack;
+import java.util.function.Consumer;
+
+import org.jline.terminal.Terminal;
+import org.jline.terminal.TerminalBuilder;
 
 import ecosim.util.enm.Color;
 import ecosim.util.enm.TextStyle;
@@ -10,14 +15,50 @@ import ecosim.util.enm.TextStyle;
 
 public final class ConsoleIO {
 
+    private static final String ANSI_REGEX = "\u001B\\[[;\\d]*m";
     private static final Scanner scanner = new Scanner(System.in);
+    private static int termWidth = 0;
+    private static int termHeight = 0;
+
+    static {
+        try {
+            Terminal term = TerminalBuilder.terminal();
+            termWidth = term.getWidth();
+            termHeight = term.getHeight();
+        } catch (IOException e) {
+        }
+    }
 
     private ConsoleIO() {
         throw new UnsupportedOperationException("This class cannot be instantiated.");
     }
 
+    public static void clearTerminal() {
+        System.out.print("\033[H\033[2J");
+    }
+
+    public static void toggleCursor(boolean show) {
+        System.out.print(show ? "\033[?25h" : "\033[?25l");
+    }
+
+    public static void moveCursorUp(int lines) {
+        System.out.printf("\033[%dA", lines);
+    }
+
+    public static int getTermWidth() {
+        return termWidth;
+    }
+
+    public static int getTermHeight() {
+        return termHeight;
+    }
+
     public static void closeConsoleInputSource() {
         scanner.close();
+    }
+
+    public static String readLine() {
+        return scanner.nextLine();
     }
 
     /**
@@ -37,6 +78,26 @@ public final class ConsoleIO {
      */
     public static void prettyPrintln(String format, Object... args) {
         System.out.println(prettify(format, args));
+    }
+
+    /**
+     * Same as `prettyPrint`, but centers the text horizontally
+     * in the terminal.
+     * 
+     * @see #prettyPrint(String, Object...)
+     */
+
+    public static void prettyPrintCenter(String str, Object... args) {
+        str = prettify(str, args);
+        final String lines[] = str.split(System.lineSeparator());
+        Consumer<String> print = lines.length > 1 ? System.out::println : System.out::print;
+
+        for (String line : lines) {
+            final String noAnsi = line.replaceAll(ANSI_REGEX, "");
+            final int pad = (termWidth - noAnsi.length()) / 2;
+            final String out = pad < 0 ? line : " ".repeat(pad) + line;
+            print.accept(out);
+        }
     }
 
     /** Print red text to stderr. */
