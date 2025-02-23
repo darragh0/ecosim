@@ -1,4 +1,8 @@
 package ecosim;
+import ecosim.organism.Organism;
+import ecosim.organism.animal.Animal;
+import ecosim.organism.plant.Plant;
+
 import java.util.ArrayList;
 
 public class EcosystemManager {
