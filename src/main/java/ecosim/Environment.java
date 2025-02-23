@@ -25,8 +25,8 @@ public class Environment implements Observable {
 
     public void updateSeason() {
         this.season = this.season.getNextSeason();
-        // load probablilities for new season
-        weatherManager.loadWeatherProbabilities(this.biome.getName(), this.season.toString());
+        // load probabilities for new season
+        this.weatherManager.loadWeatherProbabilities(this.biome.getName(), this.season.toString());
         System.out.println("Season update! It is now " + this.season + ".");
     }
 
