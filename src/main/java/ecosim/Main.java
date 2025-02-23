@@ -1,11 +1,13 @@
 package ecosim;
 
 
+import ecosim.controller.EcosystemController;
+
 public class Main {
 
     public static void main(String[] args) {
-        EcosystemManager ecosystemManager = new EcosystemManager();
-        ecosystemManager.run();
+        EcosystemController ecosystemController = new EcosystemController();
+        ecosystemController.run();
     }
 
 }
