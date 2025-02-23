@@ -7,9 +7,11 @@ import ecosim.organism.animal.type.Carnivore;
 
 
 public class Snake extends Carnivore {
+    private static int snakeCount = 0;
 
     public Snake(int x, int y) {
         super(x, y, Size.MEDIUM, ActivityType.NOCTURNAL, true);
+        this.name = "Snake (" + ++snakeCount + ")";
     }
 
     @Override

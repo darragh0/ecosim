@@ -7,9 +7,11 @@ import ecosim.organism.animal.type.Carnivore;
 
 
 public class Owl extends Carnivore {
+    private static int owlCount = 0;
 
     public Owl(int x, int y) {
         super(x, y, Size.SMALL, ActivityType.NOCTURNAL, false);
+        this.name = "Owl (" + ++owlCount + ")";
     }
 
     @Override

@@ -7,9 +7,11 @@ import ecosim.organism.animal.type.Carnivore;
 
 
 public class Fox extends Carnivore {
+    private static int foxCount= 0;
 
     public Fox(int x, int y) {
         super(x, y, Size.MEDIUM, ActivityType.NOCTURNAL, false);
+        this.name = "Fox (" + ++foxCount + ")";
     }
 
     @Override
