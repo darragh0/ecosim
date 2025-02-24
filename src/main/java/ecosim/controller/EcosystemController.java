@@ -1,6 +1,9 @@
 package ecosim.controller;
 
+import ecosim.BiomeManager;
 import ecosim.EcosystemManager;
+import ecosim.Environment;
+import ecosim.enm.Biome;
 import ecosim.view.EcosystemView;
 
 public class EcosystemController {
@@ -14,6 +17,13 @@ public class EcosystemController {
 
     public void run(){
         // sample code of how the controller interacts with the model and view
+        this.setup();
         ecosystemView.displayDailyReport(ecosystemManager);
+    }
+
+    public void setup(){
+        // beginning of setup
+        Biome biome = ecosystemView.promptBiomeSelection();
+        ecosystemManager.getEnvironment().setBiome(biome.getName());
     }
 }
