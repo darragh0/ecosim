@@ -15,11 +15,11 @@ public enum Size {
     }
 
     public int getMaxHealth() {
-        return maxHealth;
+        return this.maxHealth;
     }
 
     public int getNutritionalValue() {
-        return nutritionalValue;
+        return this.nutritionalValue;
     }
 
 }
