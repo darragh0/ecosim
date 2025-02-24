@@ -8,27 +8,32 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import ecosim.enm.Biome;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 
-public class Biome {
-    private final String name;
+public class BiomeManager {
+    private final Biome biome;
     private final List<String> nativeAnimals;
     private final List<String> nativePlants;
     private static Logger LOGGER;
 
-    public Biome(String name) {
-        this.name = name;
+    public BiomeManager(String biomeName) {
+        this.biome = Biome.valueOf(biomeName.toUpperCase());
         this.nativeAnimals = new ArrayList<>();
         this.nativePlants = new ArrayList<>();
         LOGGER = LoggerManager.getLogger();
-        LOGGER.info("Biome created: " + name);
+        LOGGER.info("Biome created: " + this.biome.getName());
+    }
+
+    public String getBiomeName(){
+        return this.biome.getName();
     }
 
     public void loadNativeAnimals() {
-        String biome = this.name.toUpperCase();
+        String biome = this.getBiomeName().toUpperCase();
         try {
             String content = new String(Files.readAllBytes(Paths.get("src/main/resources/json/biome_natives.json")));
             JSONObject json = new JSONObject(content);
@@ -52,7 +57,7 @@ public class Biome {
     }
 
     public void loadNativePlants() {
-        String biome = this.name.toUpperCase();
+        String biome = this.getBiomeName().toUpperCase();
         try {
             String content = new String(Files.readAllBytes(Paths.get("src/main/resources/biome_natives.json")));
             JSONObject json = new JSONObject(content);
@@ -76,13 +81,9 @@ public class Biome {
     }
 
     public void setupBiome() {
-        LOGGER.info("Setting up biome: " + name);
+        LOGGER.info("Setting up biome: " + this.getBiomeName());
         this.loadNativeAnimals();
         this.loadNativePlants();
-    }
-
-    public String getName() {
-        return this.name;
     }
 
     public List<String> getNativeAnimals() {

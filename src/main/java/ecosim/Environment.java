@@ -12,7 +12,7 @@ public class Environment implements Observable {
     private WeatherManager weatherManager;
     private Season season;
     private TimeOfDay timeOfDay;
-    private Biome biome;
+    private BiomeManager biome;
 
     @Override
     public void registerObservers() {}
@@ -25,8 +25,8 @@ public class Environment implements Observable {
 
     public void updateSeason() {
         this.season = this.season.getNextSeason();
-        // load probabilities for new season
-        this.weatherManager.loadWeatherProbabilities(this.biome.getName(), this.season.toString());
+        // load probablilities for new season
+        weatherManager.loadWeatherProbabilities(this.biome.getBiomeName(), this.season.toString());
         System.out.println("Season update! It is now " + this.season + ".");
     }
 
@@ -37,6 +37,10 @@ public class Environment implements Observable {
 
     public void updateWeather() {
         this.weather = this.weatherManager.getRandomWeather();
+    }
+
+    public void setBiome(String biomeName) {
+        this.biome = new BiomeManager(biomeName);
     }
 
 }
