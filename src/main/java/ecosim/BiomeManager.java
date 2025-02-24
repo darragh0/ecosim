@@ -59,7 +59,7 @@ public class BiomeManager {
     public void loadNativePlants() {
         String biome = this.getBiomeName().toUpperCase();
         try {
-            String content = new String(Files.readAllBytes(Paths.get("src/main/resources/biome_natives.json")));
+            String content = new String(Files.readAllBytes(Paths.get("src/main/resources/json/biome_natives.json")));
             JSONObject json = new JSONObject(content);
             if (json.has(biome)) {
                 JSONObject biomeData = json.getJSONObject(biome);

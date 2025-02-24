@@ -44,11 +44,11 @@ public class EcosystemManager {
         closeConsoleInputSource();
     }
 
-    public void createAnimal() {
+    public void createAnimal(String animal) {
         // TODO: implement creating an animal based off of the factory
     }
 
-    public void createPlant() {
+    public void createPlant(String plant) {
         // TODO: implement creating a plant based off of the factory
     }
 
