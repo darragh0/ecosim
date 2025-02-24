@@ -5,10 +5,8 @@ import ecosim.organism.plant.Plant;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import static ecosim.util.io.ConsoleIO.closeConsoleInputSource;
 import static ecosim.util.io.ConsoleIO.prettyPrintln;
-
 
 public class EcosystemManager {
 
@@ -31,7 +29,7 @@ public class EcosystemManager {
     public void dailyUpdate(){
         // TODO: implement creating the loop for daily simulation
     }
-  
+
     public void run() {
         Runtime.getRuntime().addShutdownHook(new Thread(this::exit));
         SplashScreen.show();
@@ -46,18 +44,22 @@ public class EcosystemManager {
         closeConsoleInputSource();
     }
 
-    public void createAnimal() {
+    public void createAnimal(String animal) {
         // TODO: implement creating an animal based off of the factory
     }
 
-    public void createPlant() {
+    public void createPlant(String plant) {
         // TODO: implement creating a plant based off of the factory
     }
 
     public void populateMap() {
         // TODO: implement populating the map and environment with plants and animals
     }
-      
+
+    public Environment getEnvironment() {
+        return environment;
+    }
+    
     public int getDayCount() {
         return this.dayCount;
     }
