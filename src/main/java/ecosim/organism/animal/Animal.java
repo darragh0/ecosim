@@ -31,19 +31,19 @@ public abstract class Animal extends Organism {
     }
 
     public Animal(Animal animal) {
-        this(animal.x, animal.y, animal.size, animal.diet, animal.activityType, animal.canHibernate);
+        this(animal.getX(), animal.getY(), animal.size, animal.diet, animal.activityType, animal.canHibernate);
     }
 
     public Diet getDiet() {
-        return diet;
+        return this.diet;
     }
 
     public Size getSize() {
-        return size;
+        return this.size;
     }
 
     public ActivityType getActivityType() {
-        return activityType;
+        return this.activityType;
     }
 
     public void makeSound() {}
@@ -56,7 +56,7 @@ public abstract class Animal extends Organism {
     public void update() {}
 
     public void move() {
-        awakeState.move();
+        this.awakeState.move();
     }
 
     public float getSurvivalChance() {
