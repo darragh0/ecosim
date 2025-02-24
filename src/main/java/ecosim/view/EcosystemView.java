@@ -117,7 +117,7 @@ public class EcosystemView {
                     if (userChoice >= 1 && userChoice <= organisms.size()) {
                         organismSelection = organisms.get(userChoice - 1);
 
-                        // **Fix: Add selected organism to list**
+
                         chosenOrganisms.add(organismSelection);
                     } else {
                         System.out.println("Invalid option! Please enter a number between 1 and " + organisms.size());
