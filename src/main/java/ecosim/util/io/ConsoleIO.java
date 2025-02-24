@@ -78,10 +78,9 @@ public final class ConsoleIO {
      * 
      * @see #prettyPrint(String, Object...)
      */
-
     public static void prettyPrintCenter(String str, Object... args) {
         str = prettify(str, args);
-        final String lines[] = str.split(System.lineSeparator());
+        final String lines[] = str.split("\n");
         Consumer<String> print = lines.length > 1 ? System.out::println : System.out::print;
 
         for (String line : lines) {
