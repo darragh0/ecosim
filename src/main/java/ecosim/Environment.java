@@ -5,6 +5,7 @@ import ecosim.attrs.Observable;
 import ecosim.enm.Season;
 import ecosim.enm.TimeOfDay;
 import ecosim.enm.Weather;
+import java.util.List;
 
 
 public class Environment implements Observable {
@@ -41,6 +42,16 @@ public class Environment implements Observable {
 
     public void setBiome(String biomeName) {
         this.biome = new BiomeManager(biomeName);
+        this.biome.setupBiome();
     }
+
+    public List<String> getBiomeNativeAnimals(){
+        return this.biome.getNativeAnimals();
+    }
+
+    public List<String> getBiomeNativePlants(){
+        return this.biome.getNativePlants();
+    }
+
 
 }
