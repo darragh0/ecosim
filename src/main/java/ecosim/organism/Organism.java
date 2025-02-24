@@ -17,13 +17,16 @@ public abstract class Organism extends Movable {
     protected final int nutritionalValue;
     protected final float maxHealth;
     protected float health;
-
+    protected String name;
+  
     public Organism(final float maxHealth, final int x, final int y, final int nutritionalValue) {
         super(x, y);
         this.symbol = 'E'; // can change later
         this.nutritionalValue = nutritionalValue;
         this.maxHealth = maxHealth;
         this.health = maxHealth;
+        this.name = "organism";
+
     }
 
     public void move(final Direction dir) {
@@ -32,6 +35,9 @@ public abstract class Organism extends Movable {
 
     public abstract void update();
 
+    public String getName() {
+        return name;
+    }
     public char getSymbol() {
         return this.symbol;
     }

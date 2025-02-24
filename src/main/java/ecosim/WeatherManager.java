@@ -69,10 +69,4 @@ public class WeatherManager {
         return Weather.CLOUDY; // fallback
     }
 
-    public static void main(String[] args) {
-        WeatherManager wm = new WeatherManager();
-        wm.loadWeatherProbabilities("GRASSLAND", "WINTER");
-        System.out.println(wm.getRandomWeather());
-    }
-
 }
