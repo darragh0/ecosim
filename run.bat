@@ -10,4 +10,4 @@ for /f "tokens=2 delims=: " %%a in ('mode con ^| findstr "Lines"') do set LINES=
 for /f "tokens=2 delims=: " %%a in ('mode con ^| findstr "Columns"') do set COLUMNS=%%a
 
 cls
-mvn exec:java
+mvn exec:java -q
