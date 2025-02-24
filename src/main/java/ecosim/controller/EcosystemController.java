@@ -1,7 +1,9 @@
 package ecosim.controller;
 
+
 import ecosim.EcosystemManager;
 import ecosim.view.EcosystemView;
+
 
 public class EcosystemController {
     private EcosystemManager ecosystemManager;
@@ -12,8 +14,10 @@ public class EcosystemController {
         this.ecosystemView = new EcosystemView();
     }
 
-    public void run(){
+    public void run() {
         // sample code of how the controller interacts with the model and view
+        ecosystemManager.run();
         ecosystemView.displayDailyReport(ecosystemManager);
     }
+
 }

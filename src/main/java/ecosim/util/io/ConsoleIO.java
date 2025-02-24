@@ -86,7 +86,7 @@ public final class ConsoleIO {
 
         for (String line : lines) {
             final String noAnsi = line.replaceAll(ANSI_REGEX, "");
-            final int pad = (LINES - noAnsi.length()) / 2;
+            final int pad = (COLS - noAnsi.length()) / 2;
             final String out = pad < 0 ? line : " ".repeat(pad) + line;
             print.accept(out);
         }

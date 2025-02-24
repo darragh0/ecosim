@@ -6,10 +6,8 @@ if %errorlevel% neq 0 (
     exit /b
 )
 
-for /f "tokens=2 delims=: " %%a in ('mode con ^| findstr "Lines Columns"') do (
-    set LINES=%%a
-    set COLUMNS=%%a
-)
+for /f "tokens=2 delims=: " %%a in ('mode con ^| findstr "Lines"') do set LINES=%%a
+for /f "tokens=2 delims=: " %%a in ('mode con ^| findstr "Columns"') do set COLUMNS=%%a
 
 cls
 mvn exec:java
