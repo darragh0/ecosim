@@ -2,7 +2,7 @@ package ecosim;
 
 
 import static ecosim.util.io.ConsoleIO.clearTerminal;
-import static ecosim.util.io.ConsoleIO.getTermHeight;
+import static ecosim.util.io.ConsoleIO.getTermLines;
 import static ecosim.util.io.ConsoleIO.moveCursorUp;
 import static ecosim.util.io.ConsoleIO.prettyPrintCenter;
 import static ecosim.util.io.ConsoleIO.readLine;
@@ -38,7 +38,7 @@ public final class SplashScreen {
     }
 
     public static void show() {
-        final int gap = getTermHeight() - TITLE_HEIGHT - GRAPHIC_HEIGHT - 1;
+        final int gap = Math.max(getTermLines() - TITLE_HEIGHT - GRAPHIC_HEIGHT - 1, 10);
 
         clearTerminal();
         prettyPrintCenter(TITLE);
