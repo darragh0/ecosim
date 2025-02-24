@@ -5,6 +5,9 @@ import ecosim.organism.plant.Plant;
 import java.util.ArrayList;
 import java.util.List;
 
+import static ecosim.util.io.ConsoleIO.closeConsoleInputSource;
+import static ecosim.util.io.ConsoleIO.prettyPrintln;
+
 public class EcosystemManager {
 
     private final Environment environment;
