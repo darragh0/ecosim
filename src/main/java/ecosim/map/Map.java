@@ -5,13 +5,14 @@ import java.util.Optional;
 
 import ecosim.enm.Direction;
 import ecosim.organism.Organism;
+import ecosim.organism.animal.Animal;
 import static ecosim.util.io.ConsoleIO.prettyPrintln;
 import ecosim.util.io.enm.BoxDrawingChar;
 
 
 /**
  * Physical ecosystem of the given dimensions in which
- * entities (animals & plants) exist together.
+ * organisms (animals & plants) exist together.
  * 
  * @author darragh0
  */
@@ -42,11 +43,7 @@ public class Map {
         return inst;
     }
 
-    private boolean inBounds(final int x, final int y) {
-        return x > -1 && x < this.width && y > -1 && y < this.height;
-    }
-
-    public void addEntity(final Organism org) {
+    public void add(final Organism org) {
         if (!inBounds(org.getX(), org.getY()))
             // TODO: Throw error?
             return;
@@ -54,22 +51,38 @@ public class Map {
         this.grid.add(org);
     }
 
-    public void moveEntity(final Organism org, final Direction dir) {
-        final int x = org.getX() + dir.getDx();
-        final int y = org.getY() + dir.getDy();
+    public void move(final Animal an) {
 
-        if (!inBounds(x, y))
-            // TODO: Throw error?
-            return;
+        int x = an.getX();
+        int y = an.getY();
 
-        Optional<Organism> inCell = this.grid.getCell(x, y);
-        if (inCell.isPresent()) {
-            // TODO: Handle entity collision
+        for (final Direction dir : Direction.values()) {
+            x = an.getX() + dir.getDx();
+            y = an.getY() + dir.getDy();
+
+            if (!inBounds(x, y))
+                continue;
+
+            Optional<Organism> cell = this.grid.getCell(x, y);
+
+            if (cell.isEmpty())
+                continue;
+
+            Organism otherOrg = cell.get();
+            if (otherOrg.isAnimal()) {
+                Animal otherAn = (Animal) otherOrg;
+                if (an.getSize().getNutritionalValue() < otherAn.getSize().getNutritionalValue())
+                    continue;
+            }
+
+            an.eat(); // TODO: Replace with working eat method
+            this.grid.rmv(otherOrg);
+            break;
         }
 
-        this.grid.rmv(org);
-        org.setCoords(x, y);
-        this.grid.add(org);
+        this.grid.rmv(an);
+        an.setCoords(x, y);
+        this.grid.add(an);
     }
 
     @Override
@@ -119,6 +132,10 @@ public class Map {
 
     public int getHeight() {
         return this.height;
+    }
+
+    private boolean inBounds(final int x, final int y) {
+        return x > -1 && x < this.width && y > -1 && y < this.height;
     }
 
 }

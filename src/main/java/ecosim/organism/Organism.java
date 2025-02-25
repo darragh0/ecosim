@@ -2,8 +2,6 @@ package ecosim.organism;
 
 
 import ecosim.attrs.Movable;
-import ecosim.enm.Direction;
-import ecosim.map.Map;
 
 
 /**
@@ -18,7 +16,7 @@ public abstract class Organism extends Movable {
     protected final float maxHealth;
     protected float health;
     protected String name;
-  
+
     public Organism(final float maxHealth, final int x, final int y, final int nutritionalValue) {
         super(x, y);
         this.symbol = 'E'; // can change later
@@ -26,18 +24,18 @@ public abstract class Organism extends Movable {
         this.maxHealth = maxHealth;
         this.health = maxHealth;
         this.name = "organism";
-
-    }
-
-    public void move(final Direction dir) {
-        Map.getInstance().moveEntity(this, dir);
     }
 
     public abstract void update();
 
+    public boolean isAnimal() {
+        return false;
+    }
+
     public String getName() {
         return name;
     }
+
     public char getSymbol() {
         return this.symbol;
     }

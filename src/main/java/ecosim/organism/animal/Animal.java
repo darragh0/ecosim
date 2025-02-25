@@ -4,6 +4,7 @@ package ecosim.organism.animal;
 import ecosim.enm.ActivityType;
 import ecosim.enm.Diet;
 import ecosim.enm.Size;
+import ecosim.map.Map;
 import ecosim.organism.Organism;
 import ecosim.organism.animal.conscious_state.Conscious;
 import ecosim.organism.animal.conscious_state.ConsciousState;
@@ -55,6 +56,11 @@ public abstract class Animal extends Organism {
     @Override
     public void update() {}
 
+    @Override
+    public boolean isAnimal() {
+        return true;
+    }
+
     public void move() {
         this.awakeState.move();
     }
@@ -70,5 +76,11 @@ public abstract class Animal extends Organism {
     public boolean isEdible(Organism organism) {
         return false;
     }
+
+    public void iWasGonnaCallThisFunctionMoveButICANTBecauseSomeoneElseAlreadyTookTheNameMoveSoIAmLeftToComeUpWithAnotherNameForThisMethodWhichHasUnfortunatelyBecomeVeryLongAsAResultOfTheFactThatSomebodyHasReservedTheMoveNameSoNowImSadAndHeresALongMethodName() {
+        Map.getInstance().move(this);
+    }
+
+
 
 }
