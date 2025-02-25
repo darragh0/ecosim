@@ -1,13 +1,9 @@
 package ecosim.util.io;
 
 
-import java.io.IOException;
 import java.util.Scanner;
 import java.util.Stack;
 import java.util.function.Consumer;
-
-import org.jline.terminal.Terminal;
-import org.jline.terminal.TerminalBuilder;
 
 import ecosim.util.enm.Color;
 import ecosim.util.enm.TextStyle;
@@ -17,16 +13,12 @@ public final class ConsoleIO {
 
     private static final String ANSI_REGEX = "\u001B\\[[;\\d]*m";
     private static final Scanner scanner = new Scanner(System.in);
-    private static int termWidth = 0;
-    private static int termHeight = 0;
+    private static final int COLS;
+    private static final int LINES;
 
     static {
-        try {
-            Terminal term = TerminalBuilder.terminal();
-            termWidth = term.getWidth();
-            termHeight = term.getHeight();
-        } catch (IOException e) {
-        }
+        COLS = Integer.parseInt(System.getenv().getOrDefault("COLUMNS", "0"));
+        LINES = Integer.parseInt(System.getenv().getOrDefault("LINES", "0"));
     }
 
     private ConsoleIO() {
@@ -45,12 +37,12 @@ public final class ConsoleIO {
         System.out.printf("\033[%dA", lines);
     }
 
-    public static int getTermWidth() {
-        return termWidth;
+    public static int getTermCols() {
+        return COLS;
     }
 
-    public static int getTermHeight() {
-        return termHeight;
+    public static int getTermLines() {
+        return LINES;
     }
 
     public static void closeConsoleInputSource() {
@@ -86,15 +78,14 @@ public final class ConsoleIO {
      * 
      * @see #prettyPrint(String, Object...)
      */
-
     public static void prettyPrintCenter(String str, Object... args) {
         str = prettify(str, args);
-        final String lines[] = str.split(System.lineSeparator());
+        final String lines[] = str.split("\n");
         Consumer<String> print = lines.length > 1 ? System.out::println : System.out::print;
 
         for (String line : lines) {
             final String noAnsi = line.replaceAll(ANSI_REGEX, "");
-            final int pad = (termWidth - noAnsi.length()) / 2;
+            final int pad = (COLS - noAnsi.length()) / 2;
             final String out = pad < 0 ? line : " ".repeat(pad) + line;
             print.accept(out);
         }

@@ -39,11 +39,6 @@
       <artifactId>json</artifactId>
       <version>20231013</version>
     </dependency>
-    <dependency>
-      <groupId>org.jline</groupId>
-      <artifactId>jline-terminal</artifactId>
-      <version>3.29.0</version>
-    </dependency>
     <!-- Optionally: parameterized tests support -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -106,6 +101,10 @@
             <mainClass>ecosim.Main</mainClass>
             <arguments>
             </arguments>
+            <environmentVariables>
+              <COLUMNS>${env.COLUMNS}</COLUMNS>
+              <LINES>${env.LINES}</LINES>
+            </environmentVariables>
           </configuration>
         </plugin>
       </plugins>

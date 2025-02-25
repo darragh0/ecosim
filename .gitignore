@@ -7,5 +7,4 @@ target/
 
 # Files
 *.iml
-run.sh
 *.log
