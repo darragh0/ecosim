@@ -6,6 +6,7 @@ import java.util.Optional;
 import ecosim.enm.Direction;
 import ecosim.organism.Organism;
 import static ecosim.util.io.ConsoleIO.prettyPrintln;
+import ecosim.util.io.enm.BoxDrawingChar;
 
 
 /**
@@ -74,14 +75,19 @@ public class Map {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
-        final String border = "─".repeat(this.width);
+        final String border = BoxDrawingChar.HORIZONTAL.repeat(this.width);
 
-        sb.append("<B><b>┌")
+        sb.append("<B><b>")
+            .append(BoxDrawingChar.TOP_LEFT.getValue())
             .append(border)
-            .append("┐</b></B>\n");
+            .append(BoxDrawingChar.TOP_RIGHT.getValue())
+            .append("</b></B>\n");
 
         for (int y = this.height - 1; y >= 0; y--) {
-            sb.append("<B><b>│</b></B>");
+            sb.append("<B><b>")
+                .append(BoxDrawingChar.VERTICAL.getValue())
+                .append("</b></B>");
+
             for (int x = 0; x < this.width; x++) {
                 final char ch = this.grid.getCell(x, y)
                     .map(Organism::getSymbol)
@@ -89,12 +95,17 @@ public class Map {
 
                 sb.append(ch);
             }
-            sb.append("<B><b>│</b></B>\n");
+
+            sb.append("<B><b>")
+                .append(BoxDrawingChar.VERTICAL.getValue())
+                .append("</b></B>\n");
         }
 
-        return sb.append("<B><b>└")
+        return sb.append("<B><b>")
+            .append(BoxDrawingChar.BOTTOM_LEFT.getValue())
             .append(border)
-            .append("┘</b></B>\n")
+            .append(BoxDrawingChar.BOTTOM_RIGHT.getValue())
+            .append("</b></B>\n")
             .toString();
     }
 

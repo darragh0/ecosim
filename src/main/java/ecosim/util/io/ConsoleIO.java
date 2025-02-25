@@ -5,8 +5,8 @@ import java.util.Scanner;
 import java.util.Stack;
 import java.util.function.Consumer;
 
-import ecosim.util.enm.Color;
-import ecosim.util.enm.TextStyle;
+import ecosim.util.io.enm.Color;
+import ecosim.util.io.enm.TextStyle;
 
 
 public final class ConsoleIO {
@@ -49,36 +49,46 @@ public final class ConsoleIO {
         scanner.close();
     }
 
-    public static String readLine() {
-        return scanner.nextLine();
+    public static String strInput(final String prompt) {
+        return strInput(prompt, false);
     }
 
-    /**
-     * Apply `prettify` to the given format string and arguments, 
-     * then print the result to stdout.
-     * 
-     * @see #prettify(String, Object...)
-     */
-    public static void prettyPrint(String format, Object... args) {
+    public static String strInput(final boolean allowEmpty) {
+        return strInput("", allowEmpty);
+    }
+
+    public static int intInput(final String prompt, final int min, final int max) {
+        if (min > max) {
+            throw new IllegalArgumentException("Min cannot be greater than max");
+        }
+
+        int number;
+        while (true) {
+            prettyPrint(prompt);
+
+            try {
+                number = Integer.parseInt(scanner.nextLine().trim());
+            } catch (NumberFormatException e) {
+                printErr("Enter a number");
+                continue;
+            }
+
+            if (number < min || number > max)
+                printErr("Enter a number between %d-%d", min, max);
+            else
+                return number;
+        }
+    }
+
+    public static void prettyPrint(String format, final Object... args) {
         System.out.print(prettify(format, args));
     }
 
-    /** 
-     * Same as `prettyPrint`, but adds a newline.
-     * 
-     * @see #prettyPrint(String, Object...)
-     */
-    public static void prettyPrintln(String format, Object... args) {
+    public static void prettyPrintln(String format, final Object... args) {
         System.out.println(prettify(format, args));
     }
 
-    /**
-     * Same as `prettyPrint`, but centers the text horizontally
-     * in the terminal.
-     * 
-     * @see #prettyPrint(String, Object...)
-     */
-    public static void prettyPrintCenter(String str, Object... args) {
+    public static void prettyPrintCenter(String str, final Object... args) {
         str = prettify(str, args);
         final String lines[] = str.split("\n");
         Consumer<String> print = lines.length > 1 ? System.out::println : System.out::print;
@@ -91,14 +101,8 @@ public final class ConsoleIO {
         }
     }
 
-    /** Print red text to stderr. */
     public static void printErr(String str, final Object... formatArgs) {
         System.err.println(prettify("<r>%s</r>".formatted(str), formatArgs));
-    }
-
-    /** @see #printErr(String, Object...) */
-    public static void printErr(Throwable e) {
-        printErr(e.getMessage());
     }
 
     /**
@@ -188,6 +192,18 @@ public final class ConsoleIO {
         }
 
         return sb.toString();
+    }
+
+    private static String strInput(final String prompt, final boolean allowEmpty) {
+        while (true) {
+            prettyPrint(prompt);
+            String in = scanner.nextLine().trim();
+
+            if (in.isEmpty() && !allowEmpty)
+                printErr("Input cannot be empty");
+            else
+                return in;
+        }
     }
 
     private static String getTextStyleOrColor(char ch) {
