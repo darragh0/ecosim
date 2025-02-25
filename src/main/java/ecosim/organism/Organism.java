@@ -1,7 +1,7 @@
 package ecosim.organism;
 
 
-import ecosim.attrs.Movable;
+import ecosim.attrs.Locatable;
 
 
 /**
@@ -9,7 +9,7 @@ import ecosim.attrs.Movable;
  * 
  * @author darragh0
  */
-public abstract class Organism extends Movable {
+public abstract class Organism extends Locatable {
 
     protected final char symbol;
     protected final int nutritionalValue;
