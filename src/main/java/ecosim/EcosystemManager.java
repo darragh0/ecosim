@@ -1,4 +1,6 @@
 package ecosim;
+
+
 import ecosim.organism.animal.Animal;
 import ecosim.organism.plant.Plant;
 
@@ -7,6 +9,7 @@ import java.util.List;
 
 import static ecosim.util.io.ConsoleIO.closeConsoleInputSource;
 import static ecosim.util.io.ConsoleIO.prettyPrintln;
+
 
 public class EcosystemManager {
 
@@ -26,7 +29,7 @@ public class EcosystemManager {
         // TODO: implement the environment and biome setup
     }
 
-    public void dailyUpdate(){
+    public void dailyUpdate() {
         // TODO: implement creating the loop for daily simulation
     }
 
@@ -59,7 +62,7 @@ public class EcosystemManager {
     public Environment getEnvironment() {
         return environment;
     }
-    
+
     public int getDayCount() {
         return this.dayCount;
     }
@@ -82,5 +85,4 @@ public class EcosystemManager {
 
 
 
-    
 }

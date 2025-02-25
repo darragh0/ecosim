@@ -1,4 +1,4 @@
-package ecosim.util.enm;
+package ecosim.util.io.enm;
 
 
 public enum Color {
