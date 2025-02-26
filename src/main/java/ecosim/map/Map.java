@@ -69,8 +69,7 @@ public class Map {
                 continue;
 
             Organism otherOrg = cell.get();
-            if (otherOrg.isAnimal()) {
-                Animal otherAn = (Animal) otherOrg;
+            if (otherOrg instanceof Animal otherAn) {
                 if (an.getSize().getNutritionalValue() < otherAn.getSize().getNutritionalValue())
                     continue;
             }

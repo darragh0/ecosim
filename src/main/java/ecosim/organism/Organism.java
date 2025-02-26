@@ -28,10 +28,6 @@ public abstract class Organism extends Locatable {
 
     public abstract void update();
 
-    public boolean isAnimal() {
-        return false;
-    }
-
     public String getName() {
         return name;
     }

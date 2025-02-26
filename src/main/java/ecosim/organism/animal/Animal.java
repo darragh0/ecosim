@@ -57,11 +57,6 @@ public abstract class Animal extends Organism implements Movable {
     @Override
     public void update() {}
 
-    @Override
-    public boolean isAnimal() {
-        return true;
-    }
-
     public void move() {
         this.awakeState.move();
     }
