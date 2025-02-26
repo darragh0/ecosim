@@ -1,33 +1,13 @@
 package ecosim.attrs;
 
 
-import ecosim.map.Coords;
-
-
 /**
- * An object with adjustable 2D coordinates.
+ * An object with *adjustable* 2D coordinates.
  * 
  * @author darragh0
  */
-public abstract class Movable {
+public interface Movable {
 
-    protected final Coords coords;
-
-    public Movable(final int x, final int y) {
-        this.coords = new Coords(x, y);
-    }
-
-    public void setCoords(final int x, final int y) {
-        this.coords.setX(x);
-        this.coords.setY(y);
-    }
-
-    public int getX() {
-        return this.coords.getX();
-    }
-
-    public int getY() {
-        return this.coords.getY();
-    }
+    public void setCoords(final int x, final int y);
 
 }
