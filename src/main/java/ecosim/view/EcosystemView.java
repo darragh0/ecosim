@@ -1,134 +1,87 @@
 package ecosim.view;
 
-import ecosim.BiomeManager;
-import ecosim.EcosystemManager;
-import ecosim.enm.Biome;
-import ecosim.organism.Organism;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
+import java.util.function.BiConsumer;
+
+import ecosim.EcosystemManager;
+import ecosim.enm.Biome;
+import ecosim.menu.AnimalMenu;
+import ecosim.menu.BiomeMenu;
+import ecosim.menu.OrganismMenu;
+import ecosim.menu.PlantMenu;
+import ecosim.organism.Organism;
+import static ecosim.util.io.ConsoleIO.prettify;
+
 
 public class EcosystemView {
 
-    private final Scanner scanner = new Scanner(System.in);
+    private static final BiConsumer<StringBuilder, String> add =
+        (builder, str) -> builder.append(prettify(str)).append("\n");
 
     public void displayDailyReport(EcosystemManager ecosystem) {
-        StringBuilder report = new StringBuilder();
-        report.append("📅 Day ").append(ecosystem.getDayCount()).append(" Report\n");
-        report.append("=======================\n");
-        report.append("Number of Organisms: \n");
-        report.append("🌿 Plants: ").append(ecosystem.getPlantCount()).append("\n");
-        report.append("🦁 Animals: ").append(ecosystem.getAnimalCount()).append("\n");
-        report.append("=======================\n");
-        report.append("Organisms Stats: \n");
+        StringBuilder str = new StringBuilder();
 
-        appendOrganismReport("Animals", ecosystem.getAnimals(), report);
-        //appendOrganismReport("Plants", ecosystem.getPlants(), report);
+        add.accept(str, "<B>✨ <y>Day %d Report</y> ✨</B>\n".formatted(ecosystem.getDayCount()));
+        add.accept(str, "  <B><c>Headcount:</c></B>");
+        add.accept(str, "    Animals: <B><c>%d</c></B>".formatted(ecosystem.getAnimalCount()));
+        add.accept(str, "    Plants: <B><c>%d</c></B>\n".formatted(ecosystem.getPlantCount()));
+        add.accept(str, "  <B><c>Statistics:</c></B>");
 
-        System.out.println(report.toString());
+        add.accept(str, "    <B>Animals:</B>");
+        addOrganismReport(ecosystem.getAnimals(), str);
+
+        add.accept(str, "    <B>Plants:</B>");
+        // appendOrganismReport(ecosystem.getPlants(), report);
+
+        System.out.println(str.toString());
     }
-    private <T extends Organism> void appendOrganismReport(String title, List<T> organisms, StringBuilder report) {
+
+    private <T extends Organism> void addOrganismReport(List<T> organisms, StringBuilder str) {
         int goodHealth = 70;
         int poorHealth = 30;
 
-        report.append(title).append(":\n");
-        report.append("   ⭐ Thriving:\n");
+        add.accept(str, "      <g>Thriving:</g>");
         organisms.stream()
-                .filter(o -> o.getHealth() >= goodHealth)
-                .forEach(o -> report.append("     • ").append(o.getName()).append("\n"));
+            .filter(o -> o.getHealth() >= goodHealth)
+            .forEach(o -> add.accept(str, "      • %s".formatted(o.getName())));
 
-        report.append("   ⚠ Declining:\n");
+        add.accept(str, "      <r>Declining:</r>\n");
         organisms.stream()
-                .filter(o -> o.getHealth() <= poorHealth)
-                .forEach(o -> report.append("     • ").append(o.getName()).append("\n"));
+            .filter(o -> o.getHealth() <= poorHealth)
+            .forEach(o -> add.accept(str, "      • %s".formatted(o.getName())));
     }
 
     public Biome promptBiomeSelection() {
-        Biome[] biomes = Biome.values();
-        Biome biomeSelection = null;
+        final BiomeMenu menu = new BiomeMenu(Biome.values());
+        menu.print();
 
+        final Biome choice = menu.getUserChoice();
+        System.out.println();
 
-        while (biomeSelection == null) {
-            System.out.println(this.biomeSelectionBuilder(biomes));
-
-            String input = scanner.nextLine().trim();
-
-            if (input.isEmpty()) {
-                System.out.println("Input cannot be empty! Please enter a number.");
-                continue;
-            }
-
-            try {
-                int userChoice = Integer.parseInt(input);
-                if (userChoice >= 1 && userChoice <= biomes.length) {
-                    biomeSelection = biomes[userChoice - 1];
-                } else {
-                    System.out.println("Invalid option! Please enter a number between 1 and " + biomes.length);
-                }
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid input! Please enter a valid number.");
-            }
-        }
-
-        return biomeSelection;
+        return choice;
     }
 
-    private String biomeSelectionBuilder(Biome[] biomes) {
-        StringBuilder biomeSelectionPrompt = new StringBuilder();
-        biomeSelectionPrompt.append("==== Please Select a Biome ====\n");
-        for (int i = 0; i < biomes.length; i++) {
-            biomeSelectionPrompt.append("[").append(i + 1).append("] ")
-                    .append(biomes[i].getName()).append("\n");
-        }
+    public List<String> promptOrganismSelection(OrganismMenu menu, int num) {
+        final List<String> chosen = new ArrayList<>();
+        menu.print();
 
-        return biomeSelectionPrompt.toString();
+        for (int i = 0; i < num; i++) {
+            String choice = menu.getUserChoice("Enter your choice (%d) >> ".formatted(i + 1));
+            chosen.add(choice);
+        }
+        System.out.println();
+
+        return chosen;
     }
 
-    private String organismSelectionBuilder(String organismType, List<String> organisms, int choicesLeft) {
-        StringBuilder organismSelectionPrompt = new StringBuilder();
-        organismSelectionPrompt.append("==== Please Choose an ").append(organismType).append(" ====\n");
-        organismSelectionPrompt.append(" (").append(choicesLeft).append(") Choices Left\n");
-        for (int i = 0; i < organisms.size(); i++) {
-            organismSelectionPrompt.append("[").append(i + 1).append("] ")
-                    .append(organisms.get(i)).append("\n");
-        }
-        return organismSelectionPrompt.toString();
+    public List<String> promptAnimalSelection(List<String> animals, int num) {
+        return promptOrganismSelection(new AnimalMenu(animals), num);
     }
 
-    public List<String> promptOrganismSelection(String organismType, List<String> organisms, int numberOfOrganisms) {
-        ArrayList<String> chosenOrganisms = new ArrayList<>();
-
-        for (int i = 0; i < numberOfOrganisms; i++) {
-            String organismSelection = null;
-
-            while (organismSelection == null) {
-                System.out.println(this.organismSelectionBuilder(organismType, organisms, numberOfOrganisms - i));
-
-                String input = scanner.nextLine().trim();
-
-                if (input.isEmpty()) {
-                    System.out.println("Input cannot be empty! Please enter a number.");
-                    continue;
-                }
-
-                try {
-                    int userChoice = Integer.parseInt(input);
-                    if (userChoice >= 1 && userChoice <= organisms.size()) {
-                        organismSelection = organisms.get(userChoice - 1);
-
-
-                        chosenOrganisms.add(organismSelection);
-                    } else {
-                        System.out.println("Invalid option! Please enter a number between 1 and " + organisms.size());
-                    }
-                } catch (NumberFormatException e) {
-                    System.out.println("Invalid input! Please enter a valid number.");
-                }
-            }
-        }
-
-        return chosenOrganisms;
+    public List<String> promptPlantSelection(List<String> plants, int num) {
+        return promptOrganismSelection(new PlantMenu(plants), num);
     }
 
 }

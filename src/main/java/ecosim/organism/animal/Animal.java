@@ -1,15 +1,20 @@
 package ecosim.organism.animal;
 
-
 import ecosim.attrs.Observable;
 import ecosim.attrs.Observer;
 import ecosim.enm.*;
+import ecosim.attrs.Movable;
+import ecosim.enm.ActivityType;
+import ecosim.enm.Diet;
+import ecosim.enm.Size;
+import ecosim.map.Map;
 import ecosim.organism.Organism;
 import ecosim.organism.animal.conscious_state.Conscious;
 import ecosim.organism.animal.conscious_state.ConsciousState;
 
 
-public abstract class Animal extends Organism implements Observer {
+
+public abstract class Animal extends Organism implements Observer, Movable {
 
     protected Size size;
     protected Diet diet;
@@ -85,6 +90,16 @@ public abstract class Animal extends Organism implements Observer {
 
     public boolean isEdible(Organism organism) {
         return false;
+    }
+
+    public void iWasGonnaCallThisFunctionMoveButICANTBecauseSomeoneElseAlreadyTookTheNameMoveSoIAmLeftToComeUpWithAnotherNameForThisMethodWhichHasUnfortunatelyBecomeVeryLongAsAResultOfTheFactThatSomebodyHasReservedTheMoveNameSoNowImSadAndHeresALongMethodName() {
+        Map.getInstance().move(this);
+    }
+
+    @Override
+    public void setCoords(int x, int y) {
+        this.coords.setX(x);
+        this.coords.setY(y);
     }
 
 }

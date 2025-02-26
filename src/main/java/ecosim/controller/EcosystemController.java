@@ -1,52 +1,48 @@
 package ecosim.controller;
 
 
-import ecosim.BiomeManager;
+import java.util.List;
+
 import ecosim.EcosystemManager;
 import ecosim.Environment;
 import ecosim.enm.Biome;
-import ecosim.organism.animal.Animal;
 import ecosim.view.EcosystemView;
 
 
-import java.util.List;
-
-
 public class EcosystemController {
-    private EcosystemManager ecosystemManager;
-    private EcosystemView ecosystemView;
+
+    private final EcosystemManager man;
+    private final EcosystemView view;
 
     public EcosystemController() {
-        this.ecosystemManager = new EcosystemManager();
-        this.ecosystemView = new EcosystemView();
+        this.man = new EcosystemManager();
+        this.view = new EcosystemView();
     }
 
     public void run() {
         // sample code of how the controller interacts with the model and view
-        ecosystemManager.run();
-        ecosystemView.displayDailyReport(ecosystemManager);
+        this.man.run();
+        this.view.displayDailyReport(this.man);
         this.setup();
-        this.ecosystemView.displayDailyReport(this.ecosystemManager);
+        this.view.displayDailyReport(this.man);
     }
 
-    public void setup(){
-        // beginning of setup
-        Biome biome = this.ecosystemView.promptBiomeSelection();
-        Environment ecosystemEnvironment = this.ecosystemManager.getEnvironment();
+    public void setup() {
+        Environment env = this.man.getEnvironment();
+        Biome biome = this.view.promptBiomeSelection();
 
-        // set biome and set load associated plants and animals
-        ecosystemEnvironment.setBiome(biome.getName());
+        env.setBiome(biome.getName());
 
-        // get users initial plant and animal choices
-        List<String> chosenPlants = this.ecosystemView.promptOrganismSelection("Plant", ecosystemEnvironment.getBiomeNativePlants(), 3);
-        List<String> chosenAnimals = this.ecosystemView.promptOrganismSelection("Animal", ecosystemEnvironment.getBiomeNativeAnimals(), 3);
+        final List<String> animals = this.view.promptAnimalSelection(env.getBiomeNativeAnimals(), 3);
+        final List<String> plants = this.view.promptPlantSelection(env.getBiomeNativePlants(), 3);
 
         // load ecosystem with animals and plants once factory is implemented
-        for (String animal: chosenAnimals){
-            this.ecosystemManager.createAnimal(animal);
+        for (String animal : animals) {
+            this.man.createAnimal(animal);
         }
-        for (String plant: chosenPlants){
-            this.ecosystemManager.createPlant(plant);
+
+        for (String plant : plants) {
+            this.man.createPlant(plant);
         }
     }
 

@@ -5,7 +5,7 @@ import static ecosim.util.io.ConsoleIO.clearTerminal;
 import static ecosim.util.io.ConsoleIO.getTermLines;
 import static ecosim.util.io.ConsoleIO.moveCursorUp;
 import static ecosim.util.io.ConsoleIO.prettyPrintCenter;
-import static ecosim.util.io.ConsoleIO.readLine;
+import static ecosim.util.io.ConsoleIO.strInput;
 import static ecosim.util.io.ConsoleIO.toggleCursor;
 
 
@@ -13,13 +13,13 @@ public final class SplashScreen {
 
     private static final short TITLE_HEIGHT = 7;
     private static final String TITLE = """
-                                <B><b>_        \s
+                                <B><c>_        \s
           ___  _________  _____(_)___ ___\s
          / _ \\/ ___/ __ \\/ ___/ / __ `__ \\
         /  __/ /__/ /_/ (__  ) / / / / / /
         \\___/\\___/\\____/____/_/_/ /_/ /_/\s
 
-        </b><c>An Ecosystem Simulator</c></B>""";
+        </c><y>An Ecosystem Simulator</y></B>""";
 
     private static final short GRAPHIC_HEIGHT = 9;
     private static final String GRAPHIC = """
@@ -47,7 +47,7 @@ public final class SplashScreen {
         moveCursorUp((gap / 2) + GRAPHIC_HEIGHT);
         toggleCursor(false);
         prettyPrintCenter("Press <B><r>Enter</r></B> to start");
-        readLine();
+        strInput(true);
         toggleCursor(true);
         clearTerminal();
     }
