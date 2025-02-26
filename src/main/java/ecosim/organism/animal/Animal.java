@@ -16,7 +16,7 @@ public abstract class Animal extends Organism implements Movable {
     protected Size size;
     protected Diet diet;
     protected ActivityType activityType;
-    protected ConsciousState awakeState;
+    protected ConsciousState consciousState;
     protected boolean canHibernate;
     protected float survivalChance;
     protected float reproductiveChance;
@@ -27,7 +27,7 @@ public abstract class Animal extends Organism implements Movable {
         this.diet = diet;
         this.activityType = activityType;
         this.canHibernate = canHibernate;
-        this.awakeState = new Conscious();
+        this.consciousState = new Conscious();
         this.survivalChance = 0.5f;
         this.reproductiveChance = 0.5f;
     }
@@ -58,7 +58,7 @@ public abstract class Animal extends Organism implements Movable {
     public void update() {}
 
     public void move() {
-        this.awakeState.move();
+        this.consciousState.move();
     }
 
     public float getSurvivalChance() {
