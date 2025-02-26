@@ -4,25 +4,33 @@ package ecosim;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import ecosim.attrs.Observable;
+import ecosim.attrs.Observer;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import ecosim.enm.Weather;
 
 
-public class WeatherManager {
+public class WeatherManager implements Observable {
 
+    private Weather currentWeather;
     private Map<Weather, Double> weatherProbabilities;
     private static final Logger LOGGER = LoggerManager.getLogger();
-
+    ArrayList<Observer> weatherObservers;
 
     public WeatherManager() {
         weatherProbabilities = new HashMap<>();
     }
+
+    public Weather getCurrentWeather() {
+        return this.currentWeather;
+    }   
 
     public void loadWeatherProbabilities(String biome, String season) {
         String upperBiome = biome.toUpperCase();
@@ -57,16 +65,32 @@ public class WeatherManager {
     }
 
 
-    public Weather getRandomWeather() {
+    public void getRandomWeather() {
         double random = Math.random();
         double cumulative = 0.0;
         for (Map.Entry<Weather, Double> entry : this.weatherProbabilities.entrySet()) {
             cumulative += entry.getValue();
             if (random <= cumulative) {
-                return entry.getKey();
+                this.currentWeather = entry.getKey();
             }
         }
-        return Weather.CLOUDY; // fallback
+        this.currentWeather = Weather.CLOUDY; // fallback
     }
 
+    @Override
+    public void registerObservers(Observer observer) {
+        this.weatherObservers.add(observer);
+    }
+
+    @Override
+    public void unregisterObservers(Observer observer) {
+        this.weatherObservers.remove(observer);
+    }
+
+    @Override
+    public void notifyObservers() {
+        for (Observer o: this.weatherObservers){
+            o.update(this.getCurrentWeather());
+        }
+    }
 }

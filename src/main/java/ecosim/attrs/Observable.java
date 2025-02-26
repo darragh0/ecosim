@@ -1,11 +1,8 @@
 package ecosim.attrs;
 
-
 public interface Observable {
-    void registerObservers();
-
-    void unregisterObservers();
-
+    void registerObservers(Observer o);
+    void unregisterObservers(Observer o);
     void notifyObservers();
 
 }

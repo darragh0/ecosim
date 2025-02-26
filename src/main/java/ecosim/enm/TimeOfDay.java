@@ -1,15 +1,17 @@
 package ecosim.enm;
 
+public enum TimeOfDay implements Event {
+    DAY("Day"),
+    NIGHT("Night");
 
-public enum TimeOfDay {
-    DAY,
-    NIGHT;
+    private final String value;
 
-    public TimeOfDay switchTimeOfDay() {
-        return switch (this) {
-            case DAY -> NIGHT;
-            case NIGHT -> DAY;
-        };
+    TimeOfDay(String value) {
+        this.value = value;
     }
 
+    @Override
+    public String getValue() {
+        return value;
+    }
 }

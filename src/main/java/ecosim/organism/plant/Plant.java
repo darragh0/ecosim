@@ -9,7 +9,12 @@ package ecosim.organism.plant;
 
 // TODO:import Weather and then updateGrowthRate
 
-public abstract class Plant implements Cloneable {
+import ecosim.attrs.Observer;
+import ecosim.enm.Event;
+import ecosim.enm.TimeOfDay;
+import ecosim.enm.Weather;
+
+public abstract class Plant implements Cloneable, Observer {
     protected PlantSize size;
     protected int biteCapacity;
     protected EnergyCycleState energyCycleState;
@@ -26,8 +31,22 @@ public abstract class Plant implements Cloneable {
         return (Plant) super.clone();
     }
 
-    public void update() {
-        // TODO: update the plant
+    @Override
+    public void update(Event event){
+        if (event instanceof Weather newWeather) {
+            handleWeatherUpdate(newWeather);
+        }
+        else if (event instanceof TimeOfDay newTimeOfDay) {
+            handleTimeOfDayUpdate(newTimeOfDay);
+        }
+    }
+
+    public void handleWeatherUpdate(Weather weather){
+        // TODO: Handle weather changes
+    }
+
+    public void handleTimeOfDayUpdate(TimeOfDay timeOfDay){
+        // TODO: Handle time of day changes
     }
 
     public void setEnergyCycleState(EnergyCycleState state) {

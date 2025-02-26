@@ -1,15 +1,14 @@
 package ecosim.organism.animal;
 
 
-import ecosim.enm.ActivityType;
-import ecosim.enm.Diet;
-import ecosim.enm.Size;
+import ecosim.attrs.Observer;
+import ecosim.enm.*;
 import ecosim.organism.Organism;
 import ecosim.organism.animal.conscious_state.Conscious;
 import ecosim.organism.animal.conscious_state.ConsciousState;
 
 
-public abstract class Animal extends Organism {
+public abstract class Animal extends Organism implements Observer {
 
     protected Size size;
     protected Diet diet;
@@ -52,11 +51,26 @@ public abstract class Animal extends Organism {
 
     public void breed() {}
 
-    @Override
-    public void update() {}
-
     public void move() {
         this.awakeState.move();
+    }
+
+    @Override
+    public void update(Event event){
+        if (event instanceof Season newSeason) {
+            handleSeasonUpdate(newSeason);
+        }
+        else if (event instanceof TimeOfDay newTimeOfDay) {
+            handleTimeOfDayUpdate(newTimeOfDay);
+        }
+    }
+
+    public void handleSeasonUpdate(Season season){
+        // TODO: Handle season changes
+    }
+
+    public void handleTimeOfDayUpdate(TimeOfDay timeOfDay){
+        // TODO: Handle time of day changes
     }
 
     public float getSurvivalChance() {
