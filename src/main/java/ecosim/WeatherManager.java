@@ -17,18 +17,19 @@ import org.json.JSONObject;
 import ecosim.enm.Weather;
 
 
-public class WeatherManager implements Observable {
+public class WeatherManager extends Observable {
 
     private Weather currentWeather;
     private Map<Weather, Double> weatherProbabilities;
     private static final Logger LOGGER = LoggerManager.getLogger();
-    ArrayList<Observer> weatherObservers;
 
-    public WeatherManager() {
+    public WeatherManager(ChangeManager changeManager) {
+        super(changeManager);
         weatherProbabilities = new HashMap<>();
     }
 
-    public Weather getCurrentWeather() {
+    @Override
+    public Weather getCurrentState() {
         return this.currentWeather;
     }   
 
@@ -77,20 +78,5 @@ public class WeatherManager implements Observable {
         this.currentWeather = Weather.CLOUDY; // fallback
     }
 
-    @Override
-    public void registerObservers(Observer observer) {
-        this.weatherObservers.add(observer);
-    }
 
-    @Override
-    public void unregisterObservers(Observer observer) {
-        this.weatherObservers.remove(observer);
-    }
-
-    @Override
-    public void notifyObservers() {
-        for (Observer o: this.weatherObservers){
-            o.update(this.getCurrentWeather());
-        }
-    }
 }

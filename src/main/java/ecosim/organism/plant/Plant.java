@@ -9,6 +9,7 @@ package ecosim.organism.plant;
 
 // TODO:import Weather and then updateGrowthRate
 
+import ecosim.attrs.Observable;
 import ecosim.attrs.Observer;
 import ecosim.enm.Event;
 import ecosim.enm.TimeOfDay;
@@ -32,7 +33,8 @@ public abstract class Plant implements Cloneable, Observer {
     }
 
     @Override
-    public void update(Event event){
+    public void update(Observable observable){
+        Event event = observable.getCurrentState();
         if (event instanceof Weather newWeather) {
             handleWeatherUpdate(newWeather);
         }

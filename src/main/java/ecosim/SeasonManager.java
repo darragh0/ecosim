@@ -8,14 +8,13 @@ import java.util.ArrayList;
 
 import static ecosim.enm.Season.*;
 
-public class SeasonManager implements Observable{
+public class SeasonManager extends Observable {
     private Season currentSeason;
-    ArrayList<Observer> seasonObservers;
 
-    public SeasonManager(){
+    public SeasonManager(ChangeManager changeManager){
         // Start the year in Autumn
+        super(changeManager);
         this.currentSeason = AUTUMN;
-        this.seasonObservers = new ArrayList<>();
     }
 
     public void getNextSeason() {
@@ -27,24 +26,9 @@ public class SeasonManager implements Observable{
         };
     }
 
-    public Season getCurrentSeason() {
+    @Override
+    public Season getCurrentState() {
         return this.currentSeason;
     }
 
-    @Override
-    public void registerObservers(Observer observer) {
-        this.seasonObservers.add(observer);
-    }
-
-    @Override
-    public void unregisterObservers(Observer observer) {
-        this.seasonObservers.remove(observer);
-    }
-
-    @Override
-    public void notifyObservers() {
-        for (Observer o : this.seasonObservers){
-            o.update(currentSeason);
-        }
-    }
 }

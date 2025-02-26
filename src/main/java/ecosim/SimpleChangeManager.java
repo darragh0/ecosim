@@ -11,11 +11,21 @@ import java.util.Map;
 
 public class SimpleChangeManager implements ChangeManager {
 
-    private final Map<Observable, List<Observer>> subjectObserverMap = new HashMap<>();
+    private static SimpleChangeManager instance;
+    private final Map<Observable, List<Observer>> observableObserverMap = new HashMap<>();
+
+    private SimpleChangeManager() { }
+
+    public static SimpleChangeManager getInstance() {
+        if (instance == null) {
+            instance = new SimpleChangeManager();
+        }
+        return instance;
+    }
 
     @Override
     public void register(Observable observable, Observer observer) {
-        List<Observer> observers = subjectObserverMap.computeIfAbsent(observable, k -> new ArrayList<>());
+        List<Observer> observers = observableObserverMap.computeIfAbsent(observable, k -> new ArrayList<>());
         if (!observers.contains(observer)) {
             observers.add(observer);
         }
@@ -23,22 +33,22 @@ public class SimpleChangeManager implements ChangeManager {
 
     @Override
     public void unregister(Observable observable, Observer observer) {
-        List<Observer> observers = subjectObserverMap.get(observable);
+        List<Observer> observers = observableObserverMap.get(observable);
         if (observers != null) {
             observers.remove(observer);
             if (observers.isEmpty()) {
-                subjectObserverMap.remove(observable);
+                observableObserverMap.remove(observable);
             }
         }
     }
 
 
     @Override
-    public void notifyObservers(Observable subject, Event event) {
-        List<Observer> observers = subjectObserverMap.get(subject);
+    public void notifyObservers(Observable observable) {
+        List<Observer> observers = observableObserverMap.get(observable);
         if (observers != null) {
             for (Observer obs : observers) {
-                obs.update(event);
+                obs.update(observable);
             }
         }
     }

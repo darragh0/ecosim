@@ -9,15 +9,14 @@ import java.util.ArrayList;
 import static ecosim.enm.TimeOfDay.DAY;
 import static ecosim.enm.TimeOfDay.NIGHT;
 
-public class TimeOfDayManager implements Observable {
+public class TimeOfDayManager extends Observable {
 
     TimeOfDay currentTimeOfDay;
-    ArrayList<Observer> timeOfDayObservers;
 
-    public TimeOfDayManager(){
+    public TimeOfDayManager(ChangeManager changeManager){
         // Start time of day at night so that when time switchTimeOfDay is called, it will be day
+        super(changeManager);
         this.currentTimeOfDay = NIGHT;
-        timeOfDayObservers = new ArrayList<>();
     }
 
     public void  switchTimeOfDay() {
@@ -27,24 +26,9 @@ public class TimeOfDayManager implements Observable {
         };
     }
 
-    public TimeOfDay getCurrentTimeOfDay(){
+    @Override
+    public TimeOfDay getCurrentState(){
         return this.currentTimeOfDay;
     }
 
-    @Override
-    public void registerObservers(Observer observer) {
-        this.timeOfDayObservers.add(observer);
-    }
-
-    @Override
-    public void unregisterObservers(Observer observer) {
-        this.timeOfDayObservers.remove(observer);
-    }
-
-    @Override
-    public void notifyObservers() {
-        for (Observer o: this.timeOfDayObservers){
-            o.update(this.currentTimeOfDay);
-        }
-    }
 }

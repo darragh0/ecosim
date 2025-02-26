@@ -1,6 +1,7 @@
 package ecosim.organism.animal;
 
 
+import ecosim.attrs.Observable;
 import ecosim.attrs.Observer;
 import ecosim.enm.*;
 import ecosim.organism.Organism;
@@ -56,7 +57,8 @@ public abstract class Animal extends Organism implements Observer {
     }
 
     @Override
-    public void update(Event event){
+    public void update(Observable observable){
+        Event event = observable.getCurrentState();
         if (event instanceof Season newSeason) {
             handleSeasonUpdate(newSeason);
         }

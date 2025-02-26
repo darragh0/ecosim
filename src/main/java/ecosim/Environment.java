@@ -21,7 +21,7 @@ public class Environment  {
     public void updateSeason() {
         this.seasonManager.getNextSeason();
         // load probabilities for new season
-        weatherManager.loadWeatherProbabilities(this.biome.getBiomeName(), this.seasonManager.getCurrentSeason().toString());
+        weatherManager.loadWeatherProbabilities(this.biome.getBiomeName(), this.seasonManager.getCurrentState().toString());
     }
 
     public void updateDay() {
@@ -34,15 +34,15 @@ public class Environment  {
     }
 
     public Weather getWeather(){
-        return this.weatherManager.getCurrentWeather();
+        return this.weatherManager.getCurrentState();
     }
 
     public Season getSeason(){
-        return this.seasonManager.getCurrentSeason();
+        return this.seasonManager.getCurrentState();
     }
 
     public TimeOfDay getTimeOfDay(){
-        return this.timeOfDayManager.getCurrentTimeOfDay();
+        return this.timeOfDayManager.getCurrentState();
     }
     public List<String> getBiomeNativeAnimals(){
         return this.biome.getNativeAnimals();
