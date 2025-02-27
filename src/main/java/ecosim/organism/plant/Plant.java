@@ -8,19 +8,24 @@ package ecosim.organism.plant;
 
 
 // TODO:import Weather and then updateGrowthRate
-
+import ecosim.organism.Organism;
 import ecosim.attrs.Observable;
 import ecosim.attrs.Observer;
 import ecosim.enm.Event;
 import ecosim.enm.TimeOfDay;
 import ecosim.enm.Weather;
 
-public abstract class Plant implements Cloneable, Observer {
+public abstract class Plant extends Organism implements Observer{
+
     protected PlantSize size;
     protected int biteCapacity;
     protected EnergyCycleState energyCycleState;
     protected float growthRate;
 
+    public Plant(PlantSize size, int x, int y) {
+        super(size.getMaxHealth(), x, y, size.getNutritionalValue());
+        this.size = size;
+    }
 
 
     // this is the method that need to be implemented in the subclasses, specific to each plant type
