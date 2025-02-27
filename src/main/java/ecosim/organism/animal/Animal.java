@@ -58,7 +58,7 @@ public abstract class Animal extends Organism implements Movable {
     public void update() {}
 
     public void move() {
-        this.consciousState.move();
+        this.consciousState.move(this);
     }
 
     public float getSurvivalChance() {
