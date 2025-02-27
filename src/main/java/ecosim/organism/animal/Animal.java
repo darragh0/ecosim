@@ -1,15 +1,14 @@
 package ecosim.organism.animal;
 
-
 import ecosim.attrs.Movable;
 import ecosim.enm.ActivityType;
 import ecosim.enm.Diet;
 import ecosim.enm.Size;
+import ecosim.enm.ActivityState;
 import ecosim.map.Map;
 import ecosim.organism.Organism;
 import ecosim.organism.animal.conscious_state.Conscious;
 import ecosim.organism.animal.conscious_state.ConsciousState;
-
 
 public abstract class Animal extends Organism implements Movable {
 
@@ -17,6 +16,7 @@ public abstract class Animal extends Organism implements Movable {
     protected Diet diet;
     protected ActivityType activityType;
     protected ConsciousState consciousState;
+    protected ActivityState activityState; 
     protected boolean canHibernate;
     protected float survivalChance;
     protected float reproductiveChance;
@@ -26,10 +26,10 @@ public abstract class Animal extends Organism implements Movable {
         this.size = size;
         this.diet = diet;
         this.activityType = activityType;
-        this.canHibernate = canHibernate;
         this.consciousState = new Conscious();
         this.survivalChance = 0.5f;
         this.reproductiveChance = 0.5f;
+        this.activityState = ActivityState.SLEEPING;  
     }
 
     public Animal(Animal animal) {
@@ -46,6 +46,14 @@ public abstract class Animal extends Organism implements Movable {
 
     public ActivityType getActivityType() {
         return this.activityType;
+    }
+
+    public ActivityState getActivityState() { 
+        return this.activityState;
+    }
+
+    public void setSleepState(ActivityState activityState) { 
+        this.activityState = activityState;
     }
 
     public void makeSound() {}
