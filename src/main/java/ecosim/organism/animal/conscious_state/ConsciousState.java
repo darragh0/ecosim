@@ -1,8 +1,6 @@
 package ecosim.organism.animal.conscious_state;
-
+import ecosim.organism.animal.Animal;
 
 public interface ConsciousState {
-
-    void move();
-
+    String move(Animal animal);
 }
