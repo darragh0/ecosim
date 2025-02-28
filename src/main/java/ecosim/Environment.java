@@ -29,7 +29,7 @@ public class Environment  {
     }
 
     public void updateWeather() {
-        this.weatherManager.getRandomWeather();
+        this.weatherManager.updateRandomWeather();
 
     }
 
