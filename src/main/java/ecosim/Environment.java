@@ -1,50 +1,49 @@
 package ecosim;
 
 
-import ecosim.attrs.Observable;
 import ecosim.enm.Season;
 import ecosim.enm.TimeOfDay;
 import ecosim.enm.Weather;
 import java.util.List;
 
 
-public class Environment implements Observable {
-    private Weather weather;
+public class Environment  {
     private WeatherManager weatherManager;
-    private Season season;
-    private TimeOfDay timeOfDay;
+    private SeasonManager seasonManager;
+    private TimeOfDayManager timeOfDayManager;
     private BiomeManager biome;
-
-    @Override
-    public void registerObservers() {}
-
-    @Override
-    public void unregisterObservers() {}
-
-    @Override
-    public void notifyObservers() {}
-
-    public void updateSeason() {
-        this.season = this.season.getNextSeason();
-        // load probablilities for new season
-        weatherManager.loadWeatherProbabilities(this.biome.getBiomeName(), this.season.toString());
-        System.out.println("Season update! It is now " + this.season + ".");
-    }
-
-    public void updateDay() {
-        this.timeOfDay = this.timeOfDay.switchTimeOfDay();
-        System.out.println("Time of day update! It is now " + this.timeOfDay.toString() + ".");
-    }
-
-    public void updateWeather() {
-        this.weather = this.weatherManager.getRandomWeather();
-    }
 
     public void setBiome(String biomeName) {
         this.biome = new BiomeManager(biomeName);
         this.biome.setupBiome();
     }
 
+    public void updateSeason() {
+        this.seasonManager.getNextSeason();
+        // load probabilities for new season
+        weatherManager.loadWeatherProbabilities(this.biome.getBiomeName(), this.seasonManager.getCurrentState().toString());
+    }
+
+    public void updateDay() {
+        this.timeOfDayManager.switchTimeOfDay();
+    }
+
+    public void updateWeather() {
+        this.weatherManager.updateRandomWeather();
+
+    }
+
+    public Weather getWeather(){
+        return this.weatherManager.getCurrentState();
+    }
+
+    public Season getSeason(){
+        return this.seasonManager.getCurrentState();
+    }
+
+    public TimeOfDay getTimeOfDay(){
+        return this.timeOfDayManager.getCurrentState();
+    }
     public List<String> getBiomeNativeAnimals(){
         return this.biome.getNativeAnimals();
     }

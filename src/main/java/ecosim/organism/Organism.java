@@ -26,8 +26,6 @@ public abstract class Organism extends Locatable {
         this.name = "organism";
     }
 
-    public abstract void update();
-
     public String getName() {
         return name;
     }

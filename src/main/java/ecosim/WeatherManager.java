@@ -8,21 +8,28 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import ecosim.attrs.Observable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import ecosim.enm.Weather;
 
 
-public class WeatherManager {
+public class WeatherManager extends Observable {
 
+    private Weather currentWeather;
     private Map<Weather, Double> weatherProbabilities;
     private static final Logger LOGGER = LoggerManager.getLogger();
 
-
-    public WeatherManager() {
+    public WeatherManager(ChangeManager changeManager) {
+        super(changeManager);
         weatherProbabilities = new HashMap<>();
     }
+
+    @Override
+    public Weather getCurrentState() {
+        return this.currentWeather;
+    }   
 
     public void loadWeatherProbabilities(String biome, String season) {
         String upperBiome = biome.toUpperCase();
@@ -57,16 +64,17 @@ public class WeatherManager {
     }
 
 
-    public Weather getRandomWeather() {
+    public void updateRandomWeather() {
         double random = Math.random();
         double cumulative = 0.0;
         for (Map.Entry<Weather, Double> entry : this.weatherProbabilities.entrySet()) {
             cumulative += entry.getValue();
             if (random <= cumulative) {
-                return entry.getKey();
+                this.currentWeather = entry.getKey();
             }
         }
-        return Weather.CLOUDY; // fallback
+        this.currentWeather = Weather.CLOUDY; // fallback
     }
+
 
 }

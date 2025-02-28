@@ -1,6 +1,8 @@
 package ecosim.organism.animal;
 
-
+import ecosim.attrs.Observable;
+import ecosim.attrs.Observer;
+import ecosim.enm.*;
 import ecosim.attrs.Movable;
 import ecosim.enm.ActivityType;
 import ecosim.enm.Diet;
@@ -11,7 +13,8 @@ import ecosim.organism.animal.conscious_state.Conscious;
 import ecosim.organism.animal.conscious_state.ConsciousState;
 
 
-public abstract class Animal extends Organism implements Movable {
+
+public abstract class Animal extends Organism implements Observer, Movable {
 
     protected Size size;
     protected Diet diet;
@@ -54,11 +57,27 @@ public abstract class Animal extends Organism implements Movable {
 
     public void breed() {}
 
-    @Override
-    public void update() {}
-
     public void move() {
         this.awakeState.move();
+    }
+
+    @Override
+    public void update(Observable observable){
+        Event event = observable.getCurrentState();
+        if (event instanceof Season newSeason) {
+            handleSeasonUpdate(newSeason);
+        }
+        else if (event instanceof TimeOfDay newTimeOfDay) {
+            handleTimeOfDayUpdate(newTimeOfDay);
+        }
+    }
+
+    public void handleSeasonUpdate(Season season){
+        // TODO: Handle season changes
+    }
+
+    public void handleTimeOfDayUpdate(TimeOfDay timeOfDay){
+        // TODO: Handle time of day changes
     }
 
     public float getSurvivalChance() {
