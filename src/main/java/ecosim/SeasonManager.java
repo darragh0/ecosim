@@ -1,10 +1,7 @@
 package ecosim;
 
 import ecosim.attrs.Observable;
-import ecosim.attrs.Observer;
 import ecosim.enm.Season;
-
-import java.util.ArrayList;
 
 import static ecosim.enm.Season.*;
 

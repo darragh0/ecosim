@@ -1,10 +1,8 @@
 package ecosim;
 
 import ecosim.attrs.Observable;
-import ecosim.attrs.Observer;
 import ecosim.enm.TimeOfDay;
 
-import java.util.ArrayList;
 
 import static ecosim.enm.TimeOfDay.DAY;
 import static ecosim.enm.TimeOfDay.NIGHT;

@@ -4,13 +4,11 @@ package ecosim;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
 import ecosim.attrs.Observable;
-import ecosim.attrs.Observer;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -66,7 +64,7 @@ public class WeatherManager extends Observable {
     }
 
 
-    public void getRandomWeather() {
+    public void updateRandomWeather() {
         double random = Math.random();
         double cumulative = 0.0;
         for (Map.Entry<Weather, Double> entry : this.weatherProbabilities.entrySet()) {
