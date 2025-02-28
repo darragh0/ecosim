@@ -5,7 +5,7 @@ import ecosim.organism.animal.Animal;
 public class Unconscious implements ConsciousState {
     @Override
     public String move(Animal animal) {
-        switch (animal.getSleepState()) {
+        switch (animal.getActivityState()) {
             case SLEEPING:
                 return animal.getName() + " is currently asleep, therefore remains at " + animal.getX() + "," + animal.getY();
             case HIBERNATING:
