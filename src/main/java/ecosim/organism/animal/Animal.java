@@ -7,6 +7,7 @@ import ecosim.attrs.Movable;
 import ecosim.enm.ActivityType;
 import ecosim.enm.Diet;
 import ecosim.enm.Size;
+import ecosim.enm.ActivityState;
 import ecosim.map.Map;
 import ecosim.organism.Organism;
 import ecosim.organism.animal.conscious_state.Conscious;
@@ -19,7 +20,8 @@ public abstract class Animal extends Organism implements Observer, Movable {
     protected Size size;
     protected Diet diet;
     protected ActivityType activityType;
-    protected ConsciousState awakeState;
+    protected ConsciousState consciousState;
+    protected ActivityState activityState; 
     protected boolean canHibernate;
     protected float survivalChance;
     protected float reproductiveChance;
@@ -29,10 +31,10 @@ public abstract class Animal extends Organism implements Observer, Movable {
         this.size = size;
         this.diet = diet;
         this.activityType = activityType;
-        this.canHibernate = canHibernate;
-        this.awakeState = new Conscious();
+        this.consciousState = new Conscious();
         this.survivalChance = 0.5f;
         this.reproductiveChance = 0.5f;
+        this.activityState = ActivityState.SLEEPING;  
     }
 
     public Animal(Animal animal) {
@@ -51,6 +53,14 @@ public abstract class Animal extends Organism implements Observer, Movable {
         return this.activityType;
     }
 
+    public ActivityState getActivityState() { 
+        return this.activityState;
+    }
+
+    public void setSleepState(ActivityState activityState) { 
+        this.activityState = activityState;
+    }
+
     public void makeSound() {}
 
     public void eat() {}
@@ -58,7 +68,7 @@ public abstract class Animal extends Organism implements Observer, Movable {
     public void breed() {}
 
     public void move() {
-        this.awakeState.move();
+        this.consciousState.move(this);
     }
 
     @Override
