@@ -5,7 +5,12 @@ import ecosim.enm.ActivityType;
 import ecosim.enm.Size;
 import ecosim.organism.animal.type.Herbivore;
 
-
+/**
+ * Represents a Deer, a diurnal herbivore
+ * that inhabits the ecosystem, with unique behaviors.
+ * 
+ * @author jjola00
+ */
 public class Deer extends Herbivore {
     private static int deerCount = 0;
 

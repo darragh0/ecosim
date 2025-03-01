@@ -3,7 +3,12 @@ package ecosim.organism.animal.decorator;
 
 import ecosim.organism.animal.Animal;
 
-
+/**
+ * Abstract class for decorating animals, allowing for
+ * additional behaviors or properties to be added.
+ * 
+ * @author jjola00
+ */
 public abstract class AnimalDecorator extends Animal {
 
     protected final Animal animal;

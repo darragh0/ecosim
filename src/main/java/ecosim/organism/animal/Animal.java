@@ -14,7 +14,12 @@ import ecosim.organism.animal.conscious_state.Conscious;
 import ecosim.organism.animal.conscious_state.ConsciousState;
 
 
-
+/**
+ * Abstract class representing an animal in the ecosystem,
+ * defining its properties, behaviors, and interactions.
+ * 
+ * @author jjola00
+ */
 public abstract class Animal extends Organism implements Observer, Movable {
 
     protected Size size;

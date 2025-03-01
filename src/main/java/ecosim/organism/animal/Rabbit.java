@@ -5,7 +5,12 @@ import ecosim.enm.ActivityType;
 import ecosim.enm.Size;
 import ecosim.organism.animal.type.Herbivore;
 
-
+/**
+ * Represents a Rabbit, a diurnal herbivore
+ * that inhabits the ecosystem, with unique behaviors.
+ * 
+ * @author jjola00
+ */
 public class Rabbit extends Herbivore {
     private static int rabbitCount = 0;
 
