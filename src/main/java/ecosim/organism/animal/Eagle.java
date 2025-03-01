@@ -5,7 +5,12 @@ import ecosim.enm.ActivityType;
 import ecosim.enm.Size;
 import ecosim.organism.animal.type.Carnivore;
 
-
+/**
+ * Represents an Eagle, a diurnal carnivore
+ * that inhabits the ecosystem, with unique behaviors.
+ * 
+ * @author jjola00
+ */
 public class Eagle extends Carnivore {
     private static int eagleCount = 0;
 

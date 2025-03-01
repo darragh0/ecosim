@@ -5,7 +5,12 @@ import ecosim.enm.ActivityType;
 import ecosim.enm.Size;
 import ecosim.organism.animal.type.Carnivore;
 
-
+/**
+ * Represents a Snake, a nocturnal carnivore
+ * that inhabits the ecosystem, with unique behaviors.
+ * 
+ * @author jjola00
+ */
 public class Snake extends Carnivore {
     private static int snakeCount = 0;
 

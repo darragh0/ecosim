@@ -2,6 +2,12 @@ package ecosim.organism.animal.conscious_state;
 
 import ecosim.organism.animal.Animal;
 
+/**
+ * Represents the unconscious state of an animal,
+ * defining its movement behavior when in this state.
+ * 
+ * @author jjola00
+ */
 public class Unconscious implements ConsciousState {
     @Override
     public String move(Animal animal) {
