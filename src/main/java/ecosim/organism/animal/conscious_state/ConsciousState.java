@@ -9,5 +9,5 @@ import ecosim.organism.animal.Animal;
  * @author jjola00
  */
 public interface ConsciousState {
-    String move(Animal animal);
+    String move(Animal animal, float currentHealth, float maxHealth);
 }

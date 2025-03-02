@@ -66,6 +66,10 @@ public abstract class Animal extends Organism implements Observer, Movable {
         this.activityState = activityState;
     }
 
+    public void setHealth(float health) {
+        this.health = health;
+    }
+
     public void makeSound() {}
 
     public void eat() {}
@@ -73,7 +77,7 @@ public abstract class Animal extends Organism implements Observer, Movable {
     public void breed() {}
 
     public void move() {
-        this.consciousState.move(this);
+        this.consciousState.move(this, this.health, this.maxHealth);
     }
 
     @Override
@@ -101,6 +105,10 @@ public abstract class Animal extends Organism implements Observer, Movable {
 
     public float getReproductiveChance() {
         return this.reproductiveChance;
+    }
+
+    public ConsciousState getConsciousState() {
+        return this.consciousState;
     }
 
     public boolean isEdible(Organism organism) {
