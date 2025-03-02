@@ -1,9 +1,15 @@
 package ecosim;
 
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.logging.*;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
+
 
 public class LoggerManager {
     private static final Logger LOGGER = Logger.getLogger("ecosim");
@@ -41,4 +47,9 @@ public class LoggerManager {
     public static Logger getLogger() {
         return LOGGER;
     }
+
+    public static void log(Level level, String message, Object... args) {
+        LOGGER.log(level, message, args);
+    }
+
 }
