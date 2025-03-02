@@ -1,6 +1,8 @@
 package ecosim.organism.plant;
 
-// import ecosim.weather.Weather;
+import ecosim.TimeOfDayManager;
+import ecosim.WeatherManager;
+import ecosim.enm.Weather;
 
 /*
  * This class represents a tree in the ecosystem.
@@ -11,12 +13,12 @@ package ecosim.organism.plant;
 public class Tree extends GrasslandPlant {
     
 
-    public Tree(PlantSize size, int x, int y) {
-        super(size, x, y);
+    public Tree(PlantSize size, int x, int y, TimeOfDayManager timeOfDayManager, WeatherManager weatherManager, GrowthStrategy growthStrategy) {
+        super(size, x, y, timeOfDayManager, weatherManager, growthStrategy);
     }
 
     @Override
-    public void updateGrowthRate(/* Weather weather */) {
-        System.out.println("Updating growth rate for Tree based on weather");
+    public void updateGrowthRate(Weather currentWeather) {
+        super.updateGrowthRate(currentWeather); // Call the method from the base class
     }
 }

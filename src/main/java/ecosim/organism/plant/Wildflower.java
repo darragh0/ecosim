@@ -1,5 +1,10 @@
 package ecosim.organism.plant;
 
+import ecosim.enm.Weather;
+import ecosim.TimeOfDayManager;
+import ecosim.WeatherManager;
+
+
 // import ecosim.weather.Weather;
 
 /*
@@ -9,12 +14,12 @@ package ecosim.organism.plant;
  */
 
 public class Wildflower extends GrasslandPlant {
-    public Wildflower(PlantSize size, int x, int y) {
-        super(size, x, y);
+    public Wildflower(PlantSize size, int x, int y, TimeOfDayManager timeOfDayManager, WeatherManager weatherManager, GrowthStrategy growthStrategy) {
+        super(size, x, y, timeOfDayManager, weatherManager, growthStrategy);
     }
 
     @Override
-    public void updateGrowthRate(/* Weather weather */) {
+    public void updateGrowthRate(Weather currentWeather) {
         System.out.println("Updating growth rate for Wildflower based on weather");
     }
 }
