@@ -20,6 +20,10 @@ public class LoggerManager {
         initializeLogger();
     }
 
+    private LoggerManager() {
+        throw new UnsupportedOperationException("This class cannot be instantiated.");
+    }
+
     private static void initializeLogger() {
         try {
             Files.createDirectories(Paths.get(LOG_FILE_DIR));
@@ -42,10 +46,6 @@ public class LoggerManager {
         } catch (IOException e) {
             System.err.println("Logger setup failed: " + e.getMessage());
         }
-    }
-
-    public static Logger getLogger() {
-        return LOGGER;
     }
 
     public static void log(Level level, String message, Object... args) {
