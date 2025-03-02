@@ -1,12 +1,14 @@
 package ecosim.attrs;
 
-import ecosim.ChangeManager;
+
 import ecosim.enm.Event;
+import ecosim.man.ChangeMan;
+
 
 public abstract class Observable {
-    protected ChangeManager changeManager;
+    protected ChangeMan changeManager;
 
-    public Observable(ChangeManager changeManager) {
+    public Observable(ChangeMan changeManager) {
         this.changeManager = changeManager;
     }
 
@@ -23,4 +25,5 @@ public abstract class Observable {
     }
 
     public abstract Event getCurrentState();
+
 }

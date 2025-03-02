@@ -1,6 +1,8 @@
-package ecosim;
+package ecosim.man;
 
 
+import ecosim.Environment;
+import ecosim.SplashScreen;
 import ecosim.organism.animal.Animal;
 import ecosim.organism.plant.Plant;
 import static ecosim.common.io.ConsoleIO.closeConsoleInputSource;
@@ -9,14 +11,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class EcosystemManager {
+public class EcosystemMan {
 
     private final Environment environment;
     private int dayCount;
     private ArrayList<Animal> animals;
     private ArrayList<Plant> plants;
 
-    public EcosystemManager() {
+    public EcosystemMan() {
         this.environment = new Environment();
         this.dayCount = 1; // starts on day 1
         this.animals = new ArrayList<Animal>();

@@ -2,20 +2,19 @@ package ecosim.controller;
 
 
 import java.util.List;
-
-import ecosim.EcosystemManager;
 import ecosim.Environment;
 import ecosim.enm.Biome;
+import ecosim.man.EcosystemMan;
 import ecosim.view.EcosystemView;
 
 
 public class EcosystemController {
 
-    private final EcosystemManager man;
+    private final EcosystemMan man;
     private final EcosystemView view;
 
     public EcosystemController() {
-        this.man = new EcosystemManager();
+        this.man = new EcosystemMan();
         this.view = new EcosystemView();
     }
 

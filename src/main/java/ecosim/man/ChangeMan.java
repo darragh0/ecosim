@@ -1,10 +1,15 @@
-package ecosim;
+package ecosim.man;
+
 
 import ecosim.attrs.Observable;
 import ecosim.attrs.Observer;
 
-public interface ChangeManager {
+
+public interface ChangeMan {
     void register(Observable observable, Observer observer);
+
     void unregister(Observable observable, Observer observer);
+
     void notifyObservers(Observable subject);
+
 }
