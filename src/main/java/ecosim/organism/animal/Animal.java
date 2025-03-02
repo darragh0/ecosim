@@ -22,7 +22,6 @@ import ecosim.organism.animal.conscious_state.ConsciousState;
  */
 public abstract class Animal extends Organism implements Observer {
 
-    protected Size size;
     protected Diet diet;
     protected ActivityType activityType;
     protected ConsciousState consciousState;
@@ -32,8 +31,7 @@ public abstract class Animal extends Organism implements Observer {
     protected float reproductiveChance;
 
     public Animal(int x, int y, Size size, Diet diet, ActivityType activityType, boolean canHibernate) {
-        super(size.getMaxHealth(), x, y, size.getNutritionalValue());
-        this.size = size;
+        super(size, size.getMaxHealth(), x, y, size.getNutritionalValue());
         this.diet = diet;
         this.activityType = activityType;
         this.consciousState = new Conscious();

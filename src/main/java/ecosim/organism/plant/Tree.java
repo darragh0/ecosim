@@ -2,10 +2,12 @@ package ecosim.organism.plant;
 
 // import ecosim.weather.Weather;
 
+import ecosim.enm.Size;
+
 public class Tree extends GrasslandPlant {
     
 
-    public Tree(PlantSize size, int x, int y) {
+    public Tree(Size size, int x, int y) {
         super(size, x, y);
     }
 
