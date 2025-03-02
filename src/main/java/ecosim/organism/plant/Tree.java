@@ -2,6 +2,12 @@ package ecosim.organism.plant;
 
 // import ecosim.weather.Weather;
 
+/*
+ * This class represents a tree in the ecosystem.
+ * It extends the GrasslandPlant class and implements growth rate updates.
+ * Author: @MiaBorkoo
+ */
+
 public class Tree extends GrasslandPlant {
     
 

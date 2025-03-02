@@ -1,9 +1,8 @@
 package ecosim.organism.plant;
 
-
 /*
- * This is the class for the DesertPlant.
- * It extends the Plant class - own method for growth rate
+ * This is the abstract class for all desert plants.
+ * It extends the Plant class and includes methods specific to desert plants.
  * Author: @MiaBorkoo
  */
 

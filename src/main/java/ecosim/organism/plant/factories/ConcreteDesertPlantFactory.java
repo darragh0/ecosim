@@ -6,6 +6,12 @@ import ecosim.organism.plant.Succulent;
 import ecosim.organism.plant.Cactus;
 import ecosim.organism.plant.Shrub;
 
+/*
+ * This class implements the PlantFactory interface for creating desert plants.
+ * It provides the logic to create specific types of desert plants based on the provided type.
+ * Author: @MiaBorkoo
+ */
+
 public class ConcreteDesertPlantFactory implements PlantFactory {
     @Override
     public DesertPlant createPlant(String plantType, int x, int y) {

@@ -1,5 +1,11 @@
 package ecosim.organism.plant;
 
+/*
+ * This class represents a succulent in the desert ecosystem.
+ * It extends the DesertPlant class and implements growth rate updates.
+ * Author: @MiaBorkoo
+ */
+
 // import ecosim.weather.Weather;
 
 public class Succulent extends DesertPlant {

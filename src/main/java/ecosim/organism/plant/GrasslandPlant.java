@@ -1,5 +1,10 @@
 package ecosim.organism.plant;
 
+/*
+ * This is the abstract class for all grassland plants.
+ * It extends the Plant class and includes methods specific to grassland plants.
+ * Author: @MiaBorkoo
+ */
 
 public abstract class GrasslandPlant extends Plant {
 

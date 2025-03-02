@@ -6,6 +6,12 @@ import ecosim.organism.plant.PlantSize;
 import ecosim.organism.plant.Wildflower;
 import ecosim.organism.plant.Plant;
 
+/*
+ * This class implements the PlantFactory interface for creating grassland plants.
+ * It provides the logic to create specific types of grassland plants based on the provided type.
+ * Author: @MiaBorkoo
+ */
+
 public class ConcreteGrasslandPlantFactory implements PlantFactory {
     @Override
     public Plant createPlant(String plantType, int x, int y) {
