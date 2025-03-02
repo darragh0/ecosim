@@ -1,4 +1,4 @@
-package ecosim.util.io.enm;
+package ecosim.common.io.enm;
 
 
 public enum BoxDrawingChar {
