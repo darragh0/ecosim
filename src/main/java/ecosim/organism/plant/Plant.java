@@ -15,7 +15,7 @@ import ecosim.enm.Event;
 import ecosim.enm.TimeOfDay;
 import ecosim.enm.Weather;
 
-public abstract class Plant extends Organism implements Observer{
+public abstract class Plant extends Organism implements Observer {
 
     protected PlantSize size;
     protected int biteCapacity;

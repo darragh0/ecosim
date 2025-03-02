@@ -20,7 +20,7 @@ import ecosim.organism.animal.conscious_state.ConsciousState;
  * 
  * @author jjola00
  */
-public abstract class Animal extends Organism implements Observer, Movable {
+public abstract class Animal extends Organism implements Observer {
 
     protected Size size;
     protected Diet diet;
