@@ -1,4 +1,4 @@
-package ecosim;
+package ecosim.man;
 
 
 import java.io.IOException;
@@ -8,27 +8,28 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import ecosim.enm.Biome;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import ecosim.enm.Biome;
 
-public class BiomeManager {
+
+public class BiomeMan {
     private final Biome biome;
     private final List<String> nativeAnimals;
     private final List<String> nativePlants;
     private static Logger LOGGER;
 
-    public BiomeManager(String biomeName) {
+    public BiomeMan(String biomeName) {
         this.biome = Biome.valueOf(biomeName.toUpperCase());
         this.nativeAnimals = new ArrayList<>();
         this.nativePlants = new ArrayList<>();
-        LOGGER = LoggerManager.getLogger();
+        LOGGER = LoggerMan.getLogger();
         LOGGER.info("Biome created: " + this.biome.getName());
     }
 
-    public String getBiomeName(){
+    public String getBiomeName() {
         return this.biome.getName();
     }
 

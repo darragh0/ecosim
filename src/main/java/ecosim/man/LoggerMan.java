@@ -1,11 +1,17 @@
-package ecosim;
+package ecosim.man;
+
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.logging.*;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
-public class LoggerManager {
+
+public class LoggerMan {
     private static final Logger LOGGER = Logger.getLogger("ecosim");
     private static final String LOG_FILE_DIR = "src/main/java/ecosim/logs";
     private static final String LOG_FILE_PATH = LOG_FILE_DIR + "/ecosim.log";
@@ -41,4 +47,5 @@ public class LoggerManager {
     public static Logger getLogger() {
         return LOGGER;
     }
+
 }

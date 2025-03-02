@@ -1,4 +1,4 @@
-package ecosim;
+package ecosim.man;
 
 
 import java.io.IOException;
@@ -8,20 +8,20 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import ecosim.attrs.Observable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import ecosim.attrs.Observable;
 import ecosim.enm.Weather;
 
 
-public class WeatherManager extends Observable {
+public class WeatherMan extends Observable {
 
     private Weather currentWeather;
     private Map<Weather, Double> weatherProbabilities;
-    private static final Logger LOGGER = LoggerManager.getLogger();
+    private static final Logger LOGGER = LoggerMan.getLogger();
 
-    public WeatherManager(ChangeManager changeManager) {
+    public WeatherMan(ChangeMan changeManager) {
         super(changeManager);
         weatherProbabilities = new HashMap<>();
     }
@@ -29,7 +29,7 @@ public class WeatherManager extends Observable {
     @Override
     public Weather getCurrentState() {
         return this.currentWeather;
-    }   
+    }
 
     public void loadWeatherProbabilities(String biome, String season) {
         String upperBiome = biome.toUpperCase();
