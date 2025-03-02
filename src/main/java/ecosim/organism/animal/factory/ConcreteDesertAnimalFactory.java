@@ -7,6 +7,11 @@ import ecosim.organism.animal.Eagle;
 import ecosim.organism.animal.Lizard;
 import ecosim.organism.animal.Snake;
 
+/**
+ * Concrete factory for desert animals.
+ * 
+ * @author jjola00
+ */
 public class ConcreteDesertAnimalFactory implements AnimalFactory {
     @Override
     public Animal createAnimal(String type, int x, int y) {
