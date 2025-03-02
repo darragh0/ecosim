@@ -11,10 +11,13 @@ public class ComebackDecorator extends AnimalDecorator {
     public ComebackDecorator(Animal animal) {
         super(animal);
     }
-    public void comeback() {
+
+    @Override
+    public float getSurvivalChance() {
         if (this.getHealth() <= 0.3f) {
             System.out.println("Comeback!");
-            this.survivalChance += 0.2f;
+            return this.survivalChance += 0.2f;
         }
+        return this.survivalChance;
     }
 }
