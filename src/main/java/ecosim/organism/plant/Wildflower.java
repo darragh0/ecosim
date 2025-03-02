@@ -3,8 +3,12 @@ package ecosim.organism.plant;
 // import ecosim.weather.Weather;
 
 public class Wildflower extends GrasslandPlant {
+    
+    private static int wildflowerCount = 0;
+
     public Wildflower(PlantSize size, int x, int y) {
         super(size, x, y);
+        this.name = "Wildflower (" + ++wildflowerCount + ")";
     }
 
     @Override

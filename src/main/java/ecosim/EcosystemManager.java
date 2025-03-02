@@ -3,6 +3,8 @@ package ecosim;
 
 import ecosim.organism.animal.Animal;
 import ecosim.organism.plant.Plant;
+import ecosim.organism.plant.factories.PlantFactory;
+import ecosim.organism.plant.factories.PlantFactoryProducer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,8 +53,11 @@ public class EcosystemManager {
         // TODO: implement creating an animal based off of the factory
     }
 
-    public void createPlant(String plant) {
-        // TODO: implement creating a plant based off of the factory
+    public void createPlant(String plant, String biome) {
+        PlantFactory plantFactory = PlantFactoryProducer.getFactory(biome);
+        Plant newPlant = plantFactory.createPlant(plant, 0 , 0);
+        plants.add(newPlant);
+
     }
 
     public void populateMap() {
