@@ -77,7 +77,7 @@ public abstract class Animal extends Organism implements Observer, Movable {
     public void breed() {}
 
     public void move() {
-        this.consciousState.move(this, this.health, this.maxHealth);
+        this.consciousState.move(this);
     }
 
     @Override
@@ -123,6 +123,14 @@ public abstract class Animal extends Organism implements Observer, Movable {
     public void setCoords(int x, int y) {
         this.coords.setX(x);
         this.coords.setY(y);
+    }
+
+    public void reduceHealth(float amount) {
+        this.health = Math.max(0, this.health - amount);
+    }
+
+    public void restoreHealth(float amount) {
+        this.health = Math.min(maxHealth, this.health + amount); 
     }
 
 }

@@ -1,7 +1,6 @@
 package ecosim.organism.animal.decorator;
 
 import ecosim.organism.animal.Animal;
-import ecosim.organism.animal.conscious_state.Conscious;
 
 /**
  * Decorator class that enhances the health conservation
@@ -9,22 +8,13 @@ import ecosim.organism.animal.conscious_state.Conscious;
  * 
  * @author jjola00
  */
-public class HighConservationDecorator extends AnimalDecorator {
-
+ public class HighConservationDecorator extends AnimalDecorator {
     public HighConservationDecorator(Animal animal) {
         super(animal);
     }
 
     @Override
-    public void move() {
-        super.move();
-
-        if (this.animal.getConsciousState() instanceof Conscious) {
-            float maxHealth = this.animal.getMaxHealth();
-            float currentHealth = this.animal.getHealth();
-            float restoration = maxHealth * 0.05f;
-            
-            this.animal.setHealth(currentHealth + restoration);
-        }
+    public void reduceHealth(float amount) {
+        super.reduceHealth(amount * 0.5f); 
     }
 }

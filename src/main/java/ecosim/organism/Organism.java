@@ -45,5 +45,4 @@ public abstract class Organism extends Locatable {
     public float getHealth() {
         return this.health;
     }
-
 }

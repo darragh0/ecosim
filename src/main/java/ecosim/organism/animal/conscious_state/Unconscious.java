@@ -8,14 +8,15 @@ import ecosim.organism.animal.Animal;
  * 
  * @author jjola00
  */
-public class Unconscious implements ConsciousState {
+
+ public class Unconscious implements ConsciousState {
     @Override
-    public String move(Animal animal, float currentHealth, float maxHealth) {
-        float adjustment = maxHealth * 0.1f;
-        if (currentHealth < maxHealth){
-            float updatedHealth = currentHealth + adjustment;
-            animal.setHealth(updatedHealth);
+    public String move(Animal animal) {
+        float healthRecovery = animal.getMaxHealth() * 0.1f;
+        if (animal.getHealth() < animal.getMaxHealth()) {
+            animal.restoreHealth(healthRecovery);
         }
+
         switch (animal.getActivityState()) {
             case SLEEPING:
                 return animal.getName() + " is currently asleep, therefore remains at " + animal.getX() + "," + animal.getY();
