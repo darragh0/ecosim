@@ -2,7 +2,7 @@ package ecosim.organism.animal.decorator;
 import ecosim.organism.animal.Animal;
 
 /**
- * Decorator class that enhances the animals survival chance based on max health.
+ * Decorator class that enhances the animals survival chance based on current health.
  * 
  * @author jjola00
  */
