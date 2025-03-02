@@ -19,7 +19,7 @@ public class FileIO {
         throw new UnsupportedOperationException("This class cannot be instantiated.");
     }
 
-    public static Optional<JSONObject> readJSONFile(String path) {
+    public static Optional<JSONObject> readJSONFile(final String path) {
         JSONObject json = null;
 
         try {
@@ -32,6 +32,16 @@ public class FileIO {
         }
 
         return Optional.ofNullable(json);
+    }
+
+    public static boolean mkdir(final String path) {
+        try {
+            Files.createDirectories(Paths.get(path));
+            return true;
+        } catch (IOException e) {
+            LoggerManager.log(Level.SEVERE, "Error creating directory: {0}", e.getMessage());
+            return false;
+        }
     }
 
 }

@@ -2,13 +2,14 @@ package ecosim;
 
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.logging.FileHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
+
+import static ecosim.common.io.ConsoleIO.printErr;
+import ecosim.common.io.FileIO;
 
 
 public class LoggerManager {
@@ -16,17 +17,19 @@ public class LoggerManager {
     private static final String LOG_FILE_DIR = "src/main/java/ecosim/logs";
     private static final String LOG_FILE_PATH = LOG_FILE_DIR + "/ecosim.log";
 
+    private LoggerManager() {
+        throw new UnsupportedOperationException("Cannot instantiate LoggerManager");
+    }
+
     static {
         initializeLogger();
     }
 
-    private LoggerManager() {
-        throw new UnsupportedOperationException("This class cannot be instantiated.");
-    }
-
     private static void initializeLogger() {
         try {
-            Files.createDirectories(Paths.get(LOG_FILE_DIR));
+            if (!FileIO.mkdir(LOG_FILE_DIR)) {
+                throw new IOException("Failed to create log directory");
+            }
 
             // Remove any default handlers i.e the console logger
             for (Handler handler : LOGGER.getHandlers()) {
@@ -44,7 +47,7 @@ public class LoggerManager {
             // Set logger level
             LOGGER.setLevel(Level.ALL);
         } catch (IOException e) {
-            System.err.println("Logger setup failed: " + e.getMessage());
+            printErr("Logger setup failed: " + e.getMessage());
         }
     }
 
