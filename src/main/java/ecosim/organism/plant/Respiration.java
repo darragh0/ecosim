@@ -12,7 +12,7 @@ public class Respiration implements EnergyCycleState {
 
         System.out.println("Performing respiration. Growth rate decreased from " + growthRate + " to " + adjustedGrowthRate);
         
-        
+        growthRate = adjustedGrowthRate; // Update the growth rate with the new value 
     }
 
    
