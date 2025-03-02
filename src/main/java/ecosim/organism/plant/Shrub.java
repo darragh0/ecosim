@@ -2,10 +2,11 @@ package ecosim.organism.plant;
 
 // import ecosim.weather.Weather;
 
-public class Shrub extends DesertPlant {
-    //private PlantSize size;
+import ecosim.enm.Size;
 
-    public Shrub(PlantSize size, int x, int y) {
+public class Shrub extends DesertPlant {
+
+    public Shrub(Size size, int x, int y) {
         super(size, x, y);
     }
 

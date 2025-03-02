@@ -1,7 +1,9 @@
 package ecosim.organism.plant;
 
+import ecosim.enm.Size;
+
 public class Cactus extends DesertPlant {
-    public Cactus(PlantSize size, int x, int y) {
+    public Cactus(Size size, int x, int y) {
         super(size, x, y);
     }
 

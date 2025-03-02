@@ -2,6 +2,7 @@ package ecosim.organism;
 
 
 import ecosim.attrs.Locatable;
+import ecosim.enm.Size;
 
 
 /**
@@ -16,14 +17,16 @@ public abstract class Organism extends Locatable {
     protected final float maxHealth;
     protected float health;
     protected String name;
+    protected Size size;
 
-    public Organism(final float maxHealth, final int x, final int y, final int nutritionalValue) {
+    public Organism(final Size size, final float maxHealth, final int x, final int y, final int nutritionalValue) {
         super(x, y);
         this.symbol = 'E'; // can change later
         this.nutritionalValue = nutritionalValue;
         this.maxHealth = maxHealth;
         this.health = maxHealth;
         this.name = "organism";
+        this.size = size;
     }
 
     public String getName() {
