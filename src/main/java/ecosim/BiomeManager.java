@@ -1,89 +1,71 @@
 package ecosim;
 
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
+import java.util.Map;
+import java.util.Optional;
+import java.util.logging.Level;
 
-import ecosim.enm.Biome;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
+
+import ecosim.common.io.FileIO;
+import ecosim.enm.Biome;
 
 
 public class BiomeManager {
     private final Biome biome;
     private final List<String> nativeAnimals;
     private final List<String> nativePlants;
-    private static Logger LOGGER;
 
     public BiomeManager(String biomeName) {
         this.biome = Biome.valueOf(biomeName.toUpperCase());
         this.nativeAnimals = new ArrayList<>();
         this.nativePlants = new ArrayList<>();
-        LOGGER = LoggerManager.getLogger();
-        LOGGER.info("Biome created: " + this.biome.getName());
+        LoggerManager.log(Level.INFO, "Biome created: " + this.biome.getName());
     }
 
-    public String getBiomeName(){
-        return this.biome.getName();
-    }
-
-    public void loadNativeAnimals() {
-        String biome = this.getBiomeName().toUpperCase();
-        try {
-            String content = new String(Files.readAllBytes(Paths.get("src/main/resources/json/biome_natives.json")));
-            JSONObject json = new JSONObject(content);
-            if (json.has(biome)) {
-                JSONObject biomeData = json.getJSONObject(biome);
-                if (biomeData.has("ANIMALS")) {
-                    JSONArray animalsArray = biomeData.getJSONArray("ANIMALS");
-                    for (int i = 0; i < animalsArray.length(); i++) {
-                        this.nativeAnimals.add(animalsArray.getString(i));
-                    }
-                    LOGGER.info("Loaded native animals for " + biome);
-                }
-            } else {
-                LOGGER.warning("Biome not found: " + biome);
-            }
-        } catch (IOException e) {
-            LOGGER.severe("Error reading biome file: " + e.getMessage());
-        } catch (JSONException e) {
-            LOGGER.severe("Invalid JSON format: " + e.getMessage());
-        }
-    }
-
-    public void loadNativePlants() {
-        String biome = this.getBiomeName().toUpperCase();
-        try {
-            String content = new String(Files.readAllBytes(Paths.get("src/main/resources/json/biome_natives.json")));
-            JSONObject json = new JSONObject(content);
-            if (json.has(biome)) {
-                JSONObject biomeData = json.getJSONObject(biome);
-                if (biomeData.has("PLANTS")) {
-                    JSONArray plantsArray = biomeData.getJSONArray("PLANTS");
-                    for (int i = 0; i < plantsArray.length(); i++) {
-                        this.nativePlants.add(plantsArray.getString(i));
-                    }
-                    LOGGER.info("Loaded native plants for " + biome);
-                }
-            } else {
-                LOGGER.warning("Biome not found: " + biome);
-            }
-        } catch (IOException e) {
-            LOGGER.severe("Error reading biome file: " + e.getMessage());
-        } catch (JSONException e) {
-            LOGGER.severe("Invalid JSON format: " + e.getMessage());
-        }
+    public String getBiomeName() {
+        return this.biome.getName().toUpperCase();
     }
 
     public void setupBiome() {
-        LOGGER.info("Setting up biome: " + this.getBiomeName());
-        this.loadNativeAnimals();
-        this.loadNativePlants();
+        LoggerManager.log(Level.INFO, "Setting up biome: {0}", this.getBiomeName());
+        final String biomeName = this.getBiomeName();
+        final Optional<JSONObject> jsonFile = FileIO.readJSONFile("src/main/resources/json/biome_natives.json");
+
+        if (jsonFile.isEmpty()) {
+            LoggerManager.log(Level.SEVERE, "Could not setup biome: {0}", biomeName);
+            return;
+        }
+
+        final JSONObject json = jsonFile.get();
+        if (!json.has(biomeName)) {
+            LoggerManager.log(Level.SEVERE, "Biome not found: {0}", biomeName);
+            return;
+        }
+
+        final JSONObject biomeData = json.getJSONObject(biomeName);
+        final Map<String, List<String>> lists = Map.ofEntries(
+            Map.entry("ANIMALS", this.nativeAnimals),
+            Map.entry("PLANTS", this.nativePlants));
+
+        lists.forEach((name, lst) -> {
+            if (!biomeData.has(name)) {
+                LoggerManager.log(Level.SEVERE, "No {0} found for biome: {1}", name, biomeName);
+                return;
+            }
+
+            final JSONArray jsonArr = biomeData.getJSONArray(name);
+            for (int i = 0; i < jsonArr.length(); i++) {
+                lst.add(jsonArr.getString(i));
+            }
+
+            LoggerManager.log(Level.INFO, "Loaded native {0} for biome: {1}", name, biomeName);
+        });
+
+        LoggerManager.log(Level.INFO, "Biome setup complete: {0}", biomeName);
     }
 
     public List<String> getNativeAnimals() {
