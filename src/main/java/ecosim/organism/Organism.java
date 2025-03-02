@@ -46,5 +46,4 @@ public abstract class Organism extends Movable {
     public float getHealth() {
         return this.health;
     }
-
 }
