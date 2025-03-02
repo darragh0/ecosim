@@ -2,6 +2,7 @@ package ecosim.map;
 
 
 import java.util.Optional;
+import java.util.concurrent.ThreadLocalRandom;
 
 import ecosim.enm.Direction;
 import ecosim.organism.Organism;
@@ -44,11 +45,28 @@ public class Map {
     }
 
     public void add(final Organism org) {
-        if (!inBounds(org.getX(), org.getY()))
-            // TODO: Throw error?
-            return;
-
         this.grid.add(org);
+    }
+
+    public void initialisePlacement(final Organism org) {
+        while (true) {
+            int x = ThreadLocalRandom.current().nextInt(this.width);
+            int y = ThreadLocalRandom.current().nextInt(this.height);
+
+            if (this.outOfBounds(x, y) || this.checkCell(x, y).isPresent()) {
+                continue;
+            }
+
+            org.setCoords(x, y);
+            this.add((org));
+            System.out.println(org.getX());
+            System.out.println(org.getY());
+            return;
+        }
+    }
+
+    Optional<Organism> checkCell(final int x, final int y){
+        return this.grid.getCell(x, y);
     }
 
     public void move(final Animal an) {
@@ -60,10 +78,10 @@ public class Map {
             x = an.getX() + dir.getDx();
             y = an.getY() + dir.getDy();
 
-            if (!inBounds(x, y))
+            if (this.outOfBounds(x, y))
                 continue;
 
-            Optional<Organism> cell = this.grid.getCell(x, y);
+            Optional<Organism> cell = this.checkCell(x, y);
 
             if (cell.isEmpty())
                 continue;
@@ -133,8 +151,8 @@ public class Map {
         return this.height;
     }
 
-    private boolean inBounds(final int x, final int y) {
-        return x > -1 && x < this.width && y > -1 && y < this.height;
+    private boolean outOfBounds(final int x, final int y) {
+        return x <= -1 || x >= this.width || y <= -1 || y >= this.height;
     }
 
 }

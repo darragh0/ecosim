@@ -1,7 +1,7 @@
 package ecosim.organism;
 
 
-import ecosim.attrs.Locatable;
+import ecosim.attrs.Movable;
 import ecosim.enm.Size;
 
 
@@ -10,7 +10,7 @@ import ecosim.enm.Size;
  * 
  * @author darragh0
  */
-public abstract class Organism extends Locatable {
+public abstract class Organism extends Movable {
 
     protected final char symbol;
     protected final int nutritionalValue;
@@ -48,5 +48,4 @@ public abstract class Organism extends Locatable {
     public float getHealth() {
         return this.health;
     }
-
 }

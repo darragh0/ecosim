@@ -20,7 +20,7 @@ import ecosim.organism.animal.conscious_state.ConsciousState;
  * 
  * @author jjola00
  */
-public abstract class Animal extends Organism implements Observer, Movable {
+public abstract class Animal extends Organism implements Observer {
 
     protected Diet diet;
     protected ActivityType activityType;
@@ -64,6 +64,10 @@ public abstract class Animal extends Organism implements Observer, Movable {
         this.activityState = activityState;
     }
 
+    public void setHealth(float health) {
+        this.health = health;
+    }
+
     public void makeSound() {}
 
     public void eat() {}
@@ -101,6 +105,10 @@ public abstract class Animal extends Organism implements Observer, Movable {
         return this.reproductiveChance;
     }
 
+    public ConsciousState getConsciousState() {
+        return this.consciousState;
+    }
+
     public boolean isEdible(Organism organism) {
         return false;
     }
@@ -113,6 +121,14 @@ public abstract class Animal extends Organism implements Observer, Movable {
     public void setCoords(int x, int y) {
         this.coords.setX(x);
         this.coords.setY(y);
+    }
+
+    public void reduceHealth(float amount) {
+        this.health = Math.max(0, this.health - amount);
+    }
+
+    public void restoreHealth(float amount) {
+        this.health = Math.min(maxHealth, this.health + amount); 
     }
 
 }
