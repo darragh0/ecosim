@@ -3,7 +3,7 @@ package ecosim.organism.animal;
 
 import ecosim.enm.ActivityType;
 import ecosim.enm.Size;
-import ecosim.organism.animal.type.Carnivore;
+import ecosim.enm.Diet;
 
 /**
  * Represents a Fox, a nocturnal carnivore
@@ -11,11 +11,11 @@ import ecosim.organism.animal.type.Carnivore;
  * 
  * @author jjola00
  */
-public class Fox extends Carnivore {
+public class Fox extends GrasslandAnimal {
     private static int foxCount= 0;
 
     public Fox(int x, int y) {
-        super(x, y, Size.MEDIUM, ActivityType.NOCTURNAL, false);
+        super(x, y, Size.MEDIUM, Diet.CARNIVORE, ActivityType.NOCTURNAL, false);
         this.name = "Fox (" + ++foxCount + ")";
     }
 
