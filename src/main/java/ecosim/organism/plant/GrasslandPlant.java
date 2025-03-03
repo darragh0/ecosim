@@ -6,9 +6,11 @@ package ecosim.organism.plant;
  * Author: @MiaBorkoo
  */
 
+import ecosim.enm.Size;
+
 public abstract class GrasslandPlant extends Plant {
 
-    public GrasslandPlant(PlantSize size, int x, int y) {
+    public GrasslandPlant(Size size, int x, int y) {
         super(size, x, y);
            
     }

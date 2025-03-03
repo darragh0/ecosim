@@ -1,12 +1,12 @@
-package ecosim.util.io;
+package ecosim.common.io;
 
 
 import java.util.Scanner;
 import java.util.Stack;
 import java.util.function.Consumer;
 
-import ecosim.util.io.enm.Color;
-import ecosim.util.io.enm.TextStyle;
+import ecosim.common.io.enm.Color;
+import ecosim.common.io.enm.TextStyle;
 
 
 public final class ConsoleIO {

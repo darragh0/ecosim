@@ -8,8 +8,10 @@ package ecosim.organism.plant;
 
 // import ecosim.weather.Weather;
 
+import ecosim.enm.Size;
+
 public class Succulent extends DesertPlant {
-    public Succulent(PlantSize size, int x, int y) {
+    public Succulent(Size size, int x, int y) {
         super(size, x, y);
     }
 

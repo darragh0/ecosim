@@ -3,11 +3,12 @@ package ecosim.map;
 
 import java.util.Optional;
 
+import static ecosim.common.Util.randInt;
+import static ecosim.common.io.ConsoleIO.prettyPrintln;
+import ecosim.common.io.enm.BoxDrawingChar;
 import ecosim.enm.Direction;
 import ecosim.organism.Organism;
 import ecosim.organism.animal.Animal;
-import static ecosim.util.io.ConsoleIO.prettyPrintln;
-import ecosim.util.io.enm.BoxDrawingChar;
 
 
 /**
@@ -44,11 +45,20 @@ public class Map {
     }
 
     public void add(final Organism org) {
-        if (!inBounds(org.getX(), org.getY()))
-            // TODO: Throw error?
-            return;
-
         this.grid.add(org);
+    }
+
+    public void initialisePlacement(final Organism org) {
+        while (true) {
+            final int x = randInt(this.width - 1);
+            final int y = randInt(this.height - 1);
+
+            if (this.get(x, y).isEmpty()) {
+                org.setCoords(x, y);
+                this.add(org);
+                return;
+            }
+        }
     }
 
     public void move(final Animal an) {
@@ -60,10 +70,10 @@ public class Map {
             x = an.getX() + dir.getDx();
             y = an.getY() + dir.getDy();
 
-            if (!inBounds(x, y))
+            if (this.outOfBounds(x, y))
                 continue;
 
-            Optional<Organism> cell = this.grid.getCell(x, y);
+            Optional<Organism> cell = this.get(x, y);
 
             if (cell.isEmpty())
                 continue;
@@ -101,7 +111,7 @@ public class Map {
                 .append("</b></B>");
 
             for (int x = 0; x < this.width; x++) {
-                final char ch = this.grid.getCell(x, y)
+                final char ch = this.grid.get(x, y)
                     .map(Organism::getSymbol)
                     .orElse(EMPTY_CELL);
 
@@ -133,8 +143,12 @@ public class Map {
         return this.height;
     }
 
-    private boolean inBounds(final int x, final int y) {
-        return x > -1 && x < this.width && y > -1 && y < this.height;
+    Optional<Organism> get(final int x, final int y) {
+        return this.grid.get(x, y);
+    }
+
+    private boolean outOfBounds(final int x, final int y) {
+        return x < 0 || x >= this.width || y < 0 || y >= this.height;
     }
 
 }

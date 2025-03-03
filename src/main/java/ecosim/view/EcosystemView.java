@@ -6,13 +6,13 @@ import java.util.List;
 import java.util.function.BiConsumer;
 
 import ecosim.EcosystemManager;
+import static ecosim.common.io.ConsoleIO.prettify;
 import ecosim.enm.Biome;
 import ecosim.menu.AnimalMenu;
 import ecosim.menu.BiomeMenu;
 import ecosim.menu.OrganismMenu;
 import ecosim.menu.PlantMenu;
 import ecosim.organism.Organism;
-import static ecosim.util.io.ConsoleIO.prettify;
 
 
 public class EcosystemView {

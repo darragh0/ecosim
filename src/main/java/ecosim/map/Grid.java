@@ -27,7 +27,7 @@ public class Grid {
         this.data[org.getY()][org.getX()] = null;
     }
 
-    public Optional<Organism> getCell(final int x, final int y) {
+    public Optional<Organism> get(final int x, final int y) {
         return Optional.ofNullable(this.data[y][x]);
     }
 
