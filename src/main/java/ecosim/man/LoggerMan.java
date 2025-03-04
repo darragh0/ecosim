@@ -2,13 +2,14 @@ package ecosim.man;
 
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.logging.FileHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
+
+import static ecosim.common.io.ConsoleIO.printErr;
+import ecosim.common.io.FileIO;
 
 
 public class LoggerMan {
@@ -16,13 +17,19 @@ public class LoggerMan {
     private static final String LOG_FILE_DIR = "src/main/java/ecosim/logs";
     private static final String LOG_FILE_PATH = LOG_FILE_DIR + "/ecosim.log";
 
+    private LoggerMan() {
+        throw new UnsupportedOperationException("Cannot instantiate LoggerManager");
+    }
+
     static {
         initializeLogger();
     }
 
     private static void initializeLogger() {
         try {
-            Files.createDirectories(Paths.get(LOG_FILE_DIR));
+            if (!FileIO.mkdir(LOG_FILE_DIR)) {
+                throw new IOException("Failed to create log directory");
+            }
 
             // Remove any default handlers i.e the console logger
             for (Handler handler : LOGGER.getHandlers()) {
@@ -40,12 +47,12 @@ public class LoggerMan {
             // Set logger level
             LOGGER.setLevel(Level.ALL);
         } catch (IOException e) {
-            System.err.println("Logger setup failed: " + e.getMessage());
+            printErr("Logger setup failed: " + e.getMessage());
         }
     }
 
-    public static Logger getLogger() {
-        return LOGGER;
+    public static void log(Level level, String message, Object... args) {
+        LOGGER.log(level, message, args);
     }
 
 }

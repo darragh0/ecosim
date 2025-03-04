@@ -6,7 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
+import java.util.logging.Level;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,7 +19,6 @@ public class WeatherMan extends Observable {
 
     private Weather currentWeather;
     private Map<Weather, Double> weatherProbabilities;
-    private static final Logger LOGGER = LoggerMan.getLogger();
 
     public WeatherMan(ChangeMan changeManager) {
         super(changeManager);
@@ -51,13 +50,13 @@ public class WeatherMan extends Observable {
                         tempProbabilities.put(weather, probability);
                     }
                 } else {
-                    LOGGER.warning("Season not found for biome: " + upperSeason);
+                    LoggerMan.log(Level.WARNING, "Season not found for biome: {0}", upperSeason);
                 }
             } else {
-                LOGGER.warning("Biome not found: " + upperBiome);
+                LoggerMan.log(Level.WARNING, "Biome not found: {0}", upperBiome);
             }
         } catch (IOException | JSONException | IllegalArgumentException e) {
-            LOGGER.severe("Error loading weather probabilities: " + e.getMessage());
+            LoggerMan.log(Level.SEVERE, "Error loading weather probabilities: {0}", e.getMessage());
         }
 
         this.weatherProbabilities = tempProbabilities;
@@ -75,6 +74,5 @@ public class WeatherMan extends Observable {
         }
         this.currentWeather = Weather.CLOUDY; // fallback
     }
-
 
 }
