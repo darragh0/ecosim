@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
 
-import ecosim.EcosystemManager;
 import static ecosim.common.io.ConsoleIO.prettify;
 import ecosim.enm.Biome;
+import ecosim.man.EcosystemMan;
 import ecosim.menu.AnimalMenu;
 import ecosim.menu.BiomeMenu;
 import ecosim.menu.OrganismMenu;
@@ -20,7 +20,7 @@ public class EcosystemView {
     private static final BiConsumer<StringBuilder, String> add =
         (builder, str) -> builder.append(prettify(str)).append("\n");
 
-    public void displayDailyReport(EcosystemManager ecosystem) {
+    public void displayDailyReport(EcosystemMan ecosystem) {
         StringBuilder str = new StringBuilder();
 
         add.accept(str, "<B>✨ <y>Day %d Report</y> ✨</B>\n".formatted(ecosystem.getDayCount()));

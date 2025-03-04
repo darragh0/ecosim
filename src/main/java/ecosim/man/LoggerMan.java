@@ -1,4 +1,4 @@
-package ecosim;
+package ecosim.man;
 
 
 import java.io.IOException;
@@ -12,12 +12,12 @@ import static ecosim.common.io.ConsoleIO.printErr;
 import ecosim.common.io.FileIO;
 
 
-public class LoggerManager {
+public class LoggerMan {
     private static final Logger LOGGER = Logger.getLogger("ecosim");
     private static final String LOG_FILE_DIR = "src/main/java/ecosim/logs";
     private static final String LOG_FILE_PATH = LOG_FILE_DIR + "/ecosim.log";
 
-    private LoggerManager() {
+    private LoggerMan() {
         throw new UnsupportedOperationException("Cannot instantiate LoggerManager");
     }
 

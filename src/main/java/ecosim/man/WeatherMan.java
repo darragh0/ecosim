@@ -1,4 +1,4 @@
-package ecosim;
+package ecosim.man;
 
 
 import java.io.IOException;
@@ -15,12 +15,12 @@ import ecosim.attrs.Observable;
 import ecosim.enm.Weather;
 
 
-public class WeatherManager extends Observable {
+public class WeatherMan extends Observable {
 
     private Weather currentWeather;
     private Map<Weather, Double> weatherProbabilities;
 
-    public WeatherManager(ChangeManager changeManager) {
+    public WeatherMan(ChangeMan changeManager) {
         super(changeManager);
         weatherProbabilities = new HashMap<>();
     }
@@ -50,13 +50,13 @@ public class WeatherManager extends Observable {
                         tempProbabilities.put(weather, probability);
                     }
                 } else {
-                    LoggerManager.log(Level.WARNING, "Season not found for biome: {0}", upperSeason);
+                    LoggerMan.log(Level.WARNING, "Season not found for biome: {0}", upperSeason);
                 }
             } else {
-                LoggerManager.log(Level.WARNING, "Biome not found: {0}", upperBiome);
+                LoggerMan.log(Level.WARNING, "Biome not found: {0}", upperBiome);
             }
         } catch (IOException | JSONException | IllegalArgumentException e) {
-            LoggerManager.log(Level.SEVERE, "Error loading weather probabilities: {0}", e.getMessage());
+            LoggerMan.log(Level.SEVERE, "Error loading weather probabilities: {0}", e.getMessage());
         }
 
         this.weatherProbabilities = tempProbabilities;
@@ -74,6 +74,5 @@ public class WeatherManager extends Observable {
         }
         this.currentWeather = Weather.CLOUDY; // fallback
     }
-
 
 }
