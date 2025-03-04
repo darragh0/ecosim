@@ -1,14 +1,18 @@
-package ecosim;
+package ecosim.man;
+
 
 import ecosim.attrs.Observable;
 import ecosim.enm.Season;
+import static ecosim.enm.Season.AUTUMN;
+import static ecosim.enm.Season.SPRING;
+import static ecosim.enm.Season.SUMMER;
+import static ecosim.enm.Season.WINTER;
 
-import static ecosim.enm.Season.*;
 
-public class SeasonManager extends Observable {
+public class SeasonMan extends Observable {
     private Season currentSeason;
 
-    public SeasonManager(ChangeManager changeManager){
+    public SeasonMan(ChangeMan changeManager) {
         // Start the year in Autumn
         super(changeManager);
         this.currentSeason = AUTUMN;
