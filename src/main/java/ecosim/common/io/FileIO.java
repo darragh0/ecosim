@@ -10,7 +10,7 @@ import java.util.logging.Level;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import ecosim.LoggerManager;
+import ecosim.man.LoggerMan;
 
 
 public class FileIO {
@@ -26,9 +26,9 @@ public class FileIO {
             final String content = new String(Files.readAllBytes(Paths.get(path)));
             json = new JSONObject(content);
         } catch (IOException e) {
-            LoggerManager.log(Level.SEVERE, "Error reading JSON file: {0}", e.getMessage());
+            LoggerMan.log(Level.SEVERE, "Error reading JSON file: {0}", e.getMessage());
         } catch (JSONException e) {
-            LoggerManager.log(Level.SEVERE, "Invalid JSON format: {0}", e.getMessage());
+            LoggerMan.log(Level.SEVERE, "Invalid JSON format: {0}", e.getMessage());
         }
 
         return Optional.ofNullable(json);
@@ -39,7 +39,7 @@ public class FileIO {
             Files.createDirectories(Paths.get(path));
             return true;
         } catch (IOException e) {
-            LoggerManager.log(Level.SEVERE, "Error creating directory: {0}", e.getMessage());
+            LoggerMan.log(Level.SEVERE, "Error creating directory: {0}", e.getMessage());
             return false;
         }
     }
