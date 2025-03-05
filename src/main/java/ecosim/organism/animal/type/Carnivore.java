@@ -7,7 +7,12 @@ import ecosim.enm.Size;
 import ecosim.organism.Organism;
 import ecosim.organism.animal.Animal;
 
-
+/**
+ * Abstract class representing a carnivore,
+ * defining its specific behaviors and characteristics.
+ * 
+ * @author jjola00
+ */
 public abstract class Carnivore extends Animal {
 
     public Carnivore(int x, int y, Size size, ActivityType activityType, boolean canHibernate) {

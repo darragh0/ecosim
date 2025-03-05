@@ -12,7 +12,11 @@ import ecosim.map.Map;
 public class Conscious implements ConsciousState {
     @Override
     public String move(Animal animal) {
+        float healthLoss = animal.getMaxHealth() * 0.1f;
+        animal.reduceHealth(healthLoss);
+        
         Map.getInstance().move(animal);
+        
         return animal.getName() + " moved to coords (" + animal.getX() + "," + animal.getY() + ")";
     }
 }

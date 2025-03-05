@@ -2,11 +2,13 @@ package ecosim.organism.plant;
 
 // import ecosim.weather.Weather;
 
+import ecosim.enm.Size;
+
 public class Bush extends GrasslandPlant {
     
     private static int bushCount = 0;
 
-    public Bush(PlantSize size, int x, int y) {
+    public Bush(Size size, int x, int y) {
         super(size, x, y);
         this.name = "Bush (" + ++bushCount + ")";
     }

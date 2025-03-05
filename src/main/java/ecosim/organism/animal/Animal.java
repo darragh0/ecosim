@@ -20,9 +20,8 @@ import ecosim.organism.animal.conscious_state.ConsciousState;
  * 
  * @author jjola00
  */
-public abstract class Animal extends Organism implements Observer, Movable {
+public abstract class Animal extends Organism implements Observer {
 
-    protected Size size;
     protected Diet diet;
     protected ActivityType activityType;
     protected ConsciousState consciousState;
@@ -32,8 +31,7 @@ public abstract class Animal extends Organism implements Observer, Movable {
     protected float reproductiveChance;
 
     public Animal(int x, int y, Size size, Diet diet, ActivityType activityType, boolean canHibernate) {
-        super(size.getMaxHealth(), x, y, size.getNutritionalValue());
-        this.size = size;
+        super(size, size.getMaxHealth(), x, y, size.getNutritionalValue());
         this.diet = diet;
         this.activityType = activityType;
         this.consciousState = new Conscious();
@@ -64,6 +62,10 @@ public abstract class Animal extends Organism implements Observer, Movable {
 
     public void setSleepState(ActivityState activityState) { 
         this.activityState = activityState;
+    }
+
+    public void setHealth(float health) {
+        this.health = health;
     }
 
     public void makeSound() {}
@@ -103,6 +105,10 @@ public abstract class Animal extends Organism implements Observer, Movable {
         return this.reproductiveChance;
     }
 
+    public ConsciousState getConsciousState() {
+        return this.consciousState;
+    }
+
     public boolean isEdible(Organism organism) {
         return false;
     }
@@ -115,6 +121,14 @@ public abstract class Animal extends Organism implements Observer, Movable {
     public void setCoords(int x, int y) {
         this.coords.setX(x);
         this.coords.setY(y);
+    }
+
+    public void reduceHealth(float amount) {
+        this.health = Math.max(0, this.health - amount);
+    }
+
+    public void restoreHealth(float amount) {
+        this.health = Math.min(maxHealth, this.health + amount); 
     }
 
 }

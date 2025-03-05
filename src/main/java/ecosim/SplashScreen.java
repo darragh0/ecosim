@@ -1,12 +1,12 @@
 package ecosim;
 
 
-import static ecosim.util.io.ConsoleIO.clearTerminal;
-import static ecosim.util.io.ConsoleIO.getTermLines;
-import static ecosim.util.io.ConsoleIO.moveCursorUp;
-import static ecosim.util.io.ConsoleIO.prettyPrintCenter;
-import static ecosim.util.io.ConsoleIO.strInput;
-import static ecosim.util.io.ConsoleIO.toggleCursor;
+import static ecosim.common.io.ConsoleIO.clearTerminal;
+import static ecosim.common.io.ConsoleIO.getTermLines;
+import static ecosim.common.io.ConsoleIO.moveCursorUp;
+import static ecosim.common.io.ConsoleIO.prettyPrintCenter;
+import static ecosim.common.io.ConsoleIO.strInput;
+import static ecosim.common.io.ConsoleIO.toggleCursor;
 
 
 public final class SplashScreen {

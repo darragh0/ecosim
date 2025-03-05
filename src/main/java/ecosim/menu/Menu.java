@@ -4,8 +4,8 @@ package ecosim.menu;
 import java.util.ArrayList;
 import java.util.List;
 
-import static ecosim.util.io.ConsoleIO.intInput;
-import static ecosim.util.io.ConsoleIO.prettyPrintln;
+import static ecosim.common.io.ConsoleIO.intInput;
+import static ecosim.common.io.ConsoleIO.prettyPrintln;
 
 
 @SuppressWarnings("unchecked")

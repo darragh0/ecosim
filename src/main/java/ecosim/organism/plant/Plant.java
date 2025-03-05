@@ -8,6 +8,7 @@ package ecosim.organism.plant;
 
 
 // TODO:import Weather and then updateGrowthRate
+import ecosim.enm.Size;
 import ecosim.organism.Organism;
 import ecosim.attrs.Observable;
 import ecosim.attrs.Observer;
@@ -15,16 +16,17 @@ import ecosim.enm.Event;
 import ecosim.enm.TimeOfDay;
 import ecosim.enm.Weather;
 
-public abstract class Plant extends Organism implements Observer{
+public abstract class Plant extends Organism implements Observer {
 
-    protected PlantSize size;
+
     protected int biteCapacity;
+    private static final int BITE_DIVISOR = 10;
     protected EnergyCycleState energyCycleState;
     protected float growthRate;
 
-    public Plant(PlantSize size, int x, int y) {
-        super(size.getMaxHealth(), x, y, size.getNutritionalValue());
-        this.size = size;
+    public Plant(Size size, int x, int y) {
+        super(size, size.getMaxHealth(), x, y, size.getNutritionalValue());
+        this.biteCapacity = this.size.getMaxHealth() / BITE_DIVISOR;
     }
 
 
@@ -69,6 +71,10 @@ public abstract class Plant extends Organism implements Observer{
     public void beEaten() {
         System.out.println("Plant has died from being eaten");
         // TODO: remove plant from the grid
+    }
+
+    public int getBiteCapacity() {
+        return biteCapacity;
     }
 
     public void performAsexualReproduction() {
