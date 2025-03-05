@@ -3,7 +3,7 @@ package ecosim.organism.animal;
 
 import ecosim.enm.ActivityType;
 import ecosim.enm.Size;
-import ecosim.organism.animal.type.Herbivore;
+import ecosim.enm.Diet;
 
 /**
  * Represents a Cactus Mouse, a nocturnal herbivore
@@ -11,11 +11,11 @@ import ecosim.organism.animal.type.Herbivore;
  * 
  * @author jjola00
  */
-public class CactusMouse extends Herbivore {
+public class CactusMouse extends DesertAnimal {
     private static int cactusMouseCount = 0;
 
     public CactusMouse(int x, int y) {
-        super(x, y, Size.SMALL, ActivityType.NOCTURNAL, true);
+        super(x, y, Size.SMALL, Diet.HERBIVORE, ActivityType.NOCTURNAL, true);
         this.name = "Cactus Mouse (" + ++cactusMouseCount + ")";
     }
 

@@ -3,7 +3,6 @@ package ecosim.organism.animal;
 import ecosim.attrs.Observable;
 import ecosim.attrs.Observer;
 import ecosim.enm.*;
-import ecosim.attrs.Movable;
 import ecosim.enm.ActivityType;
 import ecosim.enm.Diet;
 import ecosim.enm.Size;

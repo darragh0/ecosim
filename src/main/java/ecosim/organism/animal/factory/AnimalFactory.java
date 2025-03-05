@@ -3,9 +3,11 @@ package ecosim.organism.animal.factory;
 
 import ecosim.organism.animal.Animal;
 
-
-abstract class AnimalFactory {
-
-    abstract Animal createAnimal();
-
+/**
+ * Abstract factory interface.
+ * 
+ * @author jjola00
+ */
+public interface AnimalFactory {
+    Animal createAnimal(String type, int x, int y);
 }
