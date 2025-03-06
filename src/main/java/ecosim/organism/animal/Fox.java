@@ -14,8 +14,8 @@ import ecosim.enm.Diet;
 public class Fox extends GrasslandAnimal {
     private static int foxCount= 0;
 
-    public Fox(int x, int y) {
-        super(x, y, Size.MEDIUM, Diet.CARNIVORE, ActivityType.NOCTURNAL, false);
+    public Fox() {
+        super(Size.MEDIUM, Diet.CARNIVORE, ActivityType.NOCTURNAL, false);
         this.name = "Fox (" + ++foxCount + ")";
     }
 

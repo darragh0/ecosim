@@ -14,8 +14,8 @@ import ecosim.enm.Diet;
 public class Owl extends GrasslandAnimal {
     private static int owlCount = 0;
 
-    public Owl(int x, int y) {
-        super(x, y, Size.SMALL, Diet.CARNIVORE, ActivityType.NOCTURNAL, false);
+    public Owl() {
+        super(Size.SMALL, Diet.CARNIVORE, ActivityType.NOCTURNAL, false);
         this.name = "Owl (" + ++owlCount + ")";
     }
 

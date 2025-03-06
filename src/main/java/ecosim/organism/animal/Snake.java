@@ -14,8 +14,8 @@ import ecosim.enm.Diet;
 public class Snake extends DesertAnimal {
     private static int snakeCount = 0;
 
-    public Snake(int x, int y) {
-        super(x, y, Size.MEDIUM, Diet.CARNIVORE, ActivityType.NOCTURNAL, true);
+    public Snake() {
+        super(Size.MEDIUM, Diet.CARNIVORE, ActivityType.NOCTURNAL, true);
         this.name = "Snake (" + ++snakeCount + ")";
     }
 
