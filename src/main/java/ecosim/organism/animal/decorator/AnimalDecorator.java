@@ -2,6 +2,7 @@ package ecosim.organism.animal.decorator;
 
 
 import ecosim.organism.animal.Animal;
+import ecosim.attrs.Observable;
 
 /**
  * Abstract class for decorating animals, allowing for
@@ -14,8 +15,8 @@ public abstract class AnimalDecorator extends Animal {
     protected final Animal animal;
     protected float adjustment;
 
-    public AnimalDecorator(final Animal animal) {
-        super(animal);
+    public AnimalDecorator(final Animal animal, final Observable observable) {
+        super(animal, observable);
         this.animal = animal;
     }
     @Override

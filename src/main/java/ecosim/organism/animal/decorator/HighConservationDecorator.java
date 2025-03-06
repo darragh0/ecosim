@@ -1,6 +1,7 @@
 package ecosim.organism.animal.decorator;
 
 import ecosim.organism.animal.Animal;
+import ecosim.attrs.Observable;
 
 /**
  * Decorator class that enhances the health conservation
@@ -9,8 +10,8 @@ import ecosim.organism.animal.Animal;
  * @author jjola00
  */
  public class HighConservationDecorator extends AnimalDecorator {
-    public HighConservationDecorator(Animal animal) {
-        super(animal);
+    public HighConservationDecorator(Animal animal, Observable observable) {
+        super(animal, observable);
     }
 
     @Override
