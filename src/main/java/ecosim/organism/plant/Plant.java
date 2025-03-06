@@ -162,5 +162,23 @@ public abstract class Plant extends Organism implements Observer {
     public Weather getCurrentWeather() {
         return currentWeather;
     }
+
+    /**
+     * Updates the current time of day for the plant
+     * @param timeOfDay The new time of day
+     */
+    public void updateTimeOfDay(TimeOfDay timeOfDay) {
+        this.currentTimeOfDay = timeOfDay;
+        // The update method handles the behavior changes already
+    }
+    
+    /**
+     * Updates the current weather for the plant
+     * @param weather The new weather condition
+     */
+    public void updateWeather(Weather weather) {
+        this.currentWeather = weather;
+        // The update method handles the behavior changes already
+    }
 }
 
