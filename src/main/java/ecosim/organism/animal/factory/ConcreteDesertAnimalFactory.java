@@ -1,5 +1,6 @@
 package ecosim.organism.animal.factory;
 
+import ecosim.attrs.Observable;
 import ecosim.organism.animal.Animal;
 import ecosim.organism.animal.CactusMouse;
 import ecosim.organism.animal.Camel;
@@ -14,18 +15,18 @@ import ecosim.organism.animal.Snake;
  */
 public class ConcreteDesertAnimalFactory implements AnimalFactory {
     @Override
-    public Animal createAnimal(String type, int x, int y) {
+    public Animal createAnimal(String type, int x, int y, Observable observable) {
         switch (type) {
             case "Snake":
-                return new Snake();
+                return new Snake(observable);
             case "CactusMouse":
-                return new CactusMouse();
+                return new CactusMouse(observable);
             case "Camel":
-                return new Camel();
+                return new Camel(observable);
             case "Lizard":
-                return new Lizard();
+                return new Lizard(observable);
             case "Eagle":
-                return new Eagle();
+                return new Eagle(observable);
             default:
                 return null;
         }

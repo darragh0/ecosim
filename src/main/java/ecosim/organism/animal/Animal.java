@@ -24,18 +24,21 @@ public abstract class Animal extends Organism implements Observer {
     protected float survivalChance;
     protected float reproductiveChance;
 
-    public Animal(Size size, Diet diet, ActivityType activityType, boolean canHibernate) {
+    public Animal(Size size, Diet diet, ActivityType activityType, boolean canHibernate, Observable observable) {
         super(size, size.getMaxHealth(), 0, 0, size.getNutritionalValue()); // Default coordinates (0, 0)
         this.diet = diet;
         this.activityType = activityType;
         this.consciousState = new Conscious();
         this.survivalChance = 0.5f;
         this.reproductiveChance = 0.5f;
-        this.activityState = ActivityState.SLEEPING;  
+        this.activityState = ActivityState.SLEEPING;
+
+        // Register as an observer of the observable (e.g., Environment)
+        observable.attach(this);
     }
 
-    public Animal(Animal animal) {
-        this(animal.size, animal.diet, animal.activityType, animal.canHibernate);
+    public Animal(Animal animal, Observable observable) {
+        this(animal.size, animal.diet, animal.activityType, animal.canHibernate, observable);
     }
 
     public Diet getDiet() {
@@ -73,22 +76,52 @@ public abstract class Animal extends Organism implements Observer {
     }
 
     @Override
-    public void update(Observable observable){
+    public void update(Observable observable) {
         Event event = observable.getCurrentState();
-        if (event instanceof Season newSeason) {
-            handleSeasonUpdate(newSeason);
-        }
-        else if (event instanceof TimeOfDay newTimeOfDay) {
-            handleTimeOfDayUpdate(newTimeOfDay);
+        if (event instanceof Season) {
+            handleSeasonUpdate((Season) event);
+        } else if (event instanceof TimeOfDay) {
+            handleTimeOfDayUpdate((TimeOfDay) event);
         }
     }
 
-    public void handleSeasonUpdate(Season season){
-        // TODO: Handle season changes
-    }
+    public void handleSeasonUpdate(Season season) {
+        switch (season.toString()) {
+            case "Winter":
+                if (canHibernate) {
+                    setSleepState(ActivityState.HIBERNATING);
+                }
+                break;
+            case "Summer":
+                setSleepState(ActivityState.AWAKE);
+                break;
+            case "Spring":
+                setSleepState(ActivityState.AWAKE);
+                break;
+            case "Autumn":
+                if(canHibernate)
+                setSleepState(ActivityState.HIBERNATING);
+                break;
+            }
+        }
 
-    public void handleTimeOfDayUpdate(TimeOfDay timeOfDay){
-        // TODO: Handle time of day changes
+    public void handleTimeOfDayUpdate(TimeOfDay timeOfDay) {
+        switch (timeOfDay.toString()) {
+            case "Day":
+                if (activityType == ActivityType.DIURNAL) {
+                    setSleepState(ActivityState.AWAKE);
+                } else {
+                    setSleepState(ActivityState.SLEEPING);
+                }
+                break;
+            case "Night":
+                if (activityType == ActivityType.NOCTURNAL) {
+                    setSleepState(ActivityState.AWAKE);
+                } else {
+                    setSleepState(ActivityState.SLEEPING);
+                }
+                break;
+        }
     }
 
     public float getSurvivalChance() {

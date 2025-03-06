@@ -1,6 +1,7 @@
 package ecosim.organism.animal;
 
 
+import ecosim.attrs.Observable;
 import ecosim.enm.ActivityType;
 import ecosim.enm.Size;
 import ecosim.enm.Diet;
@@ -14,8 +15,8 @@ import ecosim.enm.Diet;
 public class Snake extends DesertAnimal {
     private static int snakeCount = 0;
 
-    public Snake() {
-        super(Size.MEDIUM, Diet.CARNIVORE, ActivityType.NOCTURNAL, true);
+    public Snake(Observable observable) {
+        super(Size.MEDIUM, Diet.CARNIVORE, ActivityType.NOCTURNAL, true, observable);
         this.name = "Snake (" + ++snakeCount + ")";
     }
 

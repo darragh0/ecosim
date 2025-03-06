@@ -1,6 +1,7 @@
 package ecosim.organism.animal;
 
 
+import ecosim.attrs.Observable;
 import ecosim.enm.ActivityType;
 import ecosim.enm.Size;
 import ecosim.enm.Diet;
@@ -14,8 +15,8 @@ import ecosim.enm.Diet;
 public class Fox extends GrasslandAnimal {
     private static int foxCount= 0;
 
-    public Fox() {
-        super(Size.MEDIUM, Diet.CARNIVORE, ActivityType.NOCTURNAL, false);
+    public Fox(Observable observable) {
+        super(Size.MEDIUM, Diet.CARNIVORE, ActivityType.NOCTURNAL, false, observable);
         this.name = "Fox (" + ++foxCount + ")";
     }
 
