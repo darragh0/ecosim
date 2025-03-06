@@ -5,7 +5,7 @@ import ecosim.enm.ActivityType;
 import ecosim.enm.Diet;
 import ecosim.enm.Size;
 
-public class DesertAnimal extends Animal {
+public abstract class DesertAnimal extends Animal {
     public DesertAnimal(Size size, Diet diet, ActivityType activityType, boolean canHibernate) {
         super(size, diet, activityType, canHibernate);
     }
@@ -17,9 +17,5 @@ public class DesertAnimal extends Animal {
             return consciousState.move(this);
         }
         return consciousState.move(this);
-    }
-    @Override
-    public void makeSound() {
-        System.out.println("Desert Animal Sound");
     }
 }

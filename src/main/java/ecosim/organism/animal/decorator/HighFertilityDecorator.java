@@ -9,7 +9,7 @@ import ecosim.organism.animal.Animal;
  * 
  * @author jjola00
  */
-public class HighFertilityDecorator extends AnimalDecorator {
+public abstract class HighFertilityDecorator extends AnimalDecorator {
 
     public HighFertilityDecorator(Animal animal) {
         super(animal);
