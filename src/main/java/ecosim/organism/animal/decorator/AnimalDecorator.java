@@ -18,5 +18,8 @@ public abstract class AnimalDecorator extends Animal {
         super(animal);
         this.animal = animal;
     }
-
+    @Override
+    public String move() {
+        return this.move();
+    }
 }

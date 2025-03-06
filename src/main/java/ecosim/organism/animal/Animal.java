@@ -75,9 +75,7 @@ public abstract class Animal extends Organism implements Observer {
 
     public void breed() {}
 
-    public void move() {
-        this.consciousState.move(this);
-    }
+    public abstract String move();
 
     @Override
     public void update(Observable observable){
@@ -108,6 +106,10 @@ public abstract class Animal extends Organism implements Observer {
 
     public ConsciousState getConsciousState() {
         return this.consciousState;
+    }
+
+    public void setConsciousState(ConsciousState consciousState) {
+        this.consciousState = consciousState;
     }
 
     public boolean isEdible(Organism organism) {

@@ -7,5 +7,5 @@ package ecosim.enm;
  * @author jjola00
  */
 public enum ActivityState {
-    SLEEPING, HIBERNATING
+    SLEEPING, HIBERNATING, AWAKE
 }
