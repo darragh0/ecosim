@@ -14,8 +14,8 @@ import ecosim.enm.Diet;
 public class Rabbit extends GrasslandAnimal {
     private static int rabbitCount = 0;
 
-    public Rabbit(int x, int y) {
-        super(x, y, Size.SMALL, Diet.HERBIVORE, ActivityType.DIURNAL, false);
+    public Rabbit() {
+        super(Size.SMALL, Diet.HERBIVORE, ActivityType.DIURNAL, false);
         this.name = "Rabbit (" + ++rabbitCount + ")";
     }
 

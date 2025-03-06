@@ -17,15 +17,15 @@ public class ConcreteDesertAnimalFactory implements AnimalFactory {
     public Animal createAnimal(String type, int x, int y) {
         switch (type) {
             case "Snake":
-                return new Snake(x, y);
+                return new Snake();
             case "CactusMouse":
-                return new CactusMouse(x, y);
+                return new CactusMouse();
             case "Camel":
-                return new Camel(x, y);
+                return new Camel();
             case "Lizard":
-                return new Lizard(x, y);
+                return new Lizard();
             case "Eagle":
-                return new Eagle(x, y);
+                return new Eagle();
             default:
                 return null;
         }

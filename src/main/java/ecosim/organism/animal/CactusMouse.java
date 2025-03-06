@@ -14,8 +14,8 @@ import ecosim.enm.Diet;
 public class CactusMouse extends DesertAnimal {
     private static int cactusMouseCount = 0;
 
-    public CactusMouse(int x, int y) {
-        super(x, y, Size.SMALL, Diet.HERBIVORE, ActivityType.NOCTURNAL, true);
+    public CactusMouse() {
+        super(Size.SMALL, Diet.HERBIVORE, ActivityType.NOCTURNAL, true);
         this.name = "Cactus Mouse (" + ++cactusMouseCount + ")";
     }
 

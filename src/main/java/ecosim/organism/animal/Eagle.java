@@ -14,8 +14,8 @@ import ecosim.enm.Diet;
 public class Eagle extends DesertAnimal {
     private static int eagleCount = 0;
 
-    public Eagle(int x, int y) {
-        super(x, y, Size.MEDIUM, Diet.CARNIVORE, ActivityType.DIURNAL, false);
+    public Eagle() {
+        super(Size.MEDIUM, Diet.CARNIVORE, ActivityType.DIURNAL, false);
         this.name = "Eagle (" + ++eagleCount + ")";
     }
 

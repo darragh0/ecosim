@@ -3,15 +3,10 @@ package ecosim.organism.animal;
 import ecosim.attrs.Observable;
 import ecosim.attrs.Observer;
 import ecosim.enm.*;
-import ecosim.enm.ActivityType;
-import ecosim.enm.Diet;
-import ecosim.enm.Size;
-import ecosim.enm.ActivityState;
 import ecosim.map.Map;
 import ecosim.organism.Organism;
 import ecosim.organism.animal.conscious_state.Conscious;
 import ecosim.organism.animal.conscious_state.ConsciousState;
-
 
 /**
  * Abstract class representing an animal in the ecosystem,
@@ -29,8 +24,8 @@ public abstract class Animal extends Organism implements Observer {
     protected float survivalChance;
     protected float reproductiveChance;
 
-    public Animal(int x, int y, Size size, Diet diet, ActivityType activityType, boolean canHibernate) {
-        super(size, size.getMaxHealth(), x, y, size.getNutritionalValue());
+    public Animal(Size size, Diet diet, ActivityType activityType, boolean canHibernate) {
+        super(size, size.getMaxHealth(), 0, 0, size.getNutritionalValue()); // Default coordinates (0, 0)
         this.diet = diet;
         this.activityType = activityType;
         this.consciousState = new Conscious();
@@ -40,7 +35,7 @@ public abstract class Animal extends Organism implements Observer {
     }
 
     public Animal(Animal animal) {
-        this(animal.getX(), animal.getY(), animal.size, animal.diet, animal.activityType, animal.canHibernate);
+        this(animal.size, animal.diet, animal.activityType, animal.canHibernate);
     }
 
     public Diet getDiet() {
@@ -73,7 +68,9 @@ public abstract class Animal extends Organism implements Observer {
 
     public void breed() {}
 
-    public abstract String move();
+    public String move() {
+        return this.consciousState.move(this);
+    }
 
     @Override
     public void update(Observable observable){
@@ -106,10 +103,6 @@ public abstract class Animal extends Organism implements Observer {
         return this.consciousState;
     }
 
-    public void setConsciousState(ConsciousState consciousState) {
-        this.consciousState = consciousState;
-    }
-
     public boolean isEdible(Organism organism) {
         return false;
     }
@@ -131,5 +124,4 @@ public abstract class Animal extends Organism implements Observer {
     public void restoreHealth(float amount) {
         this.health = Math.min(maxHealth, this.health + amount); 
     }
-
 }

@@ -13,8 +13,8 @@ import ecosim.enm.Size;
 public class Deer extends GrasslandAnimal {
     private static int deerCount = 0;
 
-    public Deer(int x, int y) {
-        super(x, y, Size.MEDIUM, Diet.HERBIVORE, ActivityType.DIURNAL, true);
+    public Deer() {
+        super(Size.MEDIUM, Diet.HERBIVORE, ActivityType.DIURNAL, true);
         this.name = "Deer (" + ++deerCount + ")";
     }
 

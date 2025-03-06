@@ -14,8 +14,8 @@ import ecosim.enm.Diet;
 public class Lizard extends DesertAnimal {
     private static int lizardCount = 0;
 
-    public Lizard(int x, int y) {
-        super(x, y, Size.SMALL, Diet.CARNIVORE, ActivityType.DIURNAL, true);
+    public Lizard() {
+        super(Size.SMALL, Diet.CARNIVORE, ActivityType.DIURNAL, true);
         this.name = "Lizard (" + ++lizardCount + ")";
     }
 
