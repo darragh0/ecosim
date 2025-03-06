@@ -1,8 +1,8 @@
 package ecosim.organism.plant;
 
 import ecosim.enm.Weather;
-import ecosim.TimeOfDayManager;
-import ecosim.WeatherManager;
+
+
 import ecosim.enm.Size;
 
 // import ecosim.weather.Weather;
@@ -14,8 +14,8 @@ import ecosim.enm.Size;
  */
 
 public class Wildflower extends GrasslandPlant {
-    public Wildflower(Size size, int x, int y, TimeOfDayManager timeOfDayManager, WeatherManager weatherManager) {
-        super(size, x, y, timeOfDayManager, weatherManager);
+    public Wildflower(Size size, int x, int y) {
+        super(size, x, y);
     }
 
     @Override

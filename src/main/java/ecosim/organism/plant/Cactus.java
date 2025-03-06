@@ -6,14 +6,13 @@ package ecosim.organism.plant;
  * Author: @MiaBorkoo
  */
 
-import ecosim.TimeOfDayManager;
-import ecosim.WeatherManager;
+
 import ecosim.enm.Weather;
 import ecosim.enm.Size;
 
 public class Cactus extends DesertPlant {
-    public Cactus(Size size, int x, int y, TimeOfDayManager timeOfDayManager, WeatherManager weatherManager) {
-        super(size, x, y, timeOfDayManager, weatherManager);
+    public Cactus(Size size, int x, int y) {
+        super(size, x, y);
     }
 
     @Override

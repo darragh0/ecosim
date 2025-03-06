@@ -1,7 +1,6 @@
 package ecosim.organism.plant;
 
-import ecosim.TimeOfDayManager;
-import ecosim.WeatherManager;
+
 import ecosim.enm.Size;
 import ecosim.enm.Weather;
 
@@ -13,8 +12,8 @@ import ecosim.enm.Weather;
 
 public abstract class GrasslandPlant extends Plant {
 
-    public GrasslandPlant(Size size, int x, int y, TimeOfDayManager timeOfDayManager, WeatherManager weatherManager) {
-        super(size, x, y, timeOfDayManager, weatherManager);
+    public GrasslandPlant(Size size, int x, int y) {
+        super(size, x, y);
     }
 
     @Override

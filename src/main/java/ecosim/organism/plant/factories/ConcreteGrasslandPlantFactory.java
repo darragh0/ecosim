@@ -22,11 +22,11 @@ public class ConcreteGrasslandPlantFactory implements PlantFactory {
         
         switch (plantType.toLowerCase()) {
             case "tree":
-                return new Tree(Size.LARGE, x, y, timeOfDayManager, weatherManager);
+                return new Tree(Size.LARGE, x, y);
             case "bush":
-                return new Bush(Size.MEDIUM, x, y, timeOfDayManager, weatherManager);
+                return new Bush(Size.MEDIUM, x, y);
             case "wildflower":
-                return new Wildflower(Size.SMALL, x, y, timeOfDayManager, weatherManager);
+                return new Wildflower(Size.SMALL, x, y);
             default:
                 throw new IllegalArgumentException("Unknown grassland plant type: " + plantType);
         }

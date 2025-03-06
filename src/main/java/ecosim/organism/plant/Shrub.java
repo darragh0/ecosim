@@ -1,6 +1,5 @@
 package ecosim.organism.plant;
-import ecosim.TimeOfDayManager;
-import ecosim.WeatherManager;
+
 import ecosim.enm.Weather;
 import ecosim.enm.Size;
 
@@ -15,9 +14,11 @@ import ecosim.enm.Size;
 public class Shrub extends DesertPlant {
     //private PlantSize size;
 
-    public Shrub(Size size, int x, int y, TimeOfDayManager timeOfDayManager, WeatherManager weatherManager) {
-        super(size, x, y, timeOfDayManager, weatherManager);
+    public Shrub(Size size, int x, int y) {
+        super(size, x, y);
     }
+
+    
 
     @Override
     public void updateGrowthRate(Weather currentWeather) {

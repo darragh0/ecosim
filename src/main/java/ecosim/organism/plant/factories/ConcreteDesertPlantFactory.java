@@ -17,18 +17,22 @@ import ecosim.WeatherManager;
 public class ConcreteDesertPlantFactory implements PlantFactory {
     @Override
     public DesertPlant createPlant(String plantType, int x, int y) {
+        // For the factory, you can decide whether to keep creating plants with managers or not
+        // Option 1: Continue using weather and time managers
         TimeOfDayManager timeOfDayManager = new TimeOfDayManager(null);
         WeatherManager weatherManager = new WeatherManager(null);
         
         switch (plantType.toLowerCase()) {
             case "cactus":
-                return new Cactus(Size.LARGE, x, y, timeOfDayManager, weatherManager);
+                return new Cactus(Size.LARGE, x, y);
             case "shrub":
-                return new Shrub(Size.MEDIUM, x, y, timeOfDayManager, weatherManager);
+                return new Shrub(Size.MEDIUM, x, y);
             case "succulent":
-                return new Succulent(Size.SMALL, x, y, timeOfDayManager, weatherManager);
+                return new Succulent(Size.SMALL, x, y);
             default:
                 throw new IllegalArgumentException("Unknown desert plant type: " + plantType);
         }
+        
+       
     }
 } 

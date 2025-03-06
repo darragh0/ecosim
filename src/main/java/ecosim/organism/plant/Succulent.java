@@ -1,7 +1,6 @@
 package ecosim.organism.plant;
 
-import ecosim.TimeOfDayManager;
-import ecosim.WeatherManager;
+
 import ecosim.enm.Weather;
 import ecosim.enm.Size;
 
@@ -14,8 +13,8 @@ import ecosim.enm.Size;
 // import ecosim.weather.Weather;
 
 public class Succulent extends DesertPlant {
-    public Succulent(Size size, int x, int y, TimeOfDayManager timeOfDayManager, WeatherManager weatherManager) {
-        super(size, x, y, timeOfDayManager, weatherManager);
+    public Succulent(Size size, int x, int y) {
+        super(size, x, y);
     }
 
     @Override

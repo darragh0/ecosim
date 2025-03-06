@@ -29,13 +29,13 @@ public abstract class Plant extends Organism implements Observer {
     private TimeOfDayManager timeOfDayManager;
     private WeatherManager weatherManager;
 
-    public Plant(Size size, int x, int y, TimeOfDayManager timeOfDayManager, WeatherManager weatherManager) {
-        //super for extending the Organism class
+    
+
+    public Plant(Size size, int x, int y) {
         super(size.getMaxHealth(), x, y, size.getNutritionalValue());
-        this.size = size;
         this.biteCapacity = this.size.getMaxHealth() / BITE_DIVISOR;
-        this.timeOfDayManager = timeOfDayManager;
-        this.weatherManager = weatherManager;
+        // this.timeOfDayManager = timeOfDayManager;
+        // this.weatherManager = weatherManager;
     }
 
     // Method to be implemented by subclasses for specific growth rate adjustments
