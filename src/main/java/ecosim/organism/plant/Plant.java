@@ -18,6 +18,7 @@ import ecosim.man.TimeOfDayMan;
 import ecosim.man.WeatherMan;
 import ecosim.organism.plant.Photosynthesis;
 import ecosim.organism.plant.Respiration;
+//murder me
 
 
 public abstract class Plant extends Organism implements Observer {
