@@ -23,6 +23,6 @@ public class Wildflower extends GrasslandPlant {
 
     @Override
     public void updateGrowthRate(Weather currentWeather) {
-        System.out.println("Updating growth rate for Wildflower based on weather");
+        super.updateGrowthRate(currentWeather); 
     }
 }

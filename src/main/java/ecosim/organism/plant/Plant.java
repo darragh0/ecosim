@@ -28,6 +28,7 @@ public abstract class Plant extends Organism implements Observer {
     protected float growthRate;
     private TimeOfDayManager timeOfDayManager;
     private WeatherManager weatherManager;
+    protected String name;
 
     
 
@@ -137,6 +138,10 @@ public abstract class Plant extends Organism implements Observer {
         // Update the growth rate based on the adjustment
         this.growthRate += this.growthRate * growthAdjustment;
         System.out.println("Updated growth rate for " + this.getClass().getSimpleName() + ": " + this.growthRate);
+    }
+
+    public String getName() {
+        return name;
     }
 }
 
