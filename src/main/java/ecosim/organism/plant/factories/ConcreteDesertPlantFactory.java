@@ -1,13 +1,10 @@
 package ecosim.organism.plant.factories;
 
+import ecosim.enm.Size;
 import ecosim.organism.plant.DesertPlant;
-import ecosim.organism.plant.PlantSize;
 import ecosim.organism.plant.Succulent;
 import ecosim.organism.plant.Cactus;
 import ecosim.organism.plant.Shrub;
-import ecosim.organism.plant.Plant;
-import ecosim.organism.plant.GrowthStrategy;
-import ecosim.organism.plant.DesertGrowthStrategy;
 import ecosim.TimeOfDayManager;
 import ecosim.WeatherManager;
 
@@ -20,13 +17,16 @@ import ecosim.WeatherManager;
 public class ConcreteDesertPlantFactory implements PlantFactory {
     @Override
     public DesertPlant createPlant(String plantType, int x, int y) {
+        TimeOfDayManager timeOfDayManager = new TimeOfDayManager(null);
+        WeatherManager weatherManager = new WeatherManager(null);
+        
         switch (plantType.toLowerCase()) {
             case "cactus":
-                return new Cactus(PlantSize.LARGE, x, y, null, null, null);
+                return new Cactus(Size.LARGE, x, y, timeOfDayManager, weatherManager);
             case "shrub":
-                return new Shrub(PlantSize.MEDIUM, x, y, null, null, null);
+                return new Shrub(Size.MEDIUM, x, y, timeOfDayManager, weatherManager);
             case "succulent":
-                return new Succulent(PlantSize.SMALL, x, y, null, null, null);
+                return new Succulent(Size.SMALL, x, y, timeOfDayManager, weatherManager);
             default:
                 throw new IllegalArgumentException("Unknown desert plant type: " + plantType);
         }

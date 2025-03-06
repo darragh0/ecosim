@@ -1,6 +1,6 @@
 package ecosim.organism.plant;
 
-
+import ecosim.enm.Size;
 import ecosim.enm.Weather;
 import ecosim.TimeOfDayManager;
 import ecosim.WeatherManager;
@@ -12,10 +12,8 @@ import ecosim.WeatherManager;
  */
 
 public class Bush extends GrasslandPlant {
-  
-
-    public Bush(PlantSize size, int x, int y, TimeOfDayManager timeOfDayManager, WeatherManager weatherManager, GrowthStrategy growthStrategy) {
-        super(size, x, y, timeOfDayManager, weatherManager, growthStrategy);
+    public Bush(Size size, int x, int y, TimeOfDayManager timeOfDayManager, WeatherManager weatherManager) {
+        super(size, x, y, timeOfDayManager, weatherManager);
     }
 
     @Override

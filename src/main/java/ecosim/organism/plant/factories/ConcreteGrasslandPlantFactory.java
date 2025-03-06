@@ -1,12 +1,10 @@
 package ecosim.organism.plant.factories;
 
+import ecosim.enm.Size;
 import ecosim.organism.plant.Tree;
 import ecosim.organism.plant.Bush;
 import ecosim.organism.plant.Wildflower;
-import ecosim.organism.plant.PlantSize;
 import ecosim.organism.plant.Plant;
-import ecosim.organism.plant.GrowthStrategy;
-import ecosim.organism.plant.GrasslandGrowthStrategy;
 import ecosim.TimeOfDayManager;
 import ecosim.WeatherManager;
 
@@ -19,14 +17,16 @@ import ecosim.WeatherManager;
 public class ConcreteGrasslandPlantFactory implements PlantFactory {
     @Override
     public Plant createPlant(String plantType, int x, int y) {
-        GrowthStrategy growthStrategy = new GrasslandGrowthStrategy(); // Create a default growth strategy
+        TimeOfDayManager timeOfDayManager = new TimeOfDayManager(null);
+        WeatherManager weatherManager = new WeatherManager(null);
+        
         switch (plantType.toLowerCase()) {
             case "tree":
-                return new Tree(PlantSize.LARGE, x, y, new TimeOfDayManager(null), new WeatherManager(null), growthStrategy);
+                return new Tree(Size.LARGE, x, y, timeOfDayManager, weatherManager);
             case "bush":
-                return new Bush(PlantSize.MEDIUM, x, y, new TimeOfDayManager(null), new WeatherManager(null), growthStrategy);
+                return new Bush(Size.MEDIUM, x, y, timeOfDayManager, weatherManager);
             case "wildflower":
-                return new Wildflower(PlantSize.SMALL, x, y, new TimeOfDayManager(null), new WeatherManager(null), growthStrategy);
+                return new Wildflower(Size.SMALL, x, y, timeOfDayManager, weatherManager);
             default:
                 throw new IllegalArgumentException("Unknown grassland plant type: " + plantType);
         }

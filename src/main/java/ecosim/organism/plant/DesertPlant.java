@@ -2,6 +2,7 @@ package ecosim.organism.plant;
 
 import ecosim.TimeOfDayManager;
 import ecosim.WeatherManager;
+import ecosim.enm.Size;
 import ecosim.enm.Weather;
 
 /*
@@ -11,12 +12,34 @@ import ecosim.enm.Weather;
  */
 
 public abstract class DesertPlant extends Plant {
-    public DesertPlant(PlantSize size, int x, int y, TimeOfDayManager timeOfDayManager, WeatherManager weatherManager, GrowthStrategy growthStrategy) {
-        super(size, x, y, timeOfDayManager, weatherManager, growthStrategy);
+    public DesertPlant(Size size, int x, int y, TimeOfDayManager timeOfDayManager, WeatherManager weatherManager) {
+        super(size, x, y, timeOfDayManager, weatherManager);
     }
     
     @Override
     public void updateGrowthRate(Weather currentWeather) {
-        super.updateGrowthRate(currentWeather);
+        float growthAdjustment = 0.0f;
+
+        switch (currentWeather) {
+            case SUNNY:
+                growthAdjustment = 0.1f; // Increase growth rate by 10% if sunny
+                break;
+            case RAINY:
+                growthAdjustment = 0.05f; // Increase growth rate by 5% if rainy
+                break;
+            case DRY:
+                growthAdjustment = -0.2f; // Decrease growth rate by 20% if dry
+                break;
+            case CLOUDY:
+                growthAdjustment = 0.02f; // Increase growth rate by 2% if cloudy
+                break;
+            case SNOWY:
+                growthAdjustment = -0.3f; // Decrease growth rate by 30% if snowy
+                break;
+        }
+
+        // Update the growth rate based on the adjustment
+        this.growthRate += this.growthRate * growthAdjustment;
+        System.out.println("Updated growth rate for " + this.getClass().getSimpleName() + ": " + this.growthRate);
     }
 }

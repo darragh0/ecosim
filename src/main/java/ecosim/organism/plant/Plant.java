@@ -17,33 +17,31 @@ import ecosim.TimeOfDayManager;
 import ecosim.organism.plant.Photosynthesis;
 import ecosim.organism.plant.Respiration;
 import ecosim.WeatherManager;
-import ecosim.organism.plant.GrowthStrategy;
+import ecosim.enm.Size;
 
-public abstract class Plant extends Organism implements Observer{
+public abstract class Plant extends Organism implements Observer {
 
-    protected PlantSize size;
+    protected Size size;
     protected int biteCapacity;
+    private static final int BITE_DIVISOR = 10;
     protected EnergyCycleState energyCycleState;
     protected float growthRate;
     private TimeOfDayManager timeOfDayManager;
     private WeatherManager weatherManager;
-    protected GrowthStrategy growthStrategy;
 
-    public Plant(PlantSize size, int x, int y, TimeOfDayManager timeOfDayManager, WeatherManager weatherManager, GrowthStrategy growthStrategy) {
+    public Plant(Size size, int x, int y, TimeOfDayManager timeOfDayManager, WeatherManager weatherManager) {
+        //super for extending the Organism class
         super(size.getMaxHealth(), x, y, size.getNutritionalValue());
         this.size = size;
+        this.biteCapacity = this.size.getMaxHealth() / BITE_DIVISOR;
         this.timeOfDayManager = timeOfDayManager;
         this.weatherManager = weatherManager;
-        this.growthStrategy = growthStrategy;
     }
 
+    // Method to be implemented by subclasses for specific growth rate adjustments
+    public abstract void updateGrowthRate(Weather weather);
 
-    // this is the method that need to be implemented in the subclasses, specific to each plant type
-    public void updateGrowthRate(Weather currentWeather) {
-        growthStrategy.adjustGrowthRate(this, currentWeather);
-    }
-
-    // these are the methods that are common to all plants
+    // These are the methods that are common to all plants
     @Override // clonable is a part of the java.lang.Cloneable interface
     public Plant clone() throws CloneNotSupportedException {
         return (Plant) super.clone();
@@ -60,12 +58,18 @@ public abstract class Plant extends Organism implements Observer{
         }
     }
 
-    public void handleWeatherUpdate(Weather weather){
-        // TODO: Handle weather changes
+    public void handleWeatherUpdate(Weather weather) {
+        // Handle weather changes by updating growth rate
+        updateGrowthRate(weather);
     }
 
-    public void handleTimeOfDayUpdate(TimeOfDay timeOfDay){
-        // TODO: Handle time of day changes
+    public void handleTimeOfDayUpdate(TimeOfDay timeOfDay) {
+        // Handle time of day changes by setting appropriate energy cycle state
+        if (timeOfDay == TimeOfDay.DAY) {
+            setEnergyCycleState(new Photosynthesis());
+        } else {
+            setEnergyCycleState(new Respiration());
+        }
     }
 
     public void setEnergyCycleState(EnergyCycleState state) {
@@ -81,6 +85,10 @@ public abstract class Plant extends Organism implements Observer{
     public void beEaten() {
         System.out.println("Plant has died from being eaten");
         // TODO: remove plant from the grid
+    }
+
+    public int getBiteCapacity() {
+        return biteCapacity;
     }
 
     public void performAsexualReproduction() {
@@ -103,14 +111,6 @@ public abstract class Plant extends Organism implements Observer{
             setEnergyCycleState(new Respiration());
         }
         performEnergyCycle(currentWeather);
-    }
-
-    private void performPhotosynthesis() {
-        // Implementation of photosynthesis
-    }
-
-    private void performRespiration() {
-        // Implementation of respiration
     }
 
     protected void adjustGrowthRate(Weather currentWeather) {
@@ -138,8 +138,5 @@ public abstract class Plant extends Organism implements Observer{
         this.growthRate += this.growthRate * growthAdjustment;
         System.out.println("Updated growth rate for " + this.getClass().getSimpleName() + ": " + this.growthRate);
     }
-
-   
-
 }
 
