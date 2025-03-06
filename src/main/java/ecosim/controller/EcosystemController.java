@@ -21,7 +21,6 @@ public class EcosystemController {
     public void run() {
         // sample code of how the controller interacts with the model and view
         this.man.run();
-        this.view.displayDailyReport(this.man);
         this.setup();
         this.view.displayDailyReport(this.man);
     }
@@ -41,7 +40,7 @@ public class EcosystemController {
         }
 
         for (String plant : plants) {
-            this.man.createPlant(plant);
+            this.man.createPlant(plant, biome.getName());
         }
     }
 

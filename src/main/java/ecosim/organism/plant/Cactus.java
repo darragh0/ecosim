@@ -3,8 +3,12 @@ package ecosim.organism.plant;
 import ecosim.enm.Size;
 
 public class Cactus extends DesertPlant {
+
+    private static int cactusCount = 0;
+
     public Cactus(Size size, int x, int y) {
         super(size, x, y);
+        this.name = "Cactus (" + ++cactusCount + ")";
     }
 
     @Override

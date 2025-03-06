@@ -5,10 +5,12 @@ package ecosim.organism.plant;
 import ecosim.enm.Size;
 
 public class Bush extends GrasslandPlant {
-  
+    
+    private static int bushCount = 0;
 
     public Bush(Size size, int x, int y) {
         super(size, x, y);
+        this.name = "Bush (" + ++bushCount + ")";
     }
 
     @Override
