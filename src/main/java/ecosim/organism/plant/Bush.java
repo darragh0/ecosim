@@ -1,8 +1,7 @@
 package ecosim.organism.plant;
 
-// import ecosim.weather.Weather;
-
 import ecosim.enm.Size;
+import ecosim.enm.Weather;
 
 
 /*
@@ -11,16 +10,14 @@ import ecosim.enm.Size;
  * Author: @MiaBorkoo
  */
 public class Bush extends GrasslandPlant {
-    
     private static int bushCount = 0;
-
     public Bush(Size size, int x, int y) {
         super(size, x, y);
         this.name = "Bush (" + ++bushCount + ")";
     }
 
     @Override
-    public void updateGrowthRate(/* Weather weather */) {
-        System.out.println("Updating growth rate for Bush based on weather");
+    public void updateGrowthRate(Weather currentWeather) {
+        super.updateGrowthRate(currentWeather);
     }
 }
