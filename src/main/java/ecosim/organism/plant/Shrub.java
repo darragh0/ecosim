@@ -11,16 +11,16 @@ import ecosim.enm.Size;
  * Author: @MiaBorkoo
  */
 
-public class Shrub extends DesertPlant {
     //private PlantSize size;
-=======
-import ecosim.enm.Size;
->>>>>>> f9709aa49f0ddb64351c8df935bf336063591e99
+
 
 public class Shrub extends DesertPlant {
+    
+    private static int shrubCount = 0;
 
     public Shrub(Size size, int x, int y) {
         super(size, x, y);
+        this.name = "Shrub (" + ++shrubCount + ")";
     }
 
     @Override

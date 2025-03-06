@@ -1,4 +1,4 @@
-package ecosim;
+package ecosim.man;
 
 
 import java.io.IOException;
@@ -6,22 +6,21 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
+import java.util.logging.Level;
 
-import ecosim.attrs.Observable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import ecosim.attrs.Observable;
 import ecosim.enm.Weather;
 
 
-public class WeatherManager extends Observable {
+public class WeatherMan extends Observable {
 
     private Weather currentWeather;
     private Map<Weather, Double> weatherProbabilities;
-    private static final Logger LOGGER = LoggerManager.getLogger();
 
-    public WeatherManager(ChangeManager changeManager) {
+    public WeatherMan(ChangeMan changeManager) {
         super(changeManager);
         weatherProbabilities = new HashMap<>();
     }
@@ -29,7 +28,7 @@ public class WeatherManager extends Observable {
     @Override
     public Weather getCurrentState() {
         return this.currentWeather;
-    }   
+    }
 
     public void loadWeatherProbabilities(String biome, String season) {
         String upperBiome = biome.toUpperCase();
@@ -51,13 +50,13 @@ public class WeatherManager extends Observable {
                         tempProbabilities.put(weather, probability);
                     }
                 } else {
-                    LOGGER.warning("Season not found for biome: " + upperSeason);
+                    LoggerMan.log(Level.WARNING, "Season not found for biome: {0}", upperSeason);
                 }
             } else {
-                LOGGER.warning("Biome not found: " + upperBiome);
+                LoggerMan.log(Level.WARNING, "Biome not found: {0}", upperBiome);
             }
         } catch (IOException | JSONException | IllegalArgumentException e) {
-            LOGGER.severe("Error loading weather probabilities: " + e.getMessage());
+            LoggerMan.log(Level.SEVERE, "Error loading weather probabilities: {0}", e.getMessage());
         }
 
         this.weatherProbabilities = tempProbabilities;
@@ -75,6 +74,5 @@ public class WeatherManager extends Observable {
         }
         this.currentWeather = Weather.CLOUDY; // fallback
     }
-
 
 }

@@ -1,23 +1,25 @@
-package ecosim;
+package ecosim.man;
 
-import ecosim.attrs.Observable;
-import ecosim.attrs.Observer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SimpleChangeManager implements ChangeManager {
+import ecosim.attrs.Observable;
+import ecosim.attrs.Observer;
 
-    private static SimpleChangeManager instance;
+
+public class SimpleChangeMan implements ChangeMan {
+
+    private static SimpleChangeMan instance;
     private final Map<Observable, List<Observer>> observableObserverMap = new HashMap<>();
 
-    private SimpleChangeManager() { }
+    private SimpleChangeMan() {}
 
-    public static SimpleChangeManager getInstance() {
+    public static SimpleChangeMan getInstance() {
         if (instance == null) {
-            instance = new SimpleChangeManager();
+            instance = new SimpleChangeMan();
         }
         return instance;
     }
@@ -51,4 +53,5 @@ public class SimpleChangeManager implements ChangeManager {
             }
         }
     }
+
 }

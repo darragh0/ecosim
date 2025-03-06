@@ -1,9 +1,8 @@
 package ecosim.organism.animal;
 
-
 import ecosim.enm.ActivityType;
+import ecosim.enm.Diet;
 import ecosim.enm.Size;
-import ecosim.organism.animal.type.Herbivore;
 
 /**
  * Represents a Deer, a diurnal herbivore
@@ -11,11 +10,11 @@ import ecosim.organism.animal.type.Herbivore;
  * 
  * @author jjola00
  */
-public class Deer extends Herbivore {
+public class Deer extends GrasslandAnimal {
     private static int deerCount = 0;
 
-    public Deer(int x, int y) {
-        super(x, y, Size.MEDIUM, ActivityType.DIURNAL, false);
+    public Deer() {
+        super(Size.MEDIUM, Diet.HERBIVORE, ActivityType.DIURNAL, true);
         this.name = "Deer (" + ++deerCount + ")";
     }
 
@@ -23,5 +22,4 @@ public class Deer extends Herbivore {
     public void makeSound() {
         System.out.println("Bleat!");
     }
-
 }

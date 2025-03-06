@@ -3,7 +3,7 @@ package ecosim.organism.animal;
 
 import ecosim.enm.ActivityType;
 import ecosim.enm.Size;
-import ecosim.organism.animal.type.Carnivore;
+import ecosim.enm.Diet;
 
 /**
  * Represents an Eagle, a diurnal carnivore
@@ -11,17 +11,17 @@ import ecosim.organism.animal.type.Carnivore;
  * 
  * @author jjola00
  */
-public class Eagle extends Carnivore {
+public class Eagle extends DesertAnimal {
     private static int eagleCount = 0;
 
-    public Eagle(int x, int y) {
-        super(x, y, Size.MEDIUM, ActivityType.DIURNAL, false);
+    public Eagle() {
+        super(Size.MEDIUM, Diet.CARNIVORE, ActivityType.DIURNAL, false);
         this.name = "Eagle (" + ++eagleCount + ")";
     }
 
     @Override
     public void makeSound() {
-        System.out.println("Roar!");
+        System.out.println("Sqwuak!");
     }
 
 }

@@ -10,15 +10,16 @@ import ecosim.enm.Size;
  * It extends the GrasslandPlant class and implements growth rate updates.
  * Author: @MiaBorkoo
  */
-=======
-import ecosim.enm.Size;
->>>>>>> f9709aa49f0ddb64351c8df935bf336063591e99
+
+
 
 public class Tree extends GrasslandPlant {
     
+    private static int treeCount = 0;
 
     public Tree(Size size, int x, int y) {
         super(size, x, y);
+        this.name = "Tree (" + ++treeCount + ")";
     }
 
     @Override

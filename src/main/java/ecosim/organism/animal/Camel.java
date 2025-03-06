@@ -3,8 +3,7 @@ package ecosim.organism.animal;
 
 import ecosim.enm.ActivityType;
 import ecosim.enm.Size;
-import ecosim.organism.animal.type.Carnivore;
-
+import ecosim.enm.Diet;
 
 /**
  * Represents a Camel, a diurnal carnivore
@@ -12,11 +11,11 @@ import ecosim.organism.animal.type.Carnivore;
  * 
  * @author jjola00
  */
-public class Camel extends Carnivore {
+public class Camel extends DesertAnimal {
     private static int camelCount = 0;
 
-    public Camel(int x, int y) {
-        super(x, y, Size.MEDIUM, ActivityType.DIURNAL, false);
+    public Camel() {
+        super(Size.MEDIUM, Diet.CARNIVORE, ActivityType.DIURNAL, false);
         this.name = "Camel (" + ++camelCount + ")";
     }
 

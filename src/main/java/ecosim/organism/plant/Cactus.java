@@ -2,7 +2,7 @@ package ecosim.organism.plant;
 
 import ecosim.enm.Size;
 
-import ecosim.enm.Size;
+
 
 /*
  * This class represents a cactus in the desert ecosystem.
@@ -10,8 +10,12 @@ import ecosim.enm.Size;
  * Author: @MiaBorkoo
  */
 public class Cactus extends DesertPlant {
+
+    private static int cactusCount = 0;
+
     public Cactus(Size size, int x, int y) {
         super(size, x, y);
+        this.name = "Cactus (" + ++cactusCount + ")";
     }
 
     @Override
