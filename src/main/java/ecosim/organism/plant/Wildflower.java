@@ -14,8 +14,11 @@ import ecosim.enm.Size;
  */
 
 public class Wildflower extends GrasslandPlant {
+    private static int wildflowerCount = 0;
+
     public Wildflower(Size size, int x, int y) {
         super(size, x, y);
+        this.name = "Wildflower (" + ++wildflowerCount + ")";
     }
 
     @Override

@@ -11,8 +11,10 @@ import ecosim.enm.Weather;
  */
 
 public class Bush extends GrasslandPlant {
+    private static int bushCount = 0;
     public Bush(Size size, int x, int y) {
         super(size, x, y);
+        this.name = "Bush (" + ++bushCount + ")";
     }
 
     @Override
