@@ -6,7 +6,6 @@ import ecosim.organism.animal.Fox;
 import ecosim.organism.animal.Lion;
 import ecosim.organism.animal.Owl;
 import ecosim.organism.animal.Rabbit;
-import ecosim.attrs.Observable;
 
 /**
  * Concrete factory for grassland animals.
@@ -15,18 +14,18 @@ import ecosim.attrs.Observable;
  */
 public class ConcreteGrasslandAnimalFactory implements AnimalFactory {
     @Override
-    public Animal createAnimal(String type, int x, int y, Observable observable) {
+    public Animal createAnimal(String type, int x, int y) {
         switch (type) {
             case "Rabbit":
-                return new Rabbit(observable);
+                return new Rabbit();
             case "Fox":
-                return new Fox(observable);
+                return new Fox();
             case "Deer":
-                return new Deer(observable);
+                return new Deer();
             case "Lion":
-                return new Lion(observable);
+                return new Lion();
             case "Owl":
-                return new Owl(observable);
+                return new Owl();
             default:
                 return null;
         }

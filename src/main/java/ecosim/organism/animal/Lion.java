@@ -1,7 +1,5 @@
 package ecosim.organism.animal;
 
-
-import ecosim.attrs.Observable;
 import ecosim.enm.ActivityType;
 import ecosim.enm.Size;
 import ecosim.enm.Diet;
@@ -15,8 +13,8 @@ import ecosim.enm.Diet;
 public class Lion extends GrasslandAnimal {
     private static int lionCount = 0;
 
-    public Lion(Observable observable) {
-        super(Size.LARGE, Diet.CARNIVORE, ActivityType.DIURNAL, false, observable);
+    public Lion() {
+        super(Size.LARGE, Diet.CARNIVORE, ActivityType.DIURNAL, false);
         this.name = "Lion (" + ++lionCount + ")";
     }
 

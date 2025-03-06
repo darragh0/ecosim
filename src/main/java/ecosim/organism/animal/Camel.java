@@ -1,7 +1,5 @@
 package ecosim.organism.animal;
 
-
-import ecosim.attrs.Observable;
 import ecosim.enm.ActivityType;
 import ecosim.enm.Size;
 import ecosim.enm.Diet;
@@ -14,8 +12,8 @@ import ecosim.enm.Diet;
  */
 public class Camel extends DesertAnimal {
     private static int camelCount = 0;
-    public Camel(Observable observable) {
-        super(Size.MEDIUM, Diet.CARNIVORE, ActivityType.DIURNAL, false, observable);
+    public Camel() {
+        super(Size.MEDIUM, Diet.CARNIVORE, ActivityType.DIURNAL, false);
         this.name = "Camel (" + ++camelCount + ")";
     }
 
