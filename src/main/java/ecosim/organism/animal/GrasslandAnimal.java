@@ -18,4 +18,8 @@ public abstract class GrasslandAnimal extends Animal {
         }
         return consciousState.move(this);
     }
+    @Override
+    public void makeSound() {
+        System.out.println("Grassland Animal Sound");
+    }
 }
