@@ -2,7 +2,13 @@ package ecosim.organism.animal;
 
 import ecosim.attrs.Observable;
 import ecosim.attrs.Observer;
-import ecosim.enm.*;
+import ecosim.enm.ActivityState;
+import ecosim.enm.ActivityType;
+import ecosim.enm.Diet;
+import ecosim.enm.Event;
+import ecosim.enm.Season;
+import ecosim.enm.Size;
+import ecosim.enm.TimeOfDay;
 import ecosim.map.Map;
 import ecosim.organism.Organism;
 import ecosim.organism.animal.conscious_state.Conscious;
@@ -75,49 +81,40 @@ public abstract class Animal extends Organism implements Observer {
     @Override
     public void update(Observable observable) {
         Event event = observable.getCurrentState();
-        if (event instanceof Season) {
-            handleSeasonUpdate((Season) event);
-        } else if (event instanceof TimeOfDay) {
-            handleTimeOfDayUpdate((TimeOfDay) event);
+        switch (event) {
+            case Season season -> handleSeasonUpdate(season);
+            case TimeOfDay timeOfDay -> handleTimeOfDayUpdate(timeOfDay);
+            default -> {
+            }
         }
     }
 
     public void handleSeasonUpdate(Season season) {
-        switch (season.toString()) {
-            case "Winter":
-                if (canHibernate) {
-                    setSleepState(ActivityState.HIBERNATING);
-                }
-                break;
-            case "Summer":
-                setSleepState(ActivityState.AWAKE);
-                break;
-            case "Spring":
-                setSleepState(ActivityState.AWAKE);
-                break;
-            case "Autumn":
-                if(canHibernate)
-                setSleepState(ActivityState.HIBERNATING);
-                break;
+        switch (season) {
+            case Season.WINTER -> {if (canHibernate) {setSleepState(ActivityState.HIBERNATING); }}
+            case Season.SUMMER -> setSleepState(ActivityState.AWAKE);
+            case Season.SPRING -> setSleepState(ActivityState.AWAKE);
+            case Season.AUTUMN -> {if(canHibernate){setSleepState(ActivityState.HIBERNATING);}}
+            default -> setSleepState(ActivityState.AWAKE);
             }
         }
 
     public void handleTimeOfDayUpdate(TimeOfDay timeOfDay) {
-        switch (timeOfDay.toString()) {
-            case "Day":
+        switch (timeOfDay) {
+            case TimeOfDay.DAY -> {
                 if (activityType == ActivityType.DIURNAL) {
                     setSleepState(ActivityState.AWAKE);
                 } else {
                     setSleepState(ActivityState.SLEEPING);
                 }
-                break;
-            case "Night":
+            }
+            case TimeOfDay.NIGHT -> {
                 if (activityType == ActivityType.NOCTURNAL) {
                     setSleepState(ActivityState.AWAKE);
                 } else {
                     setSleepState(ActivityState.SLEEPING);
                 }
-                break;
+            }
         }
     }
 
