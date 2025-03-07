@@ -1,6 +1,5 @@
 package ecosim.organism.animal.factory;
 
-
 import ecosim.organism.animal.Animal;
 
 /**
