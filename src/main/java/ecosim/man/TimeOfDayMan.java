@@ -22,6 +22,7 @@ public class TimeOfDayMan extends Observable {
             case DAY -> this.currentTimeOfDay = NIGHT;
             case NIGHT -> this.currentTimeOfDay = DAY;
         };
+        this.changeManager.notifyObservers(this);
     }
 
     @Override

@@ -3,6 +3,7 @@ package ecosim;
 
 import java.util.List;
 
+import ecosim.attrs.Observer;
 import ecosim.enm.Season;
 import ecosim.enm.TimeOfDay;
 import ecosim.enm.Weather;
@@ -10,7 +11,6 @@ import ecosim.man.BiomeMan;
 import ecosim.man.SeasonMan;
 import ecosim.man.TimeOfDayMan;
 import ecosim.man.WeatherMan;
-import ecosim.organism.plant.Plant;
 
 
 public class Environment {
@@ -18,7 +18,6 @@ public class Environment {
     private SeasonMan seasonManager;
     private TimeOfDayMan timeOfDayManager;
     private BiomeMan biome;
-    private List<Plant> plants;
 
     public void setBiome(String biomeName) {
         this.biome = new BiomeMan(biomeName);
@@ -61,17 +60,16 @@ public class Environment {
         return this.biome.getNativePlants();
     }
 
-    /**
-     * Update all plants with the current time of day and weather
-     */
-    public void updatePlantsWithTimeAndWeather() {
-        TimeOfDay currentTime = timeOfDayManager.getCurrentState();
-        Weather currentWeather = weatherManager.getCurrentState();
-        
-        for (Plant plant : plants) {
-            plant.updateTimeOfDay(currentTime);
-            plant.updateWeather(currentWeather);
-        }
+    public void registerTimeOfDayObservers(Observer observer){
+        this.timeOfDayManager.attach(observer);
+    }
+
+    public void registerSeasonObservers(Observer observer){
+        this.seasonManager.attach(observer);
+    }
+
+    public void registerWeatherObservers(Observer observer){
+        this.weatherManager.attach(observer);
     }
 
 }
