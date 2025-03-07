@@ -1,5 +1,6 @@
 package ecosim.organism.animal.decorator;
 
+
 import ecosim.organism.animal.Animal;
 
 /**

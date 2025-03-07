@@ -1,5 +1,6 @@
 package ecosim.organism.animal;
 
+
 import ecosim.enm.ActivityType;
 import ecosim.enm.Size;
 import ecosim.enm.Diet;

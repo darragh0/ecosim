@@ -1,7 +1,8 @@
 package ecosim.organism.animal;
 
-import ecosim.attrs.Observer;
 import ecosim.attrs.Observable;
+import ecosim.attrs.Observer;
+
 import ecosim.enm.*;
 import ecosim.map.Map;
 import ecosim.organism.Organism;
