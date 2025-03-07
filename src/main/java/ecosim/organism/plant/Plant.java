@@ -48,11 +48,11 @@ public abstract class Plant extends Organism implements Observer {
     @Override
     public void update(Observable observable){
         Event event = observable.getCurrentState();
-        if (event instanceof Weather newWeather) {
-            handleWeatherUpdate(newWeather);
-        }
-        else if (event instanceof TimeOfDay newTimeOfDay) {
-            handleTimeOfDayUpdate(newTimeOfDay);
+        switch (event) {
+            case Weather newWeather -> handleWeatherUpdate(newWeather);
+            case TimeOfDay newTimeOfDay -> handleTimeOfDayUpdate(newTimeOfDay);
+            default -> {
+            }
         }
     }
 
