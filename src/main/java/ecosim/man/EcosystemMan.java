@@ -62,7 +62,12 @@ public class EcosystemMan {
         AnimalFactory animalFactory = AnimalFactoryProducer.getFactory(biome);
         Animal newAnimal = animalFactory.createAnimal(animal);
         Animal decoratedAnimal = decorateAnimal(newAnimal);
-        animals.add(decoratedAnimal);
+
+        // register with the Season and TimeOfDay observables
+        this.environment.registerTimeOfDayObservers(newAnimal);
+        this.environment.registerSeasonObservers(newAnimal);
+        
+        this.animals.add(decoratedAnimal);
 
     }
 
@@ -85,7 +90,12 @@ public class EcosystemMan {
     public void createPlant(String plant, String biome) {
         PlantFactory plantFactory = PlantFactoryProducer.getFactory(biome);
         Plant newPlant = plantFactory.createPlant(plant);
-        plants.add(newPlant);
+
+        // register with the Weather and TimeOfDay observable
+        this.environment.registerTimeOfDayObservers(newPlant);
+        this.environment.registerWeatherObservers(newPlant);
+
+        this.plants.add(newPlant);
 
     }
 
