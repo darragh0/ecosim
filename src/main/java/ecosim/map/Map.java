@@ -9,6 +9,7 @@ import ecosim.common.io.enm.BoxDrawingChar;
 import ecosim.enm.Direction;
 import ecosim.organism.Organism;
 import ecosim.organism.animal.Animal;
+import ecosim.organism.plant.Plant;
 
 
 /**
@@ -79,13 +80,15 @@ public class Map {
                 continue;
 
             Organism otherOrg = cell.get();
-            if (otherOrg instanceof Animal otherAn) {
-                if (an.getSize().getNutritionalValue() < otherAn.getSize().getNutritionalValue())
-                    continue;
-            }
+            boolean organismEaten = switch(otherOrg) {
+            case Animal otherAn -> an.eat(otherAn);
+            case Plant plant -> an.eat(plant);
+            default -> false;
+            };
 
-            an.eat(); // TODO: Replace with working eat method
+            if (organismEaten){
             this.grid.rmv(otherOrg);
+            }
             break;
         }
 

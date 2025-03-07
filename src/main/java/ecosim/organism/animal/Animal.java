@@ -13,6 +13,7 @@ import ecosim.map.Map;
 import ecosim.organism.Organism;
 import ecosim.organism.animal.conscious_state.Conscious;
 import ecosim.organism.animal.conscious_state.ConsciousState;
+import ecosim.organism.plant.Plant;
 
 /**
  * Abstract class representing an animal in the ecosystem,
@@ -70,7 +71,36 @@ public abstract class Animal extends Organism implements Observer {
 
     public abstract void makeSound();
 
-    public void eat() {}
+    public boolean canEatAnimal(Animal potentialPrey) {
+        boolean isDietCompatible = this.diet == Diet.CARNIVORE || this.diet == Diet.OMNIVORE;
+        boolean isDifferentSpecies = this.getClass() != potentialPrey.getClass();
+        boolean isPredatorLargeEnough = this.size.ordinal() >= potentialPrey.size.ordinal();
+        
+        return isDietCompatible && isDifferentSpecies && isPredatorLargeEnough;
+    }
+    
+    public boolean canEatPlant() {
+        return this.diet == Diet.HERBIVORE || this.diet == Diet.OMNIVORE;
+    }
+
+    public boolean eat(Animal animal) {
+       // Return true if the animal to be eaten didn't survive, otherwise return false.  
+        boolean canEat = canEatAnimal(animal);
+        if (!canEat) return false;
+
+        // TODO: Animal at this stage can now be eaten, implement animal eating functionality.
+
+        return false;
+    };
+
+    public boolean eat(Plant plant) {
+       // Return true if the plant to be eaten has a biteCapacity of 0 after being eaten, otherwise return false.
+       boolean canEat = canEatPlant();
+        if (!canEat) return false;
+       // TODO: Plant at this stage can now be eaten, implement plant eating functionality. 
+       
+       return false;
+    };
 
     public void breed() {}
 
@@ -136,12 +166,6 @@ public abstract class Animal extends Organism implements Observer {
 
     public void iWasGonnaCallThisFunctionMoveButICANTBecauseSomeoneElseAlreadyTookTheNameMoveSoIAmLeftToComeUpWithAnotherNameForThisMethodWhichHasUnfortunatelyBecomeVeryLongAsAResultOfTheFactThatSomebodyHasReservedTheMoveNameSoNowImSadAndHeresALongMethodName() {
         Map.getInstance().move(this);
-    }
-
-    @Override
-    public void setCoords(int x, int y) {
-        this.coords.setX(x);
-        this.coords.setY(y);
     }
 
     public void reduceHealth(float amount) {
