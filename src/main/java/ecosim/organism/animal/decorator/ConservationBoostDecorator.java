@@ -8,8 +8,8 @@ import ecosim.organism.animal.Animal;
  * 
  * @author jjola00
  */
- public abstract class HighConservationDecorator extends AnimalDecorator {
-    public HighConservationDecorator(Animal animal) {
+ public abstract class ConservationBoostDecorator extends AnimalDecorator {
+    public ConservationBoostDecorator(Animal animal) {
         super(animal);
     }
 

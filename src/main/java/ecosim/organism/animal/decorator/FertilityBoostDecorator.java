@@ -9,9 +9,9 @@ import ecosim.organism.animal.Animal;
  * 
  * @author jjola00
  */
-public abstract class HighFertilityDecorator extends AnimalDecorator {
+public abstract class FertilityBoostDecorator extends AnimalDecorator {
 
-    public HighFertilityDecorator(Animal animal) {
+    public FertilityBoostDecorator(Animal animal) {
         super(animal);
         this.reproductiveChance += 0.2f;
     }
