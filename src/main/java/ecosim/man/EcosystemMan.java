@@ -56,7 +56,7 @@ public class EcosystemMan {
 
     public void createPlant(String plant, String biome) {
         PlantFactory plantFactory = PlantFactoryProducer.getFactory(biome);
-        Plant newPlant = plantFactory.createPlant(plant, 0 , 0);
+        Plant newPlant = plantFactory.createPlant(plant);
         plants.add(newPlant);
 
     }

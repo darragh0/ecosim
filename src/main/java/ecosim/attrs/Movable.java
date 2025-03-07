@@ -12,8 +12,9 @@ public abstract class Movable {
 
     protected final Coords coords;
 
-    public Movable(final int x, final int y) {
-        this.coords = new Coords(x, y);
+    public Movable() {
+        // initialise coordinates at (0,0) before placment
+        this.coords = new Coords(0, 0);
     }
 
     public void setCoords(final int x, final int y) {

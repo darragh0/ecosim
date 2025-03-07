@@ -2,7 +2,13 @@ package ecosim.organism.animal;
 
 import ecosim.attrs.Observable;
 import ecosim.attrs.Observer;
-import ecosim.enm.*;
+import ecosim.enm.ActivityState;
+import ecosim.enm.ActivityType;
+import ecosim.enm.Diet;
+import ecosim.enm.Event;
+import ecosim.enm.Season;
+import ecosim.enm.Size;
+import ecosim.enm.TimeOfDay;
 import ecosim.map.Map;
 import ecosim.organism.Organism;
 import ecosim.organism.animal.conscious_state.Conscious;
@@ -25,7 +31,7 @@ public abstract class Animal extends Organism implements Observer {
     protected float reproductiveChance;
 
     public Animal(Size size, Diet diet, ActivityType activityType, boolean canHibernate) {
-        super(size, size.getMaxHealth(), 0, 0, size.getNutritionalValue()); // Default coordinates (0, 0)
+        super(size); // Default coordinates (0, 0)
         this.diet = diet;
         this.activityType = activityType;
         this.consciousState = new Conscious();
