@@ -13,7 +13,6 @@ import ecosim.enm.Diet;
  */
 public class Camel extends DesertAnimal {
     private static int camelCount = 0;
-
     public Camel() {
         super(Size.MEDIUM, Diet.CARNIVORE, ActivityType.DIURNAL, false);
         this.name = "Camel (" + ++camelCount + ")";
