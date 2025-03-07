@@ -7,36 +7,30 @@ package ecosim.organism.plant;
  */
 
 // TODO:import Weather and then updateGrowthRate
-import ecosim.enm.Size;
-import ecosim.organism.Organism;
 import ecosim.attrs.Observable;
 import ecosim.attrs.Observer;
 import ecosim.enm.Event;
+import ecosim.enm.Size;
 import ecosim.enm.TimeOfDay;
 import ecosim.enm.Weather;
-import ecosim.man.TimeOfDayMan;
-import ecosim.man.WeatherMan;
-import ecosim.organism.plant.Photosynthesis;
-import ecosim.organism.plant.Respiration;
+import ecosim.organism.Organism;
 //murder me
 
 
 public abstract class Plant extends Organism implements Observer {
 
-    protected Size size;
     protected int biteCapacity;
     private static final int BITE_DIVISOR = 10;
     protected EnergyCycleState energyCycleState;
     protected float growthRate;
 
-    protected String name;
     private TimeOfDay currentTimeOfDay;
     private Weather currentWeather;
 
     
 
-    public Plant(Size size, int x, int y) {
-        super(size, size.getMaxHealth(), x, y, size.getNutritionalValue());
+    public Plant(Size size) {
+        super(size);
         this.biteCapacity = this.size.getMaxHealth() / BITE_DIVISOR;
         // this.timeOfDayManager = timeOfDayManager;
         // this.weatherManager = weatherManager;

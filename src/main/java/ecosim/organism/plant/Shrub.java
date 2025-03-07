@@ -1,7 +1,7 @@
 package ecosim.organism.plant;
 
-import ecosim.enm.Weather;
 import ecosim.enm.Size;
+import ecosim.enm.Weather;
 
 // import ecosim.weather.Weather;
 
@@ -21,8 +21,8 @@ public class Shrub extends DesertPlant {
     private static int shrubCount = 0;
 
 
-    public Shrub(Size size, int x, int y) {
-        super(size, x, y);
+    public Shrub() {
+        super(Size.SMALL);
         this.name = "Shrub (" + ++shrubCount + ")";
     }
 

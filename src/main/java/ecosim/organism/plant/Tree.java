@@ -15,8 +15,8 @@ import ecosim.enm.Weather;
 public class Tree extends GrasslandPlant {
     private static int treeCount = 0;
  
-    public Tree(Size size, int x, int y) {
-        super(size, x, y);
+    public Tree() {
+        super(Size.LARGE);
         this.name = "Tree (" + ++treeCount + ")";
     }
 

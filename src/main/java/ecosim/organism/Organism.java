@@ -19,14 +19,13 @@ public abstract class Organism extends Movable {
     protected String name;
     protected Size size;
 
-    public Organism(final Size size, final float maxHealth, final int x, final int y, final int nutritionalValue) {
-        super(x, y);
+    public Organism(final Size size) {
         this.symbol = 'E'; // can change later
-        this.nutritionalValue = nutritionalValue;
-        this.maxHealth = maxHealth;
-        this.health = maxHealth;
-        this.name = "organism";
         this.size = size;
+        this.nutritionalValue = this.size.getNutritionalValue();
+        this.maxHealth = this.size.getMaxHealth();
+        this.health = this.maxHealth / 2;
+        this.name = "organism";
     }
 
     public String getName() {

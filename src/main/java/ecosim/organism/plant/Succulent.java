@@ -1,8 +1,8 @@
 package ecosim.organism.plant;
 
 
-import ecosim.enm.Weather;
 import ecosim.enm.Size;
+import ecosim.enm.Weather;
 
 /*
  * This class represents a succulent in the desert ecosystem.
@@ -12,13 +12,11 @@ import ecosim.enm.Size;
 
 // import ecosim.weather.Weather;
 
-import ecosim.enm.Size;
-
 public class Succulent extends DesertPlant {
     private static int succulentCount = 0;
     
-    public Succulent(Size size, int x, int y) {
-        super(size, x, y);
+    public Succulent() {
+        super(Size.SMALL);
         this.name = "Succulent (" + ++succulentCount + ")";
     }
 

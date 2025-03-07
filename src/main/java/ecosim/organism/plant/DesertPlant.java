@@ -10,13 +10,11 @@ import ecosim.enm.Weather;
  * Author: @MiaBorkoo
  */
 
-import ecosim.enm.Size;
-
 public abstract class DesertPlant extends Plant {
    
 
-    public DesertPlant(Size size, int x, int y) {
-        super(size, x, y);
+    public DesertPlant(Size size) {
+        super(size);
     }
     
     @Override

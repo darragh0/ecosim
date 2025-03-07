@@ -1,6 +1,7 @@
 package ecosim.organism.plant;
 
 import ecosim.enm.Size;
+import ecosim.enm.Weather;
 
 
 
@@ -11,14 +12,12 @@ import ecosim.enm.Size;
  */
 
 
-import ecosim.enm.Weather;
-
 
 public class Cactus extends DesertPlant {
     private static int cactusCount = 0;
 
-    public Cactus(Size size, int x, int y) {
-        super(size, x, y);
+    public Cactus() {
+        super(Size.LARGE);
         this.name = "Cactus (" + ++cactusCount + ")";
     }
 
