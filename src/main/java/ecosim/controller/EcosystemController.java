@@ -2,6 +2,7 @@ package ecosim.controller;
 
 
 import java.util.List;
+
 import ecosim.Environment;
 import ecosim.enm.Biome;
 import ecosim.man.EcosystemMan;
@@ -36,7 +37,7 @@ public class EcosystemController {
 
         // load ecosystem with animals and plants once factory is implemented
         for (String animal : animals) {
-            this.man.createAnimal(animal);
+            this.man.createAnimal(animal, biome.getName());
         }
 
         for (String plant : plants) {

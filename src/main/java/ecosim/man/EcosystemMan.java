@@ -12,6 +12,14 @@ import static ecosim.common.io.ConsoleIO.closeConsoleInputSource;
 import static ecosim.common.io.ConsoleIO.prettyPrintln;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+
+import static ecosim.common.Util.randInt;
+import ecosim.organism.animal.decorator.ConservationBoostDecorator;
+import ecosim.organism.animal.decorator.FertilityBoostDecorator;
+import ecosim.organism.animal.decorator.SurvivabilityBoostDecorator;
+import ecosim.organism.animal.factory.AnimalFactory;
+import ecosim.organism.animal.factory.AnimalFactoryProducer;
 
 
 public class EcosystemMan {
@@ -50,10 +58,30 @@ public class EcosystemMan {
         closeConsoleInputSource();
     }
 
-    public void createAnimal(String animal) {
-        // TODO: implement creating an animal based off of the factory
+    public void createAnimal(String animal, String biome) {
+        AnimalFactory animalFactory = AnimalFactoryProducer.getFactory(biome);
+        Animal newAnimal = animalFactory.createAnimal(animal);
+        Animal decoratedAnimal = decorateAnimal(newAnimal);
+        animals.add(decoratedAnimal);
+
     }
 
+
+    private Animal decorateAnimal(Animal animal) {
+        int randomNum = randInt(0, 3); 
+        Animal decoratedAnimal = animal; 
+    
+        switch (randomNum) {
+            case 0 -> decoratedAnimal = new ConservationBoostDecorator(animal); 
+            case 1 -> decoratedAnimal = new FertilityBoostDecorator(animal);    
+            case 2 -> decoratedAnimal = new SurvivabilityBoostDecorator(animal); 
+            default -> {
+               LoggerMan.log(Level.INFO, "Animal is returned as is (undecorated): " + animal.getName());
+            }
+        }
+    
+        return decoratedAnimal;
+    }
     public void createPlant(String plant, String biome) {
         PlantFactory plantFactory = PlantFactoryProducer.getFactory(biome);
         Plant newPlant = plantFactory.createPlant(plant);
