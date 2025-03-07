@@ -8,5 +8,5 @@ import ecosim.organism.animal.Animal;
  * @author jjola00
  */
 public interface AnimalFactory {
-    Animal createAnimal(String type, int x, int y);
+    Animal createAnimal(String type);
 }

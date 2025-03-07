@@ -14,21 +14,15 @@ import ecosim.organism.animal.Snake;
  */
 public class ConcreteDesertAnimalFactory implements AnimalFactory {
     @Override
-    public Animal createAnimal(String type, int x, int y) {
-        switch (type) {
-            case "Snake":
-                return new Snake();
-            case "CactusMouse":
-                return new CactusMouse();
-            case "Camel":
-                return new Camel();
-            case "Lizard":
-                return new Lizard();
-            case "Eagle":
-                return new Eagle();
-            default:
-                return null;
-        }
+    public Animal createAnimal(String type) {
+        return switch (type) {
+            case "Snake" -> new Snake();
+            case "CactusMouse" -> new CactusMouse();
+            case "Camel" -> new Camel();
+            case "Lizard" -> new Lizard();
+            case "Eagle" -> new Eagle();
+            default -> null;
+        };
     }
     
 }

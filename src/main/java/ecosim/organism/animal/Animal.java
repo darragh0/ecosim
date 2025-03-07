@@ -69,7 +69,9 @@ public abstract class Animal extends Organism implements Observer {
         this.health = health;
     }
 
-    public abstract void makeSound();
+    public  void makeSound() {
+        System.out.println("The animal makes a sound.");
+    };
 
     public boolean canEatAnimal(Animal potentialPrey) {
         boolean isDietCompatible = this.diet != Diet.HERBIVORE;

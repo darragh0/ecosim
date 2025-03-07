@@ -8,7 +8,7 @@ import ecosim.organism.animal.Animal;
  * 
  * @author jjola00
  */
-public abstract class SurvivabilityBoostDecorator extends AnimalDecorator {
+public class SurvivabilityBoostDecorator extends AnimalDecorator {
 
     public SurvivabilityBoostDecorator(Animal animal) {
         super(animal);
