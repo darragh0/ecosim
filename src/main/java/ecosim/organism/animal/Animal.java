@@ -72,7 +72,7 @@ public abstract class Animal extends Organism implements Observer {
     public abstract void makeSound();
 
     public boolean canEatAnimal(Animal potentialPrey) {
-        boolean isDietCompatible = this.diet == Diet.CARNIVORE || this.diet == Diet.OMNIVORE;
+        boolean isDietCompatible = this.diet != Diet.HERBIVORE;
         boolean isDifferentSpecies = this.getClass() != potentialPrey.getClass();
         boolean isPredatorLargeEnough = this.size.ordinal() >= potentialPrey.size.ordinal();
         
@@ -80,7 +80,7 @@ public abstract class Animal extends Organism implements Observer {
     }
     
     public boolean canEatPlant() {
-        return this.diet == Diet.HERBIVORE || this.diet == Diet.OMNIVORE;
+        return this.diet != Diet.CARNIVORE;
     }
 
     public boolean eat(Animal animal) {
