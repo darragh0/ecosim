@@ -63,7 +63,7 @@ public abstract class Animal extends Organism implements Observer {
         this.health = health;
     }
 
-    public void makeSound() {}
+    public abstract void makeSound();
 
     public void eat() {}
 
