@@ -1,25 +1,25 @@
 package ecosim.man;
 
 
-import ecosim.Environment;
-import ecosim.SplashScreen;
-import ecosim.organism.animal.Animal;
-import ecosim.organism.plant.Plant;
-import ecosim.organism.plant.factories.PlantFactory;
-import ecosim.organism.plant.factories.PlantFactoryProducer;
-
-import static ecosim.common.io.ConsoleIO.closeConsoleInputSource;
-import static ecosim.common.io.ConsoleIO.prettyPrintln;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
+import ecosim.Environment;
+import ecosim.SplashScreen;
 import static ecosim.common.Util.randInt;
+import static ecosim.common.io.ConsoleIO.closeConsoleInputSource;
+import static ecosim.common.io.ConsoleIO.prettyPrintln;
+import ecosim.map.Map;
+import ecosim.organism.animal.Animal;
 import ecosim.organism.animal.decorator.ConservationBoostDecorator;
 import ecosim.organism.animal.decorator.FertilityBoostDecorator;
 import ecosim.organism.animal.decorator.SurvivabilityBoostDecorator;
 import ecosim.organism.animal.factory.AnimalFactory;
 import ecosim.organism.animal.factory.AnimalFactoryProducer;
+import ecosim.organism.plant.Plant;
+import ecosim.organism.plant.factories.PlantFactory;
+import ecosim.organism.plant.factories.PlantFactoryProducer;
 
 
 public class EcosystemMan {
@@ -28,12 +28,14 @@ public class EcosystemMan {
     private int dayCount;
     private ArrayList<Animal> animals;
     private ArrayList<Plant> plants;
+    private final Map map;
 
     public EcosystemMan() {
         this.environment = new Environment();
         this.dayCount = 1; // starts on day 1
         this.animals = new ArrayList<Animal>();
         this.plants = new ArrayList<Plant>();
+        this.map = Map.getInstance();
     }
 
     public void setup() {
@@ -90,7 +92,15 @@ public class EcosystemMan {
     }
 
     public void populateMap() {
-        // TODO: implement populating the map and environment with plants and animals
+        // Randomly place all organisms on the map during simulation setup
+        for (Animal animal : this.animals) {
+            map.initialisePlacement(animal);
+        }
+
+        for (Plant plant : this.plants){
+            map.initialisePlacement(plant);
+        }
+
     }
 
     public Environment getEnvironment() {

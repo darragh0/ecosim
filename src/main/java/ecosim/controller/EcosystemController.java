@@ -43,6 +43,8 @@ public class EcosystemController {
         for (String plant : plants) {
             this.man.createPlant(plant, biome.getName());
         }
+
+        this.man.populateMap();
     }
 
 }
