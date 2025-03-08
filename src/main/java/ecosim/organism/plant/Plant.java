@@ -41,8 +41,9 @@ public abstract class Plant extends Organism implements Observer {
 
     // These are the methods that are common to all plants
     @Override // clonable is a part of the java.lang.Cloneable interface
-    public Plant clone() throws CloneNotSupportedException {
-        return (Plant) super.clone();
+    public Plant clone() {
+        //temporary i dont want to steal mia's lines of code
+        return this;
     }
 
     @Override
@@ -88,12 +89,13 @@ public abstract class Plant extends Organism implements Observer {
    
 
     public void performAsexualReproduction() {
-        try {
-            Plant offspring = this.clone();
-        } catch (CloneNotSupportedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        //also temporary (sorry mia i dont want to steal your code)
+        // try {
+        //     Plant offspring = this.clone();
+        // } catch (CloneNotSupportedException e) {
+        //     // TODO Auto-generated catch block
+        //     e.printStackTrace();
+        // }
     }
 
     //timplementing energy cycle, photosynthesis if day, respiration if night
