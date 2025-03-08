@@ -102,6 +102,7 @@ public abstract class Animal extends Organism implements Observer {
         if (canEat) {
             System.out.println(this + " eats " + plant + " and gains " + plant.getNutritionalValue() + " health.");
             this.restoreHealth(plant.getNutritionalValue());
+            plant.beEaten();
             return true;
         }       
        return false;

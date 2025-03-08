@@ -81,6 +81,7 @@ public abstract class Plant extends Organism implements Observer {
     }
 
     public void beEaten() {
+        //TODO: Mia can you handle logic to reduce bitecapacity when func is called, and print plant has died when bitecapacity reaches 0
         System.out.println("Plant has died from being eaten");
         // TODO: remove plant from the grid
     }
