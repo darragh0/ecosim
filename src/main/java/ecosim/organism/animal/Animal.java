@@ -118,7 +118,12 @@ public abstract class Animal extends Organism implements Observer {
        return false;
     };
 
-    public void breed() {}
+    public void breed() {
+        if (Math.random() < this.reproductiveChance) {
+            Animal child = this.clone();
+            Map.getInstance().add(child);
+        }
+    }
 
     protected abstract Animal createClone();
 
