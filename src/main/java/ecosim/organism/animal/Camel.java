@@ -22,5 +22,9 @@ public class Camel extends DesertAnimal {
     public void makeSound() {
         System.out.println("Grunt!");
     }
+    @Override
+    protected Camel createClone() {
+        return new Camel();
+    }
 
 }

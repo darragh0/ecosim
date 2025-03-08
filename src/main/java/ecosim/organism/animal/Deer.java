@@ -22,4 +22,8 @@ public class Deer extends GrasslandAnimal {
     public void makeSound() {
         System.out.println("Bleat!");
     }
+    @Override
+    protected Deer createClone() {
+        return new Deer();
+    }
 }

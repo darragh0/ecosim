@@ -53,7 +53,11 @@ public abstract class Animal extends Organism implements Observer {
     }
 
     @Override
-    public abstract Animal clone();
+    public Animal clone(){
+        Animal clone = createClone();
+        clone.setHealth(this.getMaxHealth() / 2);
+        return clone;
+    }
 
     public Diet getDiet() {
         return this.diet;
@@ -115,6 +119,8 @@ public abstract class Animal extends Organism implements Observer {
     };
 
     public void breed() {}
+
+    protected abstract Animal createClone();
 
     public String move() {
         return this.consciousState.move(this);
