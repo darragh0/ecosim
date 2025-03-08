@@ -87,9 +87,8 @@ public abstract class Animal extends Organism implements Observer {
 
     public boolean eat(Animal animal) {
         boolean canEat = canEatAnimal(animal);
-        if (!canEat) return false;
 
-        if (Math.random() < animal.survivalChance) { 
+        if (canEat && Math.random() < animal.survivalChance) { 
             System.out.println(this + " eats " + animal + " and gains " + animal.getNutritionalValue() + " health.");
             this.restoreHealth(animal.getNutritionalValue()); 
             return true; 
