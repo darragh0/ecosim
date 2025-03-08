@@ -86,21 +86,25 @@ public abstract class Animal extends Organism implements Observer {
     }
 
     public boolean eat(Animal animal) {
-       // Return true if the animal to be eaten didn't survive, otherwise return false.  
         boolean canEat = canEatAnimal(animal);
-        if (!canEat) return false;
 
-        // TODO: Animal at this stage can now be eaten, implement animal eating functionality.
-
+        if (canEat && Math.random() < animal.survivalChance) { 
+            System.out.println(this + " eats " + animal + " and gains " + animal.getNutritionalValue() + " health.");
+            this.restoreHealth(animal.getNutritionalValue()); 
+            return true; 
+        }
+        System.out.println(this + " tries to eat " + animal + " but fails.");
         return false;
     };
 
     public boolean eat(Plant plant) {
-       // Return true if the plant to be eaten has a biteCapacity of 0 after being eaten, otherwise return false.
        boolean canEat = canEatPlant();
-        if (!canEat) return false;
-       // TODO: Plant at this stage can now be eaten, implement plant eating functionality. 
-       
+        if (canEat) {
+            System.out.println(this + " eats " + plant + " and gains " + plant.getNutritionalValue() + " health.");
+            this.restoreHealth(plant.getNutritionalValue());
+            plant.beEaten();
+            return true;
+        }       
        return false;
     };
 
