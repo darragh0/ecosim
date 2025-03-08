@@ -2,6 +2,7 @@ package ecosim.organism;
 
 
 import ecosim.attrs.Movable;
+import ecosim.attrs.OrganismPrototype;
 import ecosim.enm.Size;
 
 
@@ -10,7 +11,7 @@ import ecosim.enm.Size;
  * 
  * @author darragh0
  */
-public abstract class Organism extends Movable {
+public abstract class Organism extends Movable implements OrganismPrototype {
 
     protected final char symbol;
     protected final int nutritionalValue;
@@ -27,6 +28,9 @@ public abstract class Organism extends Movable {
         this.health = this.maxHealth / 2;
         this.name = "organism";
     }
+
+    @Override
+    public abstract Organism clone();
 
     public String getName() {
         return name;

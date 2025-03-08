@@ -18,10 +18,16 @@ public class CactusMouse extends DesertAnimal {
         super(Size.SMALL, Diet.HERBIVORE, ActivityType.NOCTURNAL, true);
         this.name = "Cactus Mouse (" + ++cactusMouseCount + ")";
     }
+    public CactusMouse(CactusMouse cactusMouse) {
+        super(cactusMouse);
+    }
 
     @Override
     public void makeSound() {
         System.out.println("Squeal!");
     }
-
+    @Override
+    public CactusMouse clone() {
+        return new CactusMouse(this);
+    }
 }

@@ -42,8 +42,18 @@ public abstract class Animal extends Organism implements Observer {
     }
 
     public Animal(Animal animal) {
-        this(animal.size, animal.diet, animal.activityType, animal.canHibernate);
+        super(animal.size);
+        this.diet = animal.diet;
+        this.activityType = animal.activityType;
+        this.consciousState = new Conscious();
+        this.survivalChance = animal.survivalChance;
+        this.reproductiveChance = animal.reproductiveChance;
+        this.activityState = animal.activityState;
+        this.canHibernate = animal.canHibernate;
     }
+
+    @Override
+    public abstract Animal clone();
 
     public Diet getDiet() {
         return this.diet;
