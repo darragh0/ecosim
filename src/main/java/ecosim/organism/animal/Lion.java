@@ -24,7 +24,7 @@ public class Lion extends GrasslandAnimal {
         System.out.println("Roar!");
     }
     @Override
-    protected Lion createClone() {
+    public Lion createClone() {
         return new Lion();
     }
 }

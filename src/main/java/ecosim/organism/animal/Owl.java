@@ -24,7 +24,7 @@ public class Owl extends GrasslandAnimal {
         System.out.println("Hoo!");
     }
     @Override
-    protected Owl createClone() {
+    public Owl createClone() {
         return new Owl();
     }
 }

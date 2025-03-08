@@ -23,7 +23,7 @@ public class Camel extends DesertAnimal {
         System.out.println("Grunt!");
     }
     @Override
-    protected Camel createClone() {
+    public Camel createClone() {
         return new Camel();
     }
 

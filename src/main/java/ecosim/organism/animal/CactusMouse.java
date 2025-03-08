@@ -24,7 +24,7 @@ public class CactusMouse extends DesertAnimal {
         System.out.println("Squeal!");
     }
     @Override
-    protected CactusMouse createClone() {
+    public CactusMouse createClone() {
         return new CactusMouse();
     }
 }

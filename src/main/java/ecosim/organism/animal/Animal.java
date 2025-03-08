@@ -125,7 +125,7 @@ public abstract class Animal extends Organism implements Observer {
         }
     }
 
-    protected abstract Animal createClone();
+    public abstract Animal createClone();
 
     public String move() {
         return this.consciousState.move(this);

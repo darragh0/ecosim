@@ -17,4 +17,9 @@ import ecosim.organism.animal.Animal;
     public void reduceHealth(float amount) {
         super.reduceHealth(amount * 0.5f); 
     }
+
+    @Override
+    public Animal createClone() {
+        return new ConservationBoostDecorator(animal.createClone());
+    }
 }
