@@ -1,4 +1,5 @@
-package ecosim.organism.plant.factories;
+package ecosim.organism.plant.factory;
+
 
 import ecosim.organism.plant.Cactus;
 import ecosim.organism.plant.DesertPlant;
@@ -12,10 +13,11 @@ import ecosim.organism.plant.Succulent;
  * Author: @MiaBorkoo
  */
 
+
 public class ConcreteDesertPlantFactory implements PlantFactory {
     @Override
     public DesertPlant createPlant(String plantType) {
-        
+
         switch (plantType.toLowerCase()) {
             case "cactus" -> {
                 return new Cactus();
@@ -28,7 +30,8 @@ public class ConcreteDesertPlantFactory implements PlantFactory {
             }
             default -> throw new IllegalArgumentException("Unknown desert plant type: " + plantType);
         }
-        
-       
+
+
     }
-} 
+
+}

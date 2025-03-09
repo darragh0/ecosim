@@ -1,7 +1,8 @@
-package ecosim.organism.plant.factories;
+package ecosim.organism.plant.factory;
+
 
 public class PlantFactoryProducer {
-    
+
     public static PlantFactory getFactory(String biome) {
         return switch (biome) {
             case "Desert" -> new ConcreteDesertPlantFactory();
@@ -9,4 +10,5 @@ public class PlantFactoryProducer {
             default -> throw new IllegalArgumentException("Unknown biome: " + biome);
         };
     }
+
 }

@@ -1,4 +1,5 @@
-package ecosim.organism.plant.factories;
+package ecosim.organism.plant.factory;
+
 
 import ecosim.organism.plant.Bush;
 import ecosim.organism.plant.Plant;
@@ -12,10 +13,11 @@ import ecosim.organism.plant.Wildflower;
  * Author: @MiaBorkoo
  */
 
+
 public class ConcreteGrasslandPlantFactory implements PlantFactory {
     @Override
     public Plant createPlant(String plantType) {
-        
+
         switch (plantType.toLowerCase()) {
             case "tree" -> {
                 return new Tree();
@@ -29,4 +31,5 @@ public class ConcreteGrasslandPlantFactory implements PlantFactory {
             default -> throw new IllegalArgumentException("Unknown grassland plant type: " + plantType);
         }
     }
-} 
+
+}

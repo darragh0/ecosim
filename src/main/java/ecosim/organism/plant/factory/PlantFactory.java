@@ -1,4 +1,5 @@
-package ecosim.organism.plant.factories;
+package ecosim.organism.plant.factory;
+
 
 /*
  * This interface defines the factory for creating plant objects.
@@ -8,6 +9,8 @@ package ecosim.organism.plant.factories;
 
 import ecosim.organism.plant.Plant;
 
+
 public interface PlantFactory {
     Plant createPlant(String plantType);
+
 }
