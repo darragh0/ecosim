@@ -1,11 +1,15 @@
 package ecosim.organism.animal.factory;
 
-import ecosim.organism.animal.Animal;
+
+import ecosim.enm.AnimalType;
+import ecosim.enm.GrasslandAnimalType;
 import ecosim.organism.animal.Deer;
 import ecosim.organism.animal.Fox;
+import ecosim.organism.animal.GrasslandAnimal;
 import ecosim.organism.animal.Lion;
 import ecosim.organism.animal.Owl;
 import ecosim.organism.animal.Rabbit;
+
 
 /**
  * Concrete factory for grassland animals.
@@ -13,16 +17,17 @@ import ecosim.organism.animal.Rabbit;
  * @author jjola00
  */
 public class ConcreteGrasslandAnimalFactory implements AnimalFactory {
+
     @Override
-    public Animal createAnimal(String type) {
+    public GrasslandAnimal createAnimal(final AnimalType type) {
         return switch (type) {
-            case "Rabbit" -> new Rabbit();
-            case "Fox" -> new Fox();
-            case "Deer" -> new Deer();
-            case "Lion" -> new Lion();
-            case "Owl" -> new Owl();
-            default -> null;
+            case GrasslandAnimalType.RABBIT -> new Rabbit();
+            case GrasslandAnimalType.FOX -> new Fox();
+            case GrasslandAnimalType.DEER -> new Deer();
+            case GrasslandAnimalType.LION -> new Lion();
+            case GrasslandAnimalType.OWL -> new Owl();
+            default -> throw new IllegalArgumentException("Invalid grassland animal: " + type);
         };
     }
-    
+
 }

@@ -6,7 +6,9 @@ import java.util.List;
 import java.util.function.BiConsumer;
 
 import static ecosim.common.io.ConsoleIO.prettify;
+import ecosim.enm.AnimalType;
 import ecosim.enm.Biome;
+import ecosim.enm.PlantType;
 import ecosim.man.EcosystemMan;
 import ecosim.menu.AnimalMenu;
 import ecosim.menu.BiomeMenu;
@@ -67,12 +69,12 @@ public class EcosystemView {
         return choice;
     }
 
-    public List<String> promptOrganismSelection(OrganismMenu menu, int num) {
-        final List<String> chosen = new ArrayList<>();
+    public <T> List<T> promptOrganismSelection(OrganismMenu<T> menu, int num) {
+        final List<T> chosen = new ArrayList<>();
         menu.print();
 
         for (int i = 0; i < num; i++) {
-            String choice = menu.getUserChoice("Enter your choice (%d) >> ".formatted(i + 1));
+            T choice = menu.getUserChoice("Enter your choice (%d) >> ".formatted(i + 1));
             chosen.add(choice);
         }
         System.out.println();
@@ -80,11 +82,11 @@ public class EcosystemView {
         return chosen;
     }
 
-    public List<String> promptAnimalSelection(List<String> animals, int num) {
+    public List<AnimalType> promptAnimalSelection(List<AnimalType> animals, int num) {
         return promptOrganismSelection(new AnimalMenu(animals), num);
     }
 
-    public List<String> promptPlantSelection(List<String> plants, int num) {
+    public List<PlantType> promptPlantSelection(List<PlantType> plants, int num) {
         return promptOrganismSelection(new PlantMenu(plants), num);
     }
 
