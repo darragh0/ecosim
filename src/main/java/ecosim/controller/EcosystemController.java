@@ -37,21 +37,21 @@ public class EcosystemController {
     }
 
     public void setup() {
-        Environment env = this.man.getEnvironment();
-        Biome biome = this.view.promptBiomeSelection();
+        final Environment env = this.man.getEnvironment();
+        final Biome biome = this.view.promptBiomeSelection();
 
-        env.setBiome(biome.getName());
+        env.setBiome(biome);
 
         final List<String> animals = this.view.promptAnimalSelection(env.getBiomeNativeAnimals(), 3);
         final List<String> plants = this.view.promptPlantSelection(env.getBiomeNativePlants(), 3);
 
         // load ecosystem with animals and plants once factory is implemented
         for (String animal : animals) {
-            this.man.createAnimal(animal, biome.getName());
+            this.man.createAnimal(animal, biome.name());
         }
 
         for (String plant : plants) {
-            this.man.createPlant(plant, biome.getName());
+            this.man.createPlant(plant, biome.name());
         }
 
         this.man.populateMap();

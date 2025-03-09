@@ -12,6 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import ecosim.attrs.Observable;
+import ecosim.enm.Biome;
 import ecosim.enm.Weather;
 
 
@@ -30,9 +31,9 @@ public class WeatherMan extends Observable {
         return this.currentWeather;
     }
 
-    public void loadWeatherProbabilities(String biome, String season) {
-        String upperBiome = biome.toUpperCase();
-        String upperSeason = season.toUpperCase();
+    public void loadWeatherProbabilities(final Biome biome, String season) {
+        String biomeName = biome.name();
+        String seasonName = season.toUpperCase();
         Map<Weather, Double> tempProbabilities = new HashMap<>();
 
         try {
@@ -40,20 +41,20 @@ public class WeatherMan extends Observable {
                 new String(Files.readAllBytes(Paths.get("src/main/resources/json/weather_probabilities.json")));
             JSONObject json = new JSONObject(content);
 
-            if (json.has(upperBiome)) {
-                JSONObject biomeData = json.getJSONObject(upperBiome);
-                if (biomeData.has(upperSeason)) {
-                    JSONObject seasonData = biomeData.getJSONObject(upperSeason);
+            if (json.has(biomeName)) {
+                JSONObject biomeData = json.getJSONObject(biomeName);
+                if (biomeData.has(seasonName)) {
+                    JSONObject seasonData = biomeData.getJSONObject(seasonName);
                     for (String key : seasonData.keySet()) {
                         Weather weather = Weather.valueOf(key.toUpperCase());
                         double probability = seasonData.getDouble(key);
                         tempProbabilities.put(weather, probability);
                     }
                 } else {
-                    LoggerMan.log(Level.WARNING, "Season not found for biome: {0}", upperSeason);
+                    LoggerMan.log(Level.WARNING, "Season not found for biome: {0}", seasonName);
                 }
             } else {
-                LoggerMan.log(Level.WARNING, "Biome not found: {0}", upperBiome);
+                LoggerMan.log(Level.WARNING, "Biome not found: {0}", biomeName);
             }
         } catch (IOException | JSONException | IllegalArgumentException e) {
             LoggerMan.log(Level.SEVERE, "Error loading weather probabilities: {0}", e.getMessage());
