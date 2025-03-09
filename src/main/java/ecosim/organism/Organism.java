@@ -2,7 +2,6 @@ package ecosim.organism;
 
 
 import ecosim.attrs.Movable;
-import ecosim.attrs.OrganismPrototype;
 import ecosim.enm.Size;
 
 
