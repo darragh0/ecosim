@@ -23,5 +23,8 @@ public class Owl extends GrasslandAnimal {
     public void makeSound() {
         System.out.println("Hoo!");
     }
-
+    @Override
+    public Owl clone() {
+        return new Owl();
+    }
 }

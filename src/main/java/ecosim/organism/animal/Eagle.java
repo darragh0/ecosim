@@ -23,5 +23,8 @@ public class Eagle extends DesertAnimal {
     public void makeSound() {
         System.out.println("Sqwuak!");
     }
-
+    @Override
+    public Eagle clone() {
+        return new Eagle();
+    }
 }
