@@ -24,9 +24,9 @@ public class EcosystemController {
     public void run() {
         // sample code of how the controller interacts with the model and view
         Runtime.getRuntime().addShutdownHook(new Thread(this::exit));
+        this.view.showSplashScreen();
         this.setup();
         this.view.displayDailyReport(this.man);
-        this.view.showSplashScreen();
         System.out.println("Starting simulation...");
     }
 
