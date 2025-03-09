@@ -4,7 +4,9 @@ package ecosim;
 import java.util.List;
 
 import ecosim.attrs.Observer;
+import ecosim.enm.AnimalType;
 import ecosim.enm.Biome;
+import ecosim.enm.PlantType;
 import ecosim.enm.Season;
 import ecosim.enm.TimeOfDay;
 import ecosim.enm.Weather;
@@ -53,11 +55,11 @@ public class Environment {
         return this.timeOfDayMan.getCurrentState();
     }
 
-    public List<String> getBiomeNativeAnimals() {
+    public List<AnimalType> getBiomeNativeAnimals() {
         return this.biomeMan.getNativeAnimals();
     }
 
-    public List<String> getBiomeNativePlants() {
+    public List<PlantType> getBiomeNativePlants() {
         return this.biomeMan.getNativePlants();
     }
 

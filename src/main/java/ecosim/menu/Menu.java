@@ -8,7 +8,6 @@ import static ecosim.common.io.ConsoleIO.intInput;
 import static ecosim.common.io.ConsoleIO.prettyPrintln;
 
 
-@SuppressWarnings("unchecked")
 public abstract class Menu<T> {
 
     protected final String heading;
@@ -23,7 +22,7 @@ public abstract class Menu<T> {
         this.options.add(option);
     }
 
-    public final void addOptions(final T... options) {
+    public final void addOptions(@SuppressWarnings("unchecked") final T... options) {
         this.options.addAll(List.of(options));
     }
 
@@ -44,9 +43,15 @@ public abstract class Menu<T> {
         System.out.println("=".repeat(this.heading.length() + 10));
 
         for (int i = 0; i < this.options.size(); i++) {
-            prettyPrintln("<b>%d)</b> %s", i + 1, this.options.get(i).toString());
+            final T option = this.options.get(i);
+            prettyPrintln("<b>%d)</b> %s", i + 1, this.optionToString(option));
         }
         System.out.println();
+    }
+
+    public String optionToString(final T option) {
+        final String str = option.toString().replace('_', ' ');
+        return str.substring(0, 1) + str.substring(1).toLowerCase();
     }
 
     public int getUserNum(final String prompt) {

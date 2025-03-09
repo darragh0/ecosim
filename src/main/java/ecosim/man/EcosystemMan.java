@@ -7,6 +7,9 @@ import java.util.logging.Level;
 
 import ecosim.Environment;
 import static ecosim.common.Util.randInt;
+import ecosim.enm.AnimalType;
+import ecosim.enm.Biome;
+import ecosim.enm.PlantType;
 import ecosim.map.Map;
 import ecosim.organism.animal.Animal;
 import ecosim.organism.animal.decorator.ConservationBoostDecorator;
@@ -43,7 +46,7 @@ public class EcosystemMan {
         // TODO: implement creating the loop for daily simulation
     }
 
-    public void createAnimal(String animal, String biome) {
+    public void createAnimal(final AnimalType animal, final Biome biome) {
         AnimalFactory animalFactory = AnimalFactoryProducer.getFactory(biome);
         Animal newAnimal = animalFactory.createAnimal(animal);
         Animal decoratedAnimal = decorateAnimal(newAnimal);
@@ -55,8 +58,7 @@ public class EcosystemMan {
         this.animals.add(decoratedAnimal);
     }
 
-
-    private Animal decorateAnimal(Animal animal) {
+    private Animal decorateAnimal(final Animal animal) {
         final int randomNum = randInt(0, 3);
         return switch (randomNum) {
             case 0 -> new ConservationBoostDecorator(animal);
@@ -69,7 +71,7 @@ public class EcosystemMan {
         };
     }
 
-    public void createPlant(String plant, String biome) {
+    public void createPlant(final PlantType plant, final Biome biome) {
         PlantFactory plantFactory = PlantFactoryProducer.getFactory(biome);
         Plant newPlant = plantFactory.createPlant(plant);
 
