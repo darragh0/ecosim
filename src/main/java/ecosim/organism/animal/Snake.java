@@ -23,5 +23,8 @@ public class Snake extends DesertAnimal {
     public void makeSound() {
         System.out.println("Hiss!");
     }
-
+    @Override
+    public Snake clone() {
+        return new Snake();
+    }
 }

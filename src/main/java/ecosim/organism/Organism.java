@@ -28,6 +28,8 @@ public abstract class Organism extends Movable {
         this.name = "organism";
     }
 
+    public abstract Organism clone();
+
     public String getName() {
         return name;
     }

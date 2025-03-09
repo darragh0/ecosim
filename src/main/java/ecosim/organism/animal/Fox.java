@@ -23,5 +23,8 @@ public class Fox extends GrasslandAnimal {
     public void makeSound() {
         System.out.println("Ring-ding-ding-ding-dingeringeding! Wa-pa-pa-pa-pa-pa-pow!");
     }
-
+    @Override
+    public Fox clone() {
+        return new Fox();
+    }
 }

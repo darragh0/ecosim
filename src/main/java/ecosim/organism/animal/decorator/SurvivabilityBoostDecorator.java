@@ -14,5 +14,8 @@ public class SurvivabilityBoostDecorator extends AnimalDecorator {
         super(animal);
         this.survivalChance += 0.2f;
     }
-
+    @Override
+    public Animal clone() {
+        return new SurvivabilityBoostDecorator(animal.clone());
+    }
 }
