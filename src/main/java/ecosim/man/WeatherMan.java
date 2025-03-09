@@ -13,6 +13,7 @@ import org.json.JSONObject;
 
 import ecosim.attrs.Observable;
 import ecosim.enm.Biome;
+import ecosim.enm.Season;
 import ecosim.enm.Weather;
 
 
@@ -31,9 +32,9 @@ public class WeatherMan extends Observable {
         return this.currentWeather;
     }
 
-    public void loadWeatherProbabilities(final Biome biome, String season) {
+    public void loadWeatherProbabilities(final Biome biome, final Season season) {
         String biomeName = biome.name();
-        String seasonName = season.toUpperCase();
+        String seasonName = season.name();
         Map<Weather, Double> tempProbabilities = new HashMap<>();
 
         try {

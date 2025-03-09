@@ -30,7 +30,7 @@ public class Environment {
         // load probabilities for new season
         weatherMan.loadWeatherProbabilities(
             this.biomeMan.getBiome(),
-            this.seasonMan.getCurrentState().toString());
+            this.seasonMan.getCurrentState());
     }
 
     public void updateDay() {
@@ -39,7 +39,6 @@ public class Environment {
 
     public void updateWeather() {
         this.weatherMan.updateRandomWeather();
-
     }
 
     public Weather getWeather() {
