@@ -11,7 +11,7 @@ import ecosim.enm.Size;
  * 
  * @author darragh0
  */
-public abstract class Organism extends Movable implements OrganismPrototype {
+public abstract class Organism extends Movable {
 
     protected final char symbol;
     protected final int nutritionalValue;
@@ -29,7 +29,6 @@ public abstract class Organism extends Movable implements OrganismPrototype {
         this.name = "organism";
     }
 
-    @Override
     public abstract Organism clone();
 
     public String getName() {
