@@ -20,6 +20,10 @@ public class EcosystemView {
     private static final BiConsumer<StringBuilder, String> add =
         (builder, str) -> builder.append(prettify(str)).append("\n");
 
+    public void showSplashScreen() {
+        SplashScreen.show();
+    }
+
     public void displayDailyReport(EcosystemMan ecosystem) {
         StringBuilder str = new StringBuilder();
 

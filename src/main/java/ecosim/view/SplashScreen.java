@@ -1,4 +1,4 @@
-package ecosim;
+package ecosim.view;
 
 
 import static ecosim.common.io.ConsoleIO.clearTerminal;
