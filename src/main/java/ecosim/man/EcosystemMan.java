@@ -23,15 +23,15 @@ public class EcosystemMan {
 
     private final Environment environment;
     private int dayCount;
-    private ArrayList<Animal> animals;
-    private ArrayList<Plant> plants;
+    private final ArrayList<Animal> animals;
+    private final ArrayList<Plant> plants;
     private final Map map;
 
     public EcosystemMan() {
         this.environment = new Environment();
-        this.dayCount = 1; // starts on day 1
-        this.animals = new ArrayList<Animal>();
-        this.plants = new ArrayList<Plant>();
+        this.dayCount = 1;
+        this.animals = new ArrayList<>();
+        this.plants = new ArrayList<>();
         this.map = Map.getInstance();
     }
 
@@ -53,24 +53,20 @@ public class EcosystemMan {
         this.environment.registerSeasonObservers(newAnimal);
 
         this.animals.add(decoratedAnimal);
-
     }
 
 
     private Animal decorateAnimal(Animal animal) {
-        int randomNum = randInt(0, 3);
-        Animal decoratedAnimal = animal;
-
-        switch (randomNum) {
-            case 0 -> decoratedAnimal = new ConservationBoostDecorator(animal);
-            case 1 -> decoratedAnimal = new FertilityBoostDecorator(animal);
-            case 2 -> decoratedAnimal = new SurvivabilityBoostDecorator(animal);
+        final int randomNum = randInt(0, 3);
+        return switch (randomNum) {
+            case 0 -> new ConservationBoostDecorator(animal);
+            case 1 -> new FertilityBoostDecorator(animal);
+            case 2 -> new SurvivabilityBoostDecorator(animal);
             default -> {
                 LoggerMan.log(Level.INFO, "Animal is returned as is (undecorated): " + animal.getName());
+                yield animal;
             }
-        }
-
-        return decoratedAnimal;
+        };
     }
 
     public void createPlant(String plant, String biome) {
@@ -87,18 +83,12 @@ public class EcosystemMan {
 
     public void populateMap() {
         // Randomly place all organisms on the map during simulation setup
-        for (Animal animal : this.animals) {
-            map.initialisePlacement(animal);
-        }
-
-        for (Plant plant : this.plants) {
-            map.initialisePlacement(plant);
-        }
-
+        this.animals.forEach(a -> this.map.initialisePlacement(a));
+        this.plants.forEach(p -> this.map.initialisePlacement(p));
     }
 
     public Environment getEnvironment() {
-        return environment;
+        return this.environment;
     }
 
     public int getDayCount() {
@@ -120,7 +110,5 @@ public class EcosystemMan {
     public List<Plant> getPlants() {
         return this.plants;
     }
-
-
 
 }
