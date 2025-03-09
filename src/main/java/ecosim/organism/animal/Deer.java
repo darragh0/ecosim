@@ -23,7 +23,7 @@ public class Deer extends GrasslandAnimal {
         System.out.println("Bleat!");
     }
     @Override
-    public Deer createClone() {
+    public Deer clone() {
         return new Deer();
     }
 }

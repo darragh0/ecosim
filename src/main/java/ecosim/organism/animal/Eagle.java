@@ -24,7 +24,7 @@ public class Eagle extends DesertAnimal {
         System.out.println("Sqwuak!");
     }
     @Override
-    public Eagle createClone() {
+    public Eagle clone() {
         return new Eagle();
     }
 }

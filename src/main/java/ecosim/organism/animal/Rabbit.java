@@ -24,7 +24,7 @@ public class Rabbit extends GrasslandAnimal {
         System.out.println("Squeak!");
     }
     @Override
-    public Rabbit createClone() {
+    public Rabbit clone() {
         return new Rabbit();
     }
 }

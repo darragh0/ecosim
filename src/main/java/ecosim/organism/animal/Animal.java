@@ -52,13 +52,6 @@ public abstract class Animal extends Organism implements Observer {
         this.canHibernate = animal.canHibernate;
     }
 
-    @Override
-    public Animal clone(){
-        Animal clone = createClone();
-        clone.setHealth(this.getMaxHealth() / 2);
-        return clone;
-    }
-
     public Diet getDiet() {
         return this.diet;
     }
@@ -120,12 +113,19 @@ public abstract class Animal extends Organism implements Observer {
 
     public void breed() {
         if (Math.random() < this.reproductiveChance) {
-            Animal child = this.clone();
+            Animal child = this.createClone();
             Map.getInstance().add(child);
         }
     }
 
-    public abstract Animal createClone();
+    @Override
+    public abstract Animal clone();
+
+    public Animal createClone(){
+        Animal clone = clone();
+        clone.setHealth(this.getMaxHealth() / 2);
+        return clone;
+    }
 
     public String move() {
         return this.consciousState.move(this);

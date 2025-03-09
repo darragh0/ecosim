@@ -23,7 +23,7 @@ public class Lizard extends DesertAnimal {
         System.out.println("Chirp!");
     }
     @Override
-    public Lizard createClone() {
+    public Lizard clone() {
         return new Lizard();
     }
 }

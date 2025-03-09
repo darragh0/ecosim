@@ -24,7 +24,7 @@ public class Snake extends DesertAnimal {
         System.out.println("Hiss!");
     }
     @Override
-    public Snake createClone() {
+    public Snake clone() {
         return new Snake();
     }
 }

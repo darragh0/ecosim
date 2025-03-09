@@ -15,7 +15,7 @@ public class FertilityBoostDecorator extends AnimalDecorator {
         this.reproductiveChance += 0.2f;
     }
     @Override
-    public Animal createClone() {
-        return new FertilityBoostDecorator(animal.createClone());
+    public Animal clone() {
+        return new FertilityBoostDecorator(animal.clone());
     }
 }

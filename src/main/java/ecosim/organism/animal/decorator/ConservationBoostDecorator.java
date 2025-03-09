@@ -19,7 +19,7 @@ import ecosim.organism.animal.Animal;
     }
 
     @Override
-    public Animal createClone() {
-        return new ConservationBoostDecorator(animal.createClone());
+    public Animal clone() {
+        return new ConservationBoostDecorator(animal.clone());
     }
 }
