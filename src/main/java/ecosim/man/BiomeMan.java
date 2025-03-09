@@ -19,20 +19,16 @@ public class BiomeMan {
     private final List<String> nativeAnimals;
     private final List<String> nativePlants;
 
-    public BiomeMan(String biomeName) {
-        this.biome = Biome.valueOf(biomeName.toUpperCase());
+    public BiomeMan(final Biome biome) {
+        this.biome = biome;
         this.nativeAnimals = new ArrayList<>();
         this.nativePlants = new ArrayList<>();
-        LoggerMan.log(Level.INFO, "Biome created: " + this.biome.getName());
-    }
-
-    public String getBiomeName() {
-        return this.biome.getName().toUpperCase();
+        LoggerMan.log(Level.INFO, "Biome created: " + this.biome.name());
     }
 
     public void setupBiome() {
-        LoggerMan.log(Level.INFO, "Setting up biome: {0}", this.getBiomeName());
-        final String biomeName = this.getBiomeName();
+        final String biomeName = this.biome.name();
+        LoggerMan.log(Level.INFO, "Setting up biome: {0}", biomeName);
         final Optional<JSONObject> jsonFile = FileIO.readJSONFile("src/main/resources/json/biome_natives.json");
 
         if (jsonFile.isEmpty()) {
@@ -57,7 +53,6 @@ public class BiomeMan {
                 return;
             }
 
-
             final JSONArray jsonArr = biomeData.getJSONArray(name);
             for (int i = 0; i < jsonArr.length(); i++) {
                 lst.add(jsonArr.getString(i));
@@ -67,6 +62,10 @@ public class BiomeMan {
         });
 
         LoggerMan.log(Level.INFO, "Biome setup complete: {0}", biomeName);
+    }
+
+    public Biome getBiome() {
+        return this.biome;
     }
 
     public List<String> getNativeAnimals() {
