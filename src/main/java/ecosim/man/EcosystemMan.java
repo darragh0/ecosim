@@ -32,7 +32,7 @@ public class EcosystemMan {
         this.dayCount = 1;
         this.animals = new ArrayList<>();
         this.plants = new ArrayList<>();
-        this.map = Map.getInstance();
+        this.map = Map.init(69, 69);
     }
 
     public void setup() {
