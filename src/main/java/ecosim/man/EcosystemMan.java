@@ -6,10 +6,7 @@ import java.util.List;
 import java.util.logging.Level;
 
 import ecosim.Environment;
-import ecosim.SplashScreen;
 import static ecosim.common.Util.randInt;
-import static ecosim.common.io.ConsoleIO.closeConsoleInputSource;
-import static ecosim.common.io.ConsoleIO.prettyPrintln;
 import ecosim.map.Map;
 import ecosim.organism.animal.Animal;
 import ecosim.organism.animal.decorator.ConservationBoostDecorator;
@@ -26,15 +23,15 @@ public class EcosystemMan {
 
     private final Environment environment;
     private int dayCount;
-    private ArrayList<Animal> animals;
-    private ArrayList<Plant> plants;
+    private final ArrayList<Animal> animals;
+    private final ArrayList<Plant> plants;
     private final Map map;
 
     public EcosystemMan() {
         this.environment = new Environment();
-        this.dayCount = 1; // starts on day 1
-        this.animals = new ArrayList<Animal>();
-        this.plants = new ArrayList<Plant>();
+        this.dayCount = 1;
+        this.animals = new ArrayList<>();
+        this.plants = new ArrayList<>();
         this.map = Map.getInstance();
     }
 
@@ -46,20 +43,6 @@ public class EcosystemMan {
         // TODO: implement creating the loop for daily simulation
     }
 
-    public void run() {
-        Runtime.getRuntime().addShutdownHook(new Thread(this::exit));
-        SplashScreen.show();
-        System.out.println("Starting simulation...");
-
-        // simulator loop here
-    }
-
-    public void exit() {
-        int exitCode = 0;
-        prettyPrintln("\n<B><r>[Simulator finished w/ exit code %d]</r></B>", exitCode);
-        closeConsoleInputSource();
-    }
-
     public void createAnimal(String animal, String biome) {
         AnimalFactory animalFactory = AnimalFactoryProducer.getFactory(biome);
         Animal newAnimal = animalFactory.createAnimal(animal);
@@ -68,27 +51,24 @@ public class EcosystemMan {
         // register with the Season and TimeOfDay observables
         this.environment.registerTimeOfDayObservers(newAnimal);
         this.environment.registerSeasonObservers(newAnimal);
-        
-        this.animals.add(decoratedAnimal);
 
+        this.animals.add(decoratedAnimal);
     }
 
 
     private Animal decorateAnimal(Animal animal) {
-        int randomNum = randInt(0, 3); 
-        Animal decoratedAnimal = animal; 
-    
-        switch (randomNum) {
-            case 0 -> decoratedAnimal = new ConservationBoostDecorator(animal); 
-            case 1 -> decoratedAnimal = new FertilityBoostDecorator(animal);    
-            case 2 -> decoratedAnimal = new SurvivabilityBoostDecorator(animal); 
+        final int randomNum = randInt(0, 3);
+        return switch (randomNum) {
+            case 0 -> new ConservationBoostDecorator(animal);
+            case 1 -> new FertilityBoostDecorator(animal);
+            case 2 -> new SurvivabilityBoostDecorator(animal);
             default -> {
-               LoggerMan.log(Level.INFO, "Animal is returned as is (undecorated): " + animal.getName());
+                LoggerMan.log(Level.INFO, "Animal is returned as is (undecorated): " + animal.getName());
+                yield animal;
             }
-        }
-    
-        return decoratedAnimal;
+        };
     }
+
     public void createPlant(String plant, String biome) {
         PlantFactory plantFactory = PlantFactoryProducer.getFactory(biome);
         Plant newPlant = plantFactory.createPlant(plant);
@@ -103,18 +83,12 @@ public class EcosystemMan {
 
     public void populateMap() {
         // Randomly place all organisms on the map during simulation setup
-        for (Animal animal : this.animals) {
-            map.initialisePlacement(animal);
-        }
-
-        for (Plant plant : this.plants){
-            map.initialisePlacement(plant);
-        }
-
+        this.animals.forEach(a -> this.map.initialisePlacement(a));
+        this.plants.forEach(p -> this.map.initialisePlacement(p));
     }
 
     public Environment getEnvironment() {
-        return environment;
+        return this.environment;
     }
 
     public int getDayCount() {
@@ -136,7 +110,5 @@ public class EcosystemMan {
     public List<Plant> getPlants() {
         return this.plants;
     }
-
-
 
 }

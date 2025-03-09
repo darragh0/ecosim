@@ -4,6 +4,8 @@ package ecosim.controller;
 import java.util.List;
 
 import ecosim.Environment;
+import static ecosim.common.io.ConsoleIO.closeConsoleInputSource;
+import static ecosim.common.io.ConsoleIO.prettyPrintln;
 import ecosim.enm.Biome;
 import ecosim.man.EcosystemMan;
 import ecosim.view.EcosystemView;
@@ -21,9 +23,17 @@ public class EcosystemController {
 
     public void run() {
         // sample code of how the controller interacts with the model and view
-        this.man.run();
+        Runtime.getRuntime().addShutdownHook(new Thread(this::exit));
         this.setup();
         this.view.displayDailyReport(this.man);
+        this.view.showSplashScreen();
+        System.out.println("Starting simulation...");
+    }
+
+    private void exit() {
+        int exitCode = 0;
+        prettyPrintln("\n<B><r>[Simulator finished w/ exit code %d]</r></B>", exitCode);
+        closeConsoleInputSource();
     }
 
     public void setup() {
