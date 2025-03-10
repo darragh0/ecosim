@@ -6,6 +6,11 @@ then
     exit 1
 fi
 
+if [ ! -d "target" ]
+then
+    mvn install
+fi
+
 export LINES=$(tput lines)
 export COLUMNS=$(tput cols)
 
