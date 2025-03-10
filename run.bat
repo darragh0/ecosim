@@ -6,6 +6,10 @@ if %errorlevel% neq 0 (
     exit /b
 )
 
+if not exist "target" (
+    mvn install
+)
+
 for /f "tokens=2 delims=: " %%a in ('mode con ^| findstr "Lines"') do set LINES=%%a
 for /f "tokens=2 delims=: " %%a in ('mode con ^| findstr "Columns"') do set COLUMNS=%%a
 
