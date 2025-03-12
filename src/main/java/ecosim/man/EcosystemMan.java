@@ -12,11 +12,9 @@ import ecosim.organism.animal.Animal;
 import ecosim.organism.animal.decorator.ConservationBoostDecorator;
 import ecosim.organism.animal.decorator.FertilityBoostDecorator;
 import ecosim.organism.animal.decorator.SurvivabilityBoostDecorator;
-import ecosim.organism.animal.factory.AnimalFactory;
 import ecosim.organism.animal.factory.AnimalFactoryProducer;
 import ecosim.organism.plant.Plant;
-import ecosim.organism.plant.factories.PlantFactory;
-import ecosim.organism.plant.factories.PlantFactoryProducer;
+import ecosim.organism.plant.factory.PlantFactoryProducer;
 
 
 public class EcosystemMan {
@@ -43,18 +41,22 @@ public class EcosystemMan {
         // TODO: implement creating the loop for daily simulation
     }
 
-    public void createAnimal(String animal, String biome) {
-        AnimalFactory animalFactory = AnimalFactoryProducer.getFactory(biome);
-        Animal newAnimal = animalFactory.createAnimal(animal);
-        Animal decoratedAnimal = decorateAnimal(newAnimal);
+    public void createPlant(Class<? extends Plant> plant, String biome) {
+        Plant newPlant = PlantFactoryProducer.getFactory(biome).createPlant(plant);
 
-        // register with the Season and TimeOfDay observables
-        this.environment.registerTimeOfDayObservers(newAnimal);
-        this.environment.registerSeasonObservers(newAnimal);
-
-        this.animals.add(decoratedAnimal);
+        this.environment.registerTimeOfDayObservers(newPlant);
+        this.environment.registerWeatherObservers(newPlant);
+        this.plants.add(newPlant);
     }
 
+    public void createAnimal(Class<? extends Animal> animal, String biome) {
+        Animal newAnimal = AnimalFactoryProducer.getFactory(biome).createAnimal(animal);
+        Animal decoratedAnimal = decorateAnimal(newAnimal);
+
+        this.environment.registerTimeOfDayObservers(newAnimal);
+        this.environment.registerSeasonObservers(newAnimal);
+        this.animals.add(decoratedAnimal);
+    }
 
     private Animal decorateAnimal(Animal animal) {
         final int randomNum = randInt(0, 3);
@@ -67,18 +69,6 @@ public class EcosystemMan {
                 yield animal;
             }
         };
-    }
-
-    public void createPlant(String plant, String biome) {
-        PlantFactory plantFactory = PlantFactoryProducer.getFactory(biome);
-        Plant newPlant = plantFactory.createPlant(plant);
-
-        // register with the Weather and TimeOfDay observable
-        this.environment.registerTimeOfDayObservers(newPlant);
-        this.environment.registerWeatherObservers(newPlant);
-
-        this.plants.add(newPlant);
-
     }
 
     public void populateMap() {

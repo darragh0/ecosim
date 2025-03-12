@@ -1,22 +1,23 @@
-package ecosim.organism.animal.factory;
+package ecosim.organism.plant.factory;
 
 
 import java.lang.reflect.InvocationTargetException;
 
-import ecosim.organism.animal.Animal;
+import ecosim.organism.plant.Plant;
 
 
 /**
- * Abstract factory interface.
- * 
- * @author jjola00
+ * This interface defines the factory for creating plant objects.
+ * It declares the method for creating plants based on type, position, and other parameters.
+ *
+ * @author MiaBorkoo
  */
-public abstract class AnimalFactory<T extends Animal> {
+public abstract class PlantFactory<T extends Plant> {
 
     @SuppressWarnings("unchecked")
-    public T createAnimal(Class<? extends Animal> animal) {
+    public T createPlant(Class<? extends Plant> plant) {
         try {
-            return (T) animal.getConstructor().newInstance();
+            return (T) plant.getConstructor().newInstance();
         } catch (
             InstantiationException
             | IllegalAccessException

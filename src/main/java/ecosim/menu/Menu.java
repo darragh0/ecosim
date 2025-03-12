@@ -44,9 +44,13 @@ public abstract class Menu<T> {
         System.out.println("=".repeat(this.heading.length() + 10));
 
         for (int i = 0; i < this.options.size(); i++) {
-            prettyPrintln("<b>%d)</b> %s", i + 1, this.options.get(i).toString());
+            prettyPrintln("<b>%d)</b> %s", i + 1, this.getOptionString(i));
         }
         System.out.println();
+    }
+
+    public String getOptionString(final int index) {
+        return this.options.get(index).toString();
     }
 
     public int getUserNum(final String prompt) {

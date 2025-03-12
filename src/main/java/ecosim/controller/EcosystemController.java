@@ -8,6 +8,8 @@ import static ecosim.common.io.ConsoleIO.closeConsoleInputSource;
 import static ecosim.common.io.ConsoleIO.prettyPrintln;
 import ecosim.enm.Biome;
 import ecosim.man.EcosystemMan;
+import ecosim.organism.animal.Animal;
+import ecosim.organism.plant.Plant;
 import ecosim.view.EcosystemView;
 
 
@@ -42,15 +44,15 @@ public class EcosystemController {
 
         env.setBiome(biome);
 
-        final List<String> animals = this.view.promptAnimalSelection(env.getBiomeNativeAnimals(), 3);
-        final List<String> plants = this.view.promptPlantSelection(env.getBiomeNativePlants(), 3);
+        final List<Class<? extends Animal>> animals = this.view.promptAnimalSelection(env.getBiomeAnimals(), 3);
+        final List<Class<? extends Plant>> plants = this.view.promptPlantSelection(env.getBiomePlants(), 3);
 
         // load ecosystem with animals and plants once factory is implemented
-        for (String animal : animals) {
+        for (Class<? extends Animal> animal : animals) {
             this.man.createAnimal(animal, biome.name());
         }
 
-        for (String plant : plants) {
+        for (Class<? extends Plant> plant : plants) {
             this.man.createPlant(plant, biome.name());
         }
 

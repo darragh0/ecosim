@@ -3,26 +3,30 @@ package ecosim.man;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Level;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import static ecosim.common.Util.sub;
+import static ecosim.common.Util.title;
 import ecosim.common.io.FileIO;
 import ecosim.enm.Biome;
+import ecosim.organism.Organism;
+import ecosim.organism.animal.Animal;
+import ecosim.organism.plant.Plant;
 
 
 public class BiomeMan {
     private final Biome biome;
-    private final List<String> nativeAnimals;
-    private final List<String> nativePlants;
+    private final List<Class<? extends Animal>> animals;
+    private final List<Class<? extends Plant>> plants;
 
     public BiomeMan(final Biome biome) {
         this.biome = biome;
-        this.nativeAnimals = new ArrayList<>();
-        this.nativePlants = new ArrayList<>();
+        this.animals = new ArrayList<>();
+        this.plants = new ArrayList<>();
         LoggerMan.log(Level.INFO, "Biome created: " + this.biome.name());
     }
 
@@ -43,37 +47,48 @@ public class BiomeMan {
         }
 
         final JSONObject biomeData = json.getJSONObject(biomeName);
-        final Map<String, List<String>> lists = Map.ofEntries(
-            Map.entry("ANIMALS", this.nativeAnimals),
-            Map.entry("PLANTS", this.nativePlants));
-
-        lists.forEach((name, lst) -> {
-            if (!biomeData.has(name)) {
-                LoggerMan.log(Level.SEVERE, "No {0} found for biome: {1}", name, biomeName);
-                return;
-            }
-
-            final JSONArray jsonArr = biomeData.getJSONArray(name);
-            for (int i = 0; i < jsonArr.length(); i++) {
-                lst.add(jsonArr.getString(i));
-            }
-
-            LoggerMan.log(Level.INFO, "Loaded native {0} for biome: {1}", name, biomeName);
-        });
+        this.initList("ANIMALS", this.animals, biomeData);
+        this.initList("PLANTS", this.plants, biomeData);
 
         LoggerMan.log(Level.INFO, "Biome setup complete: {0}", biomeName);
+    }
+
+    private <T extends Organism> void initList(String name, List<Class<? extends T>> lst, JSONObject biomeData) {
+        final String biomeName = this.biome.name();
+
+        if (!biomeData.has(name)) {
+            LoggerMan.log(Level.SEVERE, "No {0} found for biome: {1}", name, biomeName);
+            return;
+        }
+
+        final JSONArray jsonArr = biomeData.getJSONArray(name);
+        for (int i = 0; i < jsonArr.length(); i++) {
+            final String str = jsonArr.getString(i);
+            final String pkg = sub(name.toLowerCase(), 0, -1);
+            final String clsName = "ecosim.organism.%s.%s".formatted(pkg, title(str));
+
+            try {
+                @SuppressWarnings("unchecked")
+                final Class<? extends T> cls = (Class<? extends T>) Class.forName(clsName);
+                lst.add(cls);
+            } catch (ClassNotFoundException ex) {
+                LoggerMan.log(Level.SEVERE, "Could not find class: {0}", str);
+            }
+        }
+
+        LoggerMan.log(Level.INFO, "Loaded native {0} for biome: {1}", biomeName);
     }
 
     public Biome getBiome() {
         return this.biome;
     }
 
-    public List<String> getNativeAnimals() {
-        return this.nativeAnimals;
+    public List<Class<? extends Animal>> getAnimals() {
+        return this.animals;
     }
 
-    public List<String> getNativePlants() {
-        return this.nativePlants;
+    public List<Class<? extends Plant>> getPlants() {
+        return this.plants;
     }
 
 }
