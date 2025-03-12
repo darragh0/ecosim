@@ -8,3 +8,6 @@ target/
 # Files
 *.iml
 *.log
+
+# Ignore all files beginning with ".LCK"
+.LCK*

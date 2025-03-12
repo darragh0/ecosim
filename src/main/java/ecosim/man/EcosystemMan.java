@@ -15,8 +15,8 @@ import ecosim.organism.animal.decorator.SurvivabilityBoostDecorator;
 import ecosim.organism.animal.factory.AnimalFactory;
 import ecosim.organism.animal.factory.AnimalFactoryProducer;
 import ecosim.organism.plant.Plant;
-import ecosim.organism.plant.factories.PlantFactory;
-import ecosim.organism.plant.factories.PlantFactoryProducer;
+import ecosim.organism.plant.factory.PlantFactory;
+import ecosim.organism.plant.factory.PlantFactoryProducer;
 
 
 public class EcosystemMan {
