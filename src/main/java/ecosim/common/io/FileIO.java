@@ -13,7 +13,7 @@ import org.json.JSONObject;
 import ecosim.man.LoggerMan;
 
 
-public class FileIO {
+public final class FileIO {
 
     private FileIO() {
         throw new UnsupportedOperationException("This class cannot be instantiated.");

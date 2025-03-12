@@ -9,6 +9,8 @@ import java.util.logging.Level;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import static ecosim.common.Util.sub;
+import static ecosim.common.Util.title;
 import ecosim.common.io.FileIO;
 import ecosim.enm.Biome;
 import ecosim.organism.Organism;
@@ -62,10 +64,8 @@ public class BiomeMan {
         final JSONArray jsonArr = biomeData.getJSONArray(name);
         for (int i = 0; i < jsonArr.length(); i++) {
             final String str = jsonArr.getString(i);
-            final String cap = str.substring(0, 1).toUpperCase() + str.substring(1).toLowerCase();
-            final String clsName = "ecosim.organism.%s.%s".formatted(
-                name.toLowerCase().substring(0, name.length() - 1),
-                cap);
+            final String pkg = sub(name.toLowerCase(), 0, -1);
+            final String clsName = "ecosim.organism.%s.%s".formatted(pkg, title(str));
 
             try {
                 @SuppressWarnings("unchecked")

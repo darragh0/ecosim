@@ -3,6 +3,7 @@ package ecosim.menu;
 
 import java.util.List;
 
+import static ecosim.common.Util.title;
 import ecosim.enm.Biome;
 
 
@@ -18,8 +19,7 @@ public class BiomeMenu extends Menu<Biome> {
 
     @Override
     public String getOptionString(final int index) {
-        String name = this.options.get(index).name();
-        return name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
+        return title(this.options.get(index).name());
     }
 
 }
