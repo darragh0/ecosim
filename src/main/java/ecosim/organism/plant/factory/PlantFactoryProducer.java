@@ -1,12 +1,15 @@
 package ecosim.organism.plant.factory;
 
 
+import ecosim.organism.plant.Plant;
+
+
 public class PlantFactoryProducer {
 
-    public static PlantFactory getFactory(String biome) {
+    public static PlantFactory<? extends Plant> getFactory(String biome) {
         return switch (biome) {
-            case "Desert" -> new ConcreteDesertPlantFactory();
-            case "Grassland" -> new ConcreteGrasslandPlantFactory();
+            case "DESERT" -> new ConcreteDesertPlantFactory();
+            case "GRASSLAND" -> new ConcreteGrasslandPlantFactory();
             default -> throw new IllegalArgumentException("Unknown biome: " + biome);
         };
     }

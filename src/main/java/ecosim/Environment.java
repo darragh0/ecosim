@@ -12,6 +12,8 @@ import ecosim.man.BiomeMan;
 import ecosim.man.SeasonMan;
 import ecosim.man.TimeOfDayMan;
 import ecosim.man.WeatherMan;
+import ecosim.organism.animal.Animal;
+import ecosim.organism.plant.Plant;
 
 
 public class Environment {
@@ -53,12 +55,12 @@ public class Environment {
         return this.timeOfDayMan.getCurrentState();
     }
 
-    public List<String> getBiomeNativeAnimals() {
-        return this.biomeMan.getNativeAnimals();
+    public List<Class<? extends Animal>> getBiomeAnimals() {
+        return this.biomeMan.getAnimals();
     }
 
-    public List<String> getBiomeNativePlants() {
-        return this.biomeMan.getNativePlants();
+    public List<Class<? extends Plant>> getBiomePlants() {
+        return this.biomeMan.getPlants();
     }
 
     public void registerTimeOfDayObservers(Observer observer) {

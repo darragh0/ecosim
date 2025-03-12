@@ -1,12 +1,18 @@
 package ecosim.organism.animal.factory;
 
+
+import ecosim.organism.animal.Animal;
+
+
 public class AnimalFactoryProducer {
-    public static AnimalFactory getFactory(String biome) {
+
+    public static AnimalFactory<? extends Animal> getFactory(String biome) {
         return switch (biome) {
-            case "Desert" -> new ConcreteDesertAnimalFactory();
-            case "Grassland" -> new ConcreteGrasslandAnimalFactory();
+            case "DESERT" -> new ConcreteDesertAnimalFactory();
+            case "GRASSLAND" -> new ConcreteGrasslandAnimalFactory();
             default -> throw new IllegalArgumentException("Unknown biome: " + biome);
         };
     }
+
 }
 
