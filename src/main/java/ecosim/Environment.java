@@ -9,7 +9,9 @@ import ecosim.enm.Season;
 import ecosim.enm.TimeOfDay;
 import ecosim.enm.Weather;
 import ecosim.man.BiomeMan;
+import ecosim.man.ChangeMan;
 import ecosim.man.SeasonMan;
+import ecosim.man.SimpleChangeMan;
 import ecosim.man.TimeOfDayMan;
 import ecosim.man.WeatherMan;
 import ecosim.organism.animal.Animal;
@@ -20,9 +22,14 @@ public class Environment {
     private WeatherMan weatherMan;
     private SeasonMan seasonMan;
     private TimeOfDayMan timeOfDayMan;
+    private ChangeMan  changeMan;
     private BiomeMan biomeMan;
 
     public void setBiome(final Biome biome) {
+        this.changeMan = SimpleChangeMan.getInstance();
+        this.timeOfDayMan = new TimeOfDayMan(this.changeMan);
+        this.seasonMan = new SeasonMan(this.changeMan);
+        this.weatherMan = new WeatherMan(this.changeMan);
         this.biomeMan = new BiomeMan(biome);
         this.biomeMan.setupBiome();
     }
