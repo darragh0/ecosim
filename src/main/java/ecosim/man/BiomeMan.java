@@ -57,28 +57,34 @@ public class BiomeMan {
 
     private <T extends Organism> void initList(String name, List<Class<? extends T>> lst, JSONObject biomeData) {
         final String biomeName = this.biome.name();
-
+    
         if (!biomeData.has(name)) {
             LoggerMan.log(Level.SEVERE, "No {0} found for biome: {1}", name, biomeName);
             return;
         }
-
+    
         final JSONArray jsonArr = biomeData.getJSONArray(name);
         for (int i = 0; i < jsonArr.length(); i++) {
             final String str = jsonArr.getString(i);
             final String pkg = sub(name.toLowerCase(), 0, -1);
-            final String clsName = "ecosim.organism.%s.%s".formatted(pkg, str);
-
+            // Use biomeName.toLowerCase() to get the biome folder name
+            final String clsName = "ecosim.organism.%s.concrete.%s.%s".formatted(
+                pkg, 
+                biomeName.toLowerCase(), 
+                str
+            );
+    
             try {
                 @SuppressWarnings("unchecked")
                 final Class<? extends T> cls = (Class<? extends T>) Class.forName(clsName);
                 lst.add(cls);
+                LoggerMan.log(Level.INFO, "Successfully loaded class: {0}", clsName);
             } catch (ClassNotFoundException ex) {
-                LoggerMan.log(Level.SEVERE, "Could not find class: {0}", str);
+                LoggerMan.log(Level.SEVERE, "Could not find class: {0}", clsName);
             }
         }
-
-        LoggerMan.log(Level.INFO, "Loaded native {0} for biome: {1}", biomeName);
+    
+        LoggerMan.log(Level.INFO, "Loaded native {0} for biome: {1}", name, biomeName);
     }
 
     public Biome getBiome() {
