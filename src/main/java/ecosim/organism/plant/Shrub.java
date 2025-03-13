@@ -22,8 +22,7 @@ public class Shrub extends DesertPlant {
 
 
     public Shrub() {
-        super(Size.SMALL);
-        this.name = "Shrub (" + ++shrubCount + ")";
+        super(Size.SMALL, "Shrub (" + ++shrubCount + ")");
     }
 
     

@@ -2,8 +2,8 @@ package ecosim.organism.animal;
 
 
 import ecosim.enm.ActivityType;
-import ecosim.enm.Size;
 import ecosim.enm.Diet;
+import ecosim.enm.Size;
 
 /**
  * Represents a Rabbit, a diurnal herbivore
@@ -15,8 +15,7 @@ public class Rabbit extends GrasslandAnimal {
     private static int rabbitCount = 0;
 
     public Rabbit() {
-        super(Size.SMALL, Diet.HERBIVORE, ActivityType.DIURNAL, false);
-        this.name = "Rabbit (" + ++rabbitCount + ")";
+        super(Size.SMALL, Diet.HERBIVORE, ActivityType.DIURNAL, false, "Rabbit (" + ++rabbitCount + ")");
     }
 
     @Override

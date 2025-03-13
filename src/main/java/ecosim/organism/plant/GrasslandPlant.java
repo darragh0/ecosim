@@ -14,8 +14,8 @@ import ecosim.enm.Weather;
 
 public abstract class GrasslandPlant extends Plant {
 
-    public GrasslandPlant(Size size) {
-        super(size);
+    public GrasslandPlant(Size size, String name) {
+        super(size, name);
     }
 
     @Override

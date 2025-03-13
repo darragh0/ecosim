@@ -39,7 +39,7 @@ public class EcosystemView {
         addOrganismReport(ecosystem.getAnimals(), str);
 
         add.accept(str, "    <B>Plants:</B>");
-        // appendOrganismReport(ecosystem.getPlants(), report);
+        addOrganismReport(ecosystem.getPlants(), str);
 
         System.out.println(str.toString());
     }

@@ -17,8 +17,7 @@ public class Cactus extends DesertPlant {
     private static int cactusCount = 0;
 
     public Cactus() {
-        super(Size.LARGE);
-        this.name = "Cactus (" + ++cactusCount + ")";
+        super(Size.LARGE, "Cactus (" + ++cactusCount + ")");
     }
 
     @Override

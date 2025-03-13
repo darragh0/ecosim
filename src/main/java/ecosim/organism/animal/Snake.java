@@ -2,8 +2,8 @@ package ecosim.organism.animal;
 
 
 import ecosim.enm.ActivityType;
-import ecosim.enm.Size;
 import ecosim.enm.Diet;
+import ecosim.enm.Size;
 
 /**
  * Represents a Snake, a nocturnal carnivore
@@ -15,8 +15,7 @@ public class Snake extends DesertAnimal {
     private static int snakeCount = 0;
 
     public Snake() {
-        super(Size.MEDIUM, Diet.CARNIVORE, ActivityType.NOCTURNAL, true);
-        this.name = "Snake (" + ++snakeCount + ")";
+        super(Size.MEDIUM, Diet.CARNIVORE, ActivityType.NOCTURNAL, true, "Snake (" + ++snakeCount + ")");
     }
 
     @Override

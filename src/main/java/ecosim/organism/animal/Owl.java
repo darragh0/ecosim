@@ -2,8 +2,8 @@ package ecosim.organism.animal;
 
 
 import ecosim.enm.ActivityType;
-import ecosim.enm.Size;
 import ecosim.enm.Diet;
+import ecosim.enm.Size;
 
 /**
  * Represents an Owl, a nocturnal carnivore
@@ -15,8 +15,7 @@ public class Owl extends GrasslandAnimal {
     private static int owlCount = 0;
 
     public Owl() {
-        super(Size.SMALL, Diet.CARNIVORE, ActivityType.NOCTURNAL, false);
-        this.name = "Owl (" + ++owlCount + ")";
+        super(Size.SMALL, Diet.CARNIVORE, ActivityType.NOCTURNAL, false, "Owl (" + ++owlCount + ")");
     }
 
     @Override

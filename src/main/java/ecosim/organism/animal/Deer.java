@@ -14,8 +14,7 @@ public class Deer extends GrasslandAnimal {
     private static int deerCount = 0;
 
     public Deer() {
-        super(Size.MEDIUM, Diet.HERBIVORE, ActivityType.DIURNAL, true);
-        this.name = "Deer (" + ++deerCount + ")";
+        super(Size.MEDIUM, Diet.HERBIVORE, ActivityType.DIURNAL, true, "Deer (" + ++deerCount + ")" );
     }
 
     @Override

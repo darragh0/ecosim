@@ -11,8 +11,7 @@ public class Wildflower extends GrasslandPlant {
     private static int wildflowerCount = 0;
 
     public Wildflower() {
-        super(Size.SMALL);
-        this.name = "Wildflower (" + ++wildflowerCount + ")";
+        super(Size.SMALL, "Wildflower (" + ++wildflowerCount + ")");
     }
 
     @Override

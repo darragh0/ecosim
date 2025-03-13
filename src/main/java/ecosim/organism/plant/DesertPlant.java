@@ -13,8 +13,8 @@ import ecosim.enm.Weather;
 public abstract class DesertPlant extends Plant {
    
 
-    public DesertPlant(Size size) {
-        super(size);
+    public DesertPlant(Size size, String name) {
+        super(size, name);
     }
     
     @Override
