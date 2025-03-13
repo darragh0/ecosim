@@ -15,7 +15,7 @@ public class Rabbit extends GrasslandAnimal {
     private static int rabbitCount = 0;
 
     public Rabbit() {
-        super(Size.SMALL, Diet.HERBIVORE, ActivityType.DIURNAL, false, "Rabbit (" + ++rabbitCount + ")");
+        super(Size.SMALL, Diet.HERBIVORE, ActivityType.DIURNAL, false, ++rabbitCount);
     }
 
     @Override

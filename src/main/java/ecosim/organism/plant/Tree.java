@@ -16,7 +16,7 @@ public class Tree extends GrasslandPlant {
     private static int treeCount = 0;
  
     public Tree() {
-        super(Size.LARGE, "Tree (" + ++treeCount + ")");
+        super(Size.LARGE, ++treeCount);
        
     }
 

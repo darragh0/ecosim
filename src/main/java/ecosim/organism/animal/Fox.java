@@ -15,7 +15,7 @@ public class Fox extends GrasslandAnimal {
     private static int foxCount= 0;
 
     public Fox() {
-        super(Size.MEDIUM, Diet.CARNIVORE, ActivityType.NOCTURNAL, false, "Fox (" + ++foxCount + ")");
+        super(Size.MEDIUM, Diet.CARNIVORE, ActivityType.NOCTURNAL, false, ++foxCount);
     }
 
     @Override

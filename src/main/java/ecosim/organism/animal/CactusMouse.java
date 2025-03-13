@@ -15,7 +15,7 @@ public class CactusMouse extends DesertAnimal {
     private static int cactusMouseCount = 0;
 
     public CactusMouse() {
-        super(Size.SMALL, Diet.HERBIVORE, ActivityType.NOCTURNAL, true, "Cactus Mouse (" + ++cactusMouseCount + ")");
+        super(Size.SMALL, Diet.HERBIVORE, ActivityType.NOCTURNAL, false, ++cactusMouseCount);
     }
 
     @Override

@@ -15,7 +15,7 @@ public class Owl extends GrasslandAnimal {
     private static int owlCount = 0;
 
     public Owl() {
-        super(Size.SMALL, Diet.CARNIVORE, ActivityType.NOCTURNAL, false, "Owl (" + ++owlCount + ")");
+        super(Size.SMALL, Diet.CARNIVORE, ActivityType.NOCTURNAL, false, ++owlCount);	
     }
 
     @Override

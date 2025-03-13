@@ -15,7 +15,7 @@ public class Eagle extends DesertAnimal {
     private static int eagleCount = 0;
 
     public Eagle() {
-        super(Size.MEDIUM, Diet.CARNIVORE, ActivityType.DIURNAL, false,  "Eagle (" + ++eagleCount + ")");
+        super(Size.MEDIUM, Diet.CARNIVORE, ActivityType.DIURNAL, false,  ++eagleCount);
     }
 
     @Override

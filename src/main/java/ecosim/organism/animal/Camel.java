@@ -14,7 +14,7 @@ import ecosim.enm.Size;
 public class Camel extends DesertAnimal {
     private static int camelCount = 0;
     public Camel() {
-        super(Size.MEDIUM, Diet.CARNIVORE, ActivityType.DIURNAL, false, "Camel (" + ++camelCount + ")");
+        super(Size.MEDIUM, Diet.CARNIVORE, ActivityType.DIURNAL, false, ++camelCount);
     }
 
     @Override

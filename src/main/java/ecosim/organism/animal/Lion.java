@@ -15,7 +15,7 @@ public class Lion extends GrasslandAnimal {
     private static int lionCount = 0;
 
     public Lion() {
-        super(Size.LARGE, Diet.CARNIVORE, ActivityType.DIURNAL, false, "Lion (" + ++lionCount + ")");
+        super(Size.LARGE, Diet.CARNIVORE, ActivityType.DIURNAL, false, ++lionCount);
     }
 
     @Override

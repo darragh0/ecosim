@@ -16,7 +16,7 @@ public class Succulent extends DesertPlant {
     private static int succulentCount = 0;
     
     public Succulent() {
-        super(Size.SMALL, "Succulent (" + ++succulentCount + ")");
+        super(Size.SMALL, ++succulentCount);
         
     }
 

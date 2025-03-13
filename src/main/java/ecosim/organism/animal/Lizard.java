@@ -14,7 +14,7 @@ public class Lizard extends DesertAnimal {
     private static int lizardCount = 0;
 
     public Lizard() {
-        super(Size.SMALL, Diet.CARNIVORE, ActivityType.DIURNAL, true, "Lizard (" + ++lizardCount + ")");
+        super(Size.SMALL, Diet.CARNIVORE, ActivityType.DIURNAL, true, ++lizardCount);
     }
 
     @Override

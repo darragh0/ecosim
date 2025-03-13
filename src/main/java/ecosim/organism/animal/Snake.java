@@ -15,7 +15,7 @@ public class Snake extends DesertAnimal {
     private static int snakeCount = 0;
 
     public Snake() {
-        super(Size.MEDIUM, Diet.CARNIVORE, ActivityType.NOCTURNAL, true, "Snake (" + ++snakeCount + ")");
+        super(Size.MEDIUM, Diet.CARNIVORE, ActivityType.NOCTURNAL, true, ++snakeCount);
     }
 
     @Override

@@ -12,7 +12,7 @@ import ecosim.enm.Weather;
 public class Bush extends GrasslandPlant {
     private static int bushCount = 0;
     public Bush() {
-        super(Size.MEDIUM, "Bush (" + ++bushCount + ")");
+        super(Size.MEDIUM, ++bushCount);
     }
 
     @Override
