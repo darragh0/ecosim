@@ -5,8 +5,8 @@ import java.util.List;
 
 import ecosim.enm.Biome;
 import ecosim.man.EcosystemMan;
-import ecosim.organism.animal.Animal;
-import ecosim.organism.plant.Plant;
+import ecosim.organism.animal.abs.Animal;
+import ecosim.organism.plant.abs.Plant;
 import ecosim.view.EcosystemView;
 
 

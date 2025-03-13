@@ -1,7 +1,11 @@
-package ecosim.organism.plant;
+package ecosim.organism.plant.concrete.grassland;
+
 
 import ecosim.enm.Size;
 import ecosim.enm.Weather;
+import ecosim.organism.plant.abs.GrasslandPlant;
+
+
 /*
  * This class represents a wildflower in the grassland ecosystem.
  * It extends the GrasslandPlant class and implements growth rate updates.
@@ -16,6 +20,7 @@ public class Wildflower extends GrasslandPlant {
 
     @Override
     public void updateGrowthRate(Weather currentWeather) {
-        super.updateGrowthRate(currentWeather); 
+        super.updateGrowthRate(currentWeather);
     }
+
 }

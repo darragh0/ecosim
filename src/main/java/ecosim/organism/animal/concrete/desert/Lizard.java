@@ -1,8 +1,11 @@
-package ecosim.organism.animal;
+package ecosim.organism.animal.concrete.desert;
+
 
 import ecosim.enm.ActivityType;
 import ecosim.enm.Diet;
 import ecosim.enm.Size;
+import ecosim.organism.animal.abs.DesertAnimal;
+
 
 /**
  * Represents a Lizard, a diurnal carnivore
@@ -21,8 +24,10 @@ public class Lizard extends DesertAnimal {
     public void makeSound() {
         System.out.println("Chirp!");
     }
+
     @Override
     public Lizard clone() {
         return new Lizard();
     }
+
 }

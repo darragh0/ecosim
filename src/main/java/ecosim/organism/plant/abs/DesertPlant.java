@@ -1,20 +1,20 @@
-package ecosim.organism.plant;
+package ecosim.organism.plant.abs;
 
 
 import ecosim.enm.Size;
 import ecosim.enm.Weather;
 
 /*
- * This is the abstract class for all grassland plants.
- * It extends the Plant class and includes methods specific to grassland plants.
+ * This is the abstract class for all desert plants.
+ * It extends the Plant class and includes methods specific to desert plants.
  * Author: @MiaBorkoo
  */
 
 
+public abstract class DesertPlant extends Plant {
 
-public abstract class GrasslandPlant extends Plant {
 
-    public GrasslandPlant(Size size, int num) {
+    public DesertPlant(Size size, int num) {
         super(size, num);
     }
 
@@ -24,19 +24,19 @@ public abstract class GrasslandPlant extends Plant {
 
         switch (currentWeather) {
             case SUNNY:
-                growthAdjustment = 0.2f; // Increase growth rate by 20% if sunny
+                growthAdjustment = 0.1f; // Increase growth rate by 10% if sunny
                 break;
             case RAINY:
-                growthAdjustment = 0.15f; // Increase growth rate by 15% if rainy
+                growthAdjustment = 0.05f; // Increase growth rate by 5% if rainy
                 break;
             case DRY:
-                growthAdjustment = -0.1f; // Decrease growth rate by 10% if dry
+                growthAdjustment = -0.2f; // Decrease growth rate by 20% if dry
                 break;
             case CLOUDY:
-                growthAdjustment = 0.05f; // Increase growth rate by 5% if cloudy
+                growthAdjustment = 0.02f; // Increase growth rate by 2% if cloudy
                 break;
             case SNOWY:
-                growthAdjustment = -0.2f; // Decrease growth rate by 20% if snowy
+                growthAdjustment = -0.3f; // Decrease growth rate by 30% if snowy
                 break;
         }
 
@@ -44,4 +44,5 @@ public abstract class GrasslandPlant extends Plant {
         this.growthRate += this.growthRate * growthAdjustment;
         System.out.println("Updated growth rate for " + this.getClass().getSimpleName() + ": " + this.growthRate);
     }
+
 }

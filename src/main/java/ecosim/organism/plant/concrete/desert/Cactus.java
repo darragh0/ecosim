@@ -1,7 +1,9 @@
-package ecosim.organism.plant;
+package ecosim.organism.plant.concrete.desert;
+
 
 import ecosim.enm.Size;
 import ecosim.enm.Weather;
+import ecosim.organism.plant.abs.DesertPlant;
 
 
 
@@ -24,6 +26,7 @@ public class Cactus extends DesertPlant {
     public void updateGrowthRate(Weather currentWeather) {
         super.updateGrowthRate(currentWeather);
     }
+
 }
 
 

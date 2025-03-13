@@ -2,8 +2,7 @@ package ecosim.organism.animal.factory;
 
 
 import java.lang.reflect.InvocationTargetException;
-
-import ecosim.organism.animal.Animal;
+import ecosim.organism.animal.abs.Animal;
 
 
 /**

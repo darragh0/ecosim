@@ -1,7 +1,9 @@
-package ecosim.organism.plant;
+package ecosim.organism.plant.concrete.desert;
+
 
 import ecosim.enm.Size;
 import ecosim.enm.Weather;
+import ecosim.organism.plant.abs.DesertPlant;
 
 // import ecosim.weather.Weather;
 
@@ -13,11 +15,11 @@ import ecosim.enm.Weather;
  * Author: @MiaBorkoo
  */
 
-    //private PlantSize size;
+// private PlantSize size;
 
 
 public class Shrub extends DesertPlant {
-    //private PlantSize size;
+    // private PlantSize size;
     private static int shrubCount = 0;
 
 
@@ -25,10 +27,11 @@ public class Shrub extends DesertPlant {
         super(Size.SMALL, ++shrubCount);
     }
 
-    
+
 
     @Override
     public void updateGrowthRate(Weather currentWeather) {
         super.updateGrowthRate(currentWeather);
     }
+
 }
