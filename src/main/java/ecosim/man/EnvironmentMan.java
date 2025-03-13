@@ -14,17 +14,20 @@ import ecosim.organism.plant.abs.Plant;
 
 
 public class EnvironmentMan {
-    private WeatherMan weatherMan;
-    private SeasonMan seasonMan;
-    private TimeOfDayMan timeOfDayMan;
-    private ChangeMan changeMan;
+    private final WeatherMan weatherMan;
+    private final SeasonMan seasonMan;
+    private final TimeOfDayMan timeOfDayMan;
+    private final ChangeMan changeMan;
     private BiomeMan biomeMan;
 
-    public void setBiome(final Biome biome) {
+    public EnvironmentMan() {
         this.changeMan = SimpleChangeMan.getInstance();
         this.timeOfDayMan = new TimeOfDayMan(this.changeMan);
         this.seasonMan = new SeasonMan(this.changeMan);
         this.weatherMan = new WeatherMan(this.changeMan);
+    }
+
+    public void setBiome(final Biome biome) {
         this.biomeMan = new BiomeMan(biome);
         this.biomeMan.setupBiome();
     }
