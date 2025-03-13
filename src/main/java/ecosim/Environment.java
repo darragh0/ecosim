@@ -42,7 +42,7 @@ public class Environment {
             this.seasonMan.getCurrentState());
     }
 
-    public void updateDay() {
+    public void updateTimeOfDay() {
         this.timeOfDayMan.switchTimeOfDay();
     }
 

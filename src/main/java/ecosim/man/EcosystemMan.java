@@ -28,7 +28,7 @@ public class EcosystemMan {
 
     public EcosystemMan() {
         this.environment = new Environment();
-        this.dayCount = 1;
+        this.dayCount = 0;
         this.animals = new ArrayList<>();
         this.plants = new ArrayList<>();
         this.map = Map.init(69, 69);
@@ -88,6 +88,19 @@ public class EcosystemMan {
         this.plants.forEach(p -> this.map.initialisePlacement(p));
     }
 
+    public void updateEnvironmentConditions() {
+        // Increment day count first
+        this.dayCount++;
+        
+        // Check if it's time to change the season (every 5 days)
+        if (this.dayCount == 1 || this.dayCount % 5 == 0) {
+            this.environment.updateSeason();
+        }
+        
+        this.environment.updateTimeOfDay();
+        this.environment.updateWeather();
+    }
+    
      public void setBiome(Biome biome) {
         this.environment.setBiome(biome);
     }

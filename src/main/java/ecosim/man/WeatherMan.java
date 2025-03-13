@@ -72,11 +72,11 @@ public class WeatherMan extends Observable {
             cumulative += entry.getValue();
             if (random <= cumulative) {
                 this.currentWeather = entry.getKey();
+                changeManager.notifyObservers(this); 
                 return;
             }
         }
         this.currentWeather = Weather.CLOUDY; // fallback
         changeManager.notifyObservers(this);
     }
-
 }

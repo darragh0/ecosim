@@ -25,6 +25,7 @@ public class EcosystemController {
         Runtime.getRuntime().addShutdownHook(new Thread(this::exit));
         this.view.welcome();
         this.setup();
+        this.runSimulation();
         this.view.displayDailyReport(this.man);
     }
 
@@ -44,5 +45,10 @@ public class EcosystemController {
 
         this.man.populateMap();
     }
+
+    public void runSimulation() {
+        this.man.updateEnvironmentConditions();
+    }
+
 
 }
