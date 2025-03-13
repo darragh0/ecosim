@@ -47,6 +47,7 @@ public class EcosystemController {
 
     public void runSimulation() {
         this.man.updateEnvironmentConditions();
+        this.view.displayEnvironmentConditions(this.man);
     }
 
 

@@ -42,7 +42,6 @@ public abstract class DesertPlant extends Plant {
 
         // Update the growth rate based on the adjustment
         this.growthRate += this.growthRate * growthAdjustment;
-        System.out.println("Updated growth rate for " + this.getClass().getSimpleName() + ": " + this.growthRate);
     }
 
 }
