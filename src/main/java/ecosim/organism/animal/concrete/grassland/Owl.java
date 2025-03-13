@@ -1,9 +1,11 @@
-package ecosim.organism.animal;
+package ecosim.organism.animal.concrete.grassland;
 
 
 import ecosim.enm.ActivityType;
 import ecosim.enm.Diet;
 import ecosim.enm.Size;
+import ecosim.organism.animal.abs.GrasslandAnimal;
+
 
 /**
  * Represents an Owl, a nocturnal carnivore
@@ -15,15 +17,17 @@ public class Owl extends GrasslandAnimal {
     private static int owlCount = 0;
 
     public Owl() {
-        super(Size.SMALL, Diet.CARNIVORE, ActivityType.NOCTURNAL, false, ++owlCount);	
+        super(Size.SMALL, Diet.CARNIVORE, ActivityType.NOCTURNAL, false, ++owlCount);
     }
 
     @Override
     public void makeSound() {
         System.out.println("Hoo!");
     }
+
     @Override
     public Owl clone() {
         return new Owl();
     }
+
 }

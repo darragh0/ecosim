@@ -1,7 +1,9 @@
-package ecosim.organism.plant;
+package ecosim.organism.plant.concrete.grassland;
+
 
 import ecosim.enm.Size;
 import ecosim.enm.Weather;
+import ecosim.organism.plant.abs.GrasslandPlant;
 
 
 /*
@@ -11,6 +13,7 @@ import ecosim.enm.Weather;
  */
 public class Bush extends GrasslandPlant {
     private static int bushCount = 0;
+
     public Bush() {
         super(Size.MEDIUM, ++bushCount);
     }
@@ -19,4 +22,5 @@ public class Bush extends GrasslandPlant {
     public void updateGrowthRate(Weather currentWeather) {
         super.updateGrowthRate(currentWeather);
     }
+
 }

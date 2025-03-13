@@ -1,9 +1,11 @@
-package ecosim.organism.animal;
+package ecosim.organism.animal.concrete.desert;
 
 
 import ecosim.enm.ActivityType;
 import ecosim.enm.Diet;
 import ecosim.enm.Size;
+import ecosim.organism.animal.abs.DesertAnimal;
+
 
 /**
  * Represents a Snake, a nocturnal carnivore
@@ -22,8 +24,10 @@ public class Snake extends DesertAnimal {
     public void makeSound() {
         System.out.println("Hiss!");
     }
+
     @Override
     public Snake clone() {
         return new Snake();
     }
+
 }

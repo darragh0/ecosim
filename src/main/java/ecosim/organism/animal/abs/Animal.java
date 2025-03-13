@@ -1,4 +1,5 @@
-package ecosim.organism.animal;
+package ecosim.organism.animal.abs;
+
 
 import ecosim.attrs.Observable;
 import ecosim.attrs.Observer;
@@ -13,7 +14,8 @@ import ecosim.map.Map;
 import ecosim.organism.Organism;
 import ecosim.organism.animal.conscious_state.Conscious;
 import ecosim.organism.animal.conscious_state.ConsciousState;
-import ecosim.organism.plant.Plant;
+import ecosim.organism.plant.abs.Plant;
+
 
 /**
  * Abstract class representing an animal in the ecosystem,
@@ -26,7 +28,7 @@ public abstract class Animal extends Organism implements Observer {
     protected Diet diet;
     protected ActivityType activityType;
     protected ConsciousState consciousState;
-    protected ActivityState activityState; 
+    protected ActivityState activityState;
     protected boolean canHibernate;
     protected float survivalChance;
     protected float reproductiveChance;
@@ -64,11 +66,11 @@ public abstract class Animal extends Organism implements Observer {
         return this.activityType;
     }
 
-    public ActivityState getActivityState() { 
+    public ActivityState getActivityState() {
         return this.activityState;
     }
 
-    public void setSleepState(ActivityState activityState) { 
+    public void setSleepState(ActivityState activityState) {
         this.activityState = activityState;
     }
 
@@ -76,7 +78,7 @@ public abstract class Animal extends Organism implements Observer {
         this.health = health;
     }
 
-    public  void makeSound() {
+    public void makeSound() {
         System.out.println("The animal makes a sound.");
     };
 
@@ -84,10 +86,10 @@ public abstract class Animal extends Organism implements Observer {
         boolean isDietCompatible = this.diet != Diet.HERBIVORE;
         boolean isDifferentSpecies = this.getClass() != potentialPrey.getClass();
         boolean isPredatorLargeEnough = this.size.ordinal() >= potentialPrey.size.ordinal();
-        
+
         return isDietCompatible && isDifferentSpecies && isPredatorLargeEnough;
     }
-    
+
     public boolean canEatPlant() {
         return this.diet != Diet.CARNIVORE;
     }
@@ -95,24 +97,24 @@ public abstract class Animal extends Organism implements Observer {
     public boolean eat(Animal animal) {
         boolean canEat = canEatAnimal(animal);
 
-        if (canEat && Math.random() < animal.survivalChance) { 
+        if (canEat && Math.random() < animal.survivalChance) {
             System.out.println(this + " eats " + animal + " and gains " + animal.getNutritionalValue() + " health.");
-            this.restoreHealth(animal.getNutritionalValue()); 
-            return true; 
+            this.restoreHealth(animal.getNutritionalValue());
+            return true;
         }
         System.out.println(this + " tries to eat " + animal + " but fails.");
         return false;
     };
 
     public boolean eat(Plant plant) {
-       boolean canEat = canEatPlant();
+        boolean canEat = canEatPlant();
         if (canEat) {
             System.out.println(this + " eats " + plant + " and gains " + plant.getNutritionalValue() + " health.");
             this.restoreHealth(plant.getNutritionalValue());
             plant.beEaten();
             return true;
-        }       
-       return false;
+        }
+        return false;
     };
 
     public void breed() {
@@ -125,7 +127,7 @@ public abstract class Animal extends Organism implements Observer {
     @Override
     public abstract Animal clone();
 
-    public Animal createClone(){
+    public Animal createClone() {
         Animal clone = clone();
         clone.setHealth(this.getMaxHealth() / 2);
         return clone;
@@ -148,13 +150,21 @@ public abstract class Animal extends Organism implements Observer {
 
     public void handleSeasonUpdate(Season season) {
         switch (season) {
-            case Season.WINTER -> {if (canHibernate) {setSleepState(ActivityState.HIBERNATING); }}
+            case Season.WINTER -> {
+                if (canHibernate) {
+                    setSleepState(ActivityState.HIBERNATING);
+                }
+            }
             case Season.SUMMER -> setSleepState(ActivityState.AWAKE);
             case Season.SPRING -> setSleepState(ActivityState.AWAKE);
-            case Season.AUTUMN -> {if(canHibernate){setSleepState(ActivityState.HIBERNATING);}}
-            default -> setSleepState(ActivityState.AWAKE);
+            case Season.AUTUMN -> {
+                if (canHibernate) {
+                    setSleepState(ActivityState.HIBERNATING);
+                }
             }
+            default -> setSleepState(ActivityState.AWAKE);
         }
+    }
 
     public void handleTimeOfDayUpdate(TimeOfDay timeOfDay) {
         switch (timeOfDay) {
@@ -200,6 +210,7 @@ public abstract class Animal extends Organism implements Observer {
     }
 
     public void restoreHealth(float amount) {
-        this.health = Math.min(maxHealth, this.health + amount); 
+        this.health = Math.min(maxHealth, this.health + amount);
     }
+
 }

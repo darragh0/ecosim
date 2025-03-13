@@ -1,9 +1,11 @@
-package ecosim.organism.animal;
+package ecosim.organism.animal.concrete.grassland;
 
 
 import ecosim.enm.ActivityType;
 import ecosim.enm.Diet;
 import ecosim.enm.Size;
+import ecosim.organism.animal.abs.GrasslandAnimal;
+
 
 /**
  * Represents a Rabbit, a diurnal herbivore
@@ -22,8 +24,10 @@ public class Rabbit extends GrasslandAnimal {
     public void makeSound() {
         System.out.println("Squeak!");
     }
+
     @Override
     public Rabbit clone() {
         return new Rabbit();
     }
+
 }

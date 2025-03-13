@@ -1,6 +1,8 @@
 package ecosim.organism.animal.decorator;
 
-import ecosim.organism.animal.Animal;
+
+import ecosim.organism.animal.abs.Animal;
+
 
 /**
  * Decorator class that enhances the survival chance
@@ -14,8 +16,10 @@ public class SurvivabilityBoostDecorator extends AnimalDecorator {
         super(animal);
         this.survivalChance += 0.2f;
     }
+
     @Override
     public Animal clone() {
         return new SurvivabilityBoostDecorator(animal.clone());
     }
+
 }

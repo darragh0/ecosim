@@ -1,9 +1,11 @@
-package ecosim.organism.animal;
+package ecosim.organism.animal.concrete.grassland;
 
 
 import ecosim.enm.ActivityType;
 import ecosim.enm.Diet;
 import ecosim.enm.Size;
+import ecosim.organism.animal.abs.GrasslandAnimal;
+
 
 /**
  * Represents a Fox, a nocturnal carnivore
@@ -12,7 +14,7 @@ import ecosim.enm.Size;
  * @author jjola00
  */
 public class Fox extends GrasslandAnimal {
-    private static int foxCount= 0;
+    private static int foxCount = 0;
 
     public Fox() {
         super(Size.MEDIUM, Diet.CARNIVORE, ActivityType.NOCTURNAL, false, ++foxCount);
@@ -22,8 +24,10 @@ public class Fox extends GrasslandAnimal {
     public void makeSound() {
         System.out.println("Ring-ding-ding-ding-dingeringeding! Wa-pa-pa-pa-pa-pa-pow!");
     }
+
     @Override
     public Fox clone() {
         return new Fox();
     }
+
 }

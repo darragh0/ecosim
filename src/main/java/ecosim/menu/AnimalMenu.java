@@ -2,8 +2,7 @@ package ecosim.menu;
 
 
 import java.util.List;
-
-import ecosim.organism.animal.Animal;
+import ecosim.organism.animal.abs.Animal;
 
 
 public class AnimalMenu extends OrganismMenu<Animal> {

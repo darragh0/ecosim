@@ -1,8 +1,10 @@
-package ecosim.organism.plant;
+package ecosim.organism.plant.energy_cycle_state;
+
 
 // Plants will photosynthesize at day -> day state
 import ecosim.enm.Weather;
 import ecosim.enm.TimeOfDay;
+
 
 public class Photosynthesis implements EnergyCycleState {
     @Override
@@ -20,12 +22,13 @@ public class Photosynthesis implements EnergyCycleState {
             default:
                 adjustedGrowthRate = growthRate * 1.02f; // Increase growth rate by 2% for all other weather conditions
                 break;
-                
+
         }
 
         System.out.println("Performing photosynthesis. Growth rate increased by: " + adjustedGrowthRate);
-        
+
         growthRate += adjustedGrowthRate; // Update the growth rate after photosynthesis is performed
-        
+
     }
+
 }

@@ -8,8 +8,8 @@ import static ecosim.common.io.ConsoleIO.prettyPrintln;
 import ecosim.common.io.enm.BoxDrawingChar;
 import ecosim.enm.Direction;
 import ecosim.organism.Organism;
-import ecosim.organism.animal.Animal;
-import ecosim.organism.plant.Plant;
+import ecosim.organism.animal.abs.Animal;
+import ecosim.organism.plant.abs.Plant;
 
 
 /**
@@ -80,14 +80,14 @@ public class Map {
                 continue;
 
             Organism otherOrg = cell.get();
-            boolean organismEaten = switch(otherOrg) {
-            case Animal otherAn -> an.eat(otherAn);
-            case Plant plant -> an.eat(plant);
-            default -> false;
+            boolean organismEaten = switch (otherOrg) {
+                case Animal otherAn -> an.eat(otherAn);
+                case Plant plant -> an.eat(plant);
+                default -> false;
             };
 
-            if (organismEaten){
-            this.grid.rmv(otherOrg);
+            if (organismEaten) {
+                this.grid.rmv(otherOrg);
             }
             break;
         }

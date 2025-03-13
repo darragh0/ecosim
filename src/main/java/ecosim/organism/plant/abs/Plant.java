@@ -1,10 +1,11 @@
-package ecosim.organism.plant;
+package ecosim.organism.plant.abs;
 /*
  * This is the abstract class for all plants.
  * It contains the common methods and attributes for all plants.
  * It also contains the methods that are common to all plants.
  * Author: @MiaBorkoo
  */
+
 
 // TODO:import Weather and then updateGrowthRate
 import ecosim.attrs.Observable;
@@ -14,7 +15,9 @@ import ecosim.enm.Size;
 import ecosim.enm.TimeOfDay;
 import ecosim.enm.Weather;
 import ecosim.organism.Organism;
-//murder me
+import ecosim.organism.plant.energy_cycle_state.EnergyCycleState;
+import ecosim.organism.plant.energy_cycle_state.Photosynthesis;
+import ecosim.organism.plant.energy_cycle_state.Respiration;
 
 
 public abstract class Plant extends Organism implements Observer {
@@ -27,7 +30,7 @@ public abstract class Plant extends Organism implements Observer {
     private TimeOfDay currentTimeOfDay;
     private Weather currentWeather;
 
-    
+
 
     public Plant(Size size, int num) {
         super(size, num);
@@ -42,12 +45,12 @@ public abstract class Plant extends Organism implements Observer {
     // These are the methods that are common to all plants
     @Override // clonable is a part of the java.lang.Cloneable interface
     public Plant clone() {
-        //temporary i dont want to steal mia's lines of code
+        // temporary i dont want to steal mia's lines of code
         return this;
     }
 
     @Override
-    public void update(Observable observable){
+    public void update(Observable observable) {
         Event event = observable.getCurrentState();
         switch (event) {
             case Weather newWeather -> handleWeatherUpdate(newWeather);
@@ -82,28 +85,29 @@ public abstract class Plant extends Organism implements Observer {
     }
 
     public void beEaten() {
-        //TODO: Mia can you handle logic to reduce bitecapacity when func is called, and print plant has died when bitecapacity reaches 0
+        // TODO: Mia can you handle logic to reduce bitecapacity when func is called, and print plant has died when
+        // bitecapacity reaches 0
         System.out.println("Plant has died from being eaten");
         // TODO: remove plant from the grid
     }
 
-   
+
 
     public void performAsexualReproduction() {
-        //also temporary (sorry mia i dont want to steal your code)
+        // also temporary (sorry mia i dont want to steal your code)
         // try {
-        //     Plant offspring = this.clone();
+        // Plant offspring = this.clone();
         // } catch (CloneNotSupportedException e) {
-        //     // TODO Auto-generated catch block
-        //     e.printStackTrace();
+        // // TODO Auto-generated catch block
+        // e.printStackTrace();
         // }
     }
 
-    //timplementing energy cycle, photosynthesis if day, respiration if night
+    // timplementing energy cycle, photosynthesis if day, respiration if night
     public void performDailyActivities() {
         TimeOfDay currentTime = getCurrentTimeOfDay();
         Weather currentWeather = getCurrentWeather();
-        
+
         if (currentTime == TimeOfDay.DAY) {
             setEnergyCycleState(new Photosynthesis());
         } else {
@@ -168,7 +172,7 @@ public abstract class Plant extends Organism implements Observer {
         this.currentTimeOfDay = timeOfDay;
         // The update method handles the behavior changes already
     }
-    
+
     /**
      * Updates the current weather for the plant
      * @param weather The new weather condition
@@ -177,5 +181,6 @@ public abstract class Plant extends Organism implements Observer {
         this.currentWeather = weather;
         // The update method handles the behavior changes already
     }
+
 }
 

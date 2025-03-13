@@ -1,7 +1,9 @@
-package ecosim.organism.plant;
+package ecosim.organism.plant.concrete.grassland;
+
 
 import ecosim.enm.Size;
 import ecosim.enm.Weather;
+import ecosim.organism.plant.abs.GrasslandPlant;
 
 
 /*
@@ -14,14 +16,15 @@ import ecosim.enm.Weather;
 
 public class Tree extends GrasslandPlant {
     private static int treeCount = 0;
- 
+
     public Tree() {
         super(Size.LARGE, ++treeCount);
-       
+
     }
 
     @Override
     public void updateGrowthRate(Weather currentWeather) {
         super.updateGrowthRate(currentWeather); // Call the method from the base class
     }
+
 }

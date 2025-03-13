@@ -1,7 +1,7 @@
 package ecosim.organism.animal.factory;
 
 
-import ecosim.organism.animal.GrasslandAnimal;
+import ecosim.organism.animal.abs.GrasslandAnimal;
 
 
 /**
