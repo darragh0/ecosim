@@ -71,6 +71,16 @@ public class EcosystemMan {
         };
     }
 
+    public void loadEcosystem(List<Class<? extends Animal>> animals, List<Class<? extends Plant>> plants, String biome) {
+        for (Class<? extends Animal> animal : animals) {
+            this.createAnimal(animal, biome);
+        }
+    
+        for (Class<? extends Plant> plant : plants) {
+            this.createPlant(plant, biome);
+        }
+    }
+    
     public void populateMap() {
         // Randomly place all organisms on the map during simulation setup
         this.animals.forEach(a -> this.map.initialisePlacement(a));
