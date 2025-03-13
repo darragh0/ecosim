@@ -9,7 +9,7 @@ public enum TimeOfDay implements Event {
 
     @Override
     public String getIcon() {
-        return icon;
+        return this.icon;
     }
 
     @Override

@@ -12,7 +12,7 @@ public enum Weather implements Event {
 
     @Override
     public String getIcon() {
-        return icon;
+        return this.icon;
     }
 
 
