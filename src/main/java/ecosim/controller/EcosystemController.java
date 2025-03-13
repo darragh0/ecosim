@@ -3,7 +3,6 @@ package ecosim.controller;
 
 import java.util.List;
 
-import ecosim.Environment;
 import ecosim.enm.Biome;
 import ecosim.man.EcosystemMan;
 import ecosim.organism.animal.Animal;
@@ -34,14 +33,13 @@ public class EcosystemController {
     }
 
     public void setup() {
-        final Environment env = this.man.getEnvironment();
         final Biome biome = this.view.promptBiomeSelection();
+        
+        this.man.setBiome(biome);
 
-        env.setBiome(biome);
-
-        final List<Class<? extends Animal>> animals = this.view.promptAnimalSelection(env.getBiomeAnimals(), 3);
-        final List<Class<? extends Plant>> plants = this.view.promptPlantSelection(env.getBiomePlants(), 3);
-
+        final List<Class<? extends Animal>> animals = this.view.promptAnimalSelection(this.man.getBiomeAnimals(), 3);
+        final List<Class<? extends Plant>> plants = this.view.promptPlantSelection(this.man.getBiomePlants(), 3);
+        
         this.man.loadEcosystem(animals, plants, biome.name());
 
         this.man.populateMap();
