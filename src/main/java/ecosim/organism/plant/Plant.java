@@ -14,10 +14,10 @@ import ecosim.attrs.Observer;
 import ecosim.enm.Event;
 import ecosim.enm.TimeOfDay;
 import ecosim.enm.Weather;
-import ecosim.man.TimeOfDayMan;
-import ecosim.man.WeatherMan;
-import ecosim.organism.plant.Photosynthesis;
-import ecosim.organism.plant.Respiration;
+// import ecosim.man.TimeOfDayMan;
+// import ecosim.man.WeatherMan;
+// import ecosim.organism.plant.Photosynthesis;
+// import ecosim.organism.plant.Respiration;
 
 
 public abstract class Plant extends Organism implements Observer {
@@ -48,6 +48,12 @@ public abstract class Plant extends Organism implements Observer {
     @Override // clonable is a part of the java.lang.Cloneable interface
     public Plant clone() throws CloneNotSupportedException {
         return (Plant) super.clone();
+    }
+
+    @Override
+    public void setCoords(int x, int y) {
+        this.coords.setX(x);
+        this.coords.setY(y);
     }
 
     @Override
@@ -143,8 +149,6 @@ public abstract class Plant extends Organism implements Observer {
     public String getName() {
         return name;
     }
-
-
 
     /**
      * Gets the current time of day
