@@ -2,14 +2,9 @@ package ecosim.controller;
 
 
 import java.util.List;
-import java.util.Optional;
-import java.util.logging.Level;
 
-import ecosim.common.io.FileIO;
 import ecosim.enm.Biome;
 import ecosim.man.EcosystemMan;
-import ecosim.man.LoggerMan;
-import ecosim.misc.EcosystemConfig;
 import ecosim.organism.animal.Animal;
 import ecosim.organism.plant.Plant;
 import ecosim.view.EcosystemView;
@@ -41,20 +36,12 @@ public class EcosystemController {
         final Biome biome = this.view.promptBiomeSelection();
         this.man.setBiome(biome);
 
-        final Optional<EcosystemConfig> fileCfg = FileIO.parseEcosystemConfig();
-        if (fileCfg.isEmpty()) {
-            LoggerMan.log(Level.SEVERE, "Could not setup ecosystem controller");
-            return;
-        }
-        EcosystemConfig cfg = fileCfg.get();
-
         final List<Class<? extends Animal>> animals =
-            this.view.promptAnimalSelection(this.man.getBiomeAnimals(), cfg.initialAnimals());
+            this.view.promptAnimalSelection(this.man.getBiomeAnimals(), this.man.getInitialAnimals());
         final List<Class<? extends Plant>> plants =
-            this.view.promptPlantSelection(this.man.getBiomePlants(), cfg.initialPlants());
+            this.view.promptPlantSelection(this.man.getBiomePlants(), this.man.getInitialPlants());
 
         this.man.loadEcosystem(animals, plants, biome.name());
-
         this.man.populateMap();
     }
 
