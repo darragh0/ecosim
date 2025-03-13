@@ -24,8 +24,8 @@ public class SeasonMan extends Observable {
             case SUMMER -> this.currentSeason = AUTUMN;
             case AUTUMN -> this.currentSeason = WINTER;
             case WINTER -> this.currentSeason = SPRING;
-        };
-        changeManager.notifyObservers(this);;
+        }
+        changeManager.notifyObservers(this);
     }
 
     @Override
