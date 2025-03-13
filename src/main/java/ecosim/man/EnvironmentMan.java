@@ -1,4 +1,4 @@
-package ecosim;
+package ecosim.man;
 
 
 import java.util.List;
@@ -8,17 +8,11 @@ import ecosim.enm.Biome;
 import ecosim.enm.Season;
 import ecosim.enm.TimeOfDay;
 import ecosim.enm.Weather;
-import ecosim.man.BiomeMan;
-import ecosim.man.ChangeMan;
-import ecosim.man.SeasonMan;
-import ecosim.man.SimpleChangeMan;
-import ecosim.man.TimeOfDayMan;
-import ecosim.man.WeatherMan;
 import ecosim.organism.animal.Animal;
 import ecosim.organism.plant.Plant;
 
 
-public class Environment {
+public class EnvironmentMan {
     private WeatherMan weatherMan;
     private SeasonMan seasonMan;
     private TimeOfDayMan timeOfDayMan;
