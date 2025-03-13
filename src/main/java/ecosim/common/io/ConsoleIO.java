@@ -1,7 +1,10 @@
 package ecosim.common.io;
 
 
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.OptionalInt;
 import java.util.Stack;
 import java.util.function.Consumer;
 
@@ -12,7 +15,7 @@ import ecosim.common.io.enm.TextStyle;
 public final class ConsoleIO {
 
     private static final String ANSI_REGEX = "\u001B\\[[;\\d]*m";
-    private static final Scanner scanner = new Scanner(System.in);
+    public static final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     private static final int COLS;
     private static final int LINES;
 
@@ -45,10 +48,6 @@ public final class ConsoleIO {
         return LINES;
     }
 
-    public static void closeConsoleInputSource() {
-        scanner.close();
-    }
-
     public static String strInput(final String prompt) {
         return strInput(prompt, false);
     }
@@ -57,27 +56,18 @@ public final class ConsoleIO {
         return strInput("", allowEmpty);
     }
 
-    public static int intInput(final String prompt, final int min, final int max) {
-        if (min > max) {
+    public static OptionalInt parseInt(final String str) {
+        try {
+            return OptionalInt.of(Integer.parseInt(str));
+        } catch (NumberFormatException e) {
+            return OptionalInt.empty();
+        }
+    }
+
+    public static boolean notInRange(int num, int min, int max) {
+        if (min > max)
             throw new IllegalArgumentException("Min cannot be greater than max");
-        }
-
-        int number;
-        while (true) {
-            prettyPrint(prompt);
-
-            try {
-                number = Integer.parseInt(scanner.nextLine().trim());
-            } catch (NumberFormatException e) {
-                printErr("Enter a number");
-                continue;
-            }
-
-            if (number < min || number > max)
-                printErr("Enter a number between %d-%d", min, max);
-            else
-                return number;
-        }
+        return num < min || num > max;
     }
 
     public static void prettyPrint(String format, final Object... args) {
@@ -197,7 +187,13 @@ public final class ConsoleIO {
     private static String strInput(final String prompt, final boolean allowEmpty) {
         while (true) {
             prettyPrint(prompt);
-            String in = scanner.nextLine().trim();
+            String in;
+
+            try {
+                in = reader.readLine();
+            } catch (IOException e) {
+                return "";
+            }
 
             if (in.isEmpty() && !allowEmpty)
                 printErr("Input cannot be empty");

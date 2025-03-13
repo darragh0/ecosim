@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.function.BiConsumer;
 
 import static ecosim.common.io.ConsoleIO.prettify;
+import static ecosim.common.io.ConsoleIO.prettyPrintln;
+import static ecosim.common.io.ConsoleIO.toggleCursor;
 import ecosim.enm.Biome;
 import ecosim.man.EcosystemMan;
 import ecosim.menu.AnimalMenu;
@@ -22,8 +24,16 @@ public class EcosystemView {
     private static final BiConsumer<StringBuilder, String> add =
         (builder, str) -> builder.append(prettify(str)).append("\n");
 
-    public void showSplashScreen() {
+    public void welcome() {
         SplashScreen.show();
+        prettyPrintln("<B><g>[Simulation Started]</g></B>\n");
+        prettyPrintln("Welcome to the Ecosystem Simulator!");
+        prettyPrintln("To setup the ecosystem, please follow the prompts below.\n");
+    }
+
+    public void end(int exitCode) {
+        toggleCursor(true);
+        prettyPrintln("\n<B><r>[Simulator finished w/ exit code %d]</r></B>", exitCode);
     }
 
     public void displayDailyReport(EcosystemMan ecosystem) {

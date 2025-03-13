@@ -13,8 +13,8 @@ public abstract class OrganismMenu<T extends Organism> extends Menu<Class<? exte
     }
 
     @Override
-    public String getOptionString(final int index) {
-        return this.options.get(index).getSimpleName();
+    public String optionToString(final Class<? extends T> option) {
+        return option.getSimpleName();
     }
 
 }
