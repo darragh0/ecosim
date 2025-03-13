@@ -15,8 +15,8 @@ import ecosim.menu.BiomeMenu;
 import ecosim.menu.OrganismMenu;
 import ecosim.menu.PlantMenu;
 import ecosim.organism.Organism;
-import ecosim.organism.animal.Animal;
-import ecosim.organism.plant.Plant;
+import ecosim.organism.animal.abs.Animal;
+import ecosim.organism.plant.abs.Plant;
 
 
 public class EcosystemView {

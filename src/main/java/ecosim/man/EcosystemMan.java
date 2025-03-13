@@ -11,12 +11,12 @@ import ecosim.common.io.FileIO;
 import ecosim.enm.Biome;
 import ecosim.map.Map;
 import ecosim.misc.EcosystemConfig;
-import ecosim.organism.animal.Animal;
+import ecosim.organism.animal.abs.Animal;
 import ecosim.organism.animal.decorator.ConservationBoostDecorator;
 import ecosim.organism.animal.decorator.FertilityBoostDecorator;
 import ecosim.organism.animal.decorator.SurvivabilityBoostDecorator;
 import ecosim.organism.animal.factory.AnimalFactoryProducer;
-import ecosim.organism.plant.Plant;
+import ecosim.organism.plant.abs.Plant;
 import ecosim.organism.plant.factory.PlantFactoryProducer;
 
 

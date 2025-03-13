@@ -13,8 +13,8 @@ import static ecosim.common.Util.sub;
 import ecosim.common.io.FileIO;
 import ecosim.enm.Biome;
 import ecosim.organism.Organism;
-import ecosim.organism.animal.Animal;
-import ecosim.organism.plant.Plant;
+import ecosim.organism.animal.abs.Animal;
+import ecosim.organism.plant.abs.Plant;
 
 
 public class BiomeMan {

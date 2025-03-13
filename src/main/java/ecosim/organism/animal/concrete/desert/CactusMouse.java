@@ -1,9 +1,11 @@
-package ecosim.organism.animal;
+package ecosim.organism.animal.concrete.desert;
 
 
 import ecosim.enm.ActivityType;
 import ecosim.enm.Diet;
 import ecosim.enm.Size;
+import ecosim.organism.animal.abs.DesertAnimal;
+
 
 /**
  * Represents a Cactus Mouse, a nocturnal herbivore
@@ -22,8 +24,10 @@ public class CactusMouse extends DesertAnimal {
     public void makeSound() {
         System.out.println("Squeal!");
     }
+
     @Override
     public CactusMouse clone() {
         return new CactusMouse();
     }
+
 }

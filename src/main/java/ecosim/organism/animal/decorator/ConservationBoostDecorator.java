@@ -1,6 +1,8 @@
 package ecosim.organism.animal.decorator;
 
-import ecosim.organism.animal.Animal;
+
+import ecosim.organism.animal.abs.Animal;
+
 
 /**
  * Decorator class that enhances the health conservation
@@ -8,18 +10,19 @@ import ecosim.organism.animal.Animal;
  * 
  * @author jjola00
  */
- public class ConservationBoostDecorator extends AnimalDecorator {
+public class ConservationBoostDecorator extends AnimalDecorator {
     public ConservationBoostDecorator(Animal animal) {
         super(animal);
     }
 
     @Override
     public void reduceHealth(float amount) {
-        super.reduceHealth(amount * 0.5f); 
+        super.reduceHealth(amount * 0.5f);
     }
 
     @Override
     public Animal clone() {
         return new ConservationBoostDecorator(animal.clone());
     }
+
 }

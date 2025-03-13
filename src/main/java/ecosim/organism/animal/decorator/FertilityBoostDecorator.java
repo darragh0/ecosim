@@ -1,6 +1,8 @@
 package ecosim.organism.animal.decorator;
 
-import ecosim.organism.animal.Animal;
+
+import ecosim.organism.animal.abs.Animal;
+
 
 /**
  * Decorator class that enhances the reproductive chance
@@ -14,8 +16,10 @@ public class FertilityBoostDecorator extends AnimalDecorator {
         super(animal);
         this.reproductiveChance += 0.2f;
     }
+
     @Override
     public Animal clone() {
         return new FertilityBoostDecorator(animal.clone());
     }
+
 }

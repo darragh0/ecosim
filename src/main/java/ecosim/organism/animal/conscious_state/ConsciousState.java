@@ -1,6 +1,8 @@
 package ecosim.organism.animal.conscious_state;
 
-import ecosim.organism.animal.Animal;
+
+import ecosim.organism.animal.abs.Animal;
+
 
 /**
  * Interface representing the conscious state of an animal,
@@ -10,4 +12,5 @@ import ecosim.organism.animal.Animal;
  */
 public interface ConsciousState {
     String move(Animal animal);
+
 }

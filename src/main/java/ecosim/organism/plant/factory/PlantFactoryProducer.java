@@ -1,7 +1,7 @@
 package ecosim.organism.plant.factory;
 
 
-import ecosim.organism.plant.Plant;
+import ecosim.organism.plant.abs.Plant;
 
 
 public class PlantFactoryProducer {
