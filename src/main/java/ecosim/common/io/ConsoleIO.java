@@ -1,6 +1,7 @@
 package ecosim.common.io;
 
 
+import java.util.OptionalInt;
 import java.util.Scanner;
 import java.util.Stack;
 import java.util.function.Consumer;
@@ -57,27 +58,18 @@ public final class ConsoleIO {
         return strInput("", allowEmpty);
     }
 
-    public static int intInput(final String prompt, final int min, final int max) {
-        if (min > max) {
+    public static OptionalInt parseInt(final String str) {
+        try {
+            return OptionalInt.of(Integer.parseInt(str));
+        } catch (NumberFormatException e) {
+            return OptionalInt.empty();
+        }
+    }
+
+    public static boolean notInRange(int num, int min, int max) {
+        if (min > max)
             throw new IllegalArgumentException("Min cannot be greater than max");
-        }
-
-        int number;
-        while (true) {
-            prettyPrint(prompt);
-
-            try {
-                number = Integer.parseInt(scanner.nextLine().trim());
-            } catch (NumberFormatException e) {
-                printErr("Enter a number");
-                continue;
-            }
-
-            if (number < min || number > max)
-                printErr("Enter a number between %d-%d", min, max);
-            else
-                return number;
-        }
+        return num < min || num > max;
     }
 
     public static void prettyPrint(String format, final Object... args) {
