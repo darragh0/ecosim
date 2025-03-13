@@ -15,7 +15,7 @@ public class SeasonMan extends Observable {
     public SeasonMan(ChangeMan changeManager) {
         // Start the year in Autumn
         super(changeManager);
-        this.currentSeason = AUTUMN;
+        this.currentSeason = SUMMER;
     }
 
     public void getNextSeason() {
