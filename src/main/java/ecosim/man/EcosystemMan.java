@@ -6,10 +6,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
 
-import ecosim.Environment;
 import static ecosim.common.Util.randInt;
+import ecosim.common.io.FileIO;
 import ecosim.enm.Biome;
 import ecosim.map.Map;
+import ecosim.misc.EcosystemConfig;
 import ecosim.organism.animal.abs.Animal;
 import ecosim.organism.animal.decorator.ConservationBoostDecorator;
 import ecosim.organism.animal.decorator.FertilityBoostDecorator;
@@ -17,13 +18,11 @@ import ecosim.organism.animal.decorator.SurvivabilityBoostDecorator;
 import ecosim.organism.animal.factory.AnimalFactoryProducer;
 import ecosim.organism.plant.abs.Plant;
 import ecosim.organism.plant.factory.PlantFactoryProducer;
-import ecosim.common.io.FileIO;
-import ecosim.misc.EcosystemConfig;
 
 
 public class EcosystemMan {
 
-    private final Environment environment;
+    private final EnvironmentMan environment;
     private int dayCount;
     private final ArrayList<Animal> animals;
     private final ArrayList<Plant> plants;
@@ -31,7 +30,7 @@ public class EcosystemMan {
     private final EcosystemConfig config;
 
     public EcosystemMan() {
-        this.environment = new Environment();
+        this.environment = new EnvironmentMan();
         this.dayCount = 0;
         this.animals = new ArrayList<>();
         this.plants = new ArrayList<>();
