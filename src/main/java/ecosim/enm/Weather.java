@@ -11,6 +11,11 @@ public enum Weather implements Event {
     private final String icon;
 
     Weather(String icon) {
-        this.icon = icon ;
+        this.icon = icon;
     }
+
+    public String getIcon() {
+        return icon;
+    }
+
 }

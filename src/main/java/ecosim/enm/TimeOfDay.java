@@ -10,4 +10,9 @@ public enum TimeOfDay implements Event {
     TimeOfDay(String icon) {
         this.icon = icon;
     }
+
+    public String getIcon() {
+        return icon;
+    }
+
 }
