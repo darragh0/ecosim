@@ -47,14 +47,7 @@ public class EcosystemController {
         final List<Class<? extends Animal>> animals = this.view.promptAnimalSelection(env.getBiomeAnimals(), 3);
         final List<Class<? extends Plant>> plants = this.view.promptPlantSelection(env.getBiomePlants(), 3);
 
-        // load ecosystem with animals and plants once factory is implemented
-        for (Class<? extends Animal> animal : animals) {
-            this.man.createAnimal(animal, biome.name());
-        }
-
-        for (Class<? extends Plant> plant : plants) {
-            this.man.createPlant(plant, biome.name());
-        }
+        this.man.loadEcosystem(animals, plants, biome.name());
 
         this.man.populateMap();
     }
