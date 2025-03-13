@@ -8,14 +8,9 @@ import ecosim.enm.Biome;
 import ecosim.enm.Season;
 import ecosim.enm.TimeOfDay;
 import ecosim.enm.Weather;
-import ecosim.man.BiomeMan;
-import ecosim.man.ChangeMan;
-import ecosim.man.SeasonMan;
-import ecosim.man.SimpleChangeMan;
-import ecosim.man.TimeOfDayMan;
-import ecosim.man.WeatherMan;
 import ecosim.organism.animal.abs.Animal;
 import ecosim.organism.plant.abs.Plant;
+
 
 
 public class EnvironmentMan {
