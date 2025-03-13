@@ -5,27 +5,19 @@ public enum TextStyle {
     BOLD("\033[1m"),
     ITALIC("\033[3m"),
     UNDERLINE("\033[4m"),
-    REVERSED("\033[7m"),
+    REVERSE("\033[7m"),
     STRIKETHROUGH("\033[9m"),
-    NONE("\033[0;0m");
+    RESET("\033[0m");
 
-    private final String value;
+    private final String code;
 
-    TextStyle(String value) {
-        this.value = value;
+    private TextStyle(String code) {
+        this.code = code;
     }
 
-    public String getValue() {
-        return this.value;
-    }
-
-    public static TextStyle from(char ch) {
-        for (TextStyle style : TextStyle.values()) {
-            if (style.toString().charAt(0) == Character.toUpperCase(ch)) {
-                return style;
-            }
-        }
-        return TextStyle.NONE;
+    public String getCode() {
+        return code;
     }
 
 }
+

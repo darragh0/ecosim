@@ -5,11 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.OptionalInt;
 import java.util.stream.IntStream;
-
+import ecosim.common.Util;
 import static ecosim.common.io.ConsoleIO.notInRange;
-import static ecosim.common.io.ConsoleIO.parseInt;
-import static ecosim.common.io.ConsoleIO.prettyPrintln;
-import static ecosim.common.io.ConsoleIO.printErr;
+import static ecosim.common.io.ConsoleIO.pprintln;
+import static ecosim.common.io.ConsoleIO.eprint;
 import static ecosim.common.io.ConsoleIO.strInput;
 
 
@@ -48,11 +47,11 @@ public abstract class Menu<T> {
     }
 
     public void print() {
-        prettyPrintln("<B>%s</B>", this.heading);
-        System.out.println("=".repeat(this.heading.length() + 5));
+        pprintln("[flg:%s]", this.heading);
+        System.out.println("=".repeat(this.heading.length() + 2));
 
         for (int i = 0; i < this.options.size(); i++) {
-            prettyPrintln("<b>%d)</b> %s", i + 1, this.optionStrings.get(i));
+            pprintln("([fly:%d]) [flc:%s]", i + 1, this.optionStrings.get(i));
         }
         System.out.println();
     }
@@ -65,12 +64,12 @@ public abstract class Menu<T> {
 
         while (true) {
             String strIn = strInput(prompt);
-            OptionalInt intIn = parseInt(strIn);
+            OptionalInt intIn = Util.parseInt(strIn);
 
             if (intIn.isPresent()) {
                 int num = intIn.getAsInt();
                 if (notInRange(num, 1, this.options.size())) {
-                    printErr("Enter a number between 1-%d", this.options.size());
+                    eprint("Enter a number between 1-%d", this.options.size());
                     continue;
                 }
                 return this.options.get(num - 1);
@@ -83,7 +82,7 @@ public abstract class Menu<T> {
             if (index.isPresent())
                 return this.options.get(index.getAsInt());
 
-            printErr("Invalid input");
+            eprint("Invalid input");
         }
     }
 

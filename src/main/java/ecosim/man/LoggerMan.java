@@ -8,7 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
-import static ecosim.common.io.ConsoleIO.printErr;
+import static ecosim.common.io.ConsoleIO.eprint;
 import ecosim.common.io.FileIO;
 
 
@@ -47,7 +47,7 @@ public class LoggerMan {
             // Set logger level
             LOGGER.setLevel(Level.ALL);
         } catch (IOException e) {
-            printErr("Logger setup failed: " + e.getMessage());
+            eprint("Logger setup failed: " + e.getMessage());
         }
     }
 

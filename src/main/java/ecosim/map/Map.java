@@ -4,7 +4,7 @@ package ecosim.map;
 import java.util.Optional;
 
 import static ecosim.common.Util.randInt;
-import static ecosim.common.io.ConsoleIO.prettyPrintln;
+import static ecosim.common.io.ConsoleIO.pprintln;
 import ecosim.common.io.enm.BoxDrawingChar;
 import ecosim.enm.Direction;
 import ecosim.organism.Organism;
@@ -51,8 +51,8 @@ public class Map {
 
     public void initialisePlacement(final Organism org) {
         while (true) {
-            final int x = randInt(this.width - 1);
-            final int y = randInt(this.height - 1);
+            final int x = randInt(0, this.width - 1);
+            final int y = randInt(0, this.height - 1);
 
             if (this.get(x, y).isEmpty()) {
                 org.setCoords(x, y);
@@ -135,7 +135,7 @@ public class Map {
     }
 
     public void display() {
-        prettyPrintln(this.toString());
+        pprintln(this.toString());
     }
 
     public int getWidth() {

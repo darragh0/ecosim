@@ -1,6 +1,7 @@
 package ecosim.common;
 
 
+import java.util.OptionalInt;
 import java.util.concurrent.ThreadLocalRandom;
 
 
@@ -18,15 +19,6 @@ public final class Util {
      */
     public static int randInt(final int min, final int max) {
         return ThreadLocalRandom.current().nextInt(min, max + 1);
-    }
-
-    /** 
-     * Return random int in range 0 to max (inclusive).
-     * 
-     * @see #randInt(int, int)
-     */
-    public static int randInt(final int max) {
-        return randInt(0, max);
     }
 
     /**
@@ -75,6 +67,20 @@ public final class Util {
         }
 
         return str.substring(s, e);
+    }
+
+    /**
+     * Parse a string to an integer.
+     *
+     * @param str
+     * @return OptionalInt containing the parsed integer, or empty if NaN
+     */
+    public static OptionalInt parseInt(final String str) {
+        try {
+            return OptionalInt.of(Integer.parseInt(str));
+        } catch (NumberFormatException e) {
+            return OptionalInt.empty();
+        }
     }
 
 }
