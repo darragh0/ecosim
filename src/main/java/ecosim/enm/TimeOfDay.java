@@ -1,5 +1,6 @@
 package ecosim.enm;
 
+import static ecosim.common.Util.title;
 
 public enum TimeOfDay implements Event {
     DAY("🌅"),
@@ -14,7 +15,7 @@ public enum TimeOfDay implements Event {
 
     @Override
     public String toString() {
-        return  this.name().toLowerCase();
+        return title(this.name());
     }
 
     TimeOfDay(String icon) {

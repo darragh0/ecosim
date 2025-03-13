@@ -1,5 +1,6 @@
 package ecosim.enm;
 
+import static ecosim.common.Util.title;
 
 public enum Weather implements Event {
     RAINY("🌧️"),
@@ -18,7 +19,7 @@ public enum Weather implements Event {
 
     @Override
     public String toString() {
-        return  this.name().toLowerCase();
+       return title(this.name());
     }
 
     Weather(String icon) {

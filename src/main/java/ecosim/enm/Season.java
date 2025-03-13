@@ -1,5 +1,6 @@
 package ecosim.enm;
 
+import static ecosim.common.Util.title;
 
 public enum Season implements Event {
     SPRING("🌸"),
@@ -16,7 +17,7 @@ public enum Season implements Event {
 
     @Override
     public String toString() {
-        return this.name().toLowerCase();
+        return title(this.name());
     }
 
     Season(String icon) {   
