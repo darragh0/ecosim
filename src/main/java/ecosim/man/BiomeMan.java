@@ -10,7 +10,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import static ecosim.common.Util.sub;
-import static ecosim.common.Util.title;
 import ecosim.common.io.FileIO;
 import ecosim.enm.Biome;
 import ecosim.organism.Organism;
@@ -65,7 +64,7 @@ public class BiomeMan {
         for (int i = 0; i < jsonArr.length(); i++) {
             final String str = jsonArr.getString(i);
             final String pkg = sub(name.toLowerCase(), 0, -1);
-            final String clsName = "ecosim.organism.%s.%s".formatted(pkg, title(str));
+            final String clsName = "ecosim.organism.%s.%s".formatted(pkg, str);
 
             try {
                 @SuppressWarnings("unchecked")
