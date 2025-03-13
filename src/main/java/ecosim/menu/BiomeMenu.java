@@ -9,7 +9,7 @@ import ecosim.enm.Biome;
 public class BiomeMenu extends Menu<Biome> {
 
     public BiomeMenu(final List<Biome> options) {
-        super("Select The Biome", options);
+        super("Select the Biome", options);
     }
 
     public BiomeMenu(final Biome... options) {
