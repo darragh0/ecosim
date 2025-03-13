@@ -2,9 +2,14 @@ package ecosim.controller;
 
 
 import java.util.List;
+import java.util.Optional;
+import java.util.logging.Level;
 
+import ecosim.common.io.FileIO;
 import ecosim.enm.Biome;
 import ecosim.man.EcosystemMan;
+import ecosim.man.LoggerMan;
+import ecosim.misc.EcosystemConfig;
 import ecosim.organism.animal.Animal;
 import ecosim.organism.plant.Plant;
 import ecosim.view.EcosystemView;
@@ -21,7 +26,6 @@ public class EcosystemController {
     }
 
     public void run() {
-        // sample code of how the controller interacts with the model and view
         Runtime.getRuntime().addShutdownHook(new Thread(this::exit));
         this.view.welcome();
         this.setup();
@@ -35,12 +39,20 @@ public class EcosystemController {
 
     public void setup() {
         final Biome biome = this.view.promptBiomeSelection();
-        
         this.man.setBiome(biome);
 
-        final List<Class<? extends Animal>> animals = this.view.promptAnimalSelection(this.man.getBiomeAnimals(), 3);
-        final List<Class<? extends Plant>> plants = this.view.promptPlantSelection(this.man.getBiomePlants(), 3);
-        
+        final Optional<EcosystemConfig> fileCfg = FileIO.parseEcosystemConfig();
+        if (fileCfg.isEmpty()) {
+            LoggerMan.log(Level.SEVERE, "Could not setup ecosystem controller");
+            return;
+        }
+        EcosystemConfig cfg = fileCfg.get();
+
+        final List<Class<? extends Animal>> animals =
+            this.view.promptAnimalSelection(this.man.getBiomeAnimals(), cfg.initialAnimals());
+        final List<Class<? extends Plant>> plants =
+            this.view.promptPlantSelection(this.man.getBiomePlants(), cfg.initialPlants());
+
         this.man.loadEcosystem(animals, plants, biome.name());
 
         this.man.populateMap();

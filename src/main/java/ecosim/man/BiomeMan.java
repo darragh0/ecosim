@@ -18,6 +18,9 @@ import ecosim.organism.plant.Plant;
 
 
 public class BiomeMan {
+
+    private static final String JSON_FILE = "biome_natives.json";
+
     private final Biome biome;
     private final List<Class<? extends Animal>> animals;
     private final List<Class<? extends Plant>> plants;
@@ -32,7 +35,7 @@ public class BiomeMan {
     public void setupBiome() {
         final String biomeName = this.biome.name();
         LoggerMan.log(Level.INFO, "Setting up biome: {0}", biomeName);
-        final Optional<JSONObject> jsonFile = FileIO.readJSONFile("src/main/resources/json/biome_natives.json");
+        final Optional<JSONObject> jsonFile = FileIO.readJSONFile(JSON_FILE);
 
         if (jsonFile.isEmpty()) {
             LoggerMan.log(Level.SEVERE, "Could not setup biome: {0}", biomeName);
