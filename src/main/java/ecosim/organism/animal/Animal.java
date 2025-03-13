@@ -31,8 +31,8 @@ public abstract class Animal extends Organism implements Observer {
     protected float survivalChance;
     protected float reproductiveChance;
 
-    public Animal(Size size, Diet diet, ActivityType activityType, boolean canHibernate) {
-        super(size); // Default coordinates (0, 0)
+    public Animal(Size size, Diet diet, ActivityType activityType, boolean canHibernate, int num) {
+        super(size, num); // Default coordinates (0, 0)
         this.diet = diet;
         this.activityType = activityType;
         this.consciousState = new Conscious();
@@ -42,7 +42,7 @@ public abstract class Animal extends Organism implements Observer {
     }
 
     public Animal(Animal animal) {
-        super(animal.size);
+        super(animal.size, animal.name);
         this.diet = animal.diet;
         this.activityType = animal.activityType;
         this.consciousState = new Conscious();

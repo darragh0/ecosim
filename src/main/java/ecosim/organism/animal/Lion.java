@@ -2,8 +2,8 @@ package ecosim.organism.animal;
 
 
 import ecosim.enm.ActivityType;
-import ecosim.enm.Size;
 import ecosim.enm.Diet;
+import ecosim.enm.Size;
 
 /**
  * Represents a Lion, a diurnal carnivore
@@ -15,8 +15,7 @@ public class Lion extends GrasslandAnimal {
     private static int lionCount = 0;
 
     public Lion() {
-        super(Size.LARGE, Diet.CARNIVORE, ActivityType.DIURNAL, false);
-        this.name = "Lion (" + ++lionCount + ")";
+        super(Size.LARGE, Diet.CARNIVORE, ActivityType.DIURNAL, false, ++lionCount);
     }
 
     @Override

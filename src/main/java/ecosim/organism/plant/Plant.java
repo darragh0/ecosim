@@ -29,8 +29,8 @@ public abstract class Plant extends Organism implements Observer {
 
     
 
-    public Plant(Size size) {
-        super(size);
+    public Plant(Size size, int num) {
+        super(size, num);
         this.biteCapacity = this.size.getMaxHealth() / BITE_DIVISOR;
         // this.timeOfDayManager = timeOfDayManager;
         // this.weatherManager = weatherManager;

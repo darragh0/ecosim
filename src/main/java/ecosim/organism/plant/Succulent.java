@@ -16,8 +16,8 @@ public class Succulent extends DesertPlant {
     private static int succulentCount = 0;
     
     public Succulent() {
-        super(Size.SMALL);
-        this.name = "Succulent (" + ++succulentCount + ")";
+        super(Size.SMALL, ++succulentCount);
+        
     }
 
     @Override
