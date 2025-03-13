@@ -99,17 +99,25 @@ public class EcosystemView {
         return promptOrganismSelection(new PlantMenu(plants), num);
     }
 
-    public void displayEnvironmentConditions(EcosystemMan ecosystem) {
+    public void displayTimeStatus(EcosystemMan ecosystem) {
         StringBuilder str = new StringBuilder();
         
-        add.accept(str, "**🌍 [fly:Environment Status] 🌍**\n");
+        add.accept(str, "**⏱️ [fly:Simulation Time] ⏱️**\n");
         add.accept(str, "  **Day:** [flc:%d]".formatted(ecosystem.getDayCount()));
-        
-        // Get environment conditions
-        add.accept(str, "  **Time:** [flc:%s] %s".formatted(
+        add.accept(str, "  **Time of Day:** [flc:%s] %s".formatted(
             ecosystem.getCurrentTimeOfDay().name(),
             ecosystem.getCurrentTimeOfDay().getIcon()
         ));
+        System.out.println(str.toString());
+    }
+    
+    public void displayEnvironmentConditions(EcosystemMan ecosystem) {
+        this.displayTimeStatus(ecosystem);
+        StringBuilder str = new StringBuilder();
+        
+        add.accept(str, "**🌍 [fly:Environment Status] 🌍**\n");
+        
+        // Get environment conditions
         
         add.accept(str, "  **Weather:** [flc:%s] %s".formatted(
             ecosystem.getCurrentWeather().name(), 
