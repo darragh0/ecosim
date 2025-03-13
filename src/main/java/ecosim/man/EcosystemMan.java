@@ -9,6 +9,9 @@ import java.util.logging.Level;
 import static ecosim.common.Util.randInt;
 import ecosim.common.io.FileIO;
 import ecosim.enm.Biome;
+import ecosim.enm.Season;
+import ecosim.enm.TimeOfDay;
+import ecosim.enm.Weather;
 import ecosim.map.Map;
 import ecosim.misc.EcosystemConfig;
 import ecosim.organism.animal.abs.Animal;
@@ -110,6 +113,7 @@ public class EcosystemMan {
         this.environment.setBiome(biome);
     }
 
+    
     public List<Class<? extends Animal>> getBiomeAnimals() {
         return this.environment.getBiomeAnimals();
     }
@@ -120,6 +124,18 @@ public class EcosystemMan {
 
     public int getDayCount() {
         return this.dayCount;
+    }
+
+    public Season getCurrentSeason() {
+    return this.environment.getSeason();
+    }
+
+    public Weather getCurrentWeather() {
+        return this.environment.getWeather();
+    }
+
+    public TimeOfDay getCurrentTimeOfDay() {
+        return this.environment.getTimeOfDay(); 
     }
 
     public int getAnimalCount() {

@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
 
-import static ecosim.common.io.ConsoleIO.prettify;
 import static ecosim.common.io.ConsoleIO.pprintln;
+import static ecosim.common.io.ConsoleIO.prettify;
 import static ecosim.common.io.ConsoleIO.toggleCursor;
 import ecosim.enm.Biome;
 import ecosim.man.EcosystemMan;
@@ -97,6 +97,31 @@ public class EcosystemView {
 
     public List<Class<? extends Plant>> promptPlantSelection(List<Class<? extends Plant>> plants, int num) {
         return promptOrganismSelection(new PlantMenu(plants), num);
+    }
+
+    public void displayEnvironmentConditions(EcosystemMan ecosystem) {
+        StringBuilder str = new StringBuilder();
+        
+        add.accept(str, "**🌍 [fly:Environment Status] 🌍**\n");
+        add.accept(str, "  **Day:** [flc:%d]".formatted(ecosystem.getDayCount()));
+        
+        // Get environment conditions
+        add.accept(str, "  **Time:** [flc:%s] %s".formatted(
+            ecosystem.getCurrentTimeOfDay().name(),
+            ecosystem.getCurrentTimeOfDay().getIcon()
+        ));
+        
+        add.accept(str, "  **Weather:** [flc:%s] %s".formatted(
+            ecosystem.getCurrentWeather().name(), 
+            ecosystem.getCurrentWeather().getIcon()
+        ));
+        
+        add.accept(str, "  **Season:** [flc:%s] %s".formatted(
+            ecosystem.getCurrentSeason().name(),
+            ecosystem.getCurrentSeason().getIcon()
+        ));
+        
+        System.out.println(str.toString());
     }
 
 }
