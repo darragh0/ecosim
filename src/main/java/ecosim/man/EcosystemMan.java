@@ -7,6 +7,7 @@ import java.util.logging.Level;
 
 import ecosim.Environment;
 import static ecosim.common.Util.randInt;
+import ecosim.enm.Biome;
 import ecosim.map.Map;
 import ecosim.organism.animal.Animal;
 import ecosim.organism.animal.decorator.ConservationBoostDecorator;
@@ -87,8 +88,16 @@ public class EcosystemMan {
         this.plants.forEach(p -> this.map.initialisePlacement(p));
     }
 
-    public Environment getEnvironment() {
-        return this.environment;
+     public void setBiome(Biome biome) {
+        this.environment.setBiome(biome);
+    }
+    
+    public List<Class<? extends Animal>> getBiomeAnimals() {
+        return this.environment.getBiomeAnimals();
+    }
+    
+    public List<Class<? extends Plant>> getBiomePlants() {
+        return this.environment.getBiomePlants();
     }
 
     public int getDayCount() {
