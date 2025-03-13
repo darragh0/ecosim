@@ -9,7 +9,7 @@ import ecosim.organism.plant.Plant;
 public class PlantMenu extends OrganismMenu<Plant> {
 
     public PlantMenu(final List<Class<? extends Plant>> options) {
-        super("Plant Selection", options);
+        super("Select Some Plants", options);
     }
 
     @SafeVarargs

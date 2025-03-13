@@ -1,8 +1,10 @@
 package ecosim.common.io;
 
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.OptionalInt;
-import java.util.Scanner;
 import java.util.Stack;
 import java.util.function.Consumer;
 
@@ -13,7 +15,7 @@ import ecosim.common.io.enm.TextStyle;
 public final class ConsoleIO {
 
     private static final String ANSI_REGEX = "\u001B\\[[;\\d]*m";
-    private static final Scanner scanner = new Scanner(System.in);
+    public static final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     private static final int COLS;
     private static final int LINES;
 
@@ -44,10 +46,6 @@ public final class ConsoleIO {
 
     public static int getTermLines() {
         return LINES;
-    }
-
-    public static void closeConsoleInputSource() {
-        scanner.close();
     }
 
     public static String strInput(final String prompt) {
@@ -189,7 +187,13 @@ public final class ConsoleIO {
     private static String strInput(final String prompt, final boolean allowEmpty) {
         while (true) {
             prettyPrint(prompt);
-            String in = scanner.nextLine().trim();
+            String in;
+
+            try {
+                in = reader.readLine();
+            } catch (IOException e) {
+                return "";
+            }
 
             if (in.isEmpty() && !allowEmpty)
                 printErr("Input cannot be empty");

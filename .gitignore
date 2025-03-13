@@ -4,10 +4,10 @@
 .vscode/
 target/
 .DS_Store
+logs/
 
 # Files
 *.iml
-*.log
 
 # Ignore all files beginning with ".LCK"
 .LCK*

@@ -49,7 +49,7 @@ public abstract class Menu<T> {
 
     public void print() {
         prettyPrintln("<B>%s</B>", this.heading);
-        System.out.println("=".repeat(this.heading.length() + 10));
+        System.out.println("=".repeat(this.heading.length() + 5));
 
         for (int i = 0; i < this.options.size(); i++) {
             prettyPrintln("<b>%d)</b> %s", i + 1, this.optionStrings.get(i));
