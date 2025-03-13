@@ -3,8 +3,8 @@ package ecosim.view;
 
 import static ecosim.common.io.ConsoleIO.clearTerminal;
 import static ecosim.common.io.ConsoleIO.getTermLines;
-import static ecosim.common.io.ConsoleIO.moveCursorUp;
-import static ecosim.common.io.ConsoleIO.prettyPrintCenter;
+import static ecosim.common.io.ConsoleIO.cursorUp;
+import static ecosim.common.io.ConsoleIO.pprintCenter;
 import static ecosim.common.io.ConsoleIO.strInput;
 import static ecosim.common.io.ConsoleIO.toggleCursor;
 
@@ -13,25 +13,25 @@ public final class SplashScreen {
 
     private static final short TITLE_HEIGHT = 7;
     private static final String TITLE = """
-                                <B><c>_        \s
+                                [flc:_        \s
           ___  _________  _____(_)___ ___\s
          / _ \\/ ___/ __ \\/ ___/ / __ `__ \\
         /  __/ /__/ /_/ (__  ) / / / / / /
         \\___/\\___/\\____/____/_/_/ /_/ /_/\s
 
-        </c><y>An Ecosystem Simulator</y></B>""";
+        ][fly:An Ecosystem Simulator]""";
 
     private static final short GRAPHIC_HEIGHT = 9;
     private static final String GRAPHIC = """
-        <B>          <g>_-_</g>                         <m>/^-^\\</m>      \s
-               <g>/~~   ~~\\</g>           <y>.-",</y>                 \s
-            <g>/~~         ~~\\</g>          <y>||</y>             <r>/^-^\\</r>
-           <g>{               }</g>          <y>||</y>                \s
-            <g>\\  _-     -_  /</g>          <y>(':.)`</y>             \s
-              <g>~  \\   /  ~</g>            <y>|| ||</y>              \s
-                  | |                <y>|| ||</y>              \s
-                  | |                <y>|| ||</y>              \s
-        <g>⣠⣤⣤⣤⣀⣠⣤⣤⣤⣤⣤⣤⣀⣤⣤⣤⣄⣀⣤⣤⣤⣤⣄⣀⣤⣤⣤⣄⣀⣄⣀⣤⣤⣤⣤⣤⣤⣀⣤⣤⣤⣄⣀⣤⣤⣤⣤⣄⣀⣤⣤⣤⣄⣀⣄⣀⣤⣤⣤⣤⣄⣀⣤⣤⣤⣄⣀⣤⣤⣤⣤⣄⣀⣠⣄</g></B>""";
+        **          [flg:_-_]                         [flm:/^-^\\]      \s
+               [flg:/~~   ~~\\]            [fly:.-",]                 \s
+            [flg:/~~         ~~\\]           [fly:||]             [flr:/^-^\\]
+           [flg:{               }]          [fly:||]                \s
+            [flg:\\  _-     -_  /]          [fly:(':.)`]             \s
+              [flg:~  \\   /  ~]            [fly:|| ||]              \s
+                  [fdy:| |]                [fly:|| ||]              \s
+                  [fdy:| |]                [fly:|| ||]              \s
+        [flg:⣠⣤⣤⣤⣀⣠⣤⣤⣤⣤⣤⣤⣀⣤⣤⣤⣄⣀⣤⣤⣤⣤⣄⣀⣤⣤⣤⣄⣀⣄⣀⣤⣤⣤⣤⣤⣤⣀⣤⣤⣤⣄⣀⣤⣤⣤⣤⣄⣀⣤⣤⣤⣄⣀⣄⣀⣤⣤⣤⣤⣄⣀⣤⣤⣤⣄⣀⣤⣤⣤⣤⣄⣀⣠⣄]**""";
 
     private SplashScreen() {
         throw new UnsupportedOperationException("This class cannot be instantiated.");
@@ -41,12 +41,12 @@ public final class SplashScreen {
         final int gap = Math.max(getTermLines() - TITLE_HEIGHT - GRAPHIC_HEIGHT - 1, 10);
 
         clearTerminal();
-        prettyPrintCenter(TITLE);
+        pprintCenter(TITLE);
         System.out.print("\n".repeat(gap));
-        prettyPrintCenter(GRAPHIC);
-        moveCursorUp((gap / 2) + GRAPHIC_HEIGHT);
+        pprintCenter(GRAPHIC);
+        cursorUp((gap / 2) + GRAPHIC_HEIGHT);
         toggleCursor(false);
-        prettyPrintCenter("Press <B><r>Enter</r></B> to start");
+        pprintCenter("Press **[flr:Enter]** to start");
         strInput(true);
         toggleCursor(true);
         clearTerminal();

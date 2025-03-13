@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.function.BiConsumer;
 
 import static ecosim.common.io.ConsoleIO.prettify;
-import static ecosim.common.io.ConsoleIO.prettyPrintln;
+import static ecosim.common.io.ConsoleIO.pprintln;
 import static ecosim.common.io.ConsoleIO.toggleCursor;
 import ecosim.enm.Biome;
 import ecosim.man.EcosystemMan;
@@ -26,29 +26,28 @@ public class EcosystemView {
 
     public void welcome() {
         SplashScreen.show();
-        prettyPrintln("<B><g>[Simulation Started]</g></B>\n");
-        prettyPrintln("Welcome to the Ecosystem Simulator!");
-        prettyPrintln("To setup the ecosystem, please follow the prompts below.\n");
+        pprintln("Welcome to the *Ecosystem Simulator* 🌳");
+        pprintln("To setup the ecosystem, please follow the prompts below.\n");
     }
 
     public void end(int exitCode) {
         toggleCursor(true);
-        prettyPrintln("\n<B><r>[Simulator finished w/ exit code %d]</r></B>", exitCode);
+        pprintln("\n[flr:(Simulator finished w/ exit code %d)]", exitCode);
     }
 
     public void displayDailyReport(EcosystemMan ecosystem) {
         StringBuilder str = new StringBuilder();
 
-        add.accept(str, "<B>✨ <y>Day %d Report</y> ✨</B>\n".formatted(ecosystem.getDayCount()));
-        add.accept(str, "  <B><c>Headcount:</c></B>");
-        add.accept(str, "    Animals: <B><c>%d</c></B>".formatted(ecosystem.getAnimalCount()));
-        add.accept(str, "    Plants: <B><c>%d</c></B>\n".formatted(ecosystem.getPlantCount()));
-        add.accept(str, "  <B><c>Statistics:</c></B>");
+        add.accept(str, "**✨ [fly:Day %d Report] ✨**\n".formatted(ecosystem.getDayCount()));
+        add.accept(str, "  **[flc:Headcount:]**");
+        add.accept(str, "    Animals: **[flc:%d]**".formatted(ecosystem.getAnimalCount()));
+        add.accept(str, "    Plants: **[flc:%d]**\n".formatted(ecosystem.getPlantCount()));
+        add.accept(str, "  **[flc:Statistics:]**");
 
-        add.accept(str, "    <B>Animals:</B>");
+        add.accept(str, "    **Animals:**");
         addOrganismReport(ecosystem.getAnimals(), str);
 
-        add.accept(str, "    <B>Plants:</B>");
+        add.accept(str, "    **Plants:**");
         addOrganismReport(ecosystem.getPlants(), str);
 
         System.out.println(str.toString());
@@ -58,12 +57,12 @@ public class EcosystemView {
         int goodHealth = 70;
         int poorHealth = 30;
 
-        add.accept(str, "      <g>Thriving:</g>");
+        add.accept(str, "      [flg:Thriving:]");
         organisms.stream()
             .filter(o -> o.getHealth() >= goodHealth)
             .forEach(o -> add.accept(str, "      • %s".formatted(o.getName())));
 
-        add.accept(str, "      <r>Declining:</r>\n");
+        add.accept(str, "      [flr:Declining:]\n");
         organisms.stream()
             .filter(o -> o.getHealth() <= poorHealth)
             .forEach(o -> add.accept(str, "      • %s".formatted(o.getName())));
