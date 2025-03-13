@@ -21,7 +21,6 @@ public class EcosystemController {
     }
 
     public void run() {
-        // sample code of how the controller interacts with the model and view
         Runtime.getRuntime().addShutdownHook(new Thread(this::exit));
         this.view.welcome();
         this.setup();
@@ -35,14 +34,14 @@ public class EcosystemController {
 
     public void setup() {
         final Biome biome = this.view.promptBiomeSelection();
-        
         this.man.setBiome(biome);
 
-        final List<Class<? extends Animal>> animals = this.view.promptAnimalSelection(this.man.getBiomeAnimals(), 3);
-        final List<Class<? extends Plant>> plants = this.view.promptPlantSelection(this.man.getBiomePlants(), 3);
-        
-        this.man.loadEcosystem(animals, plants, biome.name());
+        final List<Class<? extends Animal>> animals =
+            this.view.promptAnimalSelection(this.man.getBiomeAnimals(), this.man.getInitialAnimals());
+        final List<Class<? extends Plant>> plants =
+            this.view.promptPlantSelection(this.man.getBiomePlants(), this.man.getInitialPlants());
 
+        this.man.loadEcosystem(animals, plants, biome.name());
         this.man.populateMap();
     }
 
