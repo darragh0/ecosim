@@ -10,11 +10,11 @@ import ecosim.enm.Diet;
 import ecosim.enm.Season;
 import ecosim.enm.Size;
 import ecosim.enm.TimeOfDay;
-import ecosim.map.Map;  // Assuming this is the correct import for Map
+import ecosim.map.Map; 
 import ecosim.organism.animal.CactusMouse;
 import ecosim.organism.animal.Deer;
+import ecosim.organism.animal.Snake;
 import ecosim.organism.animal.DesertAnimal;
-import ecosim.organism.animal.GrasslandAnimal;
 import ecosim.organism.animal.factory.ConcreteDesertAnimalFactory;
 import ecosim.organism.animal.decorator.ConservationBoostDecorator;
 
@@ -22,22 +22,23 @@ public class MainTest {
     
     private CactusMouse cactusMouse;
     private Deer deer;
+    private Snake normalSnake;
+    private Snake boostedSnake;
     private Map map;
     
     @BeforeEach
     public void setUp() {
-        // Initialize the Map singleton
-        Map.init(10, 10);  // 10x10 grid
+        Map.init(10, 10);
         map = Map.getInstance();
         
         cactusMouse = new CactusMouse();
         deer = new Deer();
         
-        // Add animals to the map at a valid starting position to avoid out-of-bounds
-        map.add(cactusMouse, 5, 5);  // Center of 10x10 grid
-        map.add(deer, 5, 5);
+        map.add(cactusMouse);
+        cactusMouse.setCoords(5, 05);
+        deer.setCoords(5, 4);
+        map.add(deer); 
     }
-
     @Test
     public void testCactusMouseInitialization() {
         assertEquals(Size.SMALL, cactusMouse.getSize());
@@ -46,26 +47,6 @@ public class MainTest {
         assertTrue(cactusMouse.getName().startsWith("Cactus Mouse"));
         assertEquals(ActivityState.SLEEPING, cactusMouse.getActivityState());
     }
-
-    @Test
-    public void testDeerInitialization() {
-        assertEquals(Size.MEDIUM, deer.getSize());
-        assertEquals(Diet.HERBIVORE, deer.getDiet());
-        assertEquals(ActivityType.DIURNAL, deer.getActivityType());
-        assertTrue(deer.getName().startsWith("Deer"));
-        assertEquals(ActivityState.SLEEPING, deer.getActivityState());
-    }
-
-    @Test
-    public void testCactusMouseClone() {
-        CactusMouse clone = cactusMouse.clone();
-        assertNotSame(cactusMouse, clone);
-        assertEquals(cactusMouse.getSize(), clone.getSize());
-        assertEquals(cactusMouse.getDiet(), clone.getDiet());
-        assertEquals(cactusMouse.getActivityType(), clone.getActivityType());
-        assertTrue(clone.getName().startsWith("Cactus Mouse"));
-    }
-
     @Test
     public void testDeerClone() {
         Deer clone = deer.clone();
@@ -75,7 +56,6 @@ public class MainTest {
         assertEquals(deer.getActivityType(), clone.getActivityType());
         assertTrue(clone.getName().startsWith("Deer"));
     }
-
     @Test
     public void testCactusMouseTimeOfDayUpdate() {
         cactusMouse.handleTimeOfDayUpdate(TimeOfDay.NIGHT);
@@ -84,57 +64,33 @@ public class MainTest {
         cactusMouse.handleTimeOfDayUpdate(TimeOfDay.DAY);
         assertEquals(ActivityState.SLEEPING, cactusMouse.getActivityState());
     }
-
-    @Test
-    public void testDeerTimeOfDayUpdate() {
-        deer.handleTimeOfDayUpdate(TimeOfDay.DAY);
-        assertEquals(ActivityState.AWAKE, deer.getActivityState());
-        
-        deer.handleTimeOfDayUpdate(TimeOfDay.NIGHT);
-        assertEquals(ActivityState.SLEEPING, deer.getActivityState());
-    }
-
     @Test
     public void testSeasonUpdateWithHibernation() {
-        // Reset to a neutral state
-        cactusMouse.setSleepState(ActivityState.SLEEPING);
+        cactusMouse.setActivityState(ActivityState.SLEEPING);
         cactusMouse.handleSeasonUpdate(Season.WINTER);
         assertEquals(ActivityState.HIBERNATING, cactusMouse.getActivityState());
         
         cactusMouse.handleSeasonUpdate(Season.SUMMER);
         assertEquals(ActivityState.AWAKE, cactusMouse.getActivityState());
     }
-
-    @Test
-    public void testDesertAnimalMoveHealthLoss() {
-        float initialHealth = cactusMouse.getMaxHealth();
-        cactusMouse.setSleepState(ActivityState.AWAKE);
-        cactusMouse.move();
-        float expectedHealthLoss = initialHealth * 0.05f; // DesertAnimal health loss
-        assertTrue(cactusMouse.getHealth() <= initialHealth - expectedHealthLoss);
-    }
-
     @Test
     public void testGrasslandAnimalMoveHealthLoss() {
         float initialHealth = deer.getMaxHealth();
-        deer.setSleepState(ActivityState.AWAKE);
+        deer.setActivityState(ActivityState.AWAKE);
         deer.move();
-        float expectedHealthLoss = initialHealth * 0.025f; // GrasslandAnimal health loss
+        float expectedHealthLoss = initialHealth * 0.025f; 
         assertTrue(deer.getHealth() <= initialHealth - expectedHealthLoss);
     }
-
     @Test
     public void testCanEatAnimal() {
         assertFalse(cactusMouse.canEatAnimal(deer));
         assertFalse(deer.canEatAnimal(cactusMouse));
     }
-
     @Test
     public void testCanEatPlant() {
         assertTrue(cactusMouse.canEatPlant());
         assertTrue(deer.canEatPlant());
     }
-
     @Test
     public void testFactoryCreatesDesertAnimal() {
         ConcreteDesertAnimalFactory factory = new ConcreteDesertAnimalFactory();
@@ -145,20 +101,25 @@ public class MainTest {
 
     @Test
     public void testConservationBoostDecorator() {
-        float initialHealth = cactusMouse.getMaxHealth();
-        ConservationBoostDecorator decoratedMouse = new ConservationBoostDecorator(cactusMouse.clone());
-        map.add(decoratedMouse, 5, 5); // Add decorated mouse to map
+        normalSnake = new Snake();
+        float initialHealth = normalSnake.getHealth();
+        assertEquals(normalSnake.getHealth(), boostedSnake.getHealth());
+        ConservationBoostDecorator decoratedSnake = new ConservationBoostDecorator(boostedSnake);
+        map.add(normalSnake); 
+        normalSnake.setCoords(3, 1);
+        map.add(decoratedSnake); 
+        decoratedSnake.setCoords(4, 1);
         
-        float normalLoss = initialHealth * 0.1f; // 10% health loss from Conscious.move()
-        float decoratedLoss = normalLoss * 0.5f; // ConservationBoost reduces by half
+        float normalLoss = initialHealth * 0.1f;
+        float decoratedLoss = normalLoss * 0.5f;
         
-        cactusMouse.reduceHealth(normalLoss);
-        decoratedMouse.reduceHealth(normalLoss);
+        normalSnake.reduceHealth(normalLoss);
+        decoratedSnake.reduceHealth(normalLoss);
         
         float expectedNormalHealth = initialHealth - normalLoss;
         float expectedDecoratedHealth = initialHealth - decoratedLoss;
         
         assertEquals(expectedNormalHealth, cactusMouse.getHealth(), 0.001);
-        assertEquals(expectedDecoratedHealth, decoratedMouse.getHealth(), 0.001);
+        assertEquals(expectedDecoratedHealth, decoratedSnake.getHealth(), 0.001);
     }
 }

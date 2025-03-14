@@ -68,7 +68,7 @@ public abstract class Animal extends Organism implements Observer {
         return this.activityState;
     }
 
-    public void setSleepState(ActivityState activityState) { 
+    public void setActivityState(ActivityState activityState) { 
         this.activityState = activityState;
     }
 
@@ -148,11 +148,11 @@ public abstract class Animal extends Organism implements Observer {
 
     public void handleSeasonUpdate(Season season) {
         switch (season) {
-            case Season.WINTER -> {if (canHibernate) {setSleepState(ActivityState.HIBERNATING); }}
-            case Season.SUMMER -> setSleepState(ActivityState.AWAKE);
-            case Season.SPRING -> setSleepState(ActivityState.AWAKE);
-            case Season.AUTUMN -> {if(canHibernate){setSleepState(ActivityState.HIBERNATING);}}
-            default -> setSleepState(ActivityState.AWAKE);
+            case Season.WINTER -> {if (canHibernate) {setActivityState(ActivityState.HIBERNATING); }}
+            case Season.SUMMER -> setActivityState(ActivityState.AWAKE);
+            case Season.SPRING -> setActivityState(ActivityState.AWAKE);
+            case Season.AUTUMN -> {if(canHibernate){setActivityState(ActivityState.HIBERNATING);}}
+            default -> setActivityState(ActivityState.AWAKE);
             }
         }
 
@@ -160,16 +160,16 @@ public abstract class Animal extends Organism implements Observer {
         switch (timeOfDay) {
             case TimeOfDay.DAY -> {
                 if (activityType == ActivityType.DIURNAL) {
-                    setSleepState(ActivityState.AWAKE);
+                    setActivityState(ActivityState.AWAKE);
                 } else {
-                    setSleepState(ActivityState.SLEEPING);
+                    setActivityState(ActivityState.SLEEPING);
                 }
             }
             case TimeOfDay.NIGHT -> {
                 if (activityType == ActivityType.NOCTURNAL) {
-                    setSleepState(ActivityState.AWAKE);
+                    setActivityState(ActivityState.AWAKE);
                 } else {
-                    setSleepState(ActivityState.SLEEPING);
+                    setActivityState(ActivityState.SLEEPING);
                 }
             }
         }
