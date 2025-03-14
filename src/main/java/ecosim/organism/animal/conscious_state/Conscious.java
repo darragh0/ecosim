@@ -2,6 +2,7 @@ package ecosim.organism.animal.conscious_state;
 
 
 import ecosim.map.ActionResult;
+import ecosim.map.Map;
 import ecosim.organism.animal.abs.Animal;
 
 
@@ -16,10 +17,9 @@ public class Conscious implements ConsciousState {
     public ActionResult move(Animal animal) {
         float healthLoss = animal.getMaxHealth() * 0.1f;
         animal.reduceHealth(healthLoss);
+        ActionResult result = Map.getInstance().scanForAction(animal);
 
-        //ActionResult result = Map.getInstance().scanForAction(animal);
-
-        return null;
+        return result;
     }
 
 }

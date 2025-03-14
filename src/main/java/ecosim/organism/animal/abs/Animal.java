@@ -11,7 +11,6 @@ import ecosim.enm.Season;
 import ecosim.enm.Size;
 import ecosim.enm.TimeOfDay;
 import ecosim.map.ActionResult;
-import ecosim.map.Map;
 import ecosim.organism.Organism;
 import ecosim.organism.animal.conscious_state.Conscious;
 import ecosim.organism.animal.conscious_state.ConsciousState;
@@ -86,44 +85,58 @@ public abstract class Animal extends Organism implements Observer {
 
     public boolean canEatAnimal(Animal potentialPrey) {
         boolean isDietCompatible = this.diet != Diet.HERBIVORE;
-        boolean isDifferentSpecies = this.getClass() != potentialPrey.getClass();
+        boolean isDifferentSpecies = !this.canBreed(potentialPrey);
         boolean isPredatorLargeEnough = this.size.ordinal() >= potentialPrey.size.ordinal();
 
         return isDietCompatible && isDifferentSpecies && isPredatorLargeEnough;
     }
+
+    public boolean canBreed(Animal potentialMate) {
+        // Extract the base type from both animal names
+        String thisBaseType = extractBaseType(this.getName());
+        String mateBaseType = extractBaseType(potentialMate.getName());
+        
+        // Compare the base types
+        return thisBaseType.equals(mateBaseType);
+    }
+    
+    // Helper method to extract the base animal type from the name
+    private String extractBaseType(String name) {
+        // Extract the base name (e.g., "Lion" from "Lion (1)")
+        int parenthesisIndex = name.indexOf('(');
+        if (parenthesisIndex > 0) {
+            return name.substring(0, parenthesisIndex).trim();
+        }
+        return name.trim();
+    }
+
 
     public boolean canEatPlant() {
         return this.diet != Diet.CARNIVORE;
     }
 
     public boolean eat(Animal animal) {
-        boolean canEat = canEatAnimal(animal);
-
-        if (canEat && Math.random() < animal.survivalChance) {
-            System.out.println(this + " eats " + animal + " and gains " + animal.getNutritionalValue() + " health.");
+        if (Math.random() < animal.survivalChance) {
             this.restoreHealth(animal.getNutritionalValue());
             return true;
         }
-        System.out.println(this + " tries to eat " + animal + " but fails.");
         return false;
     };
 
     public boolean eat(Plant plant) {
-        boolean canEat = canEatPlant();
-        if (canEat) {
-            System.out.println(this + " eats " + plant + " and gains " + plant.getNutritionalValue() + " health.");
         this.restoreHealth(plant.getNutritionalValue());
         plant.beEaten();
         return true;
-        }
-        return false;
     };
 
-    public void breed() {
-        if (Math.random() < this.reproductiveChance) {
+    public Animal breed(Animal mate) {
+        float combinedReproductiveChance = this.reproductiveChance * mate.getReproductiveChance();
+    
+        if (Math.random() < combinedReproductiveChance) {
             Animal child = this.createClone();
-            Map.getInstance().add(child);
+            return child;
         }
+        return null;
     }
 
     @Override

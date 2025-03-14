@@ -1,6 +1,9 @@
 package ecosim.map;
 
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static ecosim.common.Util.randInt;
@@ -61,38 +64,117 @@ public class Map {
         }
     }
 
-    public void move(final Animal an) {
+    private void moveAnimalRandomly(Animal an) {
+        List<Direction> directions = Arrays.asList(Direction.values());
+        Collections.shuffle(directions);
+        
+        for (Direction dir : directions) {
+            int newX = an.getX() + dir.getDx();
+            int newY = an.getY() + dir.getDy();
+           
+            // Check if position is out of bounds
+            if (outOfBounds(newX, newY)) {
+                continue;
+            }
+            
+            // Check if the position is empty (null means empty space)
+            if (canMove(newX, newY) == null) {
+                // Found valid empty cell, move there
+                moveAnimal(an, newX, newY);
+                return;
+            }
+        }
+        // If we get here, no valid moves were found - animal stays put
+    }
 
-        int x = an.getX();
-        int y = an.getY();
+    public ActionResult getBreedingActionResult(final Animal an, final Organism otherOrg) {
+        // Move the other animal to a random empty cell
+        // Able to do this before the action because an action is guaranteed to happen an is not affected by position at this point
+        moveAnimalRandomly(an);
+        Animal otherAnimal = (Animal) otherOrg;
+    
+        Animal offspring = an.breed(otherAnimal);
+    
+        if (offspring != null) {
+            this.initialisePlacement(offspring);
 
+            return new ActionResult(
+                ActionResult.ActionType.SUCCESSFUL_BREEDING,
+                an, otherOrg, an.getX(), an.getY());
+        }
+        
+        return new ActionResult(
+            ActionResult.ActionType.ATTEMPTED_BREEDING,
+            an, otherOrg, an.getX(), an.getY());
+    }
+
+    public ActionResult getEatingActionResult(final Animal predator, final Organism prey, boolean wasEaten) {
+                // Move the other animal to a random empty cell
+        // Able to do this before the action because an action is guaranteed to happen an is not affected by position at this point
+        moveAnimalRandomly(predator);
+        if (wasEaten) {
+            this.grid.rmv(prey);
+            return new ActionResult(
+                ActionResult.ActionType.SUCCESSFUL_EATING,
+                predator, prey, predator.getX(), predator.getY());
+        }
+        
+        return new ActionResult(
+            ActionResult.ActionType.ATTEMPTED_EATING,
+            predator, prey, predator.getX(), predator.getY());
+    }
+    
+    public ActionResult scanForAction(final Animal an) {
         for (final Direction dir : Direction.values()) {
-            x = an.getX() + dir.getDx();
-            y = an.getY() + dir.getDy();
-
-            if (this.outOfBounds(x, y))
+            int targetX = an.getX() + dir.getDx();
+            int targetY = an.getY() + dir.getDy();
+    
+    
+            Organism otherOrg = canMove(targetX, targetY);
+            if (otherOrg == null) {
                 continue;
-
-            Optional<Organism> cell = this.get(x, y);
-
-            if (cell.isEmpty())
-                continue;
-
-            Organism otherOrg = cell.get();
-            boolean organismEaten = switch (otherOrg) {
-                case Animal otherAn -> an.eat(otherAn);
-                case Plant plant -> an.eat(plant);
-                default -> false;
+            }
+    
+            // Handle each organism type with a single pattern match
+            ActionResult result = switch (otherOrg) {
+                case Animal otherAnimal -> {
+                    // Check breeding first
+                    if (an.canBreed(otherAnimal)) {
+                        yield getBreedingActionResult(an, otherAnimal);
+                    } 
+                    // Then check eating
+                    else if (an.canEatAnimal(otherAnimal)) {
+                        boolean eaten = an.eat(otherAnimal);
+                        yield getEatingActionResult(an, otherAnimal, eaten);
+                    }
+                
+                    yield null;
+                }
+                case Plant plant -> {
+                    // Only check eating for plants
+                    if (an.canEatPlant()) {
+                        boolean eaten = an.eat(plant);
+                        yield getEatingActionResult(an, plant, eaten);
+                    }
+                    yield null;
+                }
+                default -> null;
             };
 
-            if (organismEaten) {
-                this.grid.rmv(otherOrg);
+            // If we found a valid action, return it
+            if (result != null) {
+                return result;
             }
-            break;
         }
-
+        
+        // No valid action found
+        moveAnimalRandomly(an);
+        return new ActionResult(ActionResult.ActionType.MOVED, an, null, an.getX(), an.getY());
+    }
+    
+    private void moveAnimal(Animal an, int newX, int newY) {
         this.grid.rmv(an);
-        an.setCoords(x, y);
+        an.setCoords(newX, newY);
         this.grid.add(an);
     }
 
@@ -114,6 +196,18 @@ public class Map {
 
     private boolean outOfBounds(final int x, final int y) {
         return x < 0 || x >= this.width || y < 0 || y >= this.height;
+    }
+
+    private Organism canMove(final int x, final int y) {
+        if (!this.outOfBounds(x, y)){
+            Optional<Organism> cell = this.get(x, y);
+            if (cell.isPresent()) {
+                return cell.get();
+            } else {
+                return null;
+            }
+        }
+        return null;
     }
 
 }
