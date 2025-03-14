@@ -4,6 +4,7 @@ package ecosim.view;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 
 import static ecosim.common.io.ConsoleIO.pprintln;
 import static ecosim.common.io.ConsoleIO.prettify;
@@ -37,35 +38,78 @@ public class EcosystemView {
 
     public void displayDailyReport(EcosystemMan ecosystem) {
         StringBuilder str = new StringBuilder();
-
         add.accept(str, "**✨ [fly:Day %d Report] ✨**\n".formatted(ecosystem.getDayCount()));
         add.accept(str, "  **[flc:Headcount:]**");
         add.accept(str, "    Animals: **[flc:%d]**".formatted(ecosystem.getAnimalCount()));
-        add.accept(str, "    Plants: **[flc:%d]**\n".formatted(ecosystem.getPlantCount()));
+        add.accept(str, "    Plants:  **[flc:%d]**\n".formatted(ecosystem.getPlantCount()));
         add.accept(str, "  **[flc:Statistics:]**");
 
-        add.accept(str, "    **Animals:**");
-        addOrganismReport(ecosystem.getAnimals(), str);
-
-        add.accept(str, "    **Plants:**");
-        addOrganismReport(ecosystem.getPlants(), str);
+        int maxWidth = calculateMaxWidth(ecosystem);
+        addOrganismReport("Animals", ecosystem.getAnimals(), str, maxWidth);
+        addOrganismReport("Plants", ecosystem.getPlants(), str, maxWidth);
 
         System.out.println(str.toString());
     }
 
-    private <T extends Organism> void addOrganismReport(List<T> organisms, StringBuilder str) {
-        int goodHealth = 70;
-        int poorHealth = 30;
+    private int calculateMaxWidth(EcosystemMan ecosystem) {
+        int animalMaxLength = ecosystem.getAnimals().stream()
+            .mapToInt(o -> o.getName().length())
+            .max()
+            .orElse(0);
 
-        add.accept(str, "      [flg:Thriving:]");
-        organisms.stream()
+        int plantMaxLength = ecosystem.getPlants().stream()
+            .mapToInt(o -> o.getName().length())
+            .max()
+            .orElse(0);
+
+        return Math.max(Math.max(animalMaxLength, plantMaxLength), "Thriving Animals:".length());
+    }
+
+    private <T extends Organism> void addOrganismReport(final String type, List<T> organisms, StringBuilder str,
+        int maxWidth) {
+        final int gap = 10;
+        final int goodHealth = 70;
+        final int poorHealth = 30;
+
+        final List<T> thriving = organisms.stream()
             .filter(o -> o.getHealth() >= goodHealth)
-            .forEach(o -> add.accept(str, "      • %s".formatted(o.getName())));
+            .collect(Collectors.toList());
 
-        add.accept(str, "      [flr:Declining:]\n");
-        organisms.stream()
+        final List<T> declining = organisms.stream()
             .filter(o -> o.getHealth() <= poorHealth)
-            .forEach(o -> add.accept(str, "      • %s".formatted(o.getName())));
+            .collect(Collectors.toList());
+
+        final String thrivingHeader = "Thriving %s:".formatted(type);
+        final String decliningHeader = "Declining %s:".formatted(type);
+
+        int headerPadding = maxWidth - thrivingHeader.length() + gap;
+        final String fStr =
+            "    [flg:%s]%s[flr:%s]".formatted(thrivingHeader, " ".repeat(headerPadding), decliningHeader);
+        add.accept(str, fStr);
+
+        final int maxRows = Math.max(thriving.size(), declining.size());
+
+        for (int i = 0; i < maxRows; i++) {
+            StringBuilder row = new StringBuilder();
+
+            if (i < thriving.size()) {
+                final String name = thriving.get(i).getName();
+                final String rowStr = String.format("      > %s", name);
+                row.append(rowStr);
+
+                int padding = maxWidth - rowStr.length() + gap;
+                if (padding > 0)
+                    row.append(" ".repeat(padding));
+            } else {
+                row.append(" ".repeat(maxWidth + gap));
+            }
+
+            if (i < declining.size())
+                row.append("      > %s".formatted(declining.get(i).getName()));
+
+            add.accept(str, row.toString());
+        }
+        add.accept(str, "");
     }
 
     public Biome promptBiomeSelection() {
