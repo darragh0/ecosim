@@ -10,6 +10,7 @@ import ecosim.enm.Event;
 import ecosim.enm.Season;
 import ecosim.enm.Size;
 import ecosim.enm.TimeOfDay;
+import ecosim.map.ActionResult;
 import ecosim.map.Map;
 import ecosim.organism.Organism;
 import ecosim.organism.animal.conscious_state.Conscious;
@@ -134,7 +135,7 @@ public abstract class Animal extends Organism implements Observer {
         return clone;
     }
 
-    public String move() {
+    public ActionResult move() {
         return this.consciousState.move(this);
     }
 
