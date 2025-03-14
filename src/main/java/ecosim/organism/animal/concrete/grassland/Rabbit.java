@@ -18,6 +18,7 @@ public class Rabbit extends GrasslandAnimal {
 
     public Rabbit() {
         super(Size.SMALL, Diet.HERBIVORE, ActivityType.DIURNAL, false, ++rabbitCount);
+        super.symbol = "🐇";
     }
 
     @Override

@@ -18,6 +18,7 @@ public class Camel extends DesertAnimal {
 
     public Camel() {
         super(Size.MEDIUM, Diet.CARNIVORE, ActivityType.DIURNAL, false, ++camelCount);
+        super.symbol = "🐪";
     }
 
     @Override

@@ -16,6 +16,7 @@ public class Bush extends GrasslandPlant {
 
     public Bush() {
         super(Size.MEDIUM, ++bushCount);
+        super.symbol = "🌲";
     }
 
     @Override

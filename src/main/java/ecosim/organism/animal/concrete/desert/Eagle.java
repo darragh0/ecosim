@@ -18,6 +18,7 @@ public class Eagle extends DesertAnimal {
 
     public Eagle() {
         super(Size.MEDIUM, Diet.CARNIVORE, ActivityType.DIURNAL, false, ++eagleCount);
+        super.symbol = "🦅";
     }
 
     @Override

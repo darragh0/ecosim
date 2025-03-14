@@ -43,6 +43,7 @@ public class EcosystemController {
 
         this.man.loadEcosystem(animals, plants, biome.name());
         this.man.populateMap();
+        this.view.displayEcosytemMap(this.man);
     }
 
     public void runSimulation() {

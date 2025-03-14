@@ -19,6 +19,7 @@ public class Succulent extends DesertPlant {
 
     public Succulent() {
         super(Size.SMALL, ++succulentCount);
+        super.symbol = "🌱";
 
     }
 

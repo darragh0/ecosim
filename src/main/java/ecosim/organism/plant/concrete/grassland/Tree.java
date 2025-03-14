@@ -19,6 +19,7 @@ public class Tree extends GrasslandPlant {
 
     public Tree() {
         super(Size.LARGE, ++treeCount);
+        super.symbol = "🌳";
 
     }
 

@@ -18,6 +18,7 @@ public class Owl extends GrasslandAnimal {
 
     public Owl() {
         super(Size.SMALL, Diet.CARNIVORE, ActivityType.NOCTURNAL, false, ++owlCount);
+        super.symbol = "🦉";
     }
 
     @Override

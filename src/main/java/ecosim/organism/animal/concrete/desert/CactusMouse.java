@@ -18,6 +18,7 @@ public class CactusMouse extends DesertAnimal {
 
     public CactusMouse() {
         super(Size.SMALL, Diet.HERBIVORE, ActivityType.NOCTURNAL, false, ++cactusMouseCount);
+        super.symbol = "🐭";
     }
 
     @Override

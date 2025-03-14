@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import static ecosim.common.Util.randInt;
 import static ecosim.common.io.ConsoleIO.pprintln;
-import ecosim.common.io.enm.BoxDrawingChar;
 import ecosim.enm.Direction;
 import ecosim.organism.Organism;
 import ecosim.organism.animal.abs.Animal;
@@ -21,11 +20,11 @@ import ecosim.organism.plant.abs.Plant;
 public class Map {
 
     private static Map inst = null;
-    private static final char EMPTY_CELL = '.';
 
     private final int width;
     private final int height;
     private final Grid grid;
+    public record MapSize(int width, int height) {};
 
     private Map(final int width, final int height) {
         this.width = width;
@@ -97,53 +96,16 @@ public class Map {
         this.grid.add(an);
     }
 
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        final String border = BoxDrawingChar.HORIZONTAL.repeat(this.width);
-
-        sb.append("<B><b>")
-            .append(BoxDrawingChar.TOP_LEFT.getValue())
-            .append(border)
-            .append(BoxDrawingChar.TOP_RIGHT.getValue())
-            .append("</b></B>\n");
-
-        for (int y = this.height - 1; y >= 0; y--) {
-            sb.append("<B><b>")
-                .append(BoxDrawingChar.VERTICAL.getValue())
-                .append("</b></B>");
-
-            for (int x = 0; x < this.width; x++) {
-                final char ch = this.grid.get(x, y)
-                    .map(Organism::getSymbol)
-                    .orElse(EMPTY_CELL);
-
-                sb.append(ch);
-            }
-
-            sb.append("<B><b>")
-                .append(BoxDrawingChar.VERTICAL.getValue())
-                .append("</b></B>\n");
-        }
-
-        return sb.append("<B><b>")
-            .append(BoxDrawingChar.BOTTOM_LEFT.getValue())
-            .append(border)
-            .append(BoxDrawingChar.BOTTOM_RIGHT.getValue())
-            .append("</b></B>\n")
-            .toString();
-    }
-
     public void display() {
         pprintln(this.toString());
     }
 
-    public int getWidth() {
-        return this.width;
+    public MapSize getMapDimensions() {
+        return new MapSize(this.width, this.height);
     }
 
-    public int getHeight() {
-        return this.height;
+    public Grid getGrid() {
+        return this.grid;
     }
 
     Optional<Organism> get(final int x, final int y) {

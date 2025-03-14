@@ -12,7 +12,9 @@ import ecosim.enm.Biome;
 import ecosim.enm.Season;
 import ecosim.enm.TimeOfDay;
 import ecosim.enm.Weather;
+import ecosim.map.Grid;
 import ecosim.map.Map;
+import ecosim.map.Map.MapSize;
 import ecosim.misc.EcosystemConfig;
 import ecosim.organism.animal.abs.Animal;
 import ecosim.organism.animal.decorator.ConservationBoostDecorator;
@@ -37,7 +39,7 @@ public class EcosystemMan {
         this.dayCount = 0;
         this.animals = new ArrayList<>();
         this.plants = new ArrayList<>();
-        this.map = Map.init(69, 69);
+        this.map = Map.init(10, 10);
         this.config = this.loadConfig();
     }
 
@@ -89,6 +91,13 @@ public class EcosystemMan {
             this.createPlant(plant, biome);
         }
     }
+    
+    public MapSize getMapSize() {
+        return map.getMapDimensions();
+    }
+    public Grid getMapGrid() {
+        return this.map.getGrid();
+    }   
 
     public void populateMap() {
         // Randomly place all organisms on the map during simulation setup

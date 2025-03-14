@@ -18,6 +18,7 @@ public class Snake extends DesertAnimal {
 
     public Snake() {
         super(Size.MEDIUM, Diet.CARNIVORE, ActivityType.NOCTURNAL, true, ++snakeCount);
+        super.symbol = "🐍";
     }
 
     @Override

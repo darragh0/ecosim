@@ -18,6 +18,7 @@ public class Fox extends GrasslandAnimal {
 
     public Fox() {
         super(Size.MEDIUM, Diet.CARNIVORE, ActivityType.NOCTURNAL, false, ++foxCount);
+        super.symbol = "🦊";
     }
 
     @Override
