@@ -27,16 +27,6 @@ public class Unconscious implements ConsciousState {
             animal.getX(),
             animal.getY()
         );
-        // switch (animal.getActivityState()) {
-        //     case SLEEPING:
-        //         return animal.getName() + " is currently asleep, therefore remains at " + animal.getX() + ","
-        //             + animal.getY();
-        //     case HIBERNATING:
-        //         return animal.getName() + " is undergoing hibernation, therefore remains at " + animal.getX() + ","
-        //             + animal.getY();
-        //     default:
-        //         return animal.getName() + " is unconscious and cannot move";
-        // }
     }
 
 }
