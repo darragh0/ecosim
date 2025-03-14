@@ -25,7 +25,6 @@ public class EcosystemController {
         this.view.welcome();
         this.setup();
         this.runSimulation();
-        this.view.displayDailyReport(this.man);
     }
 
     private void exit() {
@@ -49,6 +48,21 @@ public class EcosystemController {
     public void runSimulation() {
         this.man.updateEnvironmentConditions();
         this.view.displayEnvironmentConditions(this.man);
+        this.man.setActionListener(result -> 
+        this.view.displayAnimalActions(result)
+        );
+        this.view.displayAnimalActionsHeader();
+        for (int hour = 0; hour < 10; hour++){
+            if (hour == 5){
+                this.man.updateTimeOfDay();
+            }
+            this.man.processAnimalsTurn();
+        }
+        this.view.displayEcosytemMap(this.man);
+        this.view.displayDailyReport(this.man);
+        this.man.resetNewAndDeadOrganisms();
+       
+    
     }
 
 

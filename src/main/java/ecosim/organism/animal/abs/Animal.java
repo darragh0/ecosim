@@ -14,6 +14,7 @@ import ecosim.map.ActionResult;
 import ecosim.organism.Organism;
 import ecosim.organism.animal.conscious_state.Conscious;
 import ecosim.organism.animal.conscious_state.ConsciousState;
+import ecosim.organism.animal.conscious_state.Unconscious;
 import ecosim.organism.plant.abs.Plant;
 
 
@@ -24,6 +25,9 @@ import ecosim.organism.plant.abs.Plant;
  * @author jjola00
  */
 public abstract class Animal extends Organism implements Observer {
+
+    private  final ConsciousState CONSCIOUS_STATE = new Conscious();
+    private  final ConsciousState UNCONSCIOUS_STATE = new Unconscious();
 
     protected Diet diet;
     protected ActivityType activityType;
@@ -168,16 +172,23 @@ public abstract class Animal extends Organism implements Observer {
             case Season.WINTER -> {
                 if (canHibernate) {
                     setSleepState(ActivityState.HIBERNATING);
+                    this.consciousState = UNCONSCIOUS_STATE;  
                 }
             }
-            case Season.SUMMER -> setSleepState(ActivityState.AWAKE);
-            case Season.SPRING -> setSleepState(ActivityState.AWAKE);
+            case Season.SUMMER, Season.SPRING -> {
+                setSleepState(ActivityState.AWAKE); 
+                this.consciousState = CONSCIOUS_STATE; 
+            }
             case Season.AUTUMN -> {
                 if (canHibernate) {
                     setSleepState(ActivityState.HIBERNATING);
+                    this.consciousState = UNCONSCIOUS_STATE;  
                 }
             }
-            default -> setSleepState(ActivityState.AWAKE);
+            default -> {
+                setSleepState(ActivityState.AWAKE);
+                this.consciousState = CONSCIOUS_STATE;  
+            }
         }
     }
 
@@ -186,15 +197,19 @@ public abstract class Animal extends Organism implements Observer {
             case TimeOfDay.DAY -> {
                 if (activityType == ActivityType.DIURNAL) {
                     setSleepState(ActivityState.AWAKE);
+                    this.consciousState = CONSCIOUS_STATE;
                 } else {
                     setSleepState(ActivityState.SLEEPING);
+                    this.consciousState = UNCONSCIOUS_STATE; 
                 }
             }
             case TimeOfDay.NIGHT -> {
                 if (activityType == ActivityType.NOCTURNAL) {
                     setSleepState(ActivityState.AWAKE);
+                    this.consciousState = CONSCIOUS_STATE; 
                 } else {
                     setSleepState(ActivityState.SLEEPING);
+                    this.consciousState = UNCONSCIOUS_STATE;  
                 }
             }
         }

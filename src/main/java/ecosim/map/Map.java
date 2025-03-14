@@ -88,8 +88,6 @@ public class Map {
     }
 
     public ActionResult getBreedingActionResult(final Animal an, final Organism otherOrg) {
-        // Move the other animal to a random empty cell
-        // Able to do this before the action because an action is guaranteed to happen an is not affected by position at this point
         moveAnimalRandomly(an);
         Animal otherAnimal = (Animal) otherOrg;
     
@@ -97,10 +95,10 @@ public class Map {
     
         if (offspring != null) {
             this.initialisePlacement(offspring);
-
+    
             return new ActionResult(
                 ActionResult.ActionType.SUCCESSFUL_BREEDING,
-                an, otherOrg, an.getX(), an.getY());
+                an, otherOrg, an.getX(), an.getY(), offspring);  
         }
         
         return new ActionResult(
@@ -109,7 +107,7 @@ public class Map {
     }
 
     public ActionResult getEatingActionResult(final Animal predator, final Organism prey, boolean wasEaten) {
-                // Move the other animal to a random empty cell
+        // Move the other animal to a random empty cell
         // Able to do this before the action because an action is guaranteed to happen an is not affected by position at this point
         moveAnimalRandomly(predator);
         if (wasEaten) {
