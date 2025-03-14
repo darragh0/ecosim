@@ -16,6 +16,7 @@ public class Wildflower extends GrasslandPlant {
 
     public Wildflower() {
         super(Size.SMALL, ++wildflowerCount);
+        super.symbol = "🌺";
     }
 
     @Override

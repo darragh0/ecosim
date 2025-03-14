@@ -18,6 +18,7 @@ public class Deer extends GrasslandAnimal {
 
     public Deer() {
         super(Size.MEDIUM, Diet.HERBIVORE, ActivityType.DIURNAL, true, ++deerCount);
+        super.symbol = "🦌";
     }
 
     @Override

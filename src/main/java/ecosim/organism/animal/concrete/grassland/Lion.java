@@ -18,6 +18,7 @@ public class Lion extends GrasslandAnimal {
 
     public Lion() {
         super(Size.LARGE, Diet.CARNIVORE, ActivityType.DIURNAL, false, ++lionCount);
+        super.symbol = "🦁";
     }
 
     @Override

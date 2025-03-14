@@ -25,6 +25,7 @@ public class Shrub extends DesertPlant {
 
     public Shrub() {
         super(Size.SMALL, ++shrubCount);
+        super.symbol = "🌿";
     }
 
 

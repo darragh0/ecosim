@@ -20,6 +20,7 @@ public class Cactus extends DesertPlant {
 
     public Cactus() {
         super(Size.LARGE, ++cactusCount);
+        super.symbol = "🌵";
     }
 
     @Override

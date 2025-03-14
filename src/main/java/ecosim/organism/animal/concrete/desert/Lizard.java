@@ -18,6 +18,7 @@ public class Lizard extends DesertAnimal {
 
     public Lizard() {
         super(Size.SMALL, Diet.CARNIVORE, ActivityType.DIURNAL, true, ++lizardCount);
+        super.symbol = "🦎";
     }
 
     @Override
