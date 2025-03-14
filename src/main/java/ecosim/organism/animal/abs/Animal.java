@@ -79,8 +79,8 @@ public abstract class Animal extends Organism implements Observer {
         this.health = health;
     }
 
-    public void makeSound() {
-        System.out.println("The animal makes a sound.");
+    public String makeSound() {
+        return "Animal sound";
     };
 
     public boolean canEatAnimal(Animal potentialPrey) {
@@ -111,9 +111,9 @@ public abstract class Animal extends Organism implements Observer {
         boolean canEat = canEatPlant();
         if (canEat) {
             System.out.println(this + " eats " + plant + " and gains " + plant.getNutritionalValue() + " health.");
-            this.restoreHealth(plant.getNutritionalValue());
-            plant.beEaten();
-            return true;
+        this.restoreHealth(plant.getNutritionalValue());
+        plant.beEaten();
+        return true;
         }
         return false;
     };
@@ -202,9 +202,6 @@ public abstract class Animal extends Organism implements Observer {
         return false;
     }
 
-    public void iWasGonnaCallThisFunctionMoveButICANTBecauseSomeoneElseAlreadyTookTheNameMoveSoIAmLeftToComeUpWithAnotherNameForThisMethodWhichHasUnfortunatelyBecomeVeryLongAsAResultOfTheFactThatSomebodyHasReservedTheMoveNameSoNowImSadAndHeresALongMethodName() {
-        Map.getInstance().move(this);
-    }
 
     public void reduceHealth(float amount) {
         this.health = Math.max(0, this.health - amount);
