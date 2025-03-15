@@ -22,8 +22,8 @@ public class Eagle extends DesertAnimal {
     }
 
     @Override
-    public void makeSound() {
-        System.out.println("Sqwuak!");
+    public String makeSound() {
+        return "Sqwuak!";
     }
 
     @Override

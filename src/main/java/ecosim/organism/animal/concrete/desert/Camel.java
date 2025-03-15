@@ -22,8 +22,8 @@ public class Camel extends DesertAnimal {
     }
 
     @Override
-    public void makeSound() {
-        System.out.println("Grunt!");
+    public String makeSound() {
+        return "Grunt!";
     }
 
     @Override

@@ -22,8 +22,8 @@ public class Deer extends GrasslandAnimal {
     }
 
     @Override
-    public void makeSound() {
-        System.out.println("Bleat!");
+    public String makeSound() {
+        return "Bleat!";
     }
 
     @Override

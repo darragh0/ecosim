@@ -21,8 +21,10 @@ public abstract class AnimalDecorator extends Animal {
     }
 
     @Override
-    public String move() {
-        return this.move();
+    public String makeSound() {
+        return animal.makeSound();
     }
+
+    
 
 }

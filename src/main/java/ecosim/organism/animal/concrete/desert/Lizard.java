@@ -22,8 +22,8 @@ public class Lizard extends DesertAnimal {
     }
 
     @Override
-    public void makeSound() {
-        System.out.println("Chirp!");
+    public String makeSound() {
+        return "Chirp!";
     }
 
     @Override
