@@ -57,6 +57,7 @@ public class EcosystemController {
                 this.man.updateTimeOfDay();
             }
             this.man.processAnimalsTurn();
+            this.man.checkOrganismsHealth();
         }
         this.view.displayEcosytemMap(this.man);
         this.view.displayDailyReport(this.man);

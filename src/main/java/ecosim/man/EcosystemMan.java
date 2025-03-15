@@ -115,6 +115,31 @@ public class EcosystemMan {
         this.newbornAnimals.clear();
     }
 
+    public void checkOrganismsHealth() {
+     
+        List<Animal> animalsToRemove = new ArrayList<>();
+        
+        for (Animal animal : this.animals) {
+            if (animal.getHealth() <= 0) {
+                animalsToRemove.add(animal);
+            }
+        }
+        for (Animal animal : animalsToRemove) {
+            this.map.getGrid().rmv(animal);
+            this.animals.remove(animal);
+            this.deadAnimals.add(animal);
+
+            if (actionListener != null) {
+                ActionResult deathResult = new ActionResult(
+                    ActionType.DIED, 
+                    animal, null, 
+                    animal.getX(), animal.getY());
+                actionListener.onActionPerformed(deathResult);
+            }
+        }
+        
+    }
+
     public void createAnimal(Class<? extends Animal> animal, String biome) {
         Animal newAnimal = AnimalFactoryProducer.getFactory(biome).createAnimal(animal);
         Animal decoratedAnimal = decorateAnimal(newAnimal);

@@ -76,15 +76,21 @@ public class EcosystemView {
     private <T extends Organism> void addOrganismReport(final String type, List<T> organisms, StringBuilder str,
         int maxWidth) {
         final int gap = 10;
-        final int goodHealth = 70;
-        final int poorHealth = 30;
+        final double goodHealthPercentage = 0.6; // 70% of maximum health
+        final double poorHealthPercentage = 0.4; // 30% of maximum health
 
         final List<T> thriving = organisms.stream()
-            .filter(o -> o.getHealth() >= goodHealth)
+            .filter(o -> {
+                double healthPercentage = (double) o.getHealth() / o.getMaxHealth();
+                return healthPercentage >= goodHealthPercentage;
+            })
             .collect(Collectors.toList());
 
         final List<T> declining = organisms.stream()
-            .filter(o -> o.getHealth() <= poorHealth)
+            .filter(o -> {
+                double healthPercentage = (double) o.getHealth() / o.getMaxHealth();
+                return healthPercentage < poorHealthPercentage;
+            })
             .collect(Collectors.toList());
 
         final String thrivingHeader = "Thriving %s:".formatted(type);
@@ -327,6 +333,7 @@ public class EcosystemView {
         return switch (actionType) {
             case NONE -> formatIdleMessage(actorName, actorSymbol, actor.getActivityState().toString(), newX, newY, sound);
             case MOVED -> formatMovementMessage(actorName, actorSymbol, newX, newY, sound);
+            case DIED -> formatAttemptedDeathMessage(actorName, actorSymbol, sound);
             case ATTEMPTED_BREEDING -> formatAttemptedBreedingMessage(actorName, actorSymbol, target, sound);
             case SUCCESSFUL_BREEDING -> formatSuccessfulBreedingMessage(actorName, actorSymbol, target, sound);
             case ATTEMPTED_EATING -> formatAttemptedEatingMessage(actorName, actorSymbol, target, sound);
@@ -341,6 +348,10 @@ public class EcosystemView {
 
     private String formatMovementMessage(String actorName, String actorSymbol, int x, int y, String sound) {
         return String.format("%s %s moves to %d,%d. %s", actorSymbol, actorName, x, y, sound);
+    }
+
+    private String formatAttemptedDeathMessage(String actorName, String actorSymbol, String sound) {
+        return String.format("(💀) %s %s has died from starvation. %s", actorSymbol, actorName, sound);
     }
 
     private String formatAttemptedBreedingMessage(String actorName, String actorSymbol, Organism target, String sound) {

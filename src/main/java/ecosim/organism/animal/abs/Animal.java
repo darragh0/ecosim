@@ -142,10 +142,9 @@ public abstract class Animal extends Organism implements Observer {
     };
 
     public Animal breed(Animal mate) {
-        float combinedReproductiveChance = this.reproductiveChance * mate.reproductiveChance;
-
-        if (Math.random() < combinedReproductiveChance) {
-            Animal child = this.createClone();
+    
+        if (Math.random() < this.reproductiveChance) {
+            Animal child = mate.createClone();
             return child;
         }
         return null;
