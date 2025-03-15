@@ -34,13 +34,14 @@ public abstract class Animal extends Organism implements Observer {
     protected float reproductiveChance;
 
     public Animal(Size size, Diet diet, ActivityType activityType, boolean canHibernate, int num) {
-        super(size, num); // Default coordinates (0, 0)
+        super(size, num);
         this.diet = diet;
         this.activityType = activityType;
         this.consciousState = new Conscious();
         this.survivalChance = 0.5f;
         this.reproductiveChance = 0.5f;
         this.activityState = ActivityState.SLEEPING;
+        this.canHibernate = canHibernate;
     }
 
     public Animal(Animal animal) {
@@ -71,7 +72,7 @@ public abstract class Animal extends Organism implements Observer {
         return this.activityState;
     }
 
-    public void setSleepState(ActivityState activityState) {
+    public void setActivityState(ActivityState activityState) {
         this.activityState = activityState;
     }
 
@@ -153,17 +154,17 @@ public abstract class Animal extends Organism implements Observer {
         switch (season) {
             case Season.WINTER -> {
                 if (canHibernate) {
-                    setSleepState(ActivityState.HIBERNATING);
+                    setActivityState(ActivityState.HIBERNATING);
                 }
             }
-            case Season.SUMMER -> setSleepState(ActivityState.AWAKE);
-            case Season.SPRING -> setSleepState(ActivityState.AWAKE);
+            case Season.SUMMER -> setActivityState(ActivityState.AWAKE);
+            case Season.SPRING -> setActivityState(ActivityState.AWAKE);
             case Season.AUTUMN -> {
                 if (canHibernate) {
-                    setSleepState(ActivityState.HIBERNATING);
+                    setActivityState(ActivityState.HIBERNATING);
                 }
             }
-            default -> setSleepState(ActivityState.AWAKE);
+            default -> setActivityState(ActivityState.AWAKE);
         }
     }
 
@@ -171,16 +172,16 @@ public abstract class Animal extends Organism implements Observer {
         switch (timeOfDay) {
             case TimeOfDay.DAY -> {
                 if (activityType == ActivityType.DIURNAL) {
-                    setSleepState(ActivityState.AWAKE);
+                    setActivityState(ActivityState.AWAKE);
                 } else {
-                    setSleepState(ActivityState.SLEEPING);
+                    setActivityState(ActivityState.SLEEPING);
                 }
             }
             case TimeOfDay.NIGHT -> {
                 if (activityType == ActivityType.NOCTURNAL) {
-                    setSleepState(ActivityState.AWAKE);
+                    setActivityState(ActivityState.AWAKE);
                 } else {
-                    setSleepState(ActivityState.SLEEPING);
+                    setActivityState(ActivityState.SLEEPING);
                 }
             }
         }
@@ -196,6 +197,10 @@ public abstract class Animal extends Organism implements Observer {
 
     public ConsciousState getConsciousState() {
         return this.consciousState;
+    }
+
+    public boolean getCanHibernate() {
+        return this.canHibernate;
     }
 
     public boolean isEdible(Organism organism) {

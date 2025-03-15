@@ -37,6 +37,7 @@ public abstract class Organism extends Movable {
         this.name = name;
     }
 
+    @Override
     public abstract Organism clone();
 
     public String getName() {
