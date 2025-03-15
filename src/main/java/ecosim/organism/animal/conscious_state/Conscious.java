@@ -1,6 +1,7 @@
 package ecosim.organism.animal.conscious_state;
 
 
+import ecosim.map.ActionResult;
 import ecosim.map.Map;
 import ecosim.organism.animal.abs.Animal;
 
@@ -13,13 +14,12 @@ import ecosim.organism.animal.abs.Animal;
  */
 public class Conscious implements ConsciousState {
     @Override
-    public String move(Animal animal) {
+    public ActionResult move(Animal animal) {
         float healthLoss = animal.getMaxHealth() * 0.1f;
         animal.reduceHealth(healthLoss);
+        ActionResult result = Map.getInstance().scanForAction(animal);
 
-        Map.getInstance().move(animal);
-
-        return animal.getName() + " moved to coords (" + animal.getX() + "," + animal.getY() + ")";
+        return result;
     }
 
 }

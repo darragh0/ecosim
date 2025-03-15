@@ -1,6 +1,7 @@
 package ecosim.organism.animal.conscious_state;
 
 
+import ecosim.map.ActionResult;
 import ecosim.organism.animal.abs.Animal;
 
 
@@ -11,6 +12,6 @@ import ecosim.organism.animal.abs.Animal;
  * @author jjola00
  */
 public interface ConsciousState {
-    String move(Animal animal);
+    ActionResult move(Animal animal);
 
 }
