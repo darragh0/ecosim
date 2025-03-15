@@ -1,7 +1,8 @@
 package ecosim.organism.animal.decorator;
 
 
-import ecosim.organism.animal.Animal;
+import ecosim.organism.animal.abs.Animal;
+
 
 /**
  * Abstract class for decorating animals, allowing for
@@ -18,8 +19,12 @@ public abstract class AnimalDecorator extends Animal {
         super(animal);
         this.animal = animal;
     }
+
     @Override
-    public String move() {
-        return this.move();
+    public String getSound() {
+        return animal.getSound();
     }
+
+    
+
 }

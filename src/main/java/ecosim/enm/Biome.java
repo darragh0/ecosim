@@ -1,16 +1,16 @@
 package ecosim.enm;
 
+
+import static ecosim.common.Util.title;
+
+
 public enum Biome {
-    DESERT("Desert"),
-    GRASSLAND("Grassland");
+    DESERT,
+    GRASSLAND;
 
-    private final String name;
-
-    Biome(String name) {
-        this.name = name;
+    @Override
+    public String toString() {
+        return title(this.name());
     }
 
-    public String getName(){
-        return this.name;
-    }
 }

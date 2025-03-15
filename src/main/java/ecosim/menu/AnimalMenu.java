@@ -2,15 +2,17 @@ package ecosim.menu;
 
 
 import java.util.List;
+import ecosim.organism.animal.abs.Animal;
 
 
-public class AnimalMenu extends OrganismMenu {
+public class AnimalMenu extends OrganismMenu<Animal> {
 
-    public AnimalMenu(final List<String> options) {
-        super("Animal Selection", options);
+    public AnimalMenu(final List<Class<? extends Animal>> options) {
+        super("Select the Animals", options);
     }
 
-    public AnimalMenu(final String... options) {
+    @SafeVarargs
+    public AnimalMenu(final Class<? extends Animal>... options) {
         this(List.of(options));
     }
 

@@ -1,13 +1,31 @@
 package ecosim.organism.animal.factory;
 
 
-import ecosim.organism.animal.Animal;
+import java.lang.reflect.InvocationTargetException;
+import ecosim.organism.animal.abs.Animal;
+
 
 /**
  * Abstract factory interface.
  * 
  * @author jjola00
  */
-public interface AnimalFactory {
-    Animal createAnimal(String type, int x, int y);
+public abstract class AnimalFactory<T extends Animal> {
+
+    @SuppressWarnings("unchecked")
+    public T createAnimal(Class<? extends Animal> animal) {
+        try {
+            return (T) animal.getConstructor().newInstance();
+        } catch (
+            InstantiationException
+            | IllegalAccessException
+            | IllegalArgumentException
+            | InvocationTargetException
+            | NoSuchMethodException
+            | SecurityException e) {
+
+            throw new IllegalArgumentException("Invalid animal type");
+        }
+    }
+
 }

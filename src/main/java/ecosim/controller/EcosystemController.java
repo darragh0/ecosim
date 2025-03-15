@@ -2,9 +2,11 @@ package ecosim.controller;
 
 
 import java.util.List;
-import ecosim.Environment;
+
 import ecosim.enm.Biome;
 import ecosim.man.EcosystemMan;
+import ecosim.organism.animal.abs.Animal;
+import ecosim.organism.plant.abs.Plant;
 import ecosim.view.EcosystemView;
 
 
@@ -19,29 +21,49 @@ public class EcosystemController {
     }
 
     public void run() {
-        // sample code of how the controller interacts with the model and view
-        this.man.run();
+        Runtime.getRuntime().addShutdownHook(new Thread(this::exit));
+        this.view.welcome();
         this.setup();
-        this.view.displayDailyReport(this.man);
+        this.runSimulation();
+    }
+
+    private void exit() {
+        this.view.end(0);
     }
 
     public void setup() {
-        Environment env = this.man.getEnvironment();
-        Biome biome = this.view.promptBiomeSelection();
+        final Biome biome = this.view.promptBiomeSelection();
+        this.man.setBiome(biome);
 
-        env.setBiome(biome.getName());
+        final List<Class<? extends Animal>> animals =
+            this.view.promptAnimalSelection(this.man.getBiomeAnimals(), this.man.getInitialAnimals());
+        final List<Class<? extends Plant>> plants =
+            this.view.promptPlantSelection(this.man.getBiomePlants(), this.man.getInitialPlants());
 
-        final List<String> animals = this.view.promptAnimalSelection(env.getBiomeNativeAnimals(), 3);
-        final List<String> plants = this.view.promptPlantSelection(env.getBiomeNativePlants(), 3);
-
-        // load ecosystem with animals and plants once factory is implemented
-        for (String animal : animals) {
-            this.man.createAnimal(animal);
-        }
-
-        for (String plant : plants) {
-            this.man.createPlant(plant, biome.getName());
-        }
+        this.man.loadEcosystem(animals, plants, biome.name());
+        this.man.populateMap();
+        this.view.displayEcosytemMap(this.man);
     }
+
+    public void runSimulation() {
+        this.man.updateEnvironmentConditions();
+        this.view.displayEnvironmentConditions(this.man);
+        this.man.setActionListener(result -> 
+        this.view.displayAnimalActions(result)
+        );
+        this.view.displayAnimalActionsHeader();
+        for (int hour = 0; hour < 10; hour++){
+            if (hour == 5){
+                this.man.updateTimeOfDay();
+            }
+            this.man.processAnimalsTurn();
+        }
+        this.view.displayEcosytemMap(this.man);
+        this.view.displayDailyReport(this.man);
+        this.man.resetNewAndDeadOrganisms();
+       
+    
+    }
+
 
 }

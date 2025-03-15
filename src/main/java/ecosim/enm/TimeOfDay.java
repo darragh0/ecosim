@@ -1,17 +1,25 @@
 package ecosim.enm;
 
+import static ecosim.common.Util.title;
+
 public enum TimeOfDay implements Event {
-    DAY("Day"),
-    NIGHT("Night");
+    DAY("🌅"),
+    NIGHT("🌙");
 
-    private final String value;
+    private final String icon;
 
-    TimeOfDay(String value) {
-        this.value = value;
+    @Override
+    public String getIcon() {
+        return this.icon;
     }
 
     @Override
-    public String getValue() {
-        return value;
+    public String toString() {
+        return title(this.name());
+    }
+
+    TimeOfDay(String icon) {
+        this.icon = icon;
     }
 }
+

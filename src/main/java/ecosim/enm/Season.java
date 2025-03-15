@@ -1,19 +1,28 @@
 package ecosim.enm;
 
+import static ecosim.common.Util.title;
+
 public enum Season implements Event {
-    SPRING("Spring"),
-    SUMMER("Summer"),
-    AUTUMN("Autumn"),
-    WINTER("Winter");
+    SPRING("🌸"),
+    SUMMER("🏖️"),
+    AUTUMN("🍂"),
+    WINTER("☃️");
 
-    private final String value;
+    private final String icon;
 
-    Season(String value) {
-        this.value = value;
+    @Override
+    public String getIcon() {
+        return this.icon;
     }
 
     @Override
-    public String getValue() {
-        return value;
+    public String toString() {
+        return title(this.name());
     }
+
+    Season(String icon) {   
+        this.icon = icon;
+    }
+    
 }
+
