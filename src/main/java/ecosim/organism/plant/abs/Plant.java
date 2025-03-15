@@ -32,9 +32,6 @@ public abstract class Plant extends Organism implements Observer {
     private Weather currentWeather;
 
     private static final float HEALTH_THRESHOLD = 0.0f;
-    private boolean isDead = false;
-
-
 
     public Plant(int num) {
         super(num);
@@ -73,8 +70,6 @@ public abstract class Plant extends Organism implements Observer {
         }
         return null;
     }
-
-    
 
     public Plant performAsexualReproduction() {
         Plant offspring = createClone();
@@ -117,7 +112,7 @@ public abstract class Plant extends Organism implements Observer {
     }
 
     public void performEnergyCycle(Weather currentWeather) {
-        if (energyCycleState != null && !isDead) {
+        if (energyCycleState != null && !isDead()) {
             float healthChange = energyCycleState.performEnergyCycle(growthRate, currentWeather);
             adjustHealth(healthChange);
         }
@@ -127,7 +122,6 @@ public abstract class Plant extends Organism implements Observer {
         this.biteCapacity--;
         // Each bite takes away (100% / BITE_DIVISOR) of max health
         this.health -= this.getMaxHealth() / BITE_DIVISOR;
-        checkHealth();
     }
 
     public int getBiteCapacity() {
@@ -136,7 +130,7 @@ public abstract class Plant extends Organism implements Observer {
 
     // timplementing energy cycle, photosynthesis if day, respiration if night
     public void performDailyActivities() {
-        if (isDead) return;
+        if (isDead()) return;
         
         TimeOfDay currentTime = getCurrentTimeOfDay();
         Weather currentWeather = getCurrentWeather();
@@ -221,21 +215,11 @@ public abstract class Plant extends Organism implements Observer {
     }
 
     /**
-     * Check if plant health is below threshold and mark as dead if necessary
-     */
-    public boolean checkHealth() {
-        if (this.health <= HEALTH_THRESHOLD && !isDead) {
-            this.isDead = true;
-        }
-        return isDead;
-    }
-
-    /**
-     * Returns whether the plant is dead
-     * @return true if the plant is dead, false otherwise
+     * Checks if the plant is dead based on its health
+     * @return true if the plant is dead (health <= threshold), false otherwise
      */
     public boolean isDead() {
-        return isDead;
+        return this.health <= HEALTH_THRESHOLD;
     }
 
     /**
@@ -245,7 +229,6 @@ public abstract class Plant extends Organism implements Observer {
     public void adjustHealth(float amount) {
         this.health = Math.min(this.health + amount, this.getMaxHealth());
         this.health = Math.max(this.health, 0.0f); // Don't allow negative health
-        checkHealth();
     }
 }
 
