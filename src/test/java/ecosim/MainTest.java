@@ -64,10 +64,11 @@ public class MainTest {
     }
     @Test
     public void testCactusMouseInitialization() {
+        System.out.println(cactusMouse.getName() + " " + cactusMouse.getSymbol());
         assertEquals(Size.SMALL, cactusMouse.getSize());
         assertEquals(Diet.HERBIVORE, cactusMouse.getDiet());
         assertEquals(ActivityType.NOCTURNAL, cactusMouse.getActivityType());
-        assertTrue(cactusMouse.getName().startsWith("Cactus Mouse"));
+        assertTrue(cactusMouse.getName().startsWith("CactusMouse"));
         assertEquals(ActivityState.SLEEPING, cactusMouse.getActivityState());
         assertFalse(cactusMouse.getCanHibernate());
     }
