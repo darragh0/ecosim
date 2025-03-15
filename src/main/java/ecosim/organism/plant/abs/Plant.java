@@ -45,8 +45,58 @@ public abstract class Plant extends Organism implements Observer {
     // These are the methods that are common to all plants
     @Override // clonable is a part of the java.lang.Cloneable interface
     public Plant clone() {
-        // temporary i dont want to steal mia's lines of code
-        return this;
+        try {
+            Plant clonedPlant = (Plant) super.clone();
+            // Reset health to half of maximum for the offspring
+            clonedPlant.health = this.getMaxHealth() / 2;
+            
+            // Position the clone near the parent plant
+            // This assumes your Plant class has position coordinates
+            double angle = Math.random() * 2 * Math.PI;
+            int offsetX = (int) Math.round(Math.cos(angle));
+            int offsetY = (int) Math.round(Math.sin(angle));
+            clonedPlant.setX(this.getX() + offsetX);
+            clonedPlant.setY(this.getY() + offsetY);
+            
+            // Ensure same growth rate as parent
+            clonedPlant.growthRate = this.growthRate;
+            
+            // Clone the energy cycle state
+            if (this.energyCycleState != null) {
+                if (this.energyCycleState instanceof Photosynthesis) {
+                    clonedPlant.energyCycleState = new Photosynthesis();
+                } else if (this.energyCycleState instanceof Respiration) {
+                    clonedPlant.energyCycleState = new Respiration();
+                }
+            }
+            
+            return clonedPlant;
+        } catch (CloneNotSupportedException e) {
+            System.err.println("Failed to clone plant: " + e.getMessage());
+            return null;
+        }
+    }
+
+    public Plant createClone() {
+        Plant clone = this.clone();
+        if (clone != null) {
+            // Additional setup for the clone could go here
+            return clone;
+        }
+        return null;
+    }
+
+    public Plant performAsexualReproduction() {
+        Plant offspring = createClone();
+        if (offspring != null) {
+            System.out.println(this.getClass().getSimpleName() + " has reproduced asexually!");
+            // Here you would add the offspring to your ecosystem/grid
+            // For example: ecosystem.addOrganism(offspring);
+            return offspring;
+        } else {
+            System.err.println("Asexual reproduction failed for " + this.getClass().getSimpleName());
+            return null;
+        }
     }
 
     @Override
@@ -90,18 +140,6 @@ public abstract class Plant extends Organism implements Observer {
 
     public int getBiteCapacity() {
         return biteCapacity;
-    }
-
-
-
-    public void performAsexualReproduction() {
-        // also temporary (sorry mia i dont want to steal your code)
-        // try {
-        // Plant offspring = this.clone();
-        // } catch (CloneNotSupportedException e) {
-        // // TODO Auto-generated catch block
-        // e.printStackTrace();
-        // }
     }
 
     // timplementing energy cycle, photosynthesis if day, respiration if night
