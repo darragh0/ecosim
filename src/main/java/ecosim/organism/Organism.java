@@ -28,6 +28,7 @@ public abstract class Organism extends Movable {
         this.name = "organism";
     }
 
+    @Override
     public abstract Organism clone();
 
     public String getName() {

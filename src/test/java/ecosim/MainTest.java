@@ -46,6 +46,7 @@ public class MainTest {
         assertEquals(ActivityType.NOCTURNAL, cactusMouse.getActivityType());
         assertTrue(cactusMouse.getName().startsWith("Cactus Mouse"));
         assertEquals(ActivityState.SLEEPING, cactusMouse.getActivityState());
+        assertEquals(true, cactusMouse.getCanHibernate());
     }
     @Test
     public void testDeerClone() {
@@ -102,6 +103,7 @@ public class MainTest {
     @Test
     public void testConservationBoostDecorator() {
         normalSnake = new Snake();
+        boostedSnake = new Snake();
         float initialHealth = normalSnake.getHealth();
         assertEquals(normalSnake.getHealth(), boostedSnake.getHealth());
         ConservationBoostDecorator decoratedSnake = new ConservationBoostDecorator(boostedSnake);
@@ -119,7 +121,7 @@ public class MainTest {
         float expectedNormalHealth = initialHealth - normalLoss;
         float expectedDecoratedHealth = initialHealth - decoratedLoss;
         
-        assertEquals(expectedNormalHealth, cactusMouse.getHealth(), 0.001);
+        assertEquals(expectedNormalHealth, normalSnake.getHealth(), 0.001);
         assertEquals(expectedDecoratedHealth, decoratedSnake.getHealth(), 0.001);
     }
 }

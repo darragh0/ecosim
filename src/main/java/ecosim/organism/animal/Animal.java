@@ -39,6 +39,7 @@ public abstract class Animal extends Organism implements Observer {
         this.survivalChance = 0.5f;
         this.reproductiveChance = 0.5f;
         this.activityState = ActivityState.SLEEPING;
+        this.canHibernate = canHibernate;
     }
 
     public Animal(Animal animal) {
@@ -185,6 +186,10 @@ public abstract class Animal extends Organism implements Observer {
 
     public ConsciousState getConsciousState() {
         return this.consciousState;
+    }
+
+    public boolean getCanHibernate() {
+        return this.canHibernate;
     }
 
     public boolean isEdible(Organism organism) {
