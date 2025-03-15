@@ -16,7 +16,7 @@ public class ActionsView {
 
     public void displayAnimalActions(ActionResult result) {
         // Skip displaying movement or idle actions
-        if (result.getActionType() == ActionType.MOVED || result.getActionType() == ActionType.NONE) {
+        if (result.getActionType() == ActionType.BASIC_ACTION) {
             return;
         }
 
