@@ -46,15 +46,6 @@ public class MainTest {
         boostedSnake.setCoords(4, 5);
     }
     @Test
-    public void testCactusMouseInitialization() {
-        assertEquals(Size.SMALL, cactusMouse.getSize());
-        assertEquals(Diet.HERBIVORE, cactusMouse.getDiet());
-        assertEquals(ActivityType.NOCTURNAL, cactusMouse.getActivityType());
-        assertTrue(cactusMouse.getName().startsWith("Cactus Mouse"));
-        assertEquals(ActivityState.SLEEPING, cactusMouse.getActivityState());
-        assertEquals(false, cactusMouse.getCanHibernate());
-    }
-    @Test
     public void testDeerClone() {
         Deer clone = deer.clone();
         assertNotSame(deer, clone);
@@ -70,6 +61,15 @@ public class MainTest {
         
         cactusMouse.handleTimeOfDayUpdate(TimeOfDay.DAY);
         assertEquals(ActivityState.SLEEPING, cactusMouse.getActivityState());
+    }
+    @Test
+    public void testCactusMouseInitialization() {
+        assertEquals(Size.SMALL, cactusMouse.getSize());
+        assertEquals(Diet.HERBIVORE, cactusMouse.getDiet());
+        assertEquals(ActivityType.NOCTURNAL, cactusMouse.getActivityType());
+        assertTrue(cactusMouse.getName().startsWith("Cactus Mouse"));
+        assertEquals(ActivityState.SLEEPING, cactusMouse.getActivityState());
+        assertFalse(cactusMouse.getCanHibernate());
     }
     @Test
     public void testSeasonUpdateWithHibernation() {
