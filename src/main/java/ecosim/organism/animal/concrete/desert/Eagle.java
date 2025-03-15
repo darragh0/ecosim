@@ -22,7 +22,7 @@ public class Eagle extends DesertAnimal {
     }
 
     @Override
-    public String makeSound() {
+    public String getSound() {
         return "Sqwuak!";
     }
 

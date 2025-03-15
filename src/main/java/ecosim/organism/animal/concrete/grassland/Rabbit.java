@@ -22,7 +22,7 @@ public class Rabbit extends GrasslandAnimal {
     }
 
     @Override
-    public String makeSound() {
+    public String getSound() {
         return "Squeak!";
     }
 

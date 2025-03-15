@@ -22,7 +22,7 @@ public class Fox extends GrasslandAnimal {
     }
 
     @Override
-    public String makeSound() {
+    public String getSound() {
         return "Ring-ding-ding-ding-dingeringeding! Wa-pa-pa-pa-pa-pa-pow!";
     }
 

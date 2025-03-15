@@ -22,7 +22,7 @@ public class Lizard extends DesertAnimal {
     }
 
     @Override
-    public String makeSound() {
+    public String getSound() {
         return "Chirp!";
     }
 

@@ -322,7 +322,7 @@ public class EcosystemView {
     private String formatActionMessage(Animal actor, Organism target, ActionType actionType, int newX, int newY) {
         String actorName = actor.getName();
         String actorSymbol = actor.getSymbol();  
-        String sound = actor.makeSound();
+        String sound = actor.getSound();
         
         return switch (actionType) {
             case NONE -> formatIdleMessage(actorName, actorSymbol, actor.getActivityState().toString(), newX, newY, sound);

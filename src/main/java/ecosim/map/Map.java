@@ -122,7 +122,7 @@ public class Map {
             predator, prey, predator.getX(), predator.getY());
     }
     
-    public ActionResult scanForAction(final Animal an) {
+    public ActionResult move(final Animal an) {
         for (final Direction dir : Direction.values()) {
             int targetX = an.getX() + dir.getDx();
             int targetY = an.getY() + dir.getDy();
