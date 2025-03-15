@@ -35,9 +35,6 @@ public class Respiration implements EnergyCycleState {
         
         growthRate += adjustedGrowthRate; // Update the growth rate
 
-        System.out.println("Performing respiration. Growth rate decreased by: " + 
-                          (-1 * adjustedGrowthRate) + ", Health adjustment: " + healthAdjustment);
-        
         return healthAdjustment;
     }
 }

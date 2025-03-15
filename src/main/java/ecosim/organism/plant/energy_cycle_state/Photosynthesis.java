@@ -37,10 +37,6 @@ public class Photosynthesis implements EnergyCycleState {
 
         growthRate += adjustedGrowthRate; // Update the growth rate
         
-        System.out.println("Performing photosynthesis. Growth rate increased by: " + 
-                          adjustedGrowthRate + ", Health adjustment: " + healthAdjustment);
-        
         return healthAdjustment;
     }
-
 }

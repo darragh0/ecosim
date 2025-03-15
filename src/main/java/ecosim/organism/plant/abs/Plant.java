@@ -70,15 +70,10 @@ public abstract class Plant extends Organism implements Observer {
             clonedPlant.growthRate = this.growthRate;
             
             // Clone the energy cycle state
-            if (this.energyCycleState != null) {
-                if (this.energyCycleState instanceof Photosynthesis) {
-                    clonedPlant.energyCycleState = new Photosynthesis();
-                } else if (this.energyCycleState instanceof Respiration) {
-                    clonedPlant.energyCycleState = new Respiration();
-                }
-            }
+            clonedPlant.energyCycleState = this.energyCycleState;
             
             return clonedPlant;
+        
         } catch (CloneNotSupportedException e) {
             System.err.println("Failed to clone plant: " + e.getMessage());
             return null;
@@ -89,18 +84,17 @@ public abstract class Plant extends Organism implements Observer {
         Plant clone = this.clone();
         if (clone != null) 
             return clone;
-        }
+        
         return null;
     }
 
     public Plant performAsexualReproduction() {
         Plant offspring = createClone();
         if (offspring != null) {
-            System.out.println(this.getClass().getSimpleName() + " has reproduced asexually!");
-            // TODO: remoce offspring to the grid
+            // Offspring created successfully
             return offspring;
         } else {
-            System.out.println("Asexual reproduction failed for " + this.getClass().getSimpleName());
+            // Asexual reproduction failed
             return null;
         }
     }
@@ -204,8 +198,6 @@ public abstract class Plant extends Organism implements Observer {
         return name;
     }
 
-
-
     /**
      * Gets the current time of day
      * @return The current time of day
@@ -243,12 +235,11 @@ public abstract class Plant extends Organism implements Observer {
     /**
      * Check if plant health is below threshold and mark as dead if necessary
      */
-    public void checkHealth() {
+    public boolean checkHealth() {
         if (this.health <= HEALTH_THRESHOLD && !isDead) {
             this.isDead = true;
-            System.out.println(this.getName() + " has died.");
-            // You might want to notify the ecosystem here
         }
+        return isDead;
     }
 
     /**
