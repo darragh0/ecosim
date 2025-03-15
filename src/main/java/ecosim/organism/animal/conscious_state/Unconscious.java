@@ -21,7 +21,7 @@ public class Unconscious implements ConsciousState {
         }
 
         return new ActionResult(
-            ActionResult.ActionType.NONE,
+            ActionResult.ActionType.BASIC_ACTION,
             animal,
             null,
             animal.getX(),

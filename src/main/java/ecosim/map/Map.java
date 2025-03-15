@@ -167,7 +167,7 @@ public class Map {
         
         // No valid action found
         moveAnimalRandomly(an);
-        return new ActionResult(ActionResult.ActionType.MOVED, an, null, an.getX(), an.getY());
+        return new ActionResult(ActionResult.ActionType.BASIC_ACTION, an, null, an.getX(), an.getY());
     }
     
     private void moveAnimal(Animal an, int newX, int newY) {
