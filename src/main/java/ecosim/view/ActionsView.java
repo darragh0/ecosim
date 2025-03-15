@@ -10,11 +10,16 @@ public class ActionsView {
 
     public void displayAnimalActionsHeader() {
         StringBuilder str = new StringBuilder();
-        add.accept(str, "** [fly:Animal Actions] **");
+        add.accept(str, "** [fly:Today's Animal Highlights] **");
         System.out.println(str.toString());
     }
 
     public void displayAnimalActions(ActionResult result) {
+        // Skip displaying movement or idle actions
+        if (result.getActionType() == ActionType.MOVED || result.getActionType() == ActionType.NONE) {
+            return;
+        }
+
         StringBuilder str = new StringBuilder();
 
 
@@ -45,25 +50,13 @@ public class ActionsView {
         String sound = actor.getSound();
 
         return switch (actionType) {
-            case NONE -> formatIdleMessage(actorName, actorSymbol, actor.getActivityState().toString(), newX, newY,
-                sound);
-            case MOVED -> formatMovementMessage(actorName, actorSymbol, newX, newY, sound);
             case DIED -> formatAttemptedDeathMessage(actorName, actorSymbol, sound);
             case ATTEMPTED_BREEDING -> formatAttemptedBreedingMessage(actorName, actorSymbol, target, sound);
             case SUCCESSFUL_BREEDING -> formatSuccessfulBreedingMessage(actorName, actorSymbol, target, sound);
             case ATTEMPTED_EATING -> formatAttemptedEatingMessage(actorName, actorSymbol, target, sound);
             case SUCCESSFUL_EATING -> formatSuccessfulEatingMessage(actorName, actorSymbol, target, sound);
+            default -> null; 
         };
-    }
-
-    private String formatIdleMessage(String actorName, String actorSymbol, String activityState, int x, int y,
-        String sound) {
-        return String.format("%s %s lounges at %d,%d because they are %s. %s",
-            actorSymbol, actorName, x, y, activityState, sound);
-    }
-
-    private String formatMovementMessage(String actorName, String actorSymbol, int x, int y, String sound) {
-        return String.format("%s %s moves to %d,%d. %s", actorSymbol, actorName, x, y, sound);
     }
 
     private String formatAttemptedDeathMessage(String actorName, String actorSymbol, String sound) {
@@ -108,8 +101,6 @@ public class ActionsView {
             return String.format("(😌🍽️) %s %s devoured %s %s! %s",
                 actorSymbol, actorName, targetSymbol, targetName, sound);
         }
-        return String.format("(😌🍽️) %s %s had a tasty meal! %s", actorSymbol, actorName, sound);
+        return String.format("(😌🍽️) %s %s had a tasty meal! %s", actorName, actorSymbol, sound);
     }
-
-    
 }
