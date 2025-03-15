@@ -82,8 +82,9 @@ public abstract class Plant extends Organism implements Observer {
 
     public Plant createClone() {
         Plant clone = this.clone();
-        if (clone != null) 
+        if (clone != null) {
             return clone;
+        } 
         
         return null;
     }
