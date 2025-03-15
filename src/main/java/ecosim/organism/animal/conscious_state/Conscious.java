@@ -15,7 +15,7 @@ import ecosim.organism.animal.abs.Animal;
 public class Conscious implements ConsciousState {
     @Override
     public ActionResult move(Animal animal) {
-        float healthLoss = animal.getMaxHealth() * 0.1f;
+        float healthLoss = animal.getMaxHealth() * 0.03f;
         animal.reduceHealth(healthLoss);
         ActionResult result = Map.getInstance().move(animal);
 

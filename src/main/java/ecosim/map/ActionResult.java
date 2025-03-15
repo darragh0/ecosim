@@ -7,6 +7,7 @@ public class ActionResult {
     public enum ActionType {
         NONE,
         MOVED,
+        DIED,
         ATTEMPTED_BREEDING,
         SUCCESSFUL_BREEDING,
         ATTEMPTED_EATING,
