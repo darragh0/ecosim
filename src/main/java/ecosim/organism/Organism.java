@@ -19,7 +19,7 @@ public abstract class Organism extends Movable {
     protected String name;
 
     public Organism(final int num) {
-        this.name = "%s-%d".formatted(this.getClass().getSimpleName(), num);
+        this.name = "%s (%d)".formatted(this.getClass().getSimpleName(), num);
     }
 
     public Organism(final String name) {

@@ -5,8 +5,7 @@ import ecosim.organism.animal.abs.Animal;
 
 public class ActionResult {
     public enum ActionType {
-        NONE,
-        MOVED,
+        BASIC_ACTION,
         DIED,
         ATTEMPTED_BREEDING,
         SUCCESSFUL_BREEDING,

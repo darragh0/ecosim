@@ -4,6 +4,7 @@ package ecosim.common.io;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 
@@ -60,6 +61,9 @@ public final class ConsoleIO {
     public static String prettify(String str, final Object... formatArgs) {
         return TextPrettifier.prettify(str, formatArgs);
     }
+
+    public static BiConsumer<StringBuilder, String> add = 
+        (builder, str) -> builder.append(prettify(str)).append("\n");
 
     public static void pprint(String format, final Object... args) {
         System.out.print(prettify(format, args));
