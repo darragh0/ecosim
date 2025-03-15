@@ -26,13 +26,13 @@ import ecosim.organism.plant.abs.Plant;
  */
 public abstract class Animal extends Organism implements Observer {
 
-    private  final ConsciousState CONSCIOUS_STATE = new Conscious();
-    private  final ConsciousState UNCONSCIOUS_STATE = new Unconscious();
+    private final ConsciousState CONSCIOUS_STATE = new Conscious();
+    private final ConsciousState UNCONSCIOUS_STATE = new Unconscious();
 
     protected Diet diet;
     protected ActivityType activityType;
-    protected ConsciousState consciousState;
     protected ActivityState activityState;
+    protected ConsciousState consciousState;
     protected boolean canHibernate;
     protected float survivalChance;
     protected float reproductiveChance;
@@ -41,10 +41,10 @@ public abstract class Animal extends Organism implements Observer {
         super(size, num); // Default coordinates (0, 0)
         this.diet = diet;
         this.activityType = activityType;
+        this.activityState = ActivityState.SLEEPING;
         this.consciousState = new Conscious();
         this.survivalChance = 0.5f;
         this.reproductiveChance = 0.5f;
-        this.activityState = ActivityState.SLEEPING;
     }
 
     public Animal(Animal animal) {
@@ -52,19 +52,15 @@ public abstract class Animal extends Organism implements Observer {
         this.diet = animal.diet;
         this.symbol = animal.symbol;
         this.activityType = animal.activityType;
+        this.activityState = animal.activityState;
         this.consciousState = new Conscious();
         this.survivalChance = animal.survivalChance;
         this.reproductiveChance = animal.reproductiveChance;
-        this.activityState = animal.activityState;
         this.canHibernate = animal.canHibernate;
     }
 
     public Diet getDiet() {
         return this.diet;
-    }
-
-    public Size getSize() {
-        return this.size;
     }
 
     public ActivityType getActivityType() {
@@ -75,8 +71,12 @@ public abstract class Animal extends Organism implements Observer {
         return this.activityState;
     }
 
-    public void setSleepState(ActivityState activityState) {
+    public void setActivityState(ActivityState activityState) {
         this.activityState = activityState;
+    }
+
+    public ConsciousState getConsciousState() {
+        return this.consciousState;
     }
 
     public void setHealth(float health) {
@@ -86,6 +86,14 @@ public abstract class Animal extends Organism implements Observer {
     public String getSound() {
         return "Animal sound";
     };
+
+    public float getSurvivalChance() {
+        return this.survivalChance;
+    }
+
+    public float getReproductiveChance() {
+        return this.reproductiveChance;
+    }
 
     public boolean canEatAnimal(Animal potentialPrey) {
         boolean isDietCompatible = this.diet != Diet.HERBIVORE;
@@ -99,11 +107,11 @@ public abstract class Animal extends Organism implements Observer {
         // Extract the base type from both animal names
         String thisBaseType = extractBaseType(this.getName());
         String mateBaseType = extractBaseType(potentialMate.getName());
-        
+
         // Compare the base types
         return thisBaseType.equals(mateBaseType);
     }
-    
+
     // Helper method to extract the base animal type from the name
     private String extractBaseType(String name) {
         // Extract the base name (e.g., "Lion" from "Lion (1)")
@@ -134,8 +142,8 @@ public abstract class Animal extends Organism implements Observer {
     };
 
     public Animal breed(Animal mate) {
-        float combinedReproductiveChance = this.reproductiveChance * mate.getReproductiveChance();
-    
+        float combinedReproductiveChance = this.reproductiveChance * mate.reproductiveChance;
+
         if (Math.random() < combinedReproductiveChance) {
             Animal child = this.createClone();
             return child;
@@ -171,23 +179,23 @@ public abstract class Animal extends Organism implements Observer {
         switch (season) {
             case Season.WINTER -> {
                 if (canHibernate) {
-                    setSleepState(ActivityState.HIBERNATING);
-                    this.consciousState = UNCONSCIOUS_STATE;  
+                    setActivityState(ActivityState.HIBERNATING);
+                    this.consciousState = UNCONSCIOUS_STATE;
                 }
             }
             case Season.SUMMER, Season.SPRING -> {
-                setSleepState(ActivityState.AWAKE); 
-                this.consciousState = CONSCIOUS_STATE; 
+                setActivityState(ActivityState.AWAKE);
+                this.consciousState = CONSCIOUS_STATE;
             }
             case Season.AUTUMN -> {
                 if (canHibernate) {
-                    setSleepState(ActivityState.HIBERNATING);
-                    this.consciousState = UNCONSCIOUS_STATE;  
+                    setActivityState(ActivityState.HIBERNATING);
+                    this.consciousState = UNCONSCIOUS_STATE;
                 }
             }
             default -> {
-                setSleepState(ActivityState.AWAKE);
-                this.consciousState = CONSCIOUS_STATE;  
+                setActivityState(ActivityState.AWAKE);
+                this.consciousState = CONSCIOUS_STATE;
             }
         }
     }
@@ -196,48 +204,35 @@ public abstract class Animal extends Organism implements Observer {
         switch (timeOfDay) {
             case TimeOfDay.DAY -> {
                 if (activityType == ActivityType.DIURNAL) {
-                    setSleepState(ActivityState.AWAKE);
+                    setActivityState(ActivityState.AWAKE);
                     this.consciousState = CONSCIOUS_STATE;
                 } else {
-                    setSleepState(ActivityState.SLEEPING);
-                    this.consciousState = UNCONSCIOUS_STATE; 
+                    setActivityState(ActivityState.SLEEPING);
+                    this.consciousState = UNCONSCIOUS_STATE;
                 }
             }
             case TimeOfDay.NIGHT -> {
                 if (activityType == ActivityType.NOCTURNAL) {
-                    setSleepState(ActivityState.AWAKE);
-                    this.consciousState = CONSCIOUS_STATE; 
+                    setActivityState(ActivityState.AWAKE);
+                    this.consciousState = CONSCIOUS_STATE;
                 } else {
-                    setSleepState(ActivityState.SLEEPING);
-                    this.consciousState = UNCONSCIOUS_STATE;  
+                    setActivityState(ActivityState.SLEEPING);
+                    this.consciousState = UNCONSCIOUS_STATE;
                 }
             }
         }
-    }
-
-    public float getSurvivalChance() {
-        return this.survivalChance;
-    }
-
-    public float getReproductiveChance() {
-        return this.reproductiveChance;
-    }
-
-    public ConsciousState getConsciousState() {
-        return this.consciousState;
     }
 
     public boolean isEdible(Organism organism) {
         return false;
     }
 
-
     public void reduceHealth(float amount) {
         this.health = Math.max(0, this.health - amount);
     }
 
     public void restoreHealth(float amount) {
-        this.health = Math.min(maxHealth, this.health + amount);
+        this.health = Math.min(this.getMaxHealth(), this.health + amount);
     }
 
 }

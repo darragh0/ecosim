@@ -13,28 +13,22 @@ import ecosim.enm.Size;
 public abstract class Organism extends Movable {
 
     protected String symbol;
-    protected final int nutritionalValue;
-    protected final float maxHealth;
     protected float health;
     protected String name;
     protected Size size;
 
     public Organism(final Size size, final int num) {
+        this.name = "%s (%d)".formatted(this.getClass().getSimpleName(), num);
         this.symbol = "E"; // can change later
         this.size = size;
-        this.nutritionalValue = this.size.getNutritionalValue();
-        this.maxHealth = this.size.getMaxHealth();
-        this.health = this.maxHealth / 2;
-        this.name = "%s (%d)".formatted(this.getClass().getSimpleName(), num);
+        this.health = this.getMaxHealth() / 2;
     }
 
     public Organism(final Size size, final String name) {
+        this.name = name;
         this.symbol = "E"; // can change later
         this.size = size;
-        this.nutritionalValue = this.size.getNutritionalValue();
-        this.maxHealth = this.size.getMaxHealth();
-        this.health = this.maxHealth / 2;
-        this.name = name;
+        this.health = this.getMaxHealth() / 2;
     }
 
     public abstract Organism clone();
@@ -47,15 +41,21 @@ public abstract class Organism extends Movable {
         return this.symbol;
     }
 
-    public float getNutritionalValue() {
-        return this.nutritionalValue;
-    }
-
-    public float getMaxHealth() {
-        return this.maxHealth;
-    }
-
     public float getHealth() {
         return this.health;
     }
+
+    public Size getSize() {
+        return this.size;
+    }
+
+    public float getNutritionalValue() {
+        return this.size.getNutritionalValue();
+    }
+
+    public float getMaxHealth() {
+        return this.size.getMaxHealth();
+    }
+
+
 }
