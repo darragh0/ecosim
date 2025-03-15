@@ -1,9 +1,6 @@
 package ecosim.organism.animal.concrete.desert;
 
 
-import ecosim.enm.ActivityType;
-import ecosim.enm.Diet;
-import ecosim.enm.Size;
 import ecosim.organism.animal.abs.DesertAnimal;
 
 
@@ -14,16 +11,10 @@ import ecosim.organism.animal.abs.DesertAnimal;
  * @author jjola00
  */
 public class Lizard extends DesertAnimal {
-    private static int lizardCount = 0;
+    private static int num = 0;
 
     public Lizard() {
-        super(Size.SMALL, Diet.CARNIVORE, ActivityType.DIURNAL, true, ++lizardCount);
-        super.symbol = "🦎";
-    }
-
-    @Override
-    public String getSound() {
-        return "Chirp!";
+        super(++num);
     }
 
     @Override

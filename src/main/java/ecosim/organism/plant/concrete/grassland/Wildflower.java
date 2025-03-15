@@ -1,22 +1,22 @@
 package ecosim.organism.plant.concrete.grassland;
 
 
-import ecosim.enm.Size;
 import ecosim.enm.Weather;
 import ecosim.organism.plant.abs.GrasslandPlant;
 
 
-/*
+/**
  * This class represents a wildflower in the grassland ecosystem.
  * It extends the GrasslandPlant class and implements growth rate updates.
- * Author: @MiaBorkoo
+ * 
+ * @author MiaBorkoo
  */
 public class Wildflower extends GrasslandPlant {
-    private static int wildflowerCount = 0;
+
+    private static int num = 0;
 
     public Wildflower() {
-        super(Size.SMALL, ++wildflowerCount);
-        super.symbol = "🌺";
+        super(++num);
     }
 
     @Override
