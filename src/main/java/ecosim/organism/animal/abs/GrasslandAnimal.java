@@ -2,15 +2,12 @@ package ecosim.organism.animal.abs;
 
 
 import ecosim.enm.ActivityState;
-import ecosim.enm.ActivityType;
-import ecosim.enm.Diet;
-import ecosim.enm.Size;
 import ecosim.map.ActionResult;
 
 
 public abstract class GrasslandAnimal extends Animal {
-    public GrasslandAnimal(Size size, Diet diet, ActivityType activityType, boolean canHibernate, int num) {
-        super(size, diet, activityType, canHibernate, num);
+    public GrasslandAnimal(int num) {
+        super(num);
     }
 
     @Override

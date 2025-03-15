@@ -1,21 +1,19 @@
 package ecosim.organism.plant.abs;
 
 
-import ecosim.enm.Size;
 import ecosim.enm.Weather;
 
-/*
+
+/**
  * This is the abstract class for all grassland plants.
  * It extends the Plant class and includes methods specific to grassland plants.
- * Author: @MiaBorkoo
+ * 
+ * @author MiaBorkoo
  */
-
-
-
 public abstract class GrasslandPlant extends Plant {
 
-    public GrasslandPlant(Size size, int num) {
-        super(size, num);
+    public GrasslandPlant(int num) {
+        super(num);
     }
 
     @Override

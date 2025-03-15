@@ -1,10 +1,4 @@
 package ecosim.organism.plant.abs;
-/*
- * This is the abstract class for all plants.
- * It contains the common methods and attributes for all plants.
- * It also contains the methods that are common to all plants.
- * Author: @MiaBorkoo
- */
 
 
 // TODO:import Weather and then updateGrowthRate
@@ -20,6 +14,13 @@ import ecosim.organism.plant.energy_cycle_state.Photosynthesis;
 import ecosim.organism.plant.energy_cycle_state.Respiration;
 
 
+/**
+ * This is the abstract class for all plants.
+ * It contains the common methods and attributes for all plants.
+ * It also contains the methods that are common to all plants.
+ * 
+ * @author MiaBorkoo
+ */
 public abstract class Plant extends Organism implements Observer {
 
     protected int biteCapacity;
@@ -32,11 +33,23 @@ public abstract class Plant extends Organism implements Observer {
 
 
 
-    public Plant(Size size, int num) {
-        super(size, num);
-        this.biteCapacity = this.size.getMaxHealth() / BITE_DIVISOR;
+    public Plant(int num) {
+        super(num);
         // this.timeOfDayManager = timeOfDayManager;
         // this.weatherManager = weatherManager;
+    }
+
+    @Override
+    public Plant setSize(Size size) {
+        super.setSize(size);
+        this.biteCapacity = this.size.getMaxHealth() / BITE_DIVISOR;
+        return this;
+    }
+
+    @Override
+    public Plant setSymbol(String symbol) {
+        super.setSymbol(symbol);
+        return this;
     }
 
     // Method to be implemented by subclasses for specific growth rate adjustments

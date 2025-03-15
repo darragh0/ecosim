@@ -2,6 +2,8 @@ package ecosim.organism.plant.factory;
 
 
 import java.lang.reflect.InvocationTargetException;
+
+import ecosim.misc.PlantDescriptor;
 import ecosim.organism.plant.abs.Plant;
 
 
@@ -14,9 +16,15 @@ import ecosim.organism.plant.abs.Plant;
 public abstract class PlantFactory<T extends Plant> {
 
     @SuppressWarnings("unchecked")
-    public T createPlant(Class<? extends Plant> plant) {
+    public T createPlant(PlantDescriptor plant) {
         try {
-            return (T) plant.getConstructor().newInstance();
+            T instance = (T) plant.plantClass().getConstructor().newInstance();
+
+            instance.setSymbol(plant.symbol())
+                .setSize(plant.size());
+
+            return instance;
+
         } catch (
             InstantiationException
             | IllegalAccessException
@@ -25,7 +33,7 @@ public abstract class PlantFactory<T extends Plant> {
             | NoSuchMethodException
             | SecurityException e) {
 
-            throw new IllegalArgumentException("Invalid animal type");
+            throw new IllegalArgumentException("Invalid plant type: " + plant.plantClass());
         }
     }
 

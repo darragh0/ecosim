@@ -1,14 +1,15 @@
 package ecosim.view;
 
 
+import static ecosim.common.io.ConsoleIO.pprintln;
+import static ecosim.common.io.ConsoleIO.prettify;
+import static ecosim.common.io.ConsoleIO.toggleCursor;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
-import static ecosim.common.io.ConsoleIO.pprintln;
-import static ecosim.common.io.ConsoleIO.prettify;
-import static ecosim.common.io.ConsoleIO.toggleCursor;
 import ecosim.common.io.enm.BoxDrawingChar;
 import ecosim.enm.Biome;
 import ecosim.man.EcosystemMan;
@@ -19,9 +20,12 @@ import ecosim.menu.AnimalMenu;
 import ecosim.menu.BiomeMenu;
 import ecosim.menu.OrganismMenu;
 import ecosim.menu.PlantMenu;
+import ecosim.misc.AnimalDescriptor;
+import ecosim.misc.PlantDescriptor;
 import ecosim.organism.Organism;
 import ecosim.organism.animal.abs.Animal;
 import ecosim.organism.plant.abs.Plant;
+
 
 public class EcosystemView {
 
@@ -50,9 +54,9 @@ public class EcosystemView {
         int maxWidth = calculateMaxWidth(ecosystem);
         addOrganismReport("Animals", ecosystem.getAnimals(), str, maxWidth);
         addOrganismReport("Plants", ecosystem.getPlants(), str, maxWidth);
-        
+
         addLifeCycleReport("Animals", ecosystem.getNewbornAnimals(), ecosystem.getDeadAnimals(), str, maxWidth);
-        
+
         List<Plant> emptyPlantsList = new ArrayList<>(); // placeholder
         addLifeCycleReport("Plants", emptyPlantsList, ecosystem.getDeadPlants(), str, maxWidth);
 
@@ -126,15 +130,16 @@ public class EcosystemView {
         add.accept(str, "");
     }
 
-    private <T extends Organism> void addLifeCycleReport(String type, List<T> newborns, List<T> deceased, StringBuilder str, int maxWidth) {
+    private <T extends Organism> void addLifeCycleReport(String type, List<T> newborns, List<T> deceased,
+        StringBuilder str, int maxWidth) {
         final int gap = 10;
-        
+
         // Column headers
         final String newbornHeader = "New %s:".formatted(type);
         final String deceasedHeader = "Deceased %s:".formatted(type);
 
         int headerPadding = maxWidth - newbornHeader.length() + gap;
-        final String headerStr = 
+        final String headerStr =
             "    [flg:%s]%s[flr:%s]".formatted(newbornHeader, " ".repeat(headerPadding), deceasedHeader);
         add.accept(str, headerStr);
 
@@ -142,7 +147,7 @@ public class EcosystemView {
         if (maxRows == 0) {
             add.accept(str, " ".repeat(maxWidth - 1));
         } else {
-          
+
             for (int i = 0; i < maxRows; i++) {
                 StringBuilder row = new StringBuilder();
 
@@ -168,7 +173,7 @@ public class EcosystemView {
                 add.accept(str, row.toString());
             }
         }
-        
+
         add.accept(str, "");
     }
 
@@ -195,44 +200,71 @@ public class EcosystemView {
         return chosen;
     }
 
-    public List<Class<? extends Animal>> promptAnimalSelection(List<Class<? extends Animal>> animals, int num) {
-        return promptOrganismSelection(new AnimalMenu(animals), num);
+    public List<AnimalDescriptor> promptAnimalSelection(List<AnimalDescriptor> animals, int num) {
+        final List<Class<? extends Animal>> classes = animals.stream()
+            .map(AnimalDescriptor::animalClass)
+            .collect(Collectors.toList());
+
+        final List<Class<? extends Animal>> chosen = promptOrganismSelection(new AnimalMenu(classes), num);
+
+        final List<AnimalDescriptor> descriptors = new ArrayList<>();
+        for (Class<? extends Animal> cls : chosen) {
+            AnimalDescriptor descriptor = animals.stream()
+                .filter(a -> a.animalClass() == cls)
+                .findFirst()
+                .orElse(null);
+            descriptors.add(descriptor);
+        }
+
+        return descriptors;
     }
 
-    public List<Class<? extends Plant>> promptPlantSelection(List<Class<? extends Plant>> plants, int num) {
-        return promptOrganismSelection(new PlantMenu(plants), num);
+    public List<PlantDescriptor> promptPlantSelection(List<PlantDescriptor> plants, int num) {
+        final List<Class<? extends Plant>> classes = plants.stream()
+            .map(PlantDescriptor::plantClass)
+            .collect(Collectors.toList());
+
+        final List<Class<? extends Plant>> chosen = promptOrganismSelection(new PlantMenu(classes), num);
+
+        final List<PlantDescriptor> descriptors = new ArrayList<>();
+        for (Class<? extends Plant> cls : chosen) {
+            PlantDescriptor descriptor = plants.stream()
+                .filter(p -> p.plantClass() == cls)
+                .findFirst()
+                .orElse(null);
+            descriptors.add(descriptor);
+        }
+
+        return descriptors;
     }
 
     public void displayTimeStatus(EcosystemMan ecosystem) {
         StringBuilder str = new StringBuilder();
-        
+
         add.accept(str, "**⏱️ [fly:Simulation Time] ⏱️**\n");
         add.accept(str, "  **Day:** [flc:%d]".formatted(ecosystem.getDayCount()));
         add.accept(str, "  **Time of Day:** [flc:%s] %s".formatted(
             ecosystem.getCurrentTimeOfDay().name(),
-            ecosystem.getCurrentTimeOfDay().getIcon()
-        ));
+            ecosystem.getCurrentTimeOfDay().getIcon()));
         System.out.println(str.toString());
     }
-    
+
     public void displayEnvironmentConditions(EcosystemMan ecosystem) {
         this.displayTimeStatus(ecosystem);
         StringBuilder str = new StringBuilder();
-        
+
         add.accept(str, "**🌍 [fly:Environment Status] 🌍**\n");
-        
+
         // Get environment conditions
-        
+
         add.accept(str, "  **Weather:** [flc:%s] %s".formatted(
-            ecosystem.getCurrentWeather().name(), 
-            ecosystem.getCurrentWeather().getIcon()
-        ));
-        
+            ecosystem.getCurrentWeather().name(),
+            ecosystem.getCurrentWeather().getIcon()));
+
         add.accept(str, "  **Season:** [flc:%s] %s".formatted(
             ecosystem.getCurrentSeason().name(),
-            ecosystem.getCurrentSeason().getIcon()
-        ));
-        
+            ecosystem.getCurrentSeason().getIcon()));
+
         System.out.println(str.toString());
     }
 
@@ -244,7 +276,7 @@ public class EcosystemView {
         Grid grid = ecosystem.getMapGrid();
         final StringBuilder sb = new StringBuilder();
         final String border = BoxDrawingChar.HORIZONTAL.repeat(width * 4); // Adjust border width for consistent cells
-        
+
         add.accept(sb, "**🗺️ [fly:Where is Everyone?] 🗺️**\n");
 
         sb.append("**")
@@ -257,12 +289,12 @@ public class EcosystemView {
             sb.append("**")
                 .append(BoxDrawingChar.VERTICAL.getValue())
                 .append("**");
-            
+
             for (int x = 0; x < width; x++) {
                 final String ch = grid.get(x, y)
                     .map(Organism::getSymbol)
                     .orElse(EMPTY_CELL);
-                
+
                 // Adjust spacing based on character type
                 if (isWideCharacter(ch)) {
                     sb.append(" ").append(ch).append(" ");
@@ -275,18 +307,19 @@ public class EcosystemView {
                 .append(BoxDrawingChar.VERTICAL.getValue())
                 .append("**\n");
         }
-        
+
         sb.append("**")
             .append(BoxDrawingChar.BOTTOM_LEFT.getValue())
             .append(border)
             .append(BoxDrawingChar.BOTTOM_RIGHT.getValue())
             .append("**\n");
-            
+
         pprintln(sb.toString());
     }
 
     private boolean isWideCharacter(String ch) {
-        if (ch == null || ch.isEmpty()) return false;
+        if (ch == null || ch.isEmpty())
+            return false;
 
         // Simple heuristic: if it's not ASCII and not a common symbol, assume it's wide
         char c = ch.charAt(0);
@@ -301,37 +334,37 @@ public class EcosystemView {
 
     public void displayAnimalActions(ActionResult result) {
         StringBuilder str = new StringBuilder();
-        
-        
+
+
         if (result.getActor() == null) {
             add.accept(str, "  Mystery action occurred!");
             System.out.println(str.toString());
             return;
         }
-        
+
         Animal actor = result.getActor();
         Organism target = result.getTarget();
-        
+
         // Format and add the action message
         String message = formatActionMessage(
             actor,
             target,
             result.getActionType(),
             result.getNewX(),
-            result.getNewY()
-        );
-        
+            result.getNewY());
+
         add.accept(str, "  " + message);
         System.out.println(str.toString());
     }
 
     private String formatActionMessage(Animal actor, Organism target, ActionType actionType, int newX, int newY) {
         String actorName = actor.getName();
-        String actorSymbol = actor.getSymbol();  
+        String actorSymbol = actor.getSymbol();
         String sound = actor.getSound();
-        
+
         return switch (actionType) {
-            case NONE -> formatIdleMessage(actorName, actorSymbol, actor.getActivityState().toString(), newX, newY, sound);
+            case NONE -> formatIdleMessage(actorName, actorSymbol, actor.getActivityState().toString(), newX, newY,
+                sound);
             case MOVED -> formatMovementMessage(actorName, actorSymbol, newX, newY, sound);
             case DIED -> formatAttemptedDeathMessage(actorName, actorSymbol, sound);
             case ATTEMPTED_BREEDING -> formatAttemptedBreedingMessage(actorName, actorSymbol, target, sound);
@@ -341,8 +374,9 @@ public class EcosystemView {
         };
     }
 
-    private String formatIdleMessage(String actorName, String actorSymbol, String activityState, int x, int y, String sound) {
-        return String.format("%s %s lounges at %d,%d because they are %s. %s", 
+    private String formatIdleMessage(String actorName, String actorSymbol, String activityState, int x, int y,
+        String sound) {
+        return String.format("%s %s lounges at %d,%d because they are %s. %s",
             actorSymbol, actorName, x, y, activityState, sound);
     }
 
@@ -357,17 +391,19 @@ public class EcosystemView {
     private String formatAttemptedBreedingMessage(String actorName, String actorSymbol, Organism target, String sound) {
         if (target != null) {
             String targetName = target.getName();
-            String targetSymbol = target.getSymbol();  // Assuming getSymbol() exists
-            return String.format("(💔) %s %s got rejected by %s %s. %s", actorSymbol, actorName, targetSymbol, targetName, sound);
+            String targetSymbol = target.getSymbol(); // Assuming getSymbol() exists
+            return String.format("(💔) %s %s got rejected by %s %s. %s", actorSymbol, actorName, targetSymbol,
+                targetName, sound);
         }
         return String.format("(💔) %s %s tries dating app. No matches. %s", actorSymbol, actorName, sound);
     }
 
-    private String formatSuccessfulBreedingMessage(String actorName, String actorSymbol, Organism target, String sound) {
+    private String formatSuccessfulBreedingMessage(String actorName, String actorSymbol, Organism target,
+        String sound) {
         if (target != null) {
             String targetName = target.getName();
             String targetSymbol = target.getSymbol();
-            return String.format("(❤️) %s %s breeds with %s %s! Baby time! %s", 
+            return String.format("(❤️) %s %s breeds with %s %s! Baby time! %s",
                 actorSymbol, actorName, targetSymbol, targetName, sound);
         }
         return String.format("(❤️) %s %s somehow has a baby! %s", actorSymbol, actorName, sound);
@@ -377,7 +413,7 @@ public class EcosystemView {
         if (target != null) {
             String targetName = target.getName();
             String targetSymbol = target.getSymbol();
-            return String.format("(🥺🍽️) %s %s tried eating %s %s but failed. %s", 
+            return String.format("(🥺🍽️) %s %s tried eating %s %s but failed. %s",
                 actorSymbol, actorName, targetSymbol, targetName, sound);
         }
         return String.format("(🥺🍽️)%s %s missed lunch. %s", actorSymbol, actorName, sound);
@@ -387,9 +423,10 @@ public class EcosystemView {
         if (target != null) {
             String targetName = target.getName();
             String targetSymbol = target.getSymbol();
-            return String.format("(😌🍽️) %s %s devoured %s %s! %s", 
+            return String.format("(😌🍽️) %s %s devoured %s %s! %s",
                 actorSymbol, actorName, targetSymbol, targetName, sound);
         }
         return String.format("(😌🍽️) %s %s had a tasty meal! %s", actorSymbol, actorName, sound);
     }
+
 }

@@ -1,9 +1,6 @@
 package ecosim.organism.animal.concrete.grassland;
 
 
-import ecosim.enm.ActivityType;
-import ecosim.enm.Diet;
-import ecosim.enm.Size;
 import ecosim.organism.animal.abs.GrasslandAnimal;
 
 
@@ -14,16 +11,10 @@ import ecosim.organism.animal.abs.GrasslandAnimal;
  * @author jjola00
  */
 public class Owl extends GrasslandAnimal {
-    private static int owlCount = 0;
+    private static int num = 0;
 
     public Owl() {
-        super(Size.SMALL, Diet.CARNIVORE, ActivityType.NOCTURNAL, false, ++owlCount);
-        super.symbol = "🦉";
-    }
-
-    @Override
-    public String getSound() {
-        return "Hoo!";
+        super(++num);
     }
 
     @Override

@@ -1,9 +1,6 @@
 package ecosim.organism.animal.concrete.grassland;
 
 
-import ecosim.enm.ActivityType;
-import ecosim.enm.Diet;
-import ecosim.enm.Size;
 import ecosim.organism.animal.abs.GrasslandAnimal;
 
 
@@ -14,16 +11,10 @@ import ecosim.organism.animal.abs.GrasslandAnimal;
  * @author jjola00
  */
 public class Deer extends GrasslandAnimal {
-    private static int deerCount = 0;
+    private static int num = 0;
 
     public Deer() {
-        super(Size.MEDIUM, Diet.HERBIVORE, ActivityType.DIURNAL, true, ++deerCount);
-        super.symbol = "🦌";
-    }
-
-    @Override
-    public String getSound() {
-        return "Bleat!";
+        super(++num);
     }
 
     @Override

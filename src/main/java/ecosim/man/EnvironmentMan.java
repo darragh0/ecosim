@@ -8,8 +8,8 @@ import ecosim.enm.Biome;
 import ecosim.enm.Season;
 import ecosim.enm.TimeOfDay;
 import ecosim.enm.Weather;
-import ecosim.organism.animal.abs.Animal;
-import ecosim.organism.plant.abs.Plant;
+import ecosim.misc.AnimalDescriptor;
+import ecosim.misc.PlantDescriptor;
 
 
 
@@ -60,11 +60,11 @@ public class EnvironmentMan {
         return this.timeOfDayMan.getCurrentState();
     }
 
-    public List<Class<? extends Animal>> getBiomeAnimals() {
+    public List<AnimalDescriptor> getBiomeAnimals() {
         return this.biomeMan.getAnimals();
     }
 
-    public List<Class<? extends Plant>> getBiomePlants() {
+    public List<PlantDescriptor> getBiomePlants() {
         return this.biomeMan.getPlants();
     }
 

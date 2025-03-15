@@ -1,9 +1,6 @@
 package ecosim.organism.animal.concrete.desert;
 
 
-import ecosim.enm.ActivityType;
-import ecosim.enm.Diet;
-import ecosim.enm.Size;
 import ecosim.organism.animal.abs.DesertAnimal;
 
 
@@ -14,16 +11,10 @@ import ecosim.organism.animal.abs.DesertAnimal;
  * @author jjola00
  */
 public class CactusMouse extends DesertAnimal {
-    private static int cactusMouseCount = 0;
+    private static int num = 0;
 
     public CactusMouse() {
-        super(Size.SMALL, Diet.HERBIVORE, ActivityType.NOCTURNAL, false, ++cactusMouseCount);
-        super.symbol = "🐭";
-    }
-
-    @Override
-    public String getSound() {
-        return "Squeal!";
+        super(++num);
     }
 
     @Override
