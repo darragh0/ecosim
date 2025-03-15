@@ -200,6 +200,10 @@ public abstract class Animal extends Organism implements Observer {
     }
 
     public void handleTimeOfDayUpdate(TimeOfDay timeOfDay) {
+        if (activityState == ActivityState.HIBERNATING) {
+            return;
+        }
+        
         switch (timeOfDay) {
             case TimeOfDay.DAY -> {
                 if (activityType == ActivityType.DIURNAL) {
