@@ -17,7 +17,7 @@ public class Conscious implements ConsciousState {
     public ActionResult move(Animal animal) {
         float healthLoss = animal.getMaxHealth() * 0.1f;
         animal.reduceHealth(healthLoss);
-        ActionResult result = Map.getInstance().scanForAction(animal);
+        ActionResult result = Map.getInstance().move(animal);
 
         return result;
     }

@@ -22,7 +22,7 @@ public class Camel extends DesertAnimal {
     }
 
     @Override
-    public String makeSound() {
+    public String getSound() {
         return "Grunt!";
     }
 

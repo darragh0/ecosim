@@ -22,7 +22,7 @@ public class Deer extends GrasslandAnimal {
     }
 
     @Override
-    public String makeSound() {
+    public String getSound() {
         return "Bleat!";
     }
 

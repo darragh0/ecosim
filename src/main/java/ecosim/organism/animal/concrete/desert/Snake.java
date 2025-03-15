@@ -22,7 +22,7 @@ public class Snake extends DesertAnimal {
     }
 
     @Override
-    public String makeSound() {
+    public String getSound() {
         return "Hiss!";
     }
 

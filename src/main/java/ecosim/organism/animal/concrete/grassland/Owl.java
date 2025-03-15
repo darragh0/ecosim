@@ -22,7 +22,7 @@ public class Owl extends GrasslandAnimal {
     }
 
     @Override
-    public String makeSound() {
+    public String getSound() {
         return "Hoo!";
     }
 

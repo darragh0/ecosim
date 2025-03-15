@@ -83,7 +83,7 @@ public abstract class Animal extends Organism implements Observer {
         this.health = health;
     }
 
-    public String makeSound() {
+    public String getSound() {
         return "Animal sound";
     };
 

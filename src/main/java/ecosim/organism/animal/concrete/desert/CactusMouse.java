@@ -22,7 +22,7 @@ public class CactusMouse extends DesertAnimal {
     }
 
     @Override
-    public String makeSound() {
+    public String getSound() {
         return "Squeal!";
     }
 
