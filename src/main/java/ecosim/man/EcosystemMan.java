@@ -12,6 +12,9 @@ import ecosim.enm.Biome;
 import ecosim.enm.Season;
 import ecosim.enm.TimeOfDay;
 import ecosim.enm.Weather;
+import ecosim.map.ActionResult;
+import ecosim.map.ActionResult.ActionType;
+import static ecosim.map.ActionResult.ActionType.SUCCESSFUL_EATING;
 import ecosim.map.Grid;
 import ecosim.map.Map;
 import ecosim.map.Map.MapSize;
@@ -23,6 +26,7 @@ import ecosim.organism.animal.decorator.SurvivabilityBoostDecorator;
 import ecosim.organism.animal.factory.AnimalFactoryProducer;
 import ecosim.organism.plant.abs.Plant;
 import ecosim.organism.plant.factory.PlantFactoryProducer;
+import ecosim.view.ActionResultListener;
 
 
 public class EcosystemMan {
@@ -31,24 +35,24 @@ public class EcosystemMan {
     private int dayCount;
     private final ArrayList<Animal> animals;
     private final ArrayList<Plant> plants;
+    private final List<Animal> deadAnimals;
+    private final List<Plant> deadPlants;
+    private final List<Animal> newbornAnimals;
     private final Map map;
     private final EcosystemConfig config;
+
+    private ActionResultListener actionListener;
 
     public EcosystemMan() {
         this.environment = new EnvironmentMan();
         this.dayCount = 0;
         this.animals = new ArrayList<>();
         this.plants = new ArrayList<>();
-        this.map = Map.init(10, 10);
+        this.deadAnimals = new ArrayList<>();
+        this.deadPlants = new ArrayList<>();
+        this.newbornAnimals = new ArrayList<>();
+        this.map = Map.init(6, 6);
         this.config = this.loadConfig();
-    }
-
-    public void setup() {
-        // TODO: implement the environment and biome setup
-    }
-
-    public void dailyUpdate() {
-        // TODO: implement creating the loop for daily simulation
     }
 
     public void createPlant(Class<? extends Plant> plant, String biome) {
@@ -57,6 +61,58 @@ public class EcosystemMan {
         this.environment.registerTimeOfDayObservers(newPlant);
         this.environment.registerWeatherObservers(newPlant);
         this.plants.add(newPlant);
+    }
+
+    public void processAnimalsTurn() {
+        // Create a copy of the animals list to safely iterate through
+        List<Animal> currentAnimals = new ArrayList<>(this.animals);
+        
+        for (Animal a : currentAnimals) {
+            // Skip animals that have already been removed
+            if (!this.animals.contains(a)) {
+                continue;
+            }
+            
+            ActionResult result = a.move();
+            ActionType actionType = result.getActionType();
+            
+            // Handle new offspring from breeding
+            if (actionType == ActionType.SUCCESSFUL_BREEDING && result.getOffspring() != null) {
+                Animal offspring = result.getOffspring();
+                this.animals.add(offspring);
+                this.newbornAnimals.add(offspring);
+                
+                // Register the new animal with environment observers
+                this.environment.registerTimeOfDayObservers(offspring);
+                this.environment.registerSeasonObservers(offspring);
+            }
+            
+            if (actionType == SUCCESSFUL_EATING) {
+                switch(result.getTarget()) {
+                    case Plant plant -> {
+                        if (plant.getBiteCapacity() == 0) {
+                            this.plants.remove(plant);
+                            this.deadPlants.add(plant);
+                        }
+                    }
+                    case Animal animal -> {
+                        this.animals.remove(animal);
+                        this.deadAnimals.add(animal);
+                    }
+                    default -> LoggerMan.log(Level.WARNING, "Unknown target type: " + result.getTarget());
+                }
+            }
+    
+            if (actionListener != null) {
+                actionListener.onActionPerformed(result);
+            }
+        }
+    }
+
+    public void resetNewAndDeadOrganisms() {
+        this.deadAnimals.clear();
+        this.deadPlants.clear();
+        this.newbornAnimals.clear();
     }
 
     public void createAnimal(Class<? extends Animal> animal, String biome) {
@@ -135,6 +191,10 @@ public class EcosystemMan {
         return this.dayCount;
     }
 
+    public void updateTimeOfDay() {
+        this.environment.updateTimeOfDay();
+    }
+
     public Season getCurrentSeason() {
     return this.environment.getSeason();
     }
@@ -162,6 +222,17 @@ public class EcosystemMan {
     public List<Plant> getPlants() {
         return this.plants;
     }
+    public List<Animal> getDeadAnimals() {
+        return this.deadAnimals;
+    }
+
+    public List<Plant> getDeadPlants() {
+        return this.deadPlants;
+    }
+
+    public List<Animal> getNewbornAnimals() {
+        return this.newbornAnimals;
+    }
 
     private EcosystemConfig loadConfig() {
         final Optional<EcosystemConfig> fileCfg = FileIO.parseEcosystemConfig();
@@ -171,6 +242,11 @@ public class EcosystemMan {
         }
         return fileCfg.get();
     }
+    
+    public void setActionListener(ActionResultListener listener) {
+        this.actionListener = listener;
+    }
+
 
     public int getInitialAnimals() {
         return this.config.initialAnimals();

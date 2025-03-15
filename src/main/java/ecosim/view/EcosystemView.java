@@ -12,6 +12,8 @@ import static ecosim.common.io.ConsoleIO.toggleCursor;
 import ecosim.common.io.enm.BoxDrawingChar;
 import ecosim.enm.Biome;
 import ecosim.man.EcosystemMan;
+import ecosim.map.ActionResult;
+import ecosim.map.ActionResult.ActionType;
 import ecosim.map.Grid;
 import ecosim.menu.AnimalMenu;
 import ecosim.menu.BiomeMenu;
@@ -20,7 +22,6 @@ import ecosim.menu.PlantMenu;
 import ecosim.organism.Organism;
 import ecosim.organism.animal.abs.Animal;
 import ecosim.organism.plant.abs.Plant;
-
 
 public class EcosystemView {
 
@@ -49,6 +50,11 @@ public class EcosystemView {
         int maxWidth = calculateMaxWidth(ecosystem);
         addOrganismReport("Animals", ecosystem.getAnimals(), str, maxWidth);
         addOrganismReport("Plants", ecosystem.getPlants(), str, maxWidth);
+        
+        addLifeCycleReport("Animals", ecosystem.getNewbornAnimals(), ecosystem.getDeadAnimals(), str, maxWidth);
+        
+        List<Plant> emptyPlantsList = new ArrayList<>(); // placeholder
+        addLifeCycleReport("Plants", emptyPlantsList, ecosystem.getDeadPlants(), str, maxWidth);
 
         System.out.println(str.toString());
     }
@@ -111,6 +117,52 @@ public class EcosystemView {
 
             add.accept(str, row.toString());
         }
+        add.accept(str, "");
+    }
+
+    private <T extends Organism> void addLifeCycleReport(String type, List<T> newborns, List<T> deceased, StringBuilder str, int maxWidth) {
+        final int gap = 10;
+        
+        // Column headers
+        final String newbornHeader = "New %s:".formatted(type);
+        final String deceasedHeader = "Deceased %s:".formatted(type);
+
+        int headerPadding = maxWidth - newbornHeader.length() + gap;
+        final String headerStr = 
+            "    [flg:%s]%s[flr:%s]".formatted(newbornHeader, " ".repeat(headerPadding), deceasedHeader);
+        add.accept(str, headerStr);
+
+        final int maxRows = Math.max(newborns.size(), deceased.size());
+        if (maxRows == 0) {
+            add.accept(str, " ".repeat(maxWidth - 1));
+        } else {
+          
+            for (int i = 0; i < maxRows; i++) {
+                StringBuilder row = new StringBuilder();
+
+                // Left column (newborns)
+                if (i < newborns.size()) {
+                    T organism = newborns.get(i);
+                    String rowStr = String.format("      > %s ", organism.getName());
+                    row.append(rowStr);
+
+                    int padding = maxWidth - rowStr.length() + gap;
+                    if (padding > 0)
+                        row.append(" ".repeat(padding));
+                } else {
+                    row.append(" ".repeat(maxWidth + gap));
+                }
+
+                // Right column (deceased)
+                if (i < deceased.size()) {
+                    T organism = deceased.get(i);
+                    row.append(String.format("      > %s", organism.getName()));
+                }
+
+                add.accept(str, row.toString());
+            }
+        }
+        
         add.accept(str, "");
     }
 
@@ -199,7 +251,7 @@ public class EcosystemView {
             sb.append("**")
                 .append(BoxDrawingChar.VERTICAL.getValue())
                 .append("**");
-
+            
             for (int x = 0; x < width; x++) {
                 final String ch = grid.get(x, y)
                     .map(Organism::getSymbol)
@@ -217,21 +269,116 @@ public class EcosystemView {
                 .append(BoxDrawingChar.VERTICAL.getValue())
                 .append("**\n");
         }
-
+        
         sb.append("**")
             .append(BoxDrawingChar.BOTTOM_LEFT.getValue())
             .append(border)
             .append(BoxDrawingChar.BOTTOM_RIGHT.getValue())
             .append("**\n");
-        
+            
         pprintln(sb.toString());
     }
-    
+
     private boolean isWideCharacter(String ch) {
         if (ch == null || ch.isEmpty()) return false;
-        
+
         // Simple heuristic: if it's not ASCII and not a common symbol, assume it's wide
         char c = ch.charAt(0);
         return c > 127 || ch.codePointAt(0) > 127;
+    }
+
+    public void displayAnimalActionsHeader() {
+        StringBuilder str = new StringBuilder();
+        add.accept(str, "** [fly:Animal Actions] **");
+        System.out.println(str.toString());
+    }
+
+    public void displayAnimalActions(ActionResult result) {
+        StringBuilder str = new StringBuilder();
+        
+        
+        if (result.getActor() == null) {
+            add.accept(str, "  Mystery action occurred!");
+            System.out.println(str.toString());
+            return;
+        }
+        
+        Animal actor = result.getActor();
+        Organism target = result.getTarget();
+        
+        // Format and add the action message
+        String message = formatActionMessage(
+            actor,
+            target,
+            result.getActionType(),
+            result.getNewX(),
+            result.getNewY()
+        );
+        
+        add.accept(str, "  " + message);
+        System.out.println(str.toString());
+    }
+
+    private String formatActionMessage(Animal actor, Organism target, ActionType actionType, int newX, int newY) {
+        String actorName = actor.getName();
+        String actorSymbol = actor.getSymbol();  
+        String sound = actor.makeSound();
+        
+        return switch (actionType) {
+            case NONE -> formatIdleMessage(actorName, actorSymbol, actor.getActivityState().toString(), newX, newY, sound);
+            case MOVED -> formatMovementMessage(actorName, actorSymbol, newX, newY, sound);
+            case ATTEMPTED_BREEDING -> formatAttemptedBreedingMessage(actorName, actorSymbol, target, sound);
+            case SUCCESSFUL_BREEDING -> formatSuccessfulBreedingMessage(actorName, actorSymbol, target, sound);
+            case ATTEMPTED_EATING -> formatAttemptedEatingMessage(actorName, actorSymbol, target, sound);
+            case SUCCESSFUL_EATING -> formatSuccessfulEatingMessage(actorName, actorSymbol, target, sound);
+        };
+    }
+
+    private String formatIdleMessage(String actorName, String actorSymbol, String activityState, int x, int y, String sound) {
+        return String.format("%s %s lounges at %d,%d because they are %s. %s", 
+            actorSymbol, actorName, x, y, activityState, sound);
+    }
+
+    private String formatMovementMessage(String actorName, String actorSymbol, int x, int y, String sound) {
+        return String.format("%s %s moves to %d,%d. %s", actorSymbol, actorName, x, y, sound);
+    }
+
+    private String formatAttemptedBreedingMessage(String actorName, String actorSymbol, Organism target, String sound) {
+        if (target != null) {
+            String targetName = target.getName();
+            String targetSymbol = target.getSymbol();  // Assuming getSymbol() exists
+            return String.format("(💔) %s %s got rejected by %s %s. %s", actorSymbol, actorName, targetSymbol, targetName, sound);
+        }
+        return String.format("(💔) %s %s tries dating app. No matches. %s", actorSymbol, actorName, sound);
+    }
+
+    private String formatSuccessfulBreedingMessage(String actorName, String actorSymbol, Organism target, String sound) {
+        if (target != null) {
+            String targetName = target.getName();
+            String targetSymbol = target.getSymbol();
+            return String.format("(❤️) %s %s breeds with %s %s! Baby time! %s", 
+                actorSymbol, actorName, targetSymbol, targetName, sound);
+        }
+        return String.format("(❤️) %s %s somehow has a baby! %s", actorSymbol, actorName, sound);
+    }
+
+    private String formatAttemptedEatingMessage(String actorName, String actorSymbol, Organism target, String sound) {
+        if (target != null) {
+            String targetName = target.getName();
+            String targetSymbol = target.getSymbol();
+            return String.format("(🥺🍽️) %s %s tried eating %s %s but failed. %s", 
+                actorSymbol, actorName, targetSymbol, targetName, sound);
+        }
+        return String.format("(🥺🍽️)%s %s missed lunch. %s", actorSymbol, actorName, sound);
+    }
+
+    private String formatSuccessfulEatingMessage(String actorName, String actorSymbol, Organism target, String sound) {
+        if (target != null) {
+            String targetName = target.getName();
+            String targetSymbol = target.getSymbol();
+            return String.format("(😌🍽️) %s %s devoured %s %s! %s", 
+                actorSymbol, actorName, targetSymbol, targetName, sound);
+        }
+        return String.format("(😌🍽️) %s %s had a tasty meal! %s", actorSymbol, actorName, sound);
     }
 }
