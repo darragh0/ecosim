@@ -1,5 +1,6 @@
 package ecosim.enm;
 
+import static ecosim.common.Util.title;
 
 /**
  * Enum representing the various activity states
@@ -10,5 +11,10 @@ package ecosim.enm;
 public enum ActivityState {
     SLEEPING,
     HIBERNATING,
-    AWAKE
+    AWAKE;
+
+    @Override
+    public String toString() {
+        return title(this.name());
+    }
 }
