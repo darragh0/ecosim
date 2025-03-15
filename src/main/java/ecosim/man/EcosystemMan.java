@@ -85,7 +85,7 @@ public class EcosystemMan {
             if (actionType == SUCCESSFUL_EATING) {
                 switch (result.getTarget()) {
                     case Plant plant -> {
-                        if (plant.getBiteCapacity() == 0) {
+                        if (plant.isDead()) {
                             this.plants.remove(plant);
                             this.deadPlants.add(plant);
                         }
