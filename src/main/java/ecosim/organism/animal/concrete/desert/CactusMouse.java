@@ -22,8 +22,8 @@ public class CactusMouse extends DesertAnimal {
     }
 
     @Override
-    public void makeSound() {
-        System.out.println("Squeal!");
+    public String makeSound() {
+        return "Squeal!";
     }
 
     @Override

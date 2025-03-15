@@ -22,8 +22,8 @@ public class Lion extends GrasslandAnimal {
     }
 
     @Override
-    public void makeSound() {
-        System.out.println("Roar!");
+    public String makeSound() {
+        return "Roar!";
     }
 
     @Override

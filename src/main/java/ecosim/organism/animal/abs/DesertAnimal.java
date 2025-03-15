@@ -5,6 +5,7 @@ import ecosim.enm.ActivityState;
 import ecosim.enm.ActivityType;
 import ecosim.enm.Diet;
 import ecosim.enm.Size;
+import ecosim.map.ActionResult;
 
 
 public abstract class DesertAnimal extends Animal {
@@ -13,11 +14,10 @@ public abstract class DesertAnimal extends Animal {
     }
 
     @Override
-    public String move() {
+    public ActionResult move() {
         if (this.activityState == ActivityState.AWAKE) {
             float healthLoss = this.getMaxHealth() * 0.05f; // Desert animals use more energy when moving
             this.reduceHealth(healthLoss);
-            return consciousState.move(this);
         }
         return consciousState.move(this);
     }

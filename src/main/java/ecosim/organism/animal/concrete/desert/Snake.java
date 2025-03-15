@@ -22,8 +22,8 @@ public class Snake extends DesertAnimal {
     }
 
     @Override
-    public void makeSound() {
-        System.out.println("Hiss!");
+    public String makeSound() {
+        return "Hiss!";
     }
 
     @Override
