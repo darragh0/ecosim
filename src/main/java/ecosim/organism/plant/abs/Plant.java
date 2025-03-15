@@ -31,6 +31,9 @@ public abstract class Plant extends Organism implements Observer {
     private TimeOfDay currentTimeOfDay;
     private Weather currentWeather;
 
+    private static final float HEALTH_THRESHOLD = 0.0f;
+    private boolean isDead = false;
+
 
 
     public Plant(int num) {
@@ -60,17 +63,9 @@ public abstract class Plant extends Organism implements Observer {
     public Plant clone() {
         try {
             Plant clonedPlant = (Plant) super.clone();
-            // Reset health to half of maximum for the offspring
+            
             clonedPlant.health = this.getMaxHealth() / 2;
-            
-            // Position the clone near the parent plant
-            // This assumes your Plant class has position coordinates
-            double angle = Math.random() * 2 * Math.PI;
-            int offsetX = (int) Math.round(Math.cos(angle));
-            int offsetY = (int) Math.round(Math.sin(angle));
-            clonedPlant.setX(this.getX() + offsetX);
-            clonedPlant.setY(this.getY() + offsetY);
-            
+    
             // Ensure same growth rate as parent
             clonedPlant.growthRate = this.growthRate;
             
@@ -92,8 +87,7 @@ public abstract class Plant extends Organism implements Observer {
 
     public Plant createClone() {
         Plant clone = this.clone();
-        if (clone != null) {
-            // Additional setup for the clone could go here
+        if (clone != null) 
             return clone;
         }
         return null;
@@ -103,11 +97,10 @@ public abstract class Plant extends Organism implements Observer {
         Plant offspring = createClone();
         if (offspring != null) {
             System.out.println(this.getClass().getSimpleName() + " has reproduced asexually!");
-            // Here you would add the offspring to your ecosystem/grid
-            // For example: ecosystem.addOrganism(offspring);
+            // TODO: remoce offspring to the grid
             return offspring;
         } else {
-            System.err.println("Asexual reproduction failed for " + this.getClass().getSimpleName());
+            System.out.println("Asexual reproduction failed for " + this.getClass().getSimpleName());
             return null;
         }
     }
@@ -142,13 +135,17 @@ public abstract class Plant extends Organism implements Observer {
     }
 
     public void performEnergyCycle(Weather currentWeather) {
-        if (energyCycleState != null) {
-            energyCycleState.performEnergyCycle(growthRate, currentWeather);
+        if (energyCycleState != null && !isDead) {
+            float healthChange = energyCycleState.performEnergyCycle(growthRate, currentWeather);
+            adjustHealth(healthChange);
         }
     }
 
     public void beEaten() {
         this.biteCapacity--;
+        // Each bite takes away (100% / BITE_DIVISOR) of max health
+        this.health -= this.getMaxHealth() / BITE_DIVISOR;
+        checkHealth();
     }
 
     public int getBiteCapacity() {
@@ -157,6 +154,8 @@ public abstract class Plant extends Organism implements Observer {
 
     // timplementing energy cycle, photosynthesis if day, respiration if night
     public void performDailyActivities() {
+        if (isDead) return;
+        
         TimeOfDay currentTime = getCurrentTimeOfDay();
         Weather currentWeather = getCurrentWeather();
 
@@ -165,7 +164,15 @@ public abstract class Plant extends Organism implements Observer {
         } else {
             setEnergyCycleState(new Respiration());
         }
+        
         performEnergyCycle(currentWeather);
+        
+        if (this.health > this.getMaxHealth() * 0.7f) {
+            if (Math.random() < 0.05) {
+                Plant offspring = performAsexualReproduction();
+                adjustHealth(-this.getMaxHealth() * 0.3f);
+            }
+        }
     }
 
     protected void adjustGrowthRate(Weather currentWeather) {
@@ -233,5 +240,33 @@ public abstract class Plant extends Organism implements Observer {
         // The update method handles the behavior changes already
     }
 
+    /**
+     * Check if plant health is below threshold and mark as dead if necessary
+     */
+    public void checkHealth() {
+        if (this.health <= HEALTH_THRESHOLD && !isDead) {
+            this.isDead = true;
+            System.out.println(this.getName() + " has died.");
+            // You might want to notify the ecosystem here
+        }
+    }
+
+    /**
+     * Returns whether the plant is dead
+     * @return true if the plant is dead, false otherwise
+     */
+    public boolean isDead() {
+        return isDead;
+    }
+
+    /**
+     * Adds specified amount to plant's health, capped at max health
+     * @param amount Amount to add to health (can be negative for damage)
+     */
+    public void adjustHealth(float amount) {
+        this.health = Math.min(this.health + amount, this.getMaxHealth());
+        this.health = Math.max(this.health, 0.0f); // Don't allow negative health
+        checkHealth();
+    }
 }
 
