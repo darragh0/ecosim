@@ -2,8 +2,8 @@ package ecosim.enm;
 
 
 public enum Size {
-    SMALL(10, 5),
-    MEDIUM(20, 10),
+    SMALL(10, 3),
+    MEDIUM(20, 9),
     LARGE(30, 15);
 
     private final int maxHealth;

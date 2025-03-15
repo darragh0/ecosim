@@ -31,16 +31,16 @@ public abstract class Animal extends Organism implements Observer {
 
     protected Diet diet;
     protected ActivityType activityType;
-    protected ActivityState activityState;
-    protected ConsciousState consciousState;
     protected boolean canHibernate;
+    protected String sound;
+
     protected float survivalChance;
     protected float reproductiveChance;
+    protected ActivityState activityState;
+    protected ConsciousState consciousState;
 
-    public Animal(Size size, Diet diet, ActivityType activityType, boolean canHibernate, int num) {
-        super(size, num); // Default coordinates (0, 0)
-        this.diet = diet;
-        this.activityType = activityType;
+    public Animal(int num) {
+        super(num); // Default coordinates (0, 0)
         this.activityState = ActivityState.SLEEPING;
         this.consciousState = new Conscious();
         this.survivalChance = 0.5f;
@@ -48,23 +48,64 @@ public abstract class Animal extends Organism implements Observer {
     }
 
     public Animal(Animal animal) {
-        super(animal.size, animal.name);
-        this.diet = animal.diet;
+        super(animal.name);
         this.symbol = animal.symbol;
+        this.setSize(animal.size);
+        this.canHibernate = animal.canHibernate;
+        this.diet = animal.diet;
         this.activityType = animal.activityType;
         this.activityState = animal.activityState;
         this.consciousState = new Conscious();
         this.survivalChance = animal.survivalChance;
         this.reproductiveChance = animal.reproductiveChance;
-        this.canHibernate = animal.canHibernate;
+    }
+
+    @Override
+    public Animal setSymbol(String symbol) {
+        super.setSymbol(symbol);
+        return this;
+    }
+
+    @Override
+    public Animal setSize(Size size) {
+        super.setSize(size);
+        return this;
+    }
+
+    public Animal setDiet(Diet diet) {
+        this.diet = diet;
+        return this;
     }
 
     public Diet getDiet() {
         return this.diet;
     }
 
+    public Animal setActivityType(ActivityType activityType) {
+        this.activityType = activityType;
+        return this;
+    }
+
     public ActivityType getActivityType() {
         return this.activityType;
+    }
+
+    public Animal setCanHibernate(boolean canHibernate) {
+        this.canHibernate = canHibernate;
+        return this;
+    }
+
+    public boolean canHibernate() {
+        return this.canHibernate;
+    }
+
+    public Animal setSound(String sound) {
+        this.sound = sound;
+        return this;
+    }
+
+    public String getSound() {
+        return this.sound;
     }
 
     public ActivityState getActivityState() {
@@ -82,10 +123,6 @@ public abstract class Animal extends Organism implements Observer {
     public void setHealth(float health) {
         this.health = health;
     }
-
-    public String getSound() {
-        return "Animal sound";
-    };
 
     public float getSurvivalChance() {
         return this.survivalChance;
@@ -144,10 +181,8 @@ public abstract class Animal extends Organism implements Observer {
     public Animal breed(Animal mate) {
         float combinedReproductiveChance = this.reproductiveChance * mate.reproductiveChance;
 
-        if (Math.random() < combinedReproductiveChance) {
-            Animal child = this.createClone();
-            return child;
-        }
+        if (Math.random() < combinedReproductiveChance)
+            return this.createClone();
         return null;
     }
 
@@ -156,7 +191,11 @@ public abstract class Animal extends Organism implements Observer {
 
     public Animal createClone() {
         Animal clone = clone();
-        clone.setHealth(this.getMaxHealth() / 2);
+        clone.symbol = this.symbol;
+        clone.setSize(this.size);
+        clone.diet = this.diet;
+        clone.activityType = this.activityType;
+        clone.canHibernate = this.canHibernate;
         return clone;
     }
 
@@ -201,6 +240,10 @@ public abstract class Animal extends Organism implements Observer {
     }
 
     public void handleTimeOfDayUpdate(TimeOfDay timeOfDay) {
+        if (activityState == ActivityState.HIBERNATING) {
+            return;
+        }
+
         switch (timeOfDay) {
             case TimeOfDay.DAY -> {
                 if (activityType == ActivityType.DIURNAL) {

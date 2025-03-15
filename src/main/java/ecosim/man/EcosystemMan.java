@@ -1,12 +1,14 @@
 package ecosim.man;
 
 
+import static ecosim.common.Util.randInt;
+import static ecosim.map.ActionResult.ActionType.SUCCESSFUL_EATING;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
 
-import static ecosim.common.Util.randInt;
 import ecosim.common.io.FileIO;
 import ecosim.enm.Biome;
 import ecosim.enm.Season;
@@ -14,11 +16,12 @@ import ecosim.enm.TimeOfDay;
 import ecosim.enm.Weather;
 import ecosim.map.ActionResult;
 import ecosim.map.ActionResult.ActionType;
-import static ecosim.map.ActionResult.ActionType.SUCCESSFUL_EATING;
 import ecosim.map.Grid;
 import ecosim.map.Map;
 import ecosim.map.Map.MapSize;
+import ecosim.misc.AnimalDescriptor;
 import ecosim.misc.EcosystemConfig;
+import ecosim.misc.PlantDescriptor;
 import ecosim.organism.animal.abs.Animal;
 import ecosim.organism.animal.decorator.ConservationBoostDecorator;
 import ecosim.organism.animal.decorator.FertilityBoostDecorator;
@@ -55,40 +58,32 @@ public class EcosystemMan {
         this.config = this.loadConfig();
     }
 
-    public void createPlant(Class<? extends Plant> plant, String biome) {
-        Plant newPlant = PlantFactoryProducer.getFactory(biome).createPlant(plant);
-
-        this.environment.registerTimeOfDayObservers(newPlant);
-        this.environment.registerWeatherObservers(newPlant);
-        this.plants.add(newPlant);
-    }
-
     public void processAnimalsTurn() {
         // Create a copy of the animals list to safely iterate through
         List<Animal> currentAnimals = new ArrayList<>(this.animals);
-        
+
         for (Animal a : currentAnimals) {
             // Skip animals that have already been removed
             if (!this.animals.contains(a)) {
                 continue;
             }
-            
+
             ActionResult result = a.move();
             ActionType actionType = result.getActionType();
-            
+
             // Handle new offspring from breeding
             if (actionType == ActionType.SUCCESSFUL_BREEDING && result.getOffspring() != null) {
                 Animal offspring = result.getOffspring();
                 this.animals.add(offspring);
                 this.newbornAnimals.add(offspring);
-                
+
                 // Register the new animal with environment observers
                 this.environment.registerTimeOfDayObservers(offspring);
                 this.environment.registerSeasonObservers(offspring);
             }
-            
+
             if (actionType == SUCCESSFUL_EATING) {
-                switch(result.getTarget()) {
+                switch (result.getTarget()) {
                     case Plant plant -> {
                         if (plant.getBiteCapacity() == 0) {
                             this.plants.remove(plant);
@@ -102,7 +97,7 @@ public class EcosystemMan {
                     default -> LoggerMan.log(Level.WARNING, "Unknown target type: " + result.getTarget());
                 }
             }
-    
+
             if (actionListener != null) {
                 actionListener.onActionPerformed(result);
             }
@@ -115,13 +110,46 @@ public class EcosystemMan {
         this.newbornAnimals.clear();
     }
 
-    public void createAnimal(Class<? extends Animal> animal, String biome) {
+    public void checkOrganismsHealth() {
+
+        List<Animal> animalsToRemove = new ArrayList<>();
+
+        for (Animal animal : this.animals) {
+            if (animal.getHealth() <= 0) {
+                animalsToRemove.add(animal);
+            }
+        }
+        for (Animal animal : animalsToRemove) {
+            this.map.getGrid().rmv(animal);
+            this.animals.remove(animal);
+            this.deadAnimals.add(animal);
+
+            if (actionListener != null) {
+                ActionResult deathResult = new ActionResult(
+                    ActionType.DIED,
+                    animal, null,
+                    animal.getX(), animal.getY());
+                actionListener.onActionPerformed(deathResult);
+            }
+        }
+
+    }
+
+    private void createAnimal(AnimalDescriptor animal, String biome) {
         Animal newAnimal = AnimalFactoryProducer.getFactory(biome).createAnimal(animal);
         Animal decoratedAnimal = decorateAnimal(newAnimal);
 
         this.environment.registerTimeOfDayObservers(newAnimal);
         this.environment.registerSeasonObservers(newAnimal);
         this.animals.add(decoratedAnimal);
+    }
+
+    public void createPlant(PlantDescriptor plant, String biome) {
+        Plant newPlant = PlantFactoryProducer.getFactory(biome).createPlant(plant);
+
+        this.environment.registerTimeOfDayObservers(newPlant);
+        this.environment.registerWeatherObservers(newPlant);
+        this.plants.add(newPlant);
     }
 
     private Animal decorateAnimal(Animal animal) {
@@ -137,23 +165,24 @@ public class EcosystemMan {
         };
     }
 
-    public void loadEcosystem(List<Class<? extends Animal>> animals, List<Class<? extends Plant>> plants,
-        String biome) {
-        for (Class<? extends Animal> animal : animals) {
+    public void loadEcosystem(List<AnimalDescriptor> animals, List<PlantDescriptor> plants, String biome) {
+
+        for (AnimalDescriptor animal : animals) {
             this.createAnimal(animal, biome);
         }
 
-        for (Class<? extends Plant> plant : plants) {
+        for (PlantDescriptor plant : plants) {
             this.createPlant(plant, biome);
         }
     }
-    
+
     public MapSize getMapSize() {
         return map.getMapDimensions();
     }
+
     public Grid getMapGrid() {
         return this.map.getGrid();
-    }   
+    }
 
     public void populateMap() {
         // Randomly place all organisms on the map during simulation setup
@@ -178,12 +207,11 @@ public class EcosystemMan {
         this.environment.setBiome(biome);
     }
 
-    
-    public List<Class<? extends Animal>> getBiomeAnimals() {
+    public List<AnimalDescriptor> getBiomeAnimals() {
         return this.environment.getBiomeAnimals();
     }
 
-    public List<Class<? extends Plant>> getBiomePlants() {
+    public List<PlantDescriptor> getBiomePlants() {
         return this.environment.getBiomePlants();
     }
 
@@ -196,7 +224,7 @@ public class EcosystemMan {
     }
 
     public Season getCurrentSeason() {
-    return this.environment.getSeason();
+        return this.environment.getSeason();
     }
 
     public Weather getCurrentWeather() {
@@ -204,7 +232,7 @@ public class EcosystemMan {
     }
 
     public TimeOfDay getCurrentTimeOfDay() {
-        return this.environment.getTimeOfDay(); 
+        return this.environment.getTimeOfDay();
     }
 
     public int getAnimalCount() {
@@ -222,6 +250,7 @@ public class EcosystemMan {
     public List<Plant> getPlants() {
         return this.plants;
     }
+
     public List<Animal> getDeadAnimals() {
         return this.deadAnimals;
     }
@@ -242,7 +271,7 @@ public class EcosystemMan {
         }
         return fileCfg.get();
     }
-    
+
     public void setActionListener(ActionResultListener listener) {
         this.actionListener = listener;
     }

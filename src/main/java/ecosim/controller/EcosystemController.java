@@ -5,8 +5,8 @@ import java.util.List;
 
 import ecosim.enm.Biome;
 import ecosim.man.EcosystemMan;
-import ecosim.organism.animal.abs.Animal;
-import ecosim.organism.plant.abs.Plant;
+import ecosim.misc.AnimalDescriptor;
+import ecosim.misc.PlantDescriptor;
 import ecosim.view.EcosystemView;
 
 
@@ -35,9 +35,9 @@ public class EcosystemController {
         final Biome biome = this.view.promptBiomeSelection();
         this.man.setBiome(biome);
 
-        final List<Class<? extends Animal>> animals =
+        final List<AnimalDescriptor> animals =
             this.view.promptAnimalSelection(this.man.getBiomeAnimals(), this.man.getInitialAnimals());
-        final List<Class<? extends Plant>> plants =
+        final List<PlantDescriptor> plants =
             this.view.promptPlantSelection(this.man.getBiomePlants(), this.man.getInitialPlants());
 
         this.man.loadEcosystem(animals, plants, biome.name());
@@ -48,21 +48,20 @@ public class EcosystemController {
     public void runSimulation() {
         this.man.updateEnvironmentConditions();
         this.view.displayEnvironmentConditions(this.man);
-        this.man.setActionListener(result -> 
-        this.view.displayAnimalActions(result)
-        );
+        this.man.setActionListener(result -> this.view.displayAnimalActions(result));
         this.view.displayAnimalActionsHeader();
-        for (int hour = 0; hour < 10; hour++){
-            if (hour == 5){
+        for (int hour = 0; hour < 10; hour++) {
+            if (hour == 5) {
                 this.man.updateTimeOfDay();
             }
             this.man.processAnimalsTurn();
+            this.man.checkOrganismsHealth();
         }
         this.view.displayEcosytemMap(this.man);
         this.view.displayDailyReport(this.man);
         this.man.resetNewAndDeadOrganisms();
-       
-    
+
+
     }
 
 
