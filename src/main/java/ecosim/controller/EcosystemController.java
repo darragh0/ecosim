@@ -1,55 +1,80 @@
 package ecosim.controller;
 
-
 import java.util.List;
 
 import ecosim.enm.Biome;
 import ecosim.man.EcosystemMan;
 import ecosim.misc.AnimalDescriptor;
 import ecosim.misc.PlantDescriptor;
-import ecosim.view.EcosystemView;
-
+import ecosim.view.ActionsView;
+import ecosim.view.EnvironmentView;
+import ecosim.view.InputPromptView;
+import ecosim.view.MapView;
+import ecosim.view.ReportView;
+import ecosim.view.SplashScreenView;
 
 public class EcosystemController {
 
     private final EcosystemMan man;
-    private final EcosystemView view;
+    
+    // Individual view components
+    private final InputPromptView inputView;
+    private final MapView mapView;
+    private final ReportView reportView;
+    private final ActionsView actionsView;
+    private final EnvironmentView environmentView;
 
     public EcosystemController() {
         this.man = new EcosystemMan();
-        this.view = new EcosystemView();
+        
+        // Initialize individual view components
+        this.inputView = new InputPromptView();
+        this.mapView = new MapView();
+        this.reportView = new ReportView();
+        this.actionsView = new ActionsView();
+        this.environmentView = new EnvironmentView();
     }
 
     public void run() {
         Runtime.getRuntime().addShutdownHook(new Thread(this::exit));
-        this.view.welcome();
+        this.showWelcomeScreen();
         this.setup();
         this.runSimulation();
     }
 
+    private void showWelcomeScreen() {
+        SplashScreenView.show();
+        System.out.println("Welcome to the *Ecosystem Simulator* 🌳");
+        System.out.println("To setup the ecosystem, please follow the prompts below.\n");
+    }
+
     private void exit() {
-        this.view.end(0);
+        // Using console output directly for exit message
+        System.out.println("\n[flr:(Simulator finished w/ exit code 0)]");
     }
 
     public void setup() {
-        final Biome biome = this.view.promptBiomeSelection();
+        final Biome biome = this.inputView.promptBiomeSelection();
         this.man.setBiome(biome);
 
         final List<AnimalDescriptor> animals =
-            this.view.promptAnimalSelection(this.man.getBiomeAnimals(), this.man.getInitialAnimals());
+            this.inputView.promptAnimalSelection(this.man.getBiomeAnimals(), this.man.getInitialAnimals());
         final List<PlantDescriptor> plants =
-            this.view.promptPlantSelection(this.man.getBiomePlants(), this.man.getInitialPlants());
+            this.inputView.promptPlantSelection(this.man.getBiomePlants(), this.man.getInitialPlants());
 
         this.man.loadEcosystem(animals, plants, biome.name());
         this.man.populateMap();
-        this.view.displayEcosytemMap(this.man);
+        this.mapView.displayEcosytemMap(this.man);
     }
 
     public void runSimulation() {
         this.man.updateEnvironmentConditions();
-        this.view.displayEnvironmentConditions(this.man);
-        this.man.setActionListener(result -> this.view.displayAnimalActions(result));
-        this.view.displayAnimalActionsHeader();
+        this.environmentView.displayEnvironmentConditions(this.man);
+        
+        // Set up action listener to display animal actions
+        this.man.setActionListener(result -> this.actionsView.displayAnimalActions(result));
+        
+        this.actionsView.displayAnimalActionsHeader();
         for (int hour = 0; hour < 10; hour++) {
             if (hour == 5) {
                 this.man.updateTimeOfDay();
@@ -57,12 +82,9 @@ public class EcosystemController {
             this.man.processAnimalsTurn();
             this.man.checkOrganismsHealth();
         }
-        this.view.displayEcosytemMap(this.man);
-        this.view.displayDailyReport(this.man);
+        
+        this.mapView.displayEcosytemMap(this.man);
+        this.reportView.displayDailyReport(this.man);
         this.man.resetNewAndDeadOrganisms();
-
-
     }
-
-
 }

@@ -2,14 +2,15 @@ package ecosim.view;
 
 
 import static ecosim.common.io.ConsoleIO.clearTerminal;
-import static ecosim.common.io.ConsoleIO.getTermLines;
 import static ecosim.common.io.ConsoleIO.cursorUp;
+import static ecosim.common.io.ConsoleIO.getTermLines;
 import static ecosim.common.io.ConsoleIO.pprintCenter;
+import static ecosim.common.io.ConsoleIO.pprintln;
 import static ecosim.common.io.ConsoleIO.strInput;
 import static ecosim.common.io.ConsoleIO.toggleCursor;
 
 
-public final class SplashScreen {
+public final class SplashScreenView {
 
     private static final short TITLE_HEIGHT = 7;
     private static final String TITLE = """
@@ -33,7 +34,7 @@ public final class SplashScreen {
                   [fdy:| |]                [fly:|| ||]              \s
         [flg:⣠⣤⣤⣤⣀⣠⣤⣤⣤⣤⣤⣤⣀⣤⣤⣤⣄⣀⣤⣤⣤⣤⣄⣀⣤⣤⣤⣄⣀⣄⣀⣤⣤⣤⣤⣤⣤⣀⣤⣤⣤⣄⣀⣤⣤⣤⣤⣄⣀⣤⣤⣤⣄⣀⣄⣀⣤⣤⣤⣤⣄⣀⣤⣤⣤⣄⣀⣤⣤⣤⣤⣄⣀⣠⣄]**""";
 
-    private SplashScreen() {
+    private SplashScreenView() {
         throw new UnsupportedOperationException("This class cannot be instantiated.");
     }
 
@@ -51,5 +52,17 @@ public final class SplashScreen {
         toggleCursor(true);
         clearTerminal();
     }
+
+    public void welcome() {
+        SplashScreenView.show();
+        pprintln("Welcome to the *Ecosystem Simulator* 🌳");
+        pprintln("To setup the ecosystem, please follow the prompts below.\n");
+    }
+
+    public void end(int exitCode) {
+        toggleCursor(true);
+        pprintln("\n[flr:(Simulator finished w/ exit code %d)]", exitCode);
+    }
+
 
 }
