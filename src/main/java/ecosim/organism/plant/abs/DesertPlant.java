@@ -1,21 +1,19 @@
 package ecosim.organism.plant.abs;
 
 
-import ecosim.enm.Size;
 import ecosim.enm.Weather;
 
-/*
+
+/**
  * This is the abstract class for all desert plants.
  * It extends the Plant class and includes methods specific to desert plants.
- * Author: @MiaBorkoo
+ * 
+ * @author MiaBorkoo
  */
-
-
 public abstract class DesertPlant extends Plant {
 
-
-    public DesertPlant(Size size, int num) {
-        super(size, num);
+    public DesertPlant(int num) {
+        super(num);
     }
 
     @Override
