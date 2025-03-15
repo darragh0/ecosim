@@ -25,4 +25,9 @@ public class Shrub extends DesertPlant {
         super.updateGrowthRate(currentWeather);
     }
 
+    @Override
+    public Shrub clone() {
+        return new Shrub();
+    }
+
 }

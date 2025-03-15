@@ -31,7 +31,7 @@ public abstract class Plant extends Organism implements Observer {
     private TimeOfDay currentTimeOfDay;
     private Weather currentWeather;
 
-
+    private static final float HEALTH_THRESHOLD = 0.0f;
 
     public Plant(int num) {
         super(num);
@@ -56,10 +56,30 @@ public abstract class Plant extends Organism implements Observer {
     public abstract void updateGrowthRate(Weather weather);
 
     // These are the methods that are common to all plants
-    @Override // clonable is a part of the java.lang.Cloneable interface
-    public Plant clone() {
-        // temporary i dont want to steal mia's lines of code
-        return this;
+    @Override
+    public abstract Plant clone();
+
+    public Plant createClone() {
+        Plant clone = clone(); // This calls the concrete subclass implementation
+        if (clone != null) {
+            // Set common properties
+            clone.health = this.getMaxHealth() / 2;
+            clone.growthRate = this.growthRate;
+            clone.energyCycleState = this.energyCycleState;
+            return clone;
+        }
+        return null;
+    }
+
+    public Plant performAsexualReproduction() {
+        Plant offspring = createClone();
+        if (offspring != null) {
+            // Offspring created successfully
+            return offspring;
+        } else {
+            // Asexual reproduction failed
+            return null;
+        }
     }
 
     @Override
@@ -92,33 +112,26 @@ public abstract class Plant extends Organism implements Observer {
     }
 
     public void performEnergyCycle(Weather currentWeather) {
-        if (energyCycleState != null) {
-            energyCycleState.performEnergyCycle(growthRate, currentWeather);
+        if (energyCycleState != null && !isDead()) {
+            float healthChange = energyCycleState.performEnergyCycle(growthRate, currentWeather);
+            adjustHealth(healthChange);
         }
     }
 
     public void beEaten() {
         this.biteCapacity--;
+        // Each bite takes away (100% / BITE_DIVISOR) of max health
+        this.health -= this.getMaxHealth() / BITE_DIVISOR;
     }
 
     public int getBiteCapacity() {
         return biteCapacity;
     }
 
-
-
-    public void performAsexualReproduction() {
-        // also temporary (sorry mia i dont want to steal your code)
-        // try {
-        // Plant offspring = this.clone();
-        // } catch (CloneNotSupportedException e) {
-        // // TODO Auto-generated catch block
-        // e.printStackTrace();
-        // }
-    }
-
     // timplementing energy cycle, photosynthesis if day, respiration if night
     public void performDailyActivities() {
+        if (isDead()) return;
+        
         TimeOfDay currentTime = getCurrentTimeOfDay();
         Weather currentWeather = getCurrentWeather();
 
@@ -127,7 +140,15 @@ public abstract class Plant extends Organism implements Observer {
         } else {
             setEnergyCycleState(new Respiration());
         }
+        
         performEnergyCycle(currentWeather);
+        
+        if (this.health > this.getMaxHealth() * 0.7f) {
+            if (Math.random() < 0.05) {
+                Plant offspring = performAsexualReproduction();
+                adjustHealth(-this.getMaxHealth() * 0.3f);
+            }
+        }
     }
 
     protected void adjustGrowthRate(Weather currentWeather) {
@@ -158,8 +179,6 @@ public abstract class Plant extends Organism implements Observer {
     public String getName() {
         return name;
     }
-
-
 
     /**
      * Gets the current time of day
@@ -195,5 +214,21 @@ public abstract class Plant extends Organism implements Observer {
         // The update method handles the behavior changes already
     }
 
+    /**
+     * Checks if the plant is dead based on its health
+     * @return true if the plant is dead (health <= threshold), false otherwise
+     */
+    public boolean isDead() {
+        return this.health <= HEALTH_THRESHOLD;
+    }
+
+    /**
+     * Adds specified amount to plant's health, capped at max health
+     * @param amount Amount to add to health (can be negative for damage)
+     */
+    public void adjustHealth(float amount) {
+        this.health = Math.min(this.health + amount, this.getMaxHealth());
+        this.health = Math.max(this.health, 0.0f); // Don't allow negative health
+    }
 }
 

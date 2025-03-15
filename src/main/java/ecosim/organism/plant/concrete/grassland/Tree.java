@@ -24,4 +24,9 @@ public class Tree extends GrasslandPlant {
         super.updateGrowthRate(currentWeather); // Call the method from the base class
     }
 
+    @Override
+    public Tree clone() {
+        return new Tree();
+    }
+
 }

@@ -24,4 +24,9 @@ public class Succulent extends DesertPlant {
         super.updateGrowthRate(currentWeather);
     }
 
+    @Override
+    public Succulent clone() {
+        return new Succulent();
+    }
+
 }

@@ -2,6 +2,7 @@ package ecosim.organism.plant.concrete.desert;
 
 
 import ecosim.enm.Weather;
+import ecosim.organism.animal.concrete.desert.CactusMouse;
 import ecosim.organism.plant.abs.DesertPlant;
 
 
@@ -23,6 +24,10 @@ public class Cactus extends DesertPlant {
     @Override
     public void updateGrowthRate(Weather currentWeather) {
         super.updateGrowthRate(currentWeather);
+    }
+    @Override
+    public Cactus clone() {
+        return new Cactus();
     }
 
 }

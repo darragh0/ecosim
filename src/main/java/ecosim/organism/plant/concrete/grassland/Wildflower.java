@@ -24,4 +24,9 @@ public class Wildflower extends GrasslandPlant {
         super.updateGrowthRate(currentWeather);
     }
 
+    @Override
+    public Wildflower clone() {
+        return new Wildflower();
+    }
+
 }

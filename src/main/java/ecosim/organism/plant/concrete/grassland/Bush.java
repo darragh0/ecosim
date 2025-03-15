@@ -24,4 +24,9 @@ public class Bush extends GrasslandPlant {
         super.updateGrowthRate(currentWeather);
     }
 
+    @Override
+    public Bush clone() {
+        return new Bush();
+    }
+
 }
