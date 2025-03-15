@@ -59,35 +59,22 @@ public abstract class Plant extends Organism implements Observer {
     public abstract void updateGrowthRate(Weather weather);
 
     // These are the methods that are common to all plants
-    @Override // clonable is a part of the java.lang.Cloneable interface
-    public Plant clone() {
-        try {
-            Plant clonedPlant = (Plant) super.clone();
-            
-            clonedPlant.health = this.getMaxHealth() / 2;
-    
-            // Ensure same growth rate as parent
-            clonedPlant.growthRate = this.growthRate;
-            
-            // Clone the energy cycle state
-            clonedPlant.energyCycleState = this.energyCycleState;
-            
-            return clonedPlant;
-        
-        } catch (CloneNotSupportedException e) {
-            System.err.println("Failed to clone plant: " + e.getMessage());
-            return null;
-        }
-    }
+    @Override
+    public abstract Plant clone();
 
     public Plant createClone() {
-        Plant clone = this.clone();
+        Plant clone = clone(); // This calls the concrete subclass implementation
         if (clone != null) {
+            // Set common properties
+            clone.health = this.getMaxHealth() / 2;
+            clone.growthRate = this.growthRate;
+            clone.energyCycleState = this.energyCycleState;
             return clone;
-        } 
-        
+        }
         return null;
     }
+
+    
 
     public Plant performAsexualReproduction() {
         Plant offspring = createClone();
