@@ -18,7 +18,7 @@ import ecosim.organism.animal.concrete.grassland.Deer;
 import ecosim.organism.animal.factory.ConcreteDesertAnimalFactory;
 import ecosim.organism.animal.decorator.ConservationBoostDecorator;
 
-public class MainTest {
+public class AnimalTest {
     
     private CactusMouse cactusMouse;
     private Deer deer;
