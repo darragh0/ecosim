@@ -3,6 +3,7 @@ package ecosim.organism.animal.abs;
 
 import ecosim.attrs.Observable;
 import ecosim.attrs.Observer;
+import ecosim.enm.ActivityState;
 import ecosim.enm.ActivityType;
 import ecosim.enm.Diet;
 import ecosim.enm.Event;
@@ -208,6 +209,10 @@ public abstract class Animal extends Organism implements Observer {
         if (newState != this.state) {
             this.state = newState;
         }
+    }
+
+    public ActivityState getActivityState() {
+        return this.state.getActivityState();
     }
 
     public boolean isEdible(Organism organism) {
