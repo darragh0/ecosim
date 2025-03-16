@@ -1,14 +1,17 @@
-name: Java CI with Maven
-
+name: Maven Build & SonarQube Analysis
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
 
 jobs:
   build:
+    name: Build and Test
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -34,6 +37,7 @@ jobs:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
+
 
       - name: Build and analyze with SonarQube
         env:
