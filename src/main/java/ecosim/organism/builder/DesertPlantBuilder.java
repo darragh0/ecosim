@@ -1,7 +1,6 @@
 package ecosim.organism.builder;
 
 import ecosim.misc.PlantDescriptor;
-import ecosim.misc.SpeciesNumbering;
 import ecosim.organism.plant.abs.Plant;
 import ecosim.organism.plant.concrete.DesertPlant;
 
