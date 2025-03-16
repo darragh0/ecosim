@@ -19,7 +19,7 @@ public class SurvivabilityBoostDecorator extends AnimalDecorator {
 
     @Override
     public Animal clone() {
-        return new SurvivabilityBoostDecorator(animal.createClone());
+        return new SurvivabilityBoostDecorator(animal.clone());
     }
 
 }

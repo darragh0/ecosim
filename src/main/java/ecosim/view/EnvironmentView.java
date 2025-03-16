@@ -34,46 +34,43 @@ public class EnvironmentView {
     
         System.out.println(envStr.toString());
     }
+
     public void displaySleepingAnimals(EcosystemMan ecosystem) {
-        StringBuilder str = new StringBuilder();
-        
-        add.accept(str, "**😴 [fly:Sleeping Animals] 😴**\n");
-        
         var sleepingAnimals = ecosystem.getAnimals().stream()
             .filter(animal -> animal.getActivityState() == ActivityState.SLEEPING)
             .toList();
         
-        if (sleepingAnimals.isEmpty()) {
-            add.accept(str, "  No animals are currently sleeping.");
-        } else {
+        if (!sleepingAnimals.isEmpty()) {
+            StringBuilder str = new StringBuilder();
+            
+            add.accept(str, "**😴 [flm:Sleeping Animals] 😴**\n");
+            
             sleepingAnimals.forEach(animal -> {
-                add.accept(str, "      > %s".formatted(
+                add.accept(str, "  > %s".formatted(
                     animal.getName()));
             });
+            
+            System.out.println(str.toString());
         }
-        
-        System.out.println(str.toString());
     }
-
-
+    
+    
     public void displayHibernatingAnimals(EcosystemMan ecosystem) {
-        StringBuilder str = new StringBuilder();
-        
-        add.accept(str, "**❄️ [fly:Hibernating Animals] ❄️**\n");
-        
         var hibernatingAnimals = ecosystem.getAnimals().stream()
             .filter(animal -> animal.getActivityState() == ActivityState.HIBERNATING)
             .toList();
         
-        if (hibernatingAnimals.isEmpty()) {
-            add.accept(str, "  No animals are currently hibernating.");
-        } else {
+        if (!hibernatingAnimals.isEmpty()) {
+            StringBuilder str = new StringBuilder();
+            
+            add.accept(str, "**❄️ [flm:Hibernating Animals] ❄️**\n");
+            
             hibernatingAnimals.forEach(animal -> {
-                add.accept(str, "      > %s".formatted(
+                add.accept(str, "  > %s".formatted(
                     animal.getName()));
             });
+            
+            System.out.println(str.toString());
         }
-        
-        System.out.println(str.toString());
     }
 }

@@ -19,7 +19,7 @@ public class FertilityBoostDecorator extends AnimalDecorator {
 
     @Override
     public Animal clone() {
-        return new FertilityBoostDecorator(animal.createClone());
+        return new FertilityBoostDecorator(animal.clone());
     }
 
 }
