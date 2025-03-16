@@ -1,17 +1,14 @@
 package ecosim.organism.builder;
 
-import java.util.Random;
-
+import ecosim.common.Util;
 import ecosim.misc.PlantDescriptor;
 import ecosim.organism.plant.abs.Plant;
 import ecosim.organism.plant.decorator.NutrientRichDecorator;
 import ecosim.organism.plant.decorator.ToxicDecorator;
 
 public abstract class AbstractPlantBuilder implements PlantBuilder {
-        protected PlantDescriptor descriptor;
+    protected PlantDescriptor descriptor;
     protected Plant plant;
-    protected Random random = new Random();
-    
     /**
      * Creates a builder with the provided descriptor.
      * 
@@ -23,7 +20,7 @@ public abstract class AbstractPlantBuilder implements PlantBuilder {
     }
     @Override
     public PlantBuilder applyDecorators() {
-        int decoratorChoice = random.nextInt(3); // 0-2
+        int decoratorChoice = Util.randInt(0, 2); // 0-2
         
         switch (decoratorChoice) {
             case 0:

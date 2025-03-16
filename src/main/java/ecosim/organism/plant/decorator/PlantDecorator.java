@@ -30,8 +30,9 @@ public abstract class PlantDecorator extends Plant {
     public Plant clone() {
         return decoratedPlant.clone();
     }
+
     @Override
-    public void updateGrowthRate(Weather weather) {
-        decoratedPlant.updateGrowthRate(weather);
+    public float getWeatherGrowthAdjustment(Weather weather) {
+        return decoratedPlant.getWeatherGrowthAdjustment(weather);
     }
 }

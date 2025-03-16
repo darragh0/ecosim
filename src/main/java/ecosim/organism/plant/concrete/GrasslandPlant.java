@@ -21,31 +21,21 @@ public class GrasslandPlant extends Plant {
      * @param currentWeather Current weather condition
      */
     @Override
-    public void updateGrowthRate(Weather currentWeather) {
-        float growthAdjustment = 0.0f;
-
-        switch (currentWeather) {
-            case SUNNY -> growthAdjustment = 0.08f; // Increase growth rate by 8% if sunny
-            case RAINY -> growthAdjustment = 0.12f; // Increase growth rate by 12% if rainy
-            case DRY -> growthAdjustment = -0.25f; // Decrease growth rate by 25% if dry
-            case CLOUDY -> growthAdjustment = 0.04f; // Increase growth rate by 4% if cloudy
-            case SNOWY -> growthAdjustment = -0.15f; // Decrease growth rate by 15% if snowy
-        }
-
-        // Update the growth rate based on the adjustment
-        this.growthRate += this.growthRate * growthAdjustment;
+    protected float getWeatherGrowthAdjustment(Weather weather) {
+        return switch (weather) {
+            case SUNNY -> 0.08f;
+            case RAINY -> 0.12f;
+            case DRY -> -0.25f;
+            case CLOUDY -> 0.04f;
+            case SNOWY -> -0.15f;
+        };
     }
 
     @Override
     public Plant clone() {
-        // Extract base species name
-         String baseName = SpeciesNumbering.extractBaseSpeciesName(this.getName());
-         // Get next number for this species
-         int nextNumber = SpeciesNumbering.getNextNumber(baseName);
-         
-         GrasslandPlant clone = new GrasslandPlant();
-         clone.setName(SpeciesNumbering.formatName(baseName, nextNumber));
-         return clone;
+        GrasslandPlant clone = new GrasslandPlant();
+        clone.setName(SpeciesNumbering.generateCloneName(this.getName()));
+        return clone;
     }
 
 }

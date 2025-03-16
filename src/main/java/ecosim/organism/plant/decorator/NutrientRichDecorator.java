@@ -2,6 +2,7 @@ package ecosim.organism.plant.decorator;
 
 import ecosim.organism.animal.abs.Animal;
 import ecosim.organism.plant.abs.Plant;
+import ecosim.enm.Weather;
 import ecosim.man.LoggerMan;
 import ecosim.map.AnimalThreadLocal;
 
@@ -38,6 +39,8 @@ public class NutrientRichDecorator extends PlantDecorator {
     public Plant clone() {
         return new NutrientRichDecorator(decoratedPlant.clone());
     }
+
+    
 
    
 }

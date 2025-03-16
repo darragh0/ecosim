@@ -123,7 +123,20 @@ public abstract class Plant extends Organism implements Observer {
      * 
      * @param weather Current weather condition
      */
-    public abstract void updateGrowthRate(Weather weather);
+    @Override
+    public Plant setName(String name) {
+        super.setName(name);
+        return this;
+    }
+
+    /**
+     * Updates growth rate based on current weather conditions.
+     * Different plant types respond differently to weather.
+     * 
+     * @param weather The current weather condition
+     * @return A float value representing the growth rate adjustment factor
+     */
+    protected abstract float getWeatherGrowthAdjustment(Weather weather);
 
     /**
      * Creates a copy of this plant. Must be implemented by concrete subclasses.
