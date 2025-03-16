@@ -1,4 +1,6 @@
 {
   "initialAnimals": 3,
-  "initialPlants": 3
+  "initialPlants": 3,
+  "maxDays": 20,
+  "hoursPerDay": 10
 }
