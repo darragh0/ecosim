@@ -1,18 +1,25 @@
 package ecosim.menu;
 
 
+import static ecosim.common.io.ConsoleIO.eprint;
+import static ecosim.common.io.ConsoleIO.notInRange;
+import static ecosim.common.io.ConsoleIO.pprintln;
+import static ecosim.common.io.ConsoleIO.strInput;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.OptionalInt;
 import java.util.stream.IntStream;
+
 import ecosim.common.Util;
-import static ecosim.common.io.ConsoleIO.notInRange;
-import static ecosim.common.io.ConsoleIO.pprintln;
-import static ecosim.common.io.ConsoleIO.eprint;
-import static ecosim.common.io.ConsoleIO.strInput;
 
 
-@SuppressWarnings("unchecked")
+/**
+ * Base class for all menus in the Ecosim application.
+ * 
+ * @param <T> The type of options in the menu (e.g. `String`)
+ * @author darragh0
+ */
 public abstract class Menu<T> {
 
     protected final String heading;
@@ -25,27 +32,6 @@ public abstract class Menu<T> {
         this.optionStrings = this.options.stream().map(this::optionToString).toList();
     }
 
-    public final void addOption(final T option) {
-        this.options.add(option);
-        this.optionStrings.add(this.optionToString(option));
-    }
-
-    public final void addOptions(final T... options) {
-        this.addOptions(List.of(options));
-    }
-
-    public final void addOptions(final List<T> options) {
-        options.forEach(this::addOption);
-    }
-
-    public final String getHeading() {
-        return this.heading;
-    }
-
-    public final List<T> getOptions() {
-        return this.options;
-    }
-
     public void print() {
         pprintln("[flg:%s]", this.heading);
         System.out.println("=".repeat(this.heading.length() + 2));
@@ -56,7 +42,7 @@ public abstract class Menu<T> {
         System.out.println();
     }
 
-    public String optionToString(final T option) {
+    protected String optionToString(final T option) {
         return option.toString();
     }
 
