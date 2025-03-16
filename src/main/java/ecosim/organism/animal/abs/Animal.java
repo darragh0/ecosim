@@ -45,6 +45,7 @@ public abstract class Animal extends Organism implements Observer {
         super(animal.name);
         this.state = new AwakeState();
         this.symbol = animal.symbol;
+        this.size = animal.size;
         this.canHibernate = animal.canHibernate;
         this.diet = animal.diet;
         this.activityType = animal.activityType;
