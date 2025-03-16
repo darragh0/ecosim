@@ -22,7 +22,7 @@ public class ConservationBoostDecorator extends AnimalDecorator {
 
     @Override
     public Animal clone() {
-        return new ConservationBoostDecorator(animal.clone());
+        return new ConservationBoostDecorator(animal.createClone());
     }
 
 }
