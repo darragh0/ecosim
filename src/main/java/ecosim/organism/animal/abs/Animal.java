@@ -78,7 +78,6 @@ public abstract class Animal extends Organism implements Observer {
         this.activityType = activityType;
         return this;
     }
-
     public ActivityType getActivityType() {
         return this.activityType;
     }

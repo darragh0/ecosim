@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import ecosim.enm.*;
 import ecosim.man.ChangeMan;
 import ecosim.man.SimpleChangeMan;
+import ecosim.map.Map;
 import ecosim.misc.AnimalDescriptor;
 import ecosim.misc.PlantDescriptor;
 import ecosim.organism.animal.abs.Animal;
@@ -23,6 +24,7 @@ public class AnimalTest {
 
     @BeforeEach
     public void setUp() {
+        Map.init(10, 10);
         changeMan = SimpleChangeMan.getInstance();
 
         AnimalDescriptor desertDesc = new AnimalDescriptor(
@@ -94,5 +96,37 @@ public class AnimalTest {
         assertTrue(ate); 
         assertTrue(grasslandAnimal.getHealth() > testHealth);
         assertTrue(grasslandAnimal.getHealth() <= grasslandAnimal.getMaxHealth());
+    }
+    @Test
+    public void testMoveHealthLoss() {
+        // Ensure both animals are awake
+        desertAnimal.update(new ecosim.man.TimeOfDayMan(changeMan) {
+            @Override public TimeOfDay getCurrentState() { return TimeOfDay.DAY; }
+        });
+        grasslandAnimal.update(new ecosim.man.TimeOfDayMan(changeMan) {
+            @Override public TimeOfDay getCurrentState() { return TimeOfDay.NIGHT; }
+        });
+
+        // Test DesertAnimal movement health loss (assuming 1.5% of max health)
+        float desertInitialHealth = desertAnimal.getHealth(); // 10
+        desertAnimal.move();
+        float expectedDesertLoss = desertAnimal.getMaxHealth() * 0.015f; // 0.15
+        float actualDesertHealth = desertAnimal.getHealth();
+        assertEquals(desertInitialHealth - expectedDesertLoss, actualDesertHealth, 0.001,
+            "DesertAnimal should lose 1.5% of max health when moving, expected " + 
+            (desertInitialHealth - expectedDesertLoss) + " but was " + actualDesertHealth);
+
+        // Test GrasslandAnimal movement health loss (2.5% of max health)
+        float grasslandInitialHealth = grasslandAnimal.getHealth(); // 20
+        grasslandAnimal.move();
+        float expectedGrasslandLoss = grasslandAnimal.getMaxHealth() * 0.025f; // 0.5
+        assertEquals(grasslandInitialHealth - expectedGrasslandLoss, grasslandAnimal.getHealth(), 0.001,
+            "GrasslandAnimal should lose 2.5% of max health when moving");
+
+        // Verify different rates
+        float desertLossRate = expectedDesertLoss / desertAnimal.getMaxHealth();
+        float grasslandLossRate = expectedGrasslandLoss / grasslandAnimal.getMaxHealth();
+        assertNotEquals(desertLossRate, grasslandLossRate,
+            "DesertAnimal and GrasslandAnimal should lose health at different rates");
     }
 }

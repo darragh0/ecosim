@@ -10,7 +10,7 @@ public class GrasslandAnimal extends Animal {
     @Override
     public ActionResult move() {
         if (this.state.getActivityState() == ActivityState.AWAKE) {
-            float healthLoss = this.getMaxHealth() * 0.025f;
+            float healthLoss = this.getMaxHealth() * 0.015f;
             this.reduceHealth(healthLoss);
         }
         
