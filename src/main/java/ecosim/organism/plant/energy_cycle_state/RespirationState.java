@@ -1,9 +1,14 @@
 package ecosim.organism.plant.energy_cycle_state;
 
+import ecosim.enm.TimeOfDay;
 import ecosim.enm.Weather;
+import ecosim.organism.plant.abs.Plant;
 
-// plants will respire at night -> night state
-public class Respiration implements EnergyCycleState {
+/**
+ * This class represents the respiration state of a plant during nighttime.
+ * @author MiaBorkoo
+ */
+public class RespirationState implements EnergyCycleState {
     @Override
     public float performEnergyCycle(float growthRate, Weather currentWeather) {
         float adjustedGrowthRate;
@@ -37,5 +42,12 @@ public class Respiration implements EnergyCycleState {
 
         return healthAdjustment;
     }
-}
 
+    @Override
+    public EnergyCycleState handleTimeOfDayChange(Plant plant, TimeOfDay timeOfDay) {
+        if (timeOfDay == TimeOfDay.DAY) {
+            return new PhotosynthesisState();
+        }
+        return this; // Stay in respiration state during night
+    }
+}
