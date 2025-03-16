@@ -38,4 +38,4 @@ jobs:
       - name: Build and analyze with SonarQube
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn --batch-mode verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=darragh0_ecosim
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=darragh0_ecosim
