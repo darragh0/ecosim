@@ -38,14 +38,9 @@ public class GrasslandPlant extends Plant {
 
     @Override
     public Plant clone() {
-        // Extract base species name
-         String baseName = SpeciesNumbering.extractBaseSpeciesName(this.getName());
-         // Get next number for this species
-         int nextNumber = SpeciesNumbering.getNextNumber(baseName);
-         
-         GrasslandPlant clone = new GrasslandPlant();
-         clone.setName(SpeciesNumbering.formatName(baseName, nextNumber));
-         return clone;
+        GrasslandPlant clone = new GrasslandPlant();
+        clone.setName(SpeciesNumbering.generateCloneName(this.getName()));
+        return clone;
     }
 
 }

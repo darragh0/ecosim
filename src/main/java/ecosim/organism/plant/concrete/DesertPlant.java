@@ -39,14 +39,9 @@ public class DesertPlant extends Plant {
 
     @Override
     public Plant clone() {
-         // Extract base species name
-         String baseName = SpeciesNumbering.extractBaseSpeciesName(this.getName());
-         // Get next number for this species
-         int nextNumber = SpeciesNumbering.getNextNumber(baseName);
-         
-         DesertPlant clone = new DesertPlant();
-         clone.setName(SpeciesNumbering.formatName(baseName, nextNumber));
-         return clone;
+        DesertPlant clone = new DesertPlant();
+        clone.setName(SpeciesNumbering.generateCloneName(this.getName()));
+        return clone;
     }
 
 }

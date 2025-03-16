@@ -62,4 +62,21 @@ public class SpeciesNumbering {
         }
         return formattedName.trim();
     }
+    
+    /** 
+    * Generates a new name for a cloned organism based on the parent's name.
+    * This method extracts the base name from the parent, gets the next number
+    * for this species type, and formats a new name accordingly.
+    *
+    * @param parentName The name of the parent organism
+    * @return A new name for the cloned organism
+    */
+   public static String generateCloneName(String parentName) {
+       // Extract base species name
+       String baseName = extractBaseSpeciesName(parentName);
+       // Get next number for this species
+       int nextNumber = getNextNumber(baseName);
+       // Format name with base and number
+       return formatName(baseName, nextNumber);
+   }
 }
