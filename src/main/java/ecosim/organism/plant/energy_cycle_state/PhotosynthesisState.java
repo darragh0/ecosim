@@ -1,11 +1,14 @@
 package ecosim.organism.plant.energy_cycle_state;
 
-
-// Plants will photosynthesize at day -> day state
+import ecosim.enm.TimeOfDay;
 import ecosim.enm.Weather;
+import ecosim.organism.plant.abs.Plant;
 
-
-public class Photosynthesis implements EnergyCycleState {
+/**
+ * This class represents the photosynthesis state of a plant during daytime.
+ * @author MiaBorkoo
+ */
+public class PhotosynthesisState implements EnergyCycleState {
     @Override
     public float performEnergyCycle(float growthRate, Weather currentWeather) {
         float adjustedGrowthRate;
@@ -38,5 +41,13 @@ public class Photosynthesis implements EnergyCycleState {
         growthRate += adjustedGrowthRate; // Update the growth rate
         
         return healthAdjustment;
+    }
+
+    @Override
+    public EnergyCycleState handleTimeOfDayChange(Plant plant, TimeOfDay timeOfDay) {
+        if (timeOfDay == TimeOfDay.NIGHT) {
+            return new RespirationState();
+        }
+        return this; // Stay in photosynthesis state during day
     }
 }
