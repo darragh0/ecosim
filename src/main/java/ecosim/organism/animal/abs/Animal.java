@@ -41,6 +41,13 @@ public abstract class Animal extends Organism implements Observer {
         this.reproductiveChance = 0.5f;
     }
 
+    public Animal(String name) {
+        super(name);
+        this.state = new AwakeState();
+        this.survivalChance = 0.5f;
+        this.reproductiveChance = 0.5f;
+    }
+
     public Animal(Animal animal) {
         super(animal.name);
         this.state = new AwakeState();
