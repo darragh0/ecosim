@@ -1,19 +1,18 @@
 package ecosim.menu;
 
+
 import java.util.List;
 
+
 /**
- * Menu for selecting animal species by name.
+ * Menu for selecting animal species.
+ * 
+ * @author darragh0
  */
 public class AnimalMenu extends OrganismMenu<String> {
-    
-    public AnimalMenu(List<String> animalNames) {
-        super(animalNames);
+
+    public AnimalMenu(final List<String> animalNames) {
+        super("Available Animals", animalNames);
     }
-    
-    @Override
-    public void print() {
-        System.out.println("Available Animals:");
-        printOptions();
-    }
+
 }

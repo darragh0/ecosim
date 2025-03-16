@@ -1,5 +1,6 @@
 package ecosim.view;
 
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -10,6 +11,7 @@ import ecosim.menu.BiomeMenu;
 import ecosim.menu.PlantMenu;
 import ecosim.misc.AnimalDescriptor;
 import ecosim.misc.PlantDescriptor;
+
 
 public class InputPromptView {
     /**
@@ -45,17 +47,17 @@ public class InputPromptView {
         menu.print();
 
         final List<AnimalDescriptor> selectedDescriptors = new ArrayList<>();
-        
+
         // Get user selections
         for (int i = 0; i < num; i++) {
             String chosenName = menu.getUserChoice("Enter your choice (%d) >> ".formatted(i + 1));
-            
+
             // Find the descriptor with the matching name
             AnimalDescriptor descriptor = animals.stream()
                 .filter(a -> a.name().equals(chosenName))
                 .findFirst()
                 .orElse(null);
-                
+
             if (descriptor != null) {
                 selectedDescriptors.add(descriptor);
             }
@@ -83,17 +85,17 @@ public class InputPromptView {
         menu.print();
 
         final List<PlantDescriptor> selectedDescriptors = new ArrayList<>();
-        
+
         // Get user selections
         for (int i = 0; i < num; i++) {
             String chosenName = menu.getUserChoice("Enter your choice (%d) >> ".formatted(i + 1));
-            
+
             // Find the descriptor with the matching name
             PlantDescriptor descriptor = plants.stream()
                 .filter(p -> p.name().equals(chosenName))
                 .findFirst()
                 .orElse(null);
-                
+
             if (descriptor != null) {
                 selectedDescriptors.add(descriptor);
             }
@@ -102,4 +104,5 @@ public class InputPromptView {
 
         return selectedDescriptors;
     }
+
 }
