@@ -70,6 +70,7 @@ public class EcosystemController {
     public void runSimulation() {
         this.man.updateEnvironmentConditions();
         this.environmentView.displayEnvironmentConditions(this.man);
+        this.environmentView.displayTimeStatus(man);
         
         // Set up action listener to display animal actions
         this.man.setActionListener(result -> this.actionsView.displayAnimalActions(result));

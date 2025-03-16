@@ -1,14 +1,12 @@
 package ecosim.man;
 
 
-import static ecosim.common.Util.randInt;
-import static ecosim.map.ActionResult.ActionType.SUCCESSFUL_EATING;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
 
+import static ecosim.common.Util.randInt;
 import ecosim.common.io.FileIO;
 import ecosim.enm.Biome;
 import ecosim.enm.Season;
@@ -16,6 +14,7 @@ import ecosim.enm.TimeOfDay;
 import ecosim.enm.Weather;
 import ecosim.map.ActionResult;
 import ecosim.map.ActionResult.ActionType;
+import static ecosim.map.ActionResult.ActionType.SUCCESSFUL_EATING;
 import ecosim.map.Grid;
 import ecosim.map.Map;
 import ecosim.map.Map.MapSize;
@@ -139,8 +138,8 @@ public class EcosystemMan {
         Animal newAnimal = AnimalFactoryProducer.getFactory(biome).createAnimal(animal);
         Animal decoratedAnimal = decorateAnimal(newAnimal);
 
-        this.environment.registerTimeOfDayObservers(newAnimal);
-        this.environment.registerSeasonObservers(newAnimal);
+        this.environment.registerTimeOfDayObservers(decoratedAnimal);
+        this.environment.registerSeasonObservers(decoratedAnimal);
         this.animals.add(decoratedAnimal);
     }
 
