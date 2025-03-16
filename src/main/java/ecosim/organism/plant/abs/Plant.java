@@ -1,7 +1,5 @@
 package ecosim.organism.plant.abs;
 
-
-// TODO:import Weather and then updateGrowthRate
 import ecosim.attrs.Observable;
 import ecosim.attrs.Observer;
 import ecosim.enm.Event;
@@ -10,35 +8,56 @@ import ecosim.enm.TimeOfDay;
 import ecosim.enm.Weather;
 import ecosim.organism.Organism;
 import ecosim.organism.plant.energy_cycle_state.EnergyCycleState;
-import ecosim.organism.plant.energy_cycle_state.Photosynthesis;
-import ecosim.organism.plant.energy_cycle_state.Respiration;
-
+import ecosim.organism.plant.energy_cycle_state.PhotosynthesisState;
+import ecosim.organism.plant.energy_cycle_state.RespirationState;
 
 /**
- * This is the abstract class for all plants.
- * It contains the common methods and attributes for all plants.
- * It also contains the methods that are common to all plants.
+ * Abstract base class for all plants in the ecosystem simulation.
+ * 
+ * This class implements core plant functionality including:
+ * - Energy cycle management (photosynthesis/respiration)
+ * - Growth rate calculations based on environmental factors
+ * - Health management and its impact on other plant functions
+ * - Reproduction through asexual reproduction
+ * - Response to being eaten by herbivores
+ * - Environmental event observation (weather, time of day)
  * 
  * @author MiaBorkoo
  */
 public abstract class Plant extends Organism implements Observer {
 
+    /** Number of bites a plant can withstand before being completely consumed */
     protected int biteCapacity;
+    
+    /** Divisor used to calculate bite damage as a fraction of max health */
     private static final int BITE_DIVISOR = 10;
+    
+    /** Current energy cycle state (photosynthesis during day, respiration at night) */
     protected EnergyCycleState energyCycleState;
+    
+    /** Current growth rate, affected by weather and health */
     protected float growthRate;
 
-    private TimeOfDay currentTimeOfDay;
-    private Weather currentWeather;
-
+    /** Health threshold below which the plant is considered dead */
     private static final float HEALTH_THRESHOLD = 0.0f;
 
+    /**
+     * Creates a new plant with a unique identifier.
+     * Initializes the plant with photosynthesis state by default.
+     * 
+     * @param num Unique identifier for this plant
+     */
     public Plant(int num) {
         super(num);
-        // this.timeOfDayManager = timeOfDayManager;
-        // this.weatherManager = weatherManager;
+        this.energyCycleState = new PhotosynthesisState();
     }
 
+    /**
+     * Sets the size of the plant and calculates bite capacity based on max health.
+     * 
+     * @param size The size to set for this plant
+     * @return 
+     */
     @Override
     public Plant setSize(Size size) {
         super.setSize(size);
@@ -46,42 +65,78 @@ public abstract class Plant extends Organism implements Observer {
         return this;
     }
 
+    /**
+     * Sets the display symbol for this plant.
+     * 
+     * @param symbol The symbol to represent this plant
+     * @return This plant instance (for method chaining)
+     */
     @Override
     public Plant setSymbol(String symbol) {
         super.setSymbol(symbol);
         return this;
     }
 
-    // Method to be implemented by subclasses for specific growth rate adjustments
+    /**
+     * Updates growth rate based on current weather conditions.
+     * Different plant types respond differently to weather.
+     * 
+     * @param weather Current weather condition
+     */
     public abstract void updateGrowthRate(Weather weather);
 
-    // These are the methods that are common to all plants
+    /**
+     * Creates a copy of this plant. Must be implemented by concrete subclasses.
+     * 
+     * @return A new instance of the same plant type
+     */
     @Override
     public abstract Plant clone();
 
+    /**
+     * Creates a clone for asexual reproduction.
+     * Reproduction is only possible if plant has sufficient health (at least 40%).
+     * Parent plant loses health when reproducing.
+     * 
+     * @return A new plant instance or null if reproduction fails
+     */
     public Plant createClone() {
+        // Simple health check - must be at least 40% healthy to reproduce
+        if (this.health < this.getMaxHealth() * 0.4f) {
+            return null; // Too unhealthy to reproduce
+        }
+        
         Plant clone = clone(); // This calls the concrete subclass implementation
         if (clone != null) {
-            // Set common properties
-            clone.health = this.getMaxHealth() / 2;
+            // Simple health setting - offspring gets 60% of max health
+            clone.health = clone.getMaxHealth() * 0.6f;
+            
             clone.growthRate = this.growthRate;
             clone.energyCycleState = this.energyCycleState;
+            
+            // Simple health cost - reproduction costs 15% of max health
+            this.health -= this.getMaxHealth() * 0.15f;
+            
             return clone;
         }
         return null;
     }
 
+    /**
+     * Performs asexual reproduction to create a new plant.
+     * 
+     * @return A new plant created through asexual reproduction, or null if reproduction fails
+     */
     public Plant performAsexualReproduction() {
-        Plant offspring = createClone();
-        if (offspring != null) {
-            // Offspring created successfully
-            return offspring;
-        } else {
-            // Asexual reproduction failed
-            return null;
-        }
+        return createClone();
     }
 
+    /**
+     * Handles environmental events that the plant is observing.
+     * Currently responds to weather changes and time of day changes.
+     * 
+     * @param observable The observable object that triggered the update
+     */
     @Override
     public void update(Observable observable) {
         Event event = observable.getCurrentState();
@@ -93,129 +148,124 @@ public abstract class Plant extends Organism implements Observer {
         }
     }
 
+    /**
+     * Handles weather changes by updating growth rate and performing energy cycle.
+     * Also applies health-based adjustments to growth rate.
+     * 
+     * @param weather The new weather condition
+     */
     public void handleWeatherUpdate(Weather weather) {
         // Handle weather changes by updating growth rate
-        updateGrowthRate(weather);
+        this.updateGrowthRate(weather);
+        this.adjustGrowthRateForHealth(); // Apply health effects to growth rate
+        this.performEnergyCycle(weather);
+    }
+    
+    /**
+     * Adjusts growth rate based on current health percentage.
+     * Plants with lower health have reduced growth rates:
+     * - Below 30% health: 50% growth reduction
+     * - 30-70% health: 20% growth reduction
+     * - Above 70% health: No reduction
+     */
+    protected void adjustGrowthRateForHealth() {
+        // Simple threshold-based growth penalty
+        float healthPercentage = this.health / this.getMaxHealth();
+        
+        // Just two simple thresholds
+        if (healthPercentage < 0.3f) {
+            // Severe growth penalty for very low health
+            this.growthRate *= 0.5f;  // 50% reduction
+        } else if (healthPercentage < 0.7f) {
+            // Minor growth penalty for moderately low health
+            this.growthRate *= 0.8f;  // 20% reduction
+        }
+        // No penalty for health >= 70%
     }
 
+    /**
+     * Handles time of day changes by updating the plant's energy cycle state.
+     * Transitions between photosynthesis (day) and respiration (night).
+     * 
+     * @param timeOfDay The new time of day
+     */
     public void handleTimeOfDayUpdate(TimeOfDay timeOfDay) {
         // Handle time of day changes by setting appropriate energy cycle state
-        if (timeOfDay == TimeOfDay.DAY) {
-            setEnergyCycleState(new Photosynthesis());
-        } else {
-            setEnergyCycleState(new Respiration());
-        }
+        this.energyCycleState = this.energyCycleState.handleTimeOfDayChange(this, timeOfDay);
     }
-
+    
+    /**
+     * Sets the energy cycle state of the plant.
+     * 
+     * @param state The new energy cycle state
+     */
     public void setEnergyCycleState(EnergyCycleState state) {
         this.energyCycleState = state;
     }
 
+    /**
+     * Performs the plant's energy cycle based on current state and weather.
+     * This method:
+     * 1. Calls the current energy cycle state to calculate health changes and modify growth rate
+     * 2. Applies health-based efficiency modifiers to the health change
+     * 3. Updates plant health with the final adjusted value
+     * 
+     * Note: Growth rate is modified directly by the energy cycle state, while
+     * health changes are returned and then adjusted based on current health before being applied.
+     * 
+     * Plants with lower health (below 50%) get less benefit from positive energy cycles
+     * and take more damage from negative energy cycles.
+     * 
+     * @param currentWeather Current weather condition affecting energy cycle
+     */
     public void performEnergyCycle(Weather currentWeather) {
-        if (energyCycleState != null && !isDead()) {
-            float healthChange = energyCycleState.performEnergyCycle(growthRate, currentWeather);
+        if (this.energyCycleState != null && !isDead()) {
+            // Get base health change from energy cycle
+            float healthChange = this.energyCycleState.performEnergyCycle(growthRate, currentWeather);
+            
+            float healthPercentage = this.health / this.getMaxHealth();
+            if (healthPercentage < 0.5f) {
+                // Low health plants get less benefit/more harm
+                if (healthChange > 0) {
+                    healthChange *= 0.7f;  // Reduced benefit
+                } else {
+                    healthChange *= 1.3f;  // Increased harm
+                }
+            }
+            
+            // Apply the health change
             adjustHealth(healthChange);
         }
     }
 
+    /**
+     * Called when an animal eats this plant. Reduces health based on bite damage.
+     * Healthier plants (above 70% health) have 20% damage resistance.
+     */
     public void beEaten() {
         this.biteCapacity--;
-        // Each bite takes away (100% / BITE_DIVISOR) of max health
-        this.health -= this.getMaxHealth() / BITE_DIVISOR;
-    }
-
-    public int getBiteCapacity() {
-        return biteCapacity;
-    }
-
-    // timplementing energy cycle, photosynthesis if day, respiration if night
-    public void performDailyActivities() {
-        if (isDead()) return;
         
-        TimeOfDay currentTime = getCurrentTimeOfDay();
-        Weather currentWeather = getCurrentWeather();
-
-        if (currentTime == TimeOfDay.DAY) {
-            setEnergyCycleState(new Photosynthesis());
-        } else {
-            setEnergyCycleState(new Respiration());
-        }
+        // Base damage
+        float damage = this.getMaxHealth() / BITE_DIVISOR;
         
-        performEnergyCycle(currentWeather);
-        
+        // Simple health-based adjustment - just one threshold 
         if (this.health > this.getMaxHealth() * 0.7f) {
-            if (Math.random() < 0.05) {
-                Plant offspring = performAsexualReproduction();
-                adjustHealth(-this.getMaxHealth() * 0.3f);
-            }
+            // Healthy plants resist damage better
+            damage *= 0.8f; // 20% less damage when healthy
+        }
+        
+        // Apply damage
+        this.health -= damage;
+        
+        // Ensure health doesn't go below zero
+        if (this.health < 0) {
+            this.health = 0.0f;
         }
     }
 
-    protected void adjustGrowthRate(Weather currentWeather) {
-        float growthAdjustment = 0.0f;
-
-        switch (currentWeather) {
-            case SUNNY:
-                growthAdjustment = 0.2f; // Increase growth rate by 20% if sunny
-                break;
-            case RAINY:
-                growthAdjustment = 0.15f; // Increase growth rate by 15% if rainy
-                break;
-            case DRY:
-                growthAdjustment = -0.1f; // Decrease growth rate by 10% if dry
-                break;
-            case CLOUDY:
-                growthAdjustment = 0.05f; // Increase growth rate by 5% if cloudy
-                break;
-            case SNOWY:
-                growthAdjustment = -0.2f; // Decrease growth rate by 20% if snowy
-                break;
-        }
-
-        // Update the growth rate based on the adjustment
-        this.growthRate += this.growthRate * growthAdjustment;
-    }
-
-    public String getName() {
-        return name;
-    }
-
     /**
-     * Gets the current time of day
-     * @return The current time of day
-     */
-    public TimeOfDay getCurrentTimeOfDay() {
-        return currentTimeOfDay;
-    }
-
-    /**
-     * Gets the current weather
-     * @return The current weather
-     */
-    public Weather getCurrentWeather() {
-        return currentWeather;
-    }
-
-    /**
-     * Updates the current time of day for the plant
-     * @param timeOfDay The new time of day
-     */
-    public void updateTimeOfDay(TimeOfDay timeOfDay) {
-        this.currentTimeOfDay = timeOfDay;
-        // The update method handles the behavior changes already
-    }
-
-    /**
-     * Updates the current weather for the plant
-     * @param weather The new weather condition
-     */
-    public void updateWeather(Weather weather) {
-        this.currentWeather = weather;
-        // The update method handles the behavior changes already
-    }
-
-    /**
-     * Checks if the plant is dead based on its health
+     * Checks if the plant is dead based on its health. Implemented in EcosystemMan?
+     * 
      * @return true if the plant is dead (health <= threshold), false otherwise
      */
     public boolean isDead() {
@@ -223,7 +273,9 @@ public abstract class Plant extends Organism implements Observer {
     }
 
     /**
-     * Adds specified amount to plant's health, capped at max health
+     * Adds specified amount to plant's health, capped at max health.
+     * Health cannot go below zero.
+     * 
      * @param amount Amount to add to health (can be negative for damage)
      */
     public void adjustHealth(float amount) {

@@ -70,6 +70,7 @@ public class EcosystemController {
     public void runSimulation() {
         this.man.updateEnvironmentConditions();
         this.environmentView.displayEnvironmentConditions(this.man);
+        this.environmentView.displayTimeStatus(man);
         
         // Set up action listener to display animal actions
         this.man.setActionListener(result -> this.actionsView.displayAnimalActions(result));
@@ -78,6 +79,7 @@ public class EcosystemController {
         for (int hour = 0; hour < 10; hour++) {
             if (hour == 5) {
                 this.man.updateTimeOfDay();
+                this.environmentView.displayTimeStatus(man);
             }
             this.man.processAnimalsTurn();
             this.man.checkOrganismsHealth();
