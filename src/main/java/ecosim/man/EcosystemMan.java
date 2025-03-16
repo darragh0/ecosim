@@ -133,41 +133,54 @@ public class EcosystemMan {
     }
 
     private void createAnimal(AnimalDescriptor descriptor, String biomeName) {
-    // Get the appropriate factory for this biome
-    BiomeOrganismFactory factory = BiomeOrganismFactoryProvider.getFactory(biomeName);
+    try{
+        Biome biome = Biome.valueOf(biomeName);
+
+        BiomeOrganismFactory factory = BiomeOrganismFactoryProvider.getFactory(biome);
     
     // Use the factory to get a builder
-    AnimalBuilder builder = factory.createAnimalBuilder(descriptor);
-    
-    // Build the animal with basic properties and apply decorators
-    Animal animal = builder
-        .buildBasicProperties()
-        .applyDecorators()
-        .build();
-    
-    // Register observers and add to the ecosystem
-    this.environment.registerTimeOfDayObservers(animal);
-    this.environment.registerSeasonObservers(animal);
-    this.animals.add(animal);
-}
-
-    public void createPlant(PlantDescriptor descriptor, String biomeName) {
-        // Get the appropriate factory for this biome
-        BiomeOrganismFactory factory = BiomeOrganismFactoryProvider.getFactory(biomeName);
+        AnimalBuilder builder = factory.createAnimalBuilder(descriptor);
         
-        // Use the factory to get a builder
-        PlantBuilder builder = factory.createPlantBuilder(descriptor);
-        
-        // Build the plant with basic properties
-        Plant plant = builder
+        // Build the animal with basic properties and apply decorators
+        Animal animal = builder
             .buildBasicProperties()
+            .applyDecorators()
             .build();
         
         // Register observers and add to the ecosystem
-        this.environment.registerTimeOfDayObservers(plant);
-        this.environment.registerWeatherObservers(plant);
-        this.plants.add(plant);
+        this.environment.registerTimeOfDayObservers(animal);
+            this.environment.registerSeasonObservers(animal);
+            this.animals.add(animal);
+        } catch (IllegalArgumentException e) {
+            LoggerMan.log(Level.SEVERE, "Invalid biome name: " + biomeName);
+        }
     }
+    
+
+
+    public void createPlant(PlantDescriptor descriptor, String biomeName) {
+        try{
+            Biome biome = Biome.valueOf(biomeName);
+
+            BiomeOrganismFactory factory = BiomeOrganismFactoryProvider.getFactory(biome);
+            
+            // Use the factory to get a builder
+            PlantBuilder builder = factory.createPlantBuilder(descriptor);
+            
+            // Build the plant with basic properties
+            Plant plant = builder
+                .buildBasicProperties()
+                .build();
+            
+            // Register observers and add to the ecosystem
+            this.environment.registerTimeOfDayObservers(plant);
+            this.environment.registerWeatherObservers(plant);
+            this.plants.add(plant);
+        } catch (IllegalArgumentException e) {
+            LoggerMan.log(Level.SEVERE, "Invalid biome name: " + biomeName);
+        }
+    }
+        // Get the appropriate factory for this biome
     public void loadEcosystem(List<AnimalDescriptor> animals, List<PlantDescriptor> plants, String biome) {
 
         for (AnimalDescriptor animal : animals) {
