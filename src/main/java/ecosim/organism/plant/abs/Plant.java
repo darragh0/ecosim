@@ -8,6 +8,7 @@ import ecosim.enm.TimeOfDay;
 import ecosim.enm.Weather;
 import ecosim.organism.Organism;
 import ecosim.organism.plant.energy_cycle_state.EnergyCycleState;
+import ecosim.organism.plant.energy_cycle_state.PhotosynthesisState;
 
 /**
  * Abstract base class for all plants in the ecosystem simulation.
@@ -39,6 +40,9 @@ public abstract class Plant extends Organism implements Observer {
     /** Health threshold below which the plant is considered dead */
     private static final float HEALTH_THRESHOLD = 0.0f;
 
+    public Plant() {
+      this.energyCycleState = new PhotosynthesisState();
+    }
 
     /**
      * Sets the size of the plant and calculates bite capacity based on max health.
