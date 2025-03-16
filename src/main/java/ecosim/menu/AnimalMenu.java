@@ -2,18 +2,17 @@ package ecosim.menu;
 
 
 import java.util.List;
-import ecosim.organism.animal.abs.Animal;
 
 
-public class AnimalMenu extends OrganismMenu<Animal> {
+/**
+ * Menu for selecting animal species.
+ * 
+ * @author darragh0
+ */
+public class AnimalMenu extends OrganismMenu<String> {
 
-    public AnimalMenu(final List<Class<? extends Animal>> options) {
-        super("Select the Animals", options);
-    }
-
-    @SafeVarargs
-    public AnimalMenu(final Class<? extends Animal>... options) {
-        this(List.of(options));
+    public AnimalMenu(final List<String> animalNames) {
+        super("Available Animals", animalNames);
     }
 
 }

@@ -3,18 +3,16 @@ package ecosim.menu;
 
 import java.util.List;
 
-import ecosim.organism.Organism;
 
+/**
+ * Base menu for selecting organism species.
+ * 
+ * @author darragh0
+ */
+public abstract class OrganismMenu<T> extends Menu<T> {
 
-public abstract class OrganismMenu<T extends Organism> extends Menu<Class<? extends T>> {
-
-    public OrganismMenu(final String heading, final List<Class<? extends T>> options) {
+    public OrganismMenu(final String heading, final List<T> options) {
         super(heading, options);
-    }
-
-    @Override
-    public String optionToString(final Class<? extends T> option) {
-        return option.getSimpleName();
     }
 
 }

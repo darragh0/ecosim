@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
 
-import static ecosim.common.Util.randInt;
 import ecosim.common.io.FileIO;
 import ecosim.enm.Biome;
 import ecosim.enm.Season;
@@ -22,12 +21,11 @@ import ecosim.misc.AnimalDescriptor;
 import ecosim.misc.EcosystemConfig;
 import ecosim.misc.PlantDescriptor;
 import ecosim.organism.animal.abs.Animal;
-import ecosim.organism.animal.decorator.ConservationBoostDecorator;
-import ecosim.organism.animal.decorator.FertilityBoostDecorator;
-import ecosim.organism.animal.decorator.SurvivabilityBoostDecorator;
-import ecosim.organism.animal.factory.AnimalFactoryProducer;
+import ecosim.organism.builder.AnimalBuilder;
+import ecosim.organism.builder.PlantBuilder;
+import ecosim.organism.factory.BiomeOrganismFactory;
+import ecosim.organism.factory.BiomeOrganismFactoryProvider;
 import ecosim.organism.plant.abs.Plant;
-import ecosim.organism.plant.factory.PlantFactoryProducer;
 import ecosim.view.ActionResultListener;
 
 
@@ -134,36 +132,55 @@ public class EcosystemMan {
 
     }
 
-    private void createAnimal(AnimalDescriptor animal, String biome) {
-        Animal newAnimal = AnimalFactoryProducer.getFactory(biome).createAnimal(animal);
-        Animal decoratedAnimal = decorateAnimal(newAnimal);
+    private void createAnimal(AnimalDescriptor descriptor, String biomeName) {
+    try{
+        Biome biome = Biome.valueOf(biomeName);
 
-        this.environment.registerTimeOfDayObservers(decoratedAnimal);
-        this.environment.registerSeasonObservers(decoratedAnimal);
-        this.animals.add(decoratedAnimal);
+        BiomeOrganismFactory factory = BiomeOrganismFactoryProvider.getFactory(biome);
+    
+    // Use the factory to get a builder
+        AnimalBuilder builder = factory.createAnimalBuilder(descriptor);
+        
+        // Build the animal with basic properties and apply decorators
+        Animal animal = builder
+            .buildBasicProperties()
+            .applyDecorators()
+            .build();
+        
+        // Register observers and add to the ecosystem
+        this.environment.registerTimeOfDayObservers(animal);
+            this.environment.registerSeasonObservers(animal);
+            this.animals.add(animal);
+        } catch (IllegalArgumentException e) {
+            LoggerMan.log(Level.SEVERE, "Invalid biome name: " + biomeName);
+        }
     }
+    
 
-    public void createPlant(PlantDescriptor plant, String biome) {
-        Plant newPlant = PlantFactoryProducer.getFactory(biome).createPlant(plant);
 
-        this.environment.registerTimeOfDayObservers(newPlant);
-        this.environment.registerWeatherObservers(newPlant);
-        this.plants.add(newPlant);
+    public void createPlant(PlantDescriptor descriptor, String biomeName) {
+        try{
+            Biome biome = Biome.valueOf(biomeName);
+
+            BiomeOrganismFactory factory = BiomeOrganismFactoryProvider.getFactory(biome);
+            
+            // Use the factory to get a builder
+            PlantBuilder builder = factory.createPlantBuilder(descriptor);
+            
+            // Build the plant with basic properties
+            Plant plant = builder
+                .buildBasicProperties()
+                .build();
+            
+            // Register observers and add to the ecosystem
+            this.environment.registerTimeOfDayObservers(plant);
+            this.environment.registerWeatherObservers(plant);
+            this.plants.add(plant);
+        } catch (IllegalArgumentException e) {
+            LoggerMan.log(Level.SEVERE, "Invalid biome name: " + biomeName);
+        }
     }
-
-    private Animal decorateAnimal(Animal animal) {
-        final int randomNum = randInt(0, 3);
-        return switch (randomNum) {
-            case 0 -> new ConservationBoostDecorator(animal);
-            case 1 -> new FertilityBoostDecorator(animal);
-            case 2 -> new SurvivabilityBoostDecorator(animal);
-            default -> {
-                LoggerMan.log(Level.INFO, "Animal is returned as is (undecorated): " + animal.getName());
-                yield animal;
-            }
-        };
-    }
-
+        // Get the appropriate factory for this biome
     public void loadEcosystem(List<AnimalDescriptor> animals, List<PlantDescriptor> plants, String biome) {
 
         for (AnimalDescriptor animal : animals) {

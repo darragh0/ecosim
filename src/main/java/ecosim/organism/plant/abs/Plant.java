@@ -9,7 +9,6 @@ import ecosim.enm.Weather;
 import ecosim.organism.Organism;
 import ecosim.organism.plant.energy_cycle_state.EnergyCycleState;
 import ecosim.organism.plant.energy_cycle_state.PhotosynthesisState;
-import ecosim.organism.plant.energy_cycle_state.RespirationState;
 
 /**
  * Abstract base class for all plants in the ecosystem simulation.
@@ -41,15 +40,8 @@ public abstract class Plant extends Organism implements Observer {
     /** Health threshold below which the plant is considered dead */
     private static final float HEALTH_THRESHOLD = 0.0f;
 
-    /**
-     * Creates a new plant with a unique identifier.
-     * Initializes the plant with photosynthesis state by default.
-     * 
-     * @param num Unique identifier for this plant
-     */
-    public Plant(int num) {
-        super(num);
-        this.energyCycleState = new PhotosynthesisState();
+    public Plant() {
+      this.energyCycleState = new PhotosynthesisState();
     }
 
     /**
@@ -83,7 +75,31 @@ public abstract class Plant extends Organism implements Observer {
      * 
      * @param weather Current weather condition
      */
-    public abstract void updateGrowthRate(Weather weather);
+    @Override
+    public Plant setName(String name) {
+        super.setName(name);
+        return this;
+    }
+
+    /**
+     * Updates the growth rate based on current weather conditions.
+     * This is a template method that defines the algorithm structure.
+     * 
+     * @param currentWeather Current weather condition
+     */
+    public final void updateGrowthRate(Weather currentWeather) {
+        float growthAdjustment = getWeatherGrowthAdjustment(currentWeather);
+        this.growthRate += this.growthRate * growthAdjustment;
+    }
+
+    /**
+     * Gets the growth adjustment factor for a specific weather condition.
+     * This is meant to be implemented by subclasses to provide specialized behavior.
+     * 
+     * @param weather The current weather condition
+     * @return A float value representing the growth rate adjustment factor
+     */
+    protected abstract float getWeatherGrowthAdjustment(Weather weather);
 
     /**
      * Creates a copy of this plant. Must be implemented by concrete subclasses.

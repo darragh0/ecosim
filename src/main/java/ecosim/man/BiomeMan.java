@@ -1,13 +1,12 @@
 package ecosim.man;
 
 
-import static ecosim.common.Util.sub;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import ecosim.common.io.FileIO;
@@ -17,8 +16,6 @@ import ecosim.enm.Diet;
 import ecosim.enm.Size;
 import ecosim.misc.AnimalDescriptor;
 import ecosim.misc.PlantDescriptor;
-import ecosim.organism.animal.abs.Animal;
-import ecosim.organism.plant.abs.Plant;
 
 
 public class BiomeMan {
@@ -63,50 +60,48 @@ public class BiomeMan {
 
     private void initAnimalList(JSONObject biomeData) {
         final String key = "ANIMALS";
-        final String biomeName = this.biome.name();
-
+        
         if (!biomeData.has(key)) {
-            LoggerMan.log(Level.SEVERE, "No animals found for biome: {1}", key, biomeName);
+            LoggerMan.log(Level.SEVERE, "No animals found for biome: {0}", biome.name());
             return;
         }
-
         final JSONObject animalJson = biomeData.getJSONObject(key);
 
-        for (final String animalName : animalJson.keySet()) {
-            final JSONObject animalData = animalJson.getJSONObject(animalName);
-            final String pkg = sub(key.toLowerCase(), 0, -1);
-            final String clsName = "ecosim.organism.%s.concrete.%s.%s".formatted(
-                pkg,
-                biomeName.toLowerCase(),
-                animalName);
-
+        for (final String animalKey : animalJson.keySet()) {
+            final JSONObject animalData = animalJson.getJSONObject(animalKey);
+            
             try {
-                @SuppressWarnings("unchecked")
-                final Class<? extends Animal> cls = (Class<? extends Animal>) Class.forName(clsName);
+                // Get the display name (either from JSON or use the key)
+                final String displayName = animalData.optString("name", animalKey);
+                
+                // Create size enum
                 final Size size;
                 try {
                     size = Size.valueOf(animalData.getString("size"));
                 } catch (IllegalArgumentException e) {
-                    LoggerMan.log(Level.SEVERE, "Invalid size for animal: {0}", animalName);
+                    LoggerMan.log(Level.SEVERE, "Invalid size for animal: {0}", displayName);
                     continue;
                 }
+                
+                // Create diet enum
                 final Diet diet;
                 try {
                     diet = Diet.valueOf(animalData.getString("diet"));
                 } catch (IllegalArgumentException e) {
-                    LoggerMan.log(Level.SEVERE, "Invalid diet for animal: {0}", animalName);
+                    LoggerMan.log(Level.SEVERE, "Invalid diet for animal: {0}", displayName);
                     continue;
                 }
                 final ActivityType activityType;
                 try {
                     activityType = ActivityType.valueOf(animalData.getString("activityType"));
                 } catch (IllegalArgumentException e) {
-                    LoggerMan.log(Level.SEVERE, "Invalid activity type for animal: {0}", animalName);
+                    LoggerMan.log(Level.SEVERE, "Invalid activity type for animal: {0}", displayName);
                     continue;
                 }
 
+                // Create animal descriptor without biome field
                 final AnimalDescriptor animalDescriptor = new AnimalDescriptor(
-                    cls,
+                    displayName,
                     size,
                     diet,
                     activityType,
@@ -115,62 +110,54 @@ public class BiomeMan {
                     animalData.getString("symbol"));
 
                 this.animals.add(animalDescriptor);
-            } catch (ClassNotFoundException ex) {
-                LoggerMan.log(Level.SEVERE, "Could not find animal class: {0}", clsName);
-                continue;
+                LoggerMan.log(Level.INFO, "Loaded animal: {0}", displayName);
+            } catch (JSONException ex) {
+                LoggerMan.log(Level.SEVERE, "Error loading animal: {0}", ex.getMessage());
             }
-
-            LoggerMan.log(Level.INFO, "Loaded animal class: {0}", clsName);
-
         }
 
-        LoggerMan.log(Level.INFO, "Loaded native {0} for biome: {1}", key, biomeName);
+        LoggerMan.log(Level.INFO, "Loaded native {0} for biome: {1}", key, biome.name());
     }
 
     private void initPlantList(JSONObject biomeData) {
         final String key = "PLANTS";
-        final String biomeName = this.biome.name();
-
+        
         if (!biomeData.has(key)) {
-            LoggerMan.log(Level.SEVERE, "No plants found for biome: {1}", key, biomeName);
+            LoggerMan.log(Level.SEVERE, "No plants found for biome: {0}", biome.name());
             return;
         }
 
         final JSONObject plantJson = biomeData.getJSONObject(key);
 
-        for (final String plantName : plantJson.keySet()) {
-            final JSONObject plantData = plantJson.getJSONObject(plantName);
-            final String pkg = sub(key.toLowerCase(), 0, -1);
-            final String clsName = "ecosim.organism.%s.concrete.%s.%s".formatted(
-                pkg,
-                biomeName.toLowerCase(),
-                plantName);
-
+        for (final String plantKey : plantJson.keySet()) {
+            final JSONObject plantData = plantJson.getJSONObject(plantKey);
+            
             try {
-                @SuppressWarnings("unchecked")
-                final Class<? extends Plant> cls = (Class<? extends Plant>) Class.forName(clsName);
+                // Get display name (either from JSON or use the key)
+                final String displayName = plantData.optString("name", plantKey);
+                
+                // Create size enum
                 final Size size;
                 try {
-                    size = Size.valueOf(plantData.getString("size"));
+                    size = Size.valueOf(plantData.optString("size", "MEDIUM"));
                 } catch (IllegalArgumentException e) {
-                    LoggerMan.log(Level.SEVERE, "Invalid size for plant: {0}", plantName);
+                    LoggerMan.log(Level.SEVERE, "Invalid size for plant: {0}", displayName);
                     continue;
                 }
+
                 final PlantDescriptor plantDescriptor = new PlantDescriptor(
-                    cls,
+                    displayName,
                     size,
                     plantData.getString("symbol"));
 
                 this.plants.add(plantDescriptor);
-            } catch (ClassNotFoundException ex) {
-                LoggerMan.log(Level.SEVERE, "Could not find plant class: {0}", clsName);
-                continue;
+                LoggerMan.log(Level.INFO, "Loaded plant: {0}", displayName);
+            } catch (JSONException ex) {
+                LoggerMan.log(Level.SEVERE, "Error loading plant: {0}", ex.getMessage());
             }
-
-            LoggerMan.log(Level.INFO, "Loaded plant class: {0}", clsName);
         }
 
-        LoggerMan.log(Level.INFO, "Loaded native {0} for biome: {1}", key, biomeName);
+        LoggerMan.log(Level.INFO, "Loaded native {0} for biome: {1}", key, biome.name());
     }
 
     public Biome getBiome() {
