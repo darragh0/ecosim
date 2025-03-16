@@ -1,15 +1,11 @@
 package ecosim.organism.builder;
 
-import java.util.Random;
-
 import ecosim.misc.PlantDescriptor;
 import ecosim.organism.plant.abs.Plant;
 
 public abstract class AbstractPlantBuilder implements PlantBuilder {
-        protected PlantDescriptor descriptor;
+    protected PlantDescriptor descriptor;
     protected Plant plant;
-    protected Random random = new Random();
-    
     /**
      * Creates a builder with the provided descriptor.
      * 

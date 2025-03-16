@@ -82,12 +82,24 @@ public abstract class Plant extends Organism implements Observer {
     }
 
     /**
-     * Updates growth rate based on current weather conditions.
-     * Different plant types respond differently to weather.
+     * Updates the growth rate based on current weather conditions.
+     * This is a template method that defines the algorithm structure.
      * 
-     * @param weather Current weather condition
+     * @param currentWeather Current weather condition
      */
-    public abstract void updateGrowthRate(Weather weather);
+    public final void updateGrowthRate(Weather currentWeather) {
+        float growthAdjustment = getWeatherGrowthAdjustment(currentWeather);
+        this.growthRate += this.growthRate * growthAdjustment;
+    }
+
+    /**
+     * Gets the growth adjustment factor for a specific weather condition.
+     * This is meant to be implemented by subclasses to provide specialized behavior.
+     * 
+     * @param weather The current weather condition
+     * @return A float value representing the growth rate adjustment factor
+     */
+    protected abstract float getWeatherGrowthAdjustment(Weather weather);
 
     /**
      * Creates a copy of this plant. Must be implemented by concrete subclasses.

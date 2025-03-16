@@ -19,14 +19,8 @@ public class GrasslandAnimal extends Animal {
 
     @Override
     public Animal clone() {
-        // Extract base species name
-         String baseName = SpeciesNumbering.extractBaseSpeciesName(getName());
-         // Get next number for this species
-         int nextNumber = SpeciesNumbering.getNextNumber(baseName);
-         
         GrasslandAnimal clone = new GrasslandAnimal();
-        clone.setName(SpeciesNumbering.formatName(baseName, nextNumber));
+        clone.setName(SpeciesNumbering.generateCloneName(this.getName()));
         return clone;
     }
-    
 }
