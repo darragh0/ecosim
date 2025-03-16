@@ -1,7 +1,6 @@
 package ecosim.organism.builder;
 
-import java.util.Random;
-
+import ecosim.common.Util;
 import ecosim.misc.AnimalDescriptor;
 import ecosim.organism.animal.abs.Animal;
 import ecosim.organism.animal.decorator.ConservationBoostDecorator;
@@ -14,7 +13,6 @@ import ecosim.organism.animal.decorator.SurvivabilityBoostDecorator;
 public abstract class AbstractAnimalBuilder implements AnimalBuilder {
     protected AnimalDescriptor descriptor;
     protected Animal animal;
-    protected Random random = new Random();
     
     public AbstractAnimalBuilder(AnimalDescriptor descriptor) {
         this.descriptor = descriptor;
@@ -58,7 +56,7 @@ public abstract class AbstractAnimalBuilder implements AnimalBuilder {
     
     @Override
     public AnimalBuilder applyDecorators() {
-        int randomDecorator = random.nextInt(4); // 0-3, with 3 being no decorator
+        int randomDecorator = Util.randInt(0, 4);
         switch (randomDecorator) {
             case 0 -> animal = new ConservationBoostDecorator(animal);
             case 1 -> animal = new FertilityBoostDecorator(animal);
