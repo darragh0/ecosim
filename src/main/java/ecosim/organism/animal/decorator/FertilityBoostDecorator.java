@@ -22,7 +22,7 @@ public class FertilityBoostDecorator extends AnimalDecorator {
     public Animal breed(Animal mate) {
         float boostedChance = getReproductiveChance();
         float mateChance = mate.getReproductiveChance();
-        float combinedChance = boostedChance * mateChance;
+        float combinedChance = Math.max(boostedChance, mateChance);
         if (Math.random() < combinedChance) {
             return animal.createClone();
         }
