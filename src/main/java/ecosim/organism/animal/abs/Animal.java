@@ -35,8 +35,7 @@ public abstract class Animal extends Organism implements Observer {
     protected float reproductiveChance;
     protected AnimalState state;
 
-    public Animal(int num) {
-        super(num); // Default coordinates (0, 0)
+    public Animal() {
         this.state = new AwakeState();
         this.survivalChance = 0.5f;
         this.reproductiveChance = 0.5f;
@@ -98,6 +97,11 @@ public abstract class Animal extends Organism implements Observer {
         return this;
     }
 
+    @Override
+    public Animal setName(String name) {
+        this.name = name;
+        return this;
+    }
     public String getSound() {
         return this.sound;
     }

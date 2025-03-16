@@ -18,10 +18,8 @@ public abstract class Organism extends Movable {
     protected float health;
     protected String name;
 
-    public Organism(final int num) {
-        this.name = "%s (%d)".formatted(this.getClass().getSimpleName(), num);
+    public Organism() {
     }
-
     public Organism(final String name) {
         this.name = name;
     }
@@ -31,6 +29,15 @@ public abstract class Organism extends Movable {
     public Organism setSymbol(String symbol) {
         this.symbol = symbol;
         return this;
+    }
+
+    public Organism setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public void getName(String name) {
+        this.name = name;
     }
 
     public String getSymbol() {

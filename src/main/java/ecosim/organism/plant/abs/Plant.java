@@ -8,8 +8,6 @@ import ecosim.enm.TimeOfDay;
 import ecosim.enm.Weather;
 import ecosim.organism.Organism;
 import ecosim.organism.plant.energy_cycle_state.EnergyCycleState;
-import ecosim.organism.plant.energy_cycle_state.PhotosynthesisState;
-import ecosim.organism.plant.energy_cycle_state.RespirationState;
 
 /**
  * Abstract base class for all plants in the ecosystem simulation.
@@ -41,16 +39,6 @@ public abstract class Plant extends Organism implements Observer {
     /** Health threshold below which the plant is considered dead */
     private static final float HEALTH_THRESHOLD = 0.0f;
 
-    /**
-     * Creates a new plant with a unique identifier.
-     * Initializes the plant with photosynthesis state by default.
-     * 
-     * @param num Unique identifier for this plant
-     */
-    public Plant(int num) {
-        super(num);
-        this.energyCycleState = new PhotosynthesisState();
-    }
 
     /**
      * Sets the size of the plant and calculates bite capacity based on max health.
@@ -74,6 +62,18 @@ public abstract class Plant extends Organism implements Observer {
     @Override
     public Plant setSymbol(String symbol) {
         super.setSymbol(symbol);
+        return this;
+    }
+
+    /**
+     * Updates growth rate based on current weather conditions.
+     * Different plant types respond differently to weather.
+     * 
+     * @param weather Current weather condition
+     */
+    @Override
+    public Plant setName(String name) {
+        super.setName(name);
         return this;
     }
 

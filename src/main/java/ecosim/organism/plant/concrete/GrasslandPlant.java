@@ -1,6 +1,8 @@
-package ecosim.organism.plant.abs;
+package ecosim.organism.plant.concrete;
 
 import ecosim.enm.Weather;
+import ecosim.misc.SpeciesNumbering;
+import ecosim.organism.plant.abs.Plant;
 
 /**
  * Abstract class for all grassland plants in the ecosystem simulation.
@@ -11,16 +13,7 @@ import ecosim.enm.Weather;
  * 
  * @author MiaBorkoo
  */
-public abstract class GrasslandPlant extends Plant {
-
-    /**
-     * Creates a new grassland plant with a unique identifier.
-     * 
-     * @param num Unique identifier for this plant
-     */
-    public GrasslandPlant(int num) {
-        super(num);
-    }
+public class GrasslandPlant extends Plant {
 
     /**
      * Updates the growth rate of grassland plants based on current weather.
@@ -42,4 +35,17 @@ public abstract class GrasslandPlant extends Plant {
         // Update the growth rate based on the adjustment
         this.growthRate += this.growthRate * growthAdjustment;
     }
+
+    @Override
+    public Plant clone() {
+        // Extract base species name
+         String baseName = SpeciesNumbering.extractBaseSpeciesName(this.getName());
+         // Get next number for this species
+         int nextNumber = SpeciesNumbering.getNextNumber(baseName);
+         
+         GrasslandPlant clone = new GrasslandPlant();
+         clone.setName(SpeciesNumbering.formatName(baseName, nextNumber));
+         return clone;
+    }
+
 }

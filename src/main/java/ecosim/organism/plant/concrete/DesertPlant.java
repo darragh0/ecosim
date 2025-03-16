@@ -1,6 +1,8 @@
-package ecosim.organism.plant.abs;
+package ecosim.organism.plant.concrete;
 
 import ecosim.enm.Weather;
+import ecosim.misc.SpeciesNumbering;
+import ecosim.organism.plant.abs.Plant;
 
 /**
  * Abstract class for all desert plants in the ecosystem simulation.
@@ -11,16 +13,7 @@ import ecosim.enm.Weather;
  * 
  * @author MiaBorkoo
  */
-public abstract class DesertPlant extends Plant {
-
-    /**
-     * Creates a new desert plant with a unique identifier.
-     * 
-     * @param num Unique identifier for this plant
-     */
-    public DesertPlant(int num) {
-        super(num);
-    }
+public class DesertPlant extends Plant {
 
     /**
      * Updates the growth rate of desert plants based on current weather.
@@ -43,4 +36,17 @@ public abstract class DesertPlant extends Plant {
         
         this.growthRate += this.growthRate * growthAdjustment;
     }
+
+    @Override
+    public Plant clone() {
+         // Extract base species name
+         String baseName = SpeciesNumbering.extractBaseSpeciesName(this.getName());
+         // Get next number for this species
+         int nextNumber = SpeciesNumbering.getNextNumber(baseName);
+         
+         DesertPlant clone = new DesertPlant();
+         clone.setName(SpeciesNumbering.formatName(baseName, nextNumber));
+         return clone;
+    }
+
 }

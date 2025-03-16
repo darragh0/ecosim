@@ -7,16 +7,17 @@ import java.util.stream.Collectors;
 import ecosim.enm.Biome;
 import ecosim.menu.AnimalMenu;
 import ecosim.menu.BiomeMenu;
-import ecosim.menu.OrganismMenu;
 import ecosim.menu.PlantMenu;
 import ecosim.misc.AnimalDescriptor;
 import ecosim.misc.PlantDescriptor;
-import ecosim.organism.Organism;
-import ecosim.organism.animal.abs.Animal;
-import ecosim.organism.plant.abs.Plant;
 
 public class InputPromptView {
-     public Biome promptBiomeSelection() {
+    /**
+     * Prompts the user to select a biome from the available options.
+     * 
+     * @return The selected biome
+     */
+    public Biome promptBiomeSelection() {
         final BiomeMenu menu = new BiomeMenu(Biome.values());
         menu.print();
 
@@ -26,54 +27,79 @@ public class InputPromptView {
         return choice;
     }
 
-    public <T extends Organism> List<Class<? extends T>> promptOrganismSelection(OrganismMenu<T> menu, int num) {
-        final List<Class<? extends T>> chosen = new ArrayList<>();
+    /**
+     * Prompts the user to select a specified number of animal species from the available options.
+     * 
+     * @param animals The list of available animal descriptors
+     * @param num The number of animals to select
+     * @return List of selected animal descriptors
+     */
+    public List<AnimalDescriptor> promptAnimalSelection(List<AnimalDescriptor> animals, int num) {
+        // Extract just the names for the menu
+        final List<String> animalNames = animals.stream()
+            .map(AnimalDescriptor::name)
+            .collect(Collectors.toList());
+
+        // Create a menu with animal names
+        final AnimalMenu menu = new AnimalMenu(animalNames);
         menu.print();
 
+        final List<AnimalDescriptor> selectedDescriptors = new ArrayList<>();
+        
+        // Get user selections
         for (int i = 0; i < num; i++) {
-            Class<? extends T> choice = menu.getUserChoice("Enter your choice (%d) >> ".formatted(i + 1));
-            chosen.add(choice);
+            String chosenName = menu.getUserChoice("Enter your choice (%d) >> ".formatted(i + 1));
+            
+            // Find the descriptor with the matching name
+            AnimalDescriptor descriptor = animals.stream()
+                .filter(a -> a.name().equals(chosenName))
+                .findFirst()
+                .orElse(null);
+                
+            if (descriptor != null) {
+                selectedDescriptors.add(descriptor);
+            }
         }
         System.out.println();
 
-        return chosen;
+        return selectedDescriptors;
     }
 
-    public List<AnimalDescriptor> promptAnimalSelection(List<AnimalDescriptor> animals, int num) {
-        final List<Class<? extends Animal>> classes = animals.stream()
-            .map(AnimalDescriptor::animalClass)
-            .collect(Collectors.toList());
-
-        final List<Class<? extends Animal>> chosen = promptOrganismSelection(new AnimalMenu(classes), num);
-
-        final List<AnimalDescriptor> descriptors = new ArrayList<>();
-        for (Class<? extends Animal> cls : chosen) {
-            AnimalDescriptor descriptor = animals.stream()
-                .filter(a -> a.animalClass() == cls)
-                .findFirst()
-                .orElse(null);
-            descriptors.add(descriptor);
-        }
-
-        return descriptors;
-    }
-
+    /**
+     * Prompts the user to select a specified number of plant species from the available options.
+     * 
+     * @param plants The list of available plant descriptors
+     * @param num The number of plants to select
+     * @return List of selected plant descriptors
+     */
     public List<PlantDescriptor> promptPlantSelection(List<PlantDescriptor> plants, int num) {
-        final List<Class<? extends Plant>> classes = plants.stream()
-            .map(PlantDescriptor::plantClass)
+        // Extract just the names for the menu
+        final List<String> plantNames = plants.stream()
+            .map(PlantDescriptor::name)
             .collect(Collectors.toList());
 
-        final List<Class<? extends Plant>> chosen = promptOrganismSelection(new PlantMenu(classes), num);
+        // Create a menu with plant names
+        final PlantMenu menu = new PlantMenu(plantNames);
+        menu.print();
 
-        final List<PlantDescriptor> descriptors = new ArrayList<>();
-        for (Class<? extends Plant> cls : chosen) {
+        final List<PlantDescriptor> selectedDescriptors = new ArrayList<>();
+        
+        // Get user selections
+        for (int i = 0; i < num; i++) {
+            String chosenName = menu.getUserChoice("Enter your choice (%d) >> ".formatted(i + 1));
+            
+            // Find the descriptor with the matching name
             PlantDescriptor descriptor = plants.stream()
-                .filter(p -> p.plantClass() == cls)
+                .filter(p -> p.name().equals(chosenName))
                 .findFirst()
                 .orElse(null);
-            descriptors.add(descriptor);
+                
+            if (descriptor != null) {
+                selectedDescriptors.add(descriptor);
+            }
         }
+        System.out.println();
 
-        return descriptors;
+        return selectedDescriptors;
     }
 }
