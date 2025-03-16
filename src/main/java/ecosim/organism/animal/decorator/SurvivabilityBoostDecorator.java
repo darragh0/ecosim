@@ -1,5 +1,7 @@
 package ecosim.organism.animal.decorator;
 
+import static ecosim.common.Util.randFloat;
+
 import ecosim.organism.animal.abs.Animal;
 
 /**
@@ -20,7 +22,7 @@ public class SurvivabilityBoostDecorator extends AnimalDecorator {
 
     @Override
     public boolean eat(Animal prey) {
-        if (Math.random() < prey.getSurvivalChance()) {
+        if (randFloat(0.0f, 1.0f) < prey.getSurvivalChance()) {
             animal.restoreHealth(prey.getNutritionalValue());
             return true;
         }

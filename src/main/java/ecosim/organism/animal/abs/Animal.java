@@ -16,6 +16,8 @@ import ecosim.organism.animal.animal_state.AnimalState;
 import ecosim.organism.animal.animal_state.AwakeState;
 import ecosim.organism.plant.abs.Plant;
 
+import static ecosim.common.Util.randFloat;
+
 
 /**
  * Abstract class representing an animal in the ecosystem,
@@ -155,7 +157,7 @@ public abstract class Animal extends Organism implements Observer {
     }
 
     public boolean eat(Animal animal) {
-        if (Math.random() < animal.survivalChance) {
+        if (randFloat(0.0f, 1.0f) < animal.survivalChance) {
             this.restoreHealth(animal.getNutritionalValue());
             return true;
         }
@@ -171,7 +173,7 @@ public abstract class Animal extends Organism implements Observer {
     public Animal breed(Animal mate) {
         float combinedReproductiveChance = this.reproductiveChance * mate.reproductiveChance;
 
-        if (Math.random() < combinedReproductiveChance)
+        if (randFloat(0.0f, 1.0f) < combinedReproductiveChance)
             return this.createClone();
         return null;
     }
