@@ -4,6 +4,8 @@ import java.util.Random;
 
 import ecosim.misc.PlantDescriptor;
 import ecosim.organism.plant.abs.Plant;
+import ecosim.organism.plant.decorator.NutrientRichDecorator;
+import ecosim.organism.plant.decorator.ToxicDecorator;
 
 public abstract class AbstractPlantBuilder implements PlantBuilder {
         protected PlantDescriptor descriptor;
@@ -19,6 +21,25 @@ public abstract class AbstractPlantBuilder implements PlantBuilder {
         this.descriptor = descriptor;
         initializePlant();
     }
+    @Override
+    public PlantBuilder applyDecorators() {
+        int decoratorChoice = random.nextInt(3); // 0-2
+        
+        switch (decoratorChoice) {
+            case 0:
+                plant = new ToxicDecorator(plant);
+                break;
+            case 1:
+                plant = new NutrientRichDecorator(plant);
+                break;
+            default:
+                // No decorator applied
+                break;
+        }
+        
+        return this;
+    }
+
     
     /**
      * Initializes the plant instance.

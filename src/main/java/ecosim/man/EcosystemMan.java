@@ -170,6 +170,7 @@ public class EcosystemMan {
             // Build the plant with basic properties
             Plant plant = builder
                 .buildBasicProperties()
+                .applyDecorators() 
                 .build();
             
             // Register observers and add to the ecosystem

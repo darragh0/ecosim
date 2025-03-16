@@ -15,6 +15,8 @@ import ecosim.organism.Organism;
 import ecosim.organism.animal.animal_state.AnimalState;
 import ecosim.organism.animal.animal_state.AwakeState;
 import ecosim.organism.plant.abs.Plant;
+import ecosim.map.AnimalThreadLocal;
+
 
 
 /**
@@ -158,11 +160,24 @@ public abstract class Animal extends Organism implements Observer {
         return false;
     };
 
+    /**
+     * Modified eat method to track which animal is eating the plant.
+     * This allows plant decorators to affect the eating animal.
+     */
     public boolean eat(Plant plant) {
-        this.restoreHealth(plant.getNutritionalValue());
-        plant.beEaten();
-        return true;
-    };
+        try {
+            // Store this animal as the currently eating animal
+            AnimalThreadLocal.setCurrentAnimal(this);
+            
+            // Original code
+            this.restoreHealth(plant.getNutritionalValue());
+            plant.beEaten();
+            return true;
+        } finally {
+            // Always clear thread local to prevent memory leaks
+            AnimalThreadLocal.clear();
+        }
+    }
 
     public Animal breed(Animal mate) {
         float combinedReproductiveChance = this.reproductiveChance * mate.reproductiveChance;

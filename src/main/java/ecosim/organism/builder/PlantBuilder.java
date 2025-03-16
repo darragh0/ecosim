@@ -13,6 +13,8 @@ public interface PlantBuilder {
      */
     PlantBuilder buildBasicProperties();
     
+    PlantBuilder applyDecorators();
+
     /**
      * Creates the plant instance.
      * 

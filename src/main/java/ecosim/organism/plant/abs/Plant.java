@@ -9,6 +9,7 @@ import ecosim.enm.Weather;
 import ecosim.organism.Organism;
 import ecosim.organism.plant.energy_cycle_state.EnergyCycleState;
 import ecosim.organism.plant.energy_cycle_state.PhotosynthesisState;
+import ecosim.organism.plant.energy_cycle_state.RespirationState;
 
 /**
  * Abstract base class for all plants in the ecosystem simulation.
@@ -40,8 +41,55 @@ public abstract class Plant extends Organism implements Observer {
     /** Health threshold below which the plant is considered dead */
     private static final float HEALTH_THRESHOLD = 0.0f;
 
+    
     public Plant() {
-      this.energyCycleState = new PhotosynthesisState();
+        
+        this.energyCycleState = new PhotosynthesisState();
+    }
+    /**
+     * Handles time of day changes by updating the plant's energy cycle state.
+     * Transitions between photosynthesis (day) and respiration (night).
+     * 
+     * @param timeOfDay The new time of day
+     */
+    public void handleTimeOfDayUpdate(TimeOfDay timeOfDay) {
+        // Handle time of day changes by setting appropriate energy cycle state
+        this.energyCycleState = this.energyCycleState.handleTimeOfDayChange(this, timeOfDay);
+    }
+    
+    /**
+     * Performs the plant's energy cycle based on current state and weather.
+     * This method:
+     * 1. Calls the current energy cycle state to calculate health changes and modify growth rate
+     * 2. Applies health-based efficiency modifiers to the health change
+     * 3. Updates plant health with the final adjusted value
+     * 
+     * Note: Growth rate is modified directly by the energy cycle state, while
+     * health changes are returned and then adjusted based on current health before being applied.
+     * 
+     * Plants with lower health (below 50%) get less benefit from positive energy cycles
+     * and take more damage from negative energy cycles.
+     * 
+     * @param currentWeather Current weather condition affecting energy cycle
+     */
+    public void performEnergyCycle(Weather currentWeather) {
+        if (this.energyCycleState != null && !isDead()) {
+            // Get base health change from energy cycle
+            float healthChange = this.energyCycleState.performEnergyCycle(growthRate, currentWeather);
+            
+            float healthPercentage = this.health / this.getMaxHealth();
+            if (healthPercentage < 0.5f) {
+                // Low health plants get less benefit/more harm
+                if (healthChange > 0) {
+                    healthChange *= 0.7f;  // Reduced benefit
+                } else {
+                    healthChange *= 1.3f;  // Increased harm
+                }
+            }
+            
+            // Apply the health change
+            adjustHealth(healthChange);
+        }
     }
 
     /**
@@ -66,18 +114,6 @@ public abstract class Plant extends Organism implements Observer {
     @Override
     public Plant setSymbol(String symbol) {
         super.setSymbol(symbol);
-        return this;
-    }
-
-    /**
-     * Updates growth rate based on current weather conditions.
-     * Different plant types respond differently to weather.
-     * 
-     * @param weather Current weather condition
-     */
-    @Override
-    public Plant setName(String name) {
-        super.setName(name);
         return this;
     }
 
@@ -187,16 +223,7 @@ public abstract class Plant extends Organism implements Observer {
         // No penalty for health >= 70%
     }
 
-    /**
-     * Handles time of day changes by updating the plant's energy cycle state.
-     * Transitions between photosynthesis (day) and respiration (night).
-     * 
-     * @param timeOfDay The new time of day
-     */
-    public void handleTimeOfDayUpdate(TimeOfDay timeOfDay) {
-        // Handle time of day changes by setting appropriate energy cycle state
-        this.energyCycleState = this.energyCycleState.handleTimeOfDayChange(this, timeOfDay);
-    }
+    
     
     /**
      * Sets the energy cycle state of the plant.
@@ -207,40 +234,7 @@ public abstract class Plant extends Organism implements Observer {
         this.energyCycleState = state;
     }
 
-    /**
-     * Performs the plant's energy cycle based on current state and weather.
-     * This method:
-     * 1. Calls the current energy cycle state to calculate health changes and modify growth rate
-     * 2. Applies health-based efficiency modifiers to the health change
-     * 3. Updates plant health with the final adjusted value
-     * 
-     * Note: Growth rate is modified directly by the energy cycle state, while
-     * health changes are returned and then adjusted based on current health before being applied.
-     * 
-     * Plants with lower health (below 50%) get less benefit from positive energy cycles
-     * and take more damage from negative energy cycles.
-     * 
-     * @param currentWeather Current weather condition affecting energy cycle
-     */
-    public void performEnergyCycle(Weather currentWeather) {
-        if (this.energyCycleState != null && !isDead()) {
-            // Get base health change from energy cycle
-            float healthChange = this.energyCycleState.performEnergyCycle(growthRate, currentWeather);
-            
-            float healthPercentage = this.health / this.getMaxHealth();
-            if (healthPercentage < 0.5f) {
-                // Low health plants get less benefit/more harm
-                if (healthChange > 0) {
-                    healthChange *= 0.7f;  // Reduced benefit
-                } else {
-                    healthChange *= 1.3f;  // Increased harm
-                }
-            }
-            
-            // Apply the health change
-            adjustHealth(healthChange);
-        }
-    }
+    
 
     /**
      * Called when an animal eats this plant. Reduces health based on bite damage.
