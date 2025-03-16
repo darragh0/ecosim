@@ -78,6 +78,7 @@ public class EcosystemController {
         for (int hour = 0; hour < 10; hour++) {
             if (hour == 5) {
                 this.man.updateTimeOfDay();
+                this.environmentView.displayTimeStatus(man);
             }
             this.man.processAnimalsTurn();
             this.man.checkOrganismsHealth();
