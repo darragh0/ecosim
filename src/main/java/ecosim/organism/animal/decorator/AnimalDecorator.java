@@ -13,18 +13,15 @@ import ecosim.organism.animal.abs.Animal;
 public abstract class AnimalDecorator extends Animal {
 
     protected final Animal animal;
-    protected float adjustment;
 
     public AnimalDecorator(final Animal animal) {
         super(animal);
         this.animal = animal;
-    }
+    } 
 
     @Override
-    public String getSound() {
+    public String getSound(){
         return animal.getSound();
     }
-
-    
 
 }
