@@ -47,7 +47,7 @@ public final class FileIO {
     }
 
     public static Optional<EcosystemConfig> parseEcosystemConfig() {
-        final String[] keys = { "initialPlants", "initialAnimals" };
+        final String[] keys = { "initialPlants", "initialAnimals", "maxDays", "hoursPerDay" };
 
         final Optional<JSONObject> jsonFile = FileIO.readJSONFile("ecosystem_config.json");
         if (jsonFile.isEmpty()) {
@@ -68,15 +68,19 @@ public final class FileIO {
 
         final int animals;
         final int plants;
+        final int maxDays;
+        final int hoursPerDay;
         try {
             plants = json.getInt(keys[0]);
             animals = json.getInt(keys[1]);
+            maxDays = json.getInt(keys[2]);	
+            hoursPerDay = json.getInt(keys[3]);
         } catch (JSONException e) {
             LoggerMan.log(Level.SEVERE, "Invalid JSON format: {0}", e.getMessage());
             return Optional.empty();
         }
 
-        final EcosystemConfig cfg = new EcosystemConfig(animals, plants);
+        final EcosystemConfig cfg = new EcosystemConfig(animals, plants, maxDays, hoursPerDay);
         return Optional.ofNullable(cfg);
     }
 

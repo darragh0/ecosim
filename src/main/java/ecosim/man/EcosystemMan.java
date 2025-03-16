@@ -37,7 +37,12 @@ public class EcosystemMan {
     private final ArrayList<Plant> plants;
     private final List<Animal> deadAnimals;
     private final List<Plant> deadPlants;
+    private int totalDeadAnimals;
+    private int totalDeadPlants;
     private final List<Animal> newbornAnimals;
+    private List<Plant> newbornPlants;
+    private int totalNewbornAnimals;
+    private int totalNewbornPlants;
     private final Map map;
     private final EcosystemConfig config;
 
@@ -50,7 +55,12 @@ public class EcosystemMan {
         this.plants = new ArrayList<>();
         this.deadAnimals = new ArrayList<>();
         this.deadPlants = new ArrayList<>();
+        this.totalDeadAnimals = 0;
+        this.totalDeadPlants = 0;
         this.newbornAnimals = new ArrayList<>();
+        this.newbornPlants = new ArrayList<>();
+        this.totalNewbornAnimals = 0;
+        this.totalNewbornPlants = 0;
         this.map = Map.init(6, 6);
         this.config = this.loadConfig();
     }
@@ -85,11 +95,13 @@ public class EcosystemMan {
                         if (plant.isDead()) {
                             this.plants.remove(plant);
                             this.deadPlants.add(plant);
+                            this.totalDeadPlants++;
                         }
                     }
                     case Animal animal -> {
                         this.animals.remove(animal);
                         this.deadAnimals.add(animal);
+                        this.totalDeadAnimals++;
                     }
                     default -> LoggerMan.log(Level.WARNING, "Unknown target type: " + result.getTarget());
                 }
@@ -206,6 +218,10 @@ public class EcosystemMan {
         this.plants.forEach(p -> this.map.initialisePlacement(p));
     }
 
+    public boolean isEcosystemAlive() {
+        return !this.animals.isEmpty() && !this.plants.isEmpty();
+    }
+
     public void updateEnvironmentConditions() {
         // Increment day count first
         this.dayCount++;
@@ -279,6 +295,22 @@ public class EcosystemMan {
         return this.newbornAnimals;
     }
 
+    public int getTotalDeadAnimals() {
+        return this.totalDeadAnimals;
+    }
+
+    public int getTotalDeadPlants() {
+        return this.totalDeadPlants;
+    }
+
+    public int getTotalNewbornAnimals() {
+        return this.totalNewbornAnimals;
+    }   
+
+    public int getTotalNewbornPlants() {
+        return this.totalNewbornPlants;
+    }   
+
     private EcosystemConfig loadConfig() {
         final Optional<EcosystemConfig> fileCfg = FileIO.parseEcosystemConfig();
         if (fileCfg.isEmpty()) {
@@ -295,6 +327,14 @@ public class EcosystemMan {
 
     public int getInitialAnimals() {
         return this.config.initialAnimals();
+    }
+    
+    public int getMaxDays() {
+        return this.config.maxDays();
+    }
+
+    public int getHoursPerDay() {
+        return this.config.hoursPerDay();
     }
 
     public int getInitialPlants() {
