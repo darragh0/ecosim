@@ -21,6 +21,16 @@ public final class Util {
         return ThreadLocalRandom.current().nextInt(min, max + 1);
     }
 
+        /**
+     * Return random float in given range (inclusive).
+     * 
+     * @param min Min. range value
+     * @param max Max. range value
+     */
+    public static float randFloat(final float min, final float max) {
+        return ThreadLocalRandom.current().nextFloat(min, max + 1.0f);
+    }
+
     /**
      * Convert a string to title case (e.g. "hello there" -> "Hello There").
      *  
