@@ -12,12 +12,13 @@ public abstract class GrasslandAnimal extends Animal {
 
     @Override
     public ActionResult move() {
-        if (this.activityState == ActivityState.AWAKE) {
+
+        if (this.state.getActivityState() == ActivityState.AWAKE ) {
             float healthLoss = this.getMaxHealth() * 0.025f; // Grassland animals use less energy when moving
             this.reduceHealth(healthLoss);
-            return consciousState.move(this);
         }
-        return consciousState.move(this);
+        
+        return this.state.move(this);
     }
 
 }

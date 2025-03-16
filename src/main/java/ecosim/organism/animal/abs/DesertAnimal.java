@@ -12,11 +12,13 @@ public abstract class DesertAnimal extends Animal {
 
     @Override
     public ActionResult move() {
-        if (this.activityState == ActivityState.AWAKE) {
-            float healthLoss = this.getMaxHealth() * 0.05f; // Desert animals use more energy when moving
+
+        if (this.state.getActivityState() == ActivityState.AWAKE ) {
+            float healthLoss = this.getMaxHealth() * 0.025f; // Grassland animals use less energy when moving
             this.reduceHealth(healthLoss);
         }
-        return consciousState.move(this);
+        
+        return this.state.move(this);
     }
 
 }
