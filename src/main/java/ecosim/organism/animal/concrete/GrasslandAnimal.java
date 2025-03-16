@@ -10,7 +10,7 @@ public class GrasslandAnimal extends Animal {
     @Override
     public ActionResult move() {
         if (this.state.getActivityState() == ActivityState.AWAKE) {
-            float healthLoss = this.getMaxHealth() * 0.015f;
+            float healthLoss = this.getMaxHealth() * 0.025f;
             this.reduceHealth(healthLoss);
         }
         
@@ -19,8 +19,14 @@ public class GrasslandAnimal extends Animal {
 
     @Override
     public Animal clone() {
+        // Extract base species name
+         String baseName = SpeciesNumbering.extractBaseSpeciesName(getName());
+         // Get next number for this species
+         int nextNumber = SpeciesNumbering.getNextNumber(baseName);
+         
         GrasslandAnimal clone = new GrasslandAnimal();
-        clone.setName(SpeciesNumbering.generateCloneName(this.getName()));
+        clone.setName(SpeciesNumbering.formatName(baseName, nextNumber));
         return clone;
     }
+    
 }
