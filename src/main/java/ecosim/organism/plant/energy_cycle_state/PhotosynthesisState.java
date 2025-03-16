@@ -5,10 +5,32 @@ import ecosim.enm.Weather;
 import ecosim.organism.plant.abs.Plant;
 
 /**
- * This class represents the photosynthesis state of a plant during daytime.
+ * Implementation of the plant energy cycle state during daytime (photosynthesis).
+ * 
+ * This class represents the active energy production state of plants, where they:
+ * - Convert sunlight, water and CO2 into energy
+ * - Generally increase in health during favorable conditions
+ * - Adjust growth rates based on weather conditions
+ * 
+ * Photosynthesis is most effective in sunny conditions, but still functions
+ * in other weather types with varying degrees of efficiency. This state
+ * transitions to the respiration state when night falls.
+ * 
  * @author MiaBorkoo
  */
 public class PhotosynthesisState implements EnergyCycleState {
+    /**
+     * Performs the photosynthesis energy cycle, calculating health adjustments
+     * and growth rate changes based on current weather conditions.
+     * 
+     * This method has two effects:
+     * 1. It calculates and returns a health adjustment value (usually positive during day)
+     * 2. It directly modifies the provided growthRate parameter based on weather
+     * 
+     * @param growthRate Current growth rate of the plant (modified by this method)
+     * @param currentWeather Current weather affecting photosynthesis
+     * @return Amount to adjust plant health (usually positive during day)
+     */
     @Override
     public float performEnergyCycle(float growthRate, Weather currentWeather) {
         float adjustedGrowthRate;
@@ -43,6 +65,13 @@ public class PhotosynthesisState implements EnergyCycleState {
         return healthAdjustment;
     }
 
+    /**
+     * Handles time of day transitions, switching to respiration state at night.
+     * 
+     * @param plant The plant experiencing the time change
+     * @param timeOfDay The new time of day
+     * @return This state if still day, or a new RespirationState if night
+     */
     @Override
     public EnergyCycleState handleTimeOfDayChange(Plant plant, TimeOfDay timeOfDay) {
         if (timeOfDay == TimeOfDay.NIGHT) {

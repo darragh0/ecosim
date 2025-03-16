@@ -1,21 +1,33 @@
 package ecosim.organism.plant.abs;
 
-
 import ecosim.enm.Weather;
 
-
 /**
- * This is the abstract class for all desert plants.
- * It extends the Plant class and includes methods specific to desert plants.
- * Based on the weather, the growth rate is adjusted.
+ * Abstract class for all desert plants in the ecosystem simulation.
+ * 
+ * This class provides desert-specific implementation of growth rate adjustments
+ * based on weather conditions. Desert plants generally favor sunny weather
+ * and are less affected by dry conditions than other plant types.
+ * 
  * @author MiaBorkoo
  */
 public abstract class DesertPlant extends Plant {
 
+    /**
+     * Creates a new desert plant with a unique identifier.
+     * 
+     * @param num Unique identifier for this plant
+     */
     public DesertPlant(int num) {
         super(num);
     }
 
+    /**
+     * Updates the growth rate of desert plants based on current weather.
+     * Desert plants have specialized responses to different weather conditions, e.g Snowy weather is bad for them.
+     * 
+     * @param currentWeather Current weather condition
+     */
     @Override
     public void updateGrowthRate(Weather currentWeather) {
         float growthAdjustment = 0.0f;
@@ -28,8 +40,7 @@ public abstract class DesertPlant extends Plant {
             case SNOWY -> growthAdjustment = -0.3f; 
         }
 
-        // Update the growth rate based on the adjustment
+        
         this.growthRate += this.growthRate * growthAdjustment;
     }
-
 }
