@@ -15,7 +15,7 @@ public class ConservationBoostDecorator extends AnimalDecorator {
 
     @Override
     public void reduceHealth(float amount) {
-        animal.reduceHealth(amount * 0.5f);  // Reduce damage by 50%
+        animal.reduceHealth(amount * 0.7f);  // Reduce damage by 70%
     }
 
     @Override

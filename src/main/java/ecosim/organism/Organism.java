@@ -46,7 +46,7 @@ public abstract class Organism extends Movable {
 
     public Organism setSize(Size size) {
         this.size = size;
-        this.health = this.getMaxHealth() / 2;
+        this.health = (float) (this.getMaxHealth() * 0.75);
         return this;
     }
 

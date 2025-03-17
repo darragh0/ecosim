@@ -68,7 +68,7 @@ public class EcosystemController {
     }
 
     public void runSimulation() {
-        while (this.man.getDayCount() < man.getMaxDays() && this.man.isEcosystemAlive()) {
+        while (this.man.getDayCount() < man.getMaxDays() && this.man.isEcosystemAlive() && !this.man.isAtMaxCapacity()) {
             this.man.updateEnvironmentConditions();
             this.environmentView.displayEnvironmentConditions(this.man);
             this.environmentView.displayTimeStatus(man);

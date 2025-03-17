@@ -259,24 +259,7 @@ public abstract class Plant extends Organism implements Observer {
      * Healthier plants (above 70% health) have 20% damage resistance.
      */
     public void beEaten() {
-        this.biteCapacity--;
-        
-        // Base damage
-        float damage = this.getMaxHealth() / BITE_DIVISOR;
-        
-        // Simple health-based adjustment - just one threshold 
-        if (this.health > this.getMaxHealth() * 0.7f) {
-            // Healthy plants resist damage better
-            damage *= 0.8f; // 20% less damage when healthy
-        }
-        
-        // Apply damage
-        this.health -= damage;
-        
-        // Ensure health doesn't go below zero
-        if (this.health < 0) {
-            this.health = 0.0f;
-        }
+        biteCapacity--;
     }
 
     /**
@@ -285,7 +268,7 @@ public abstract class Plant extends Organism implements Observer {
      * @return true if the plant is dead (health <= threshold), false otherwise
      */
     public boolean isDead() {
-        return this.health <= HEALTH_THRESHOLD;
+        return this.health <= HEALTH_THRESHOLD || biteCapacity <= 0;
     }
 
     /**

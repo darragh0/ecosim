@@ -1,5 +1,5 @@
 package ecosim.misc;
 
 
-public record EcosystemConfig(int initialAnimals, int initialPlants, int maxDays, int hoursPerDay) {
+public record EcosystemConfig(int initialAnimals, int initialPlants, int maxCapacity, int maxDays, int hoursPerDay) {
 }

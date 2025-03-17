@@ -56,7 +56,7 @@ public abstract class AbstractAnimalBuilder implements AnimalBuilder {
     
     @Override
     public AnimalBuilder applyDecorators() {
-        int randomDecorator = Util.randInt(0, 4);
+        int randomDecorator = Util.randInt(0, 6);
         switch (randomDecorator) {
             case 0 -> animal = new ConservationBoostDecorator(animal);
             case 1 -> animal = new FertilityBoostDecorator(animal);

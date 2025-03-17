@@ -19,10 +19,17 @@ import ecosim.organism.animal.abs.Animal;
 public class AwakeState implements AnimalState {
 
     @Override
-    public ActionResult move(Animal animal) {
-
-        return Map.getInstance().move(animal);
-    }
+public ActionResult move(Animal animal) {
+    
+    // Reduce health by 35% of max health when moving
+    float healthReduction = animal.getMaxHealth() * 0.035f;
+    animal.reduceHealth(healthReduction);
+    
+    // Get movement result from map
+    ActionResult result = Map.getInstance().move(animal);
+    
+    return result;
+}
 
     @Override
     public AnimalState handleSeasonChange(Animal animal, Season season) {
