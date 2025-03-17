@@ -1,5 +1,10 @@
 package ecosim.ui.view;
 
+/**
+ * View for handling user input prompts.
+ * Provides methods to select biomes, animals, and plants.
+ * @author Kabidoye-17
+ */
 
 import java.util.ArrayList;
 import java.util.List;

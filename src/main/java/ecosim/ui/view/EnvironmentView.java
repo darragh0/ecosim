@@ -1,12 +1,22 @@
 package ecosim.ui.view;
 
+/**
+ * View responsible for displaying environment information.
+ * Shows time, weather, seasons, and animal states.
+ * @author Kabidoye-17
+ */
+
 import static ecosim.common.io.ConsoleIO.add;
 import ecosim.game_engine.enm.ActivityState;
 import ecosim.game_engine.man.EcosystemMan;
 
 public class EnvironmentView {
 
-
+    /**
+     * Displays current time information and calls methods to show animal states
+     * 
+     * @param ecosystem The ecosystem manager containing time data
+     */
     public void displayTimeStatus(EcosystemMan ecosystem) {
         StringBuilder str = new StringBuilder();
     
@@ -20,6 +30,11 @@ public class EnvironmentView {
         this.displayHibernatingAnimals(ecosystem);
     }
     
+    /**
+     * Displays current environment conditions (weather and season)
+     * 
+     * @param ecosystem The ecosystem manager containing environment data
+     */
     public void displayEnvironmentConditions(EcosystemMan ecosystem) {  
         // Display environment conditions
         StringBuilder envStr = new StringBuilder();
@@ -36,6 +51,11 @@ public class EnvironmentView {
         System.out.println(envStr.toString());
     }
 
+    /**
+     * Displays list of animals that are currently sleeping
+     * 
+     * @param ecosystem The ecosystem manager containing animal data
+     */
     public void displaySleepingAnimals(EcosystemMan ecosystem) {
         var sleepingAnimals = ecosystem.getAnimals().stream()
             .filter(animal -> animal.getActivityState() == ActivityState.SLEEPING)
@@ -55,7 +75,11 @@ public class EnvironmentView {
         }
     }
     
-    
+    /**
+     * Displays list of animals that are currently hibernating
+     * 
+     * @param ecosystem The ecosystem manager containing animal data
+     */
     public void displayHibernatingAnimals(EcosystemMan ecosystem) {
         var hibernatingAnimals = ecosystem.getAnimals().stream()
             .filter(animal -> animal.getActivityState() == ActivityState.HIBERNATING)

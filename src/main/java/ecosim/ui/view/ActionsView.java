@@ -1,5 +1,11 @@
 package ecosim.ui.view;
 
+/**
+ * View for displaying animal action results in the ecosystem.
+ * Formats and presents different types of animal interactions.
+ * @author Kabidoye-17
+ */
+
 import static ecosim.common.io.ConsoleIO.add;
 import ecosim.game_engine.map.ActionResult;
 import ecosim.game_engine.map.ActionResult.ActionType;
@@ -7,12 +13,20 @@ import ecosim.game_engine.organism.Organism;
 
 public class ActionsView {
 
+    /**
+     * Displays header for animal actions section
+     */
     public void displayAnimalActionsHeader() {
         StringBuilder str = new StringBuilder();
         add.accept(str, "** [fly:Today's Animal Highlights] **");
         System.out.println(str.toString());
     }
 
+    /**
+     * Displays formatted action result if it's significant
+     * 
+     * @param result The action result to display
+     */
     public void displayAnimalActions(ActionResult result) {
         // Skip displaying movement or idle actions
         if (result.getActionType() == ActionType.BASIC_ACTION) {
@@ -43,6 +57,16 @@ public class ActionsView {
         System.out.println(str.toString());
     }
 
+    /**
+     * Formats action message based on action type and organisms involved
+     * 
+     * @param actor The organism performing the action
+     * @param target The target organism of the action (if any)
+     * @param actionType The type of action performed
+     * @param newX New x-coordinate (for movement actions)
+     * @param newY New y-coordinate (for movement actions)
+     * @return Formatted action message
+     */
     private String formatActionMessage(Organism actor, Organism target, ActionType actionType, int newX, int newY) {
         String actorName = actor.getName();
         String actorSymbol = actor.getSymbol();
@@ -57,10 +81,16 @@ public class ActionsView {
         };
     }
 
+    /**
+     * Formats death message
+     */
     private String formatAttemptedDeathMessage(String actorName, String actorSymbol) {
         return String.format("(💀) %s %s has died from starvation.", actorSymbol, actorName);
     }
 
+    /**
+     * Formats message for unsuccessful breeding attempts
+     */
     private String formatAttemptedBreedingMessage(String actorName, String actorSymbol, Organism target) {
         if (target != null) {
             String targetName = target.getName();
@@ -71,6 +101,9 @@ public class ActionsView {
         return String.format("(💔) %s %s tries dating app. No matches", actorSymbol, actorName);
     }
 
+    /**
+     * Formats message for successful breeding
+     */
     private String formatSuccessfulBreedingMessage(String actorName, String actorSymbol, Organism target
         ) {
         // Handle the case where target exists but there's no actor (plant asexual reproduction)
@@ -93,6 +126,9 @@ public class ActionsView {
             actorSymbol, actorName, targetSymbol, targetName );
     }
 
+    /**
+     * Formats message for unsuccessful eating attempts
+     */
     private String formatAttemptedEatingMessage(String actorName, String actorSymbol, Organism target) {
         if (target != null) {
             String targetName = target.getName();
@@ -103,6 +139,9 @@ public class ActionsView {
         return String.format("(🥺🍽️)%s %s missed lunch.", actorSymbol, actorName );
     }
 
+    /**
+     * Formats message for successful eating
+     */
     private String formatSuccessfulEatingMessage(String actorName, String actorSymbol, Organism target) {
         if (target != null) {
             String targetName = target.getName();
