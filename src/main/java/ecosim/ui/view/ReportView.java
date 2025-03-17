@@ -1,4 +1,4 @@
-package ecosim.view;
+package ecosim.ui.view;
 
 import java.io.IOException;
 import java.util.List;

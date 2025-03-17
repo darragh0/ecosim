@@ -1,4 +1,4 @@
-package ecosim.view;
+package ecosim.ui.view;
 
 
 import java.util.ArrayList;
@@ -6,11 +6,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import ecosim.enm.Biome;
-import ecosim.menu.AnimalMenu;
-import ecosim.menu.BiomeMenu;
-import ecosim.menu.PlantMenu;
 import ecosim.misc.AnimalDescriptor;
 import ecosim.misc.PlantDescriptor;
+import ecosim.ui.menu.AnimalMenu;
+import ecosim.ui.menu.BiomeMenu;
+import ecosim.ui.menu.PlantMenu;
 
 
 public class InputPromptView {

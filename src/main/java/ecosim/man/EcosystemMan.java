@@ -26,7 +26,7 @@ import ecosim.organism.builder.PlantBuilder;
 import ecosim.organism.factory.BiomeOrganismFactory;
 import ecosim.organism.factory.BiomeOrganismFactoryProvider;
 import ecosim.organism.plant.abs.Plant;
-import ecosim.view.ActionResultListener;
+import ecosim.ui.view.ActionResultListener;
 
 
 public class EcosystemMan {
