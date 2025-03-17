@@ -4,6 +4,10 @@ import ecosim.game_engine.enm.ActivityState;
 import ecosim.game_engine.map.ActionResult;
 import ecosim.game_engine.organism.animal.abs.Animal;
 
+/**
+ * Represents an animal adapted to grassland environment conditions.
+ * @author jjola00
+ */
 public class GrasslandAnimal extends Animal {
 
     public GrasslandAnimal() {

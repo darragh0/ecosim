@@ -5,12 +5,15 @@ import java.util.Map;
 
 /**
  * Central service for managing species numbering across the ecosystem.
+ * Provides utilities for generating unique identifiers for organisms.
+ * @author darragh0
  */
 public class SpeciesNumbering {
     private static final Map<String, Integer> speciesCounter = new HashMap<>();
     
     /**
      * Gets the next number for a given species name.
+     * Ensures each organism has a unique identifier.
      * 
      * @param speciesName The base name of the species
      * @return The next sequential number for this species
@@ -31,6 +34,7 @@ public class SpeciesNumbering {
     
     /**
      * Formats a species name with its number.
+     * Creates identifiers in the format "Name (Number)".
      * 
      * @param speciesName The base name of the species
      * @param number The instance number
@@ -47,6 +51,7 @@ public class SpeciesNumbering {
     
     /**
      * Extracts the base species name from a formatted name.
+     * Reverses the formatting done by formatName.
      * 
      * @param formattedName The formatted name like "Lion (3)"
      * @return The base species name like "Lion"

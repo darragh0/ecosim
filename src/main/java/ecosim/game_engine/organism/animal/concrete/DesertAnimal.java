@@ -3,6 +3,10 @@ package ecosim.game_engine.organism.animal.concrete;
 import ecosim.game_engine.enm.ActivityState;
 import ecosim.game_engine.map.ActionResult;
 import ecosim.game_engine.organism.animal.abs.Animal;
+/**
+ * Represents an animal adapted to desert environment conditions.
+ * @author jjola00
+ */
 
 public class DesertAnimal extends Animal {
     

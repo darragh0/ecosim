@@ -10,11 +10,18 @@ import ecosim.game_engine.organism.animal.decorator.SurvivabilityBoostDecorator;
 
 /**
  * Abstract implementation of the AnimalBuilder with common functionality.
+ * Provides base implementation for building animals across different biomes.
+ * @author Kabidoye-17, jjola00
  */
 public abstract class AbstractAnimalBuilder implements AnimalBuilder {
     protected AnimalDescriptor descriptor;
     protected Animal animal;
     
+    /**
+     * Creates a builder with the provided descriptor.
+     * 
+     * @param descriptor The descriptor containing animal specifications
+     */
     public AbstractAnimalBuilder(AnimalDescriptor descriptor) {
         this.descriptor = descriptor;
         initializeAnimal();
@@ -22,6 +29,7 @@ public abstract class AbstractAnimalBuilder implements AnimalBuilder {
 
     /**
      * Initializes the animal instance.
+     * Creates the appropriate concrete animal instance.
      */
     private void initializeAnimal() {
         this.animal = createAnimalInstance();
@@ -35,6 +43,12 @@ public abstract class AbstractAnimalBuilder implements AnimalBuilder {
      */
     protected abstract Animal createAnimalInstance();
     
+    /**
+     * Sets basic properties on the animal from the descriptor.
+     * Includes name, size, diet, activity type, and other attributes.
+     * 
+     * @return This builder for method chaining
+     */
     @Override
     public AnimalBuilder buildBasicProperties() {
 
@@ -55,6 +69,12 @@ public abstract class AbstractAnimalBuilder implements AnimalBuilder {
         return this;
     }
     
+    /**
+     * Randomly applies decorator patterns to enhance the animal.
+     * May provide conservation, fertility, or survivability boosts.
+     * 
+     * @return This builder for method chaining
+     */
     @Override
     public AnimalBuilder applyDecorators() {
         int randomDecorator = Util.randInt(0, 6);
@@ -69,6 +89,11 @@ public abstract class AbstractAnimalBuilder implements AnimalBuilder {
         return this;
     }
     
+    /**
+     * Returns the fully constructed animal.
+     * 
+     * @return The constructed animal instance
+     */
     @Override
     public Animal build() {
         return animal;

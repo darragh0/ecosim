@@ -1,5 +1,8 @@
 package ecosim.game_engine.enm;
-
+/**
+ * Enum representing the different times of day in the game.
+ * @author Kabidoye-17
+ */
 import static ecosim.common.Util.title;
 
 public enum TimeOfDay implements Event {

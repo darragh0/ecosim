@@ -1,5 +1,8 @@
 package ecosim.game_engine.enm;
-
+/**
+ * Enum representing the different directions an organism can move.
+ * @author darragh0
+ */
 
 public enum Direction {
     NORTH(0, 1),

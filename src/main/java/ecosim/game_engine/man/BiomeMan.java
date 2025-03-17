@@ -17,7 +17,11 @@ import ecosim.game_engine.misc.AnimalDescriptor;
 import ecosim.game_engine.misc.PlantDescriptor;
 import ecosim.interceptor.Try;
 
-
+/**
+ * Manager class responsible for handling biome-specific data and resources.
+ * Loads appropriate animal and plant species for each biome from JSON configuration.
+ * @author Kabidoye-17
+ */
 public class BiomeMan {
 
     private static final String JSON_FILE = "biome_natives.json";
@@ -26,6 +30,12 @@ public class BiomeMan {
     private final List<AnimalDescriptor> animals;
     private final List<PlantDescriptor> plants;
 
+    /**
+     * Creates a new BiomeMan for the specified biome.
+     * Initializes empty lists for animals and plants.
+     * 
+     * @param biome The biome to manage
+     */
     public BiomeMan(final Biome biome) {
         this.biome = biome;
         this.animals = new ArrayList<>();
@@ -33,6 +43,10 @@ public class BiomeMan {
         LoggerMan.log(Level.INFO, "Biome created: " + this.biome.name());
     }
 
+    /**
+     * Sets up the biome by loading its native animals and plants.
+     * Reads from JSON configuration file and initializes biome-specific organisms.
+     */
     public void setupBiome() {
         final String biomeName = this.biome.name();
         LoggerMan.log(Level.INFO, "Setting up biome: {0}", biomeName);
@@ -57,6 +71,12 @@ public class BiomeMan {
         LoggerMan.log(Level.INFO, "Biome setup complete: {0}", biomeName);
     }
 
+    /**
+     * Initializes the list of animals native to this biome.
+     * Parses animal data from the JSON configuration.
+     * 
+     * @param biomeData JSON object containing biome data
+     */
     private void initAnimalList(JSONObject biomeData) {
         final String key = "ANIMALS";
 
@@ -111,6 +131,12 @@ public class BiomeMan {
 
     }
 
+    /**
+     * Initializes the list of plants native to this biome.
+     * Parses plant data from the JSON configuration.
+     * 
+     * @param biomeData JSON object containing biome data
+     */
     private void initPlantList(JSONObject biomeData) {
         final String key = "PLANTS";
 
@@ -149,14 +175,29 @@ public class BiomeMan {
         LoggerMan.log(Level.INFO, "Loaded native {0} for biome: {1}", key, biome.name());
     }
 
+    /**
+     * Gets the current biome type.
+     * 
+     * @return The biome enum value
+     */
     public Biome getBiome() {
         return this.biome;
     }
 
+    /**
+     * Gets the list of animals native to this biome.
+     * 
+     * @return List of animal descriptors
+     */
     public List<AnimalDescriptor> getAnimals() {
         return this.animals;
     }
 
+    /**
+     * Gets the list of plants native to this biome.
+     * 
+     * @return List of plant descriptors
+     */
     public List<PlantDescriptor> getPlants() {
         return this.plants;
     }

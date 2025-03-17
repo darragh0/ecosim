@@ -7,6 +7,13 @@ import ecosim.game_engine.enm.TimeOfDay;
 import ecosim.game_engine.map.ActionResult;
 import ecosim.game_engine.organism.animal.abs.Animal;
 
+/**
+ * Represents the sleeping state of an animal,
+ * defining its movement behavior within the ecosystem.
+ * 
+ * @author jjola00
+ */
+
 public class SleepingState  implements AnimalState{
 
     @Override

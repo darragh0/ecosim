@@ -1,5 +1,11 @@
 package ecosim.ui.view;
 
+/**
+ * View responsible for displaying the ecosystem map.
+ * Renders the grid with organisms using box drawing characters.
+ * @author Kabidoye-17
+ */
+
 import static ecosim.common.io.ConsoleIO.add;
 import static ecosim.common.io.ConsoleIO.pprintln;
 import ecosim.common.io.enm.BoxDrawingChar;
@@ -8,6 +14,12 @@ import ecosim.game_engine.map.Grid;
 import ecosim.game_engine.organism.Organism;
 
 public class MapView {
+    /**
+     * Displays a graphical representation of the ecosystem map.
+     * Shows all organisms in their current positions.
+     * 
+     * @param ecosystem The ecosystem manager containing map data
+     */
      public void displayEcosytemMap(EcosystemMan ecosystem) {
         final String EMPTY_CELL = ".";
         final int height = ecosystem.getMapSize().height();
@@ -56,6 +68,13 @@ public class MapView {
         pprintln(sb.toString());
     }
 
+    /**
+     * Helper method to determine if a character is wide (like emoji).
+     * Ensures proper spacing in the map.
+     * 
+     * @param ch The character to check
+     * @return true if the character is considered wide
+     */
     private boolean isWideCharacter(String ch) {
         if (ch == null || ch.isEmpty())
             return false;
@@ -64,5 +83,4 @@ public class MapView {
         char c = ch.charAt(0);
         return c > 127 || ch.codePointAt(0) > 127;
     }
-
 }

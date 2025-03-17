@@ -1,5 +1,9 @@
 package ecosim.attrs;
 
+/**
+ * Represents an object that can be observed for changes.
+ * @author darragh0
+ */
 
 import ecosim.game_engine.enm.Event;
 import ecosim.game_engine.man.ChangeMan;

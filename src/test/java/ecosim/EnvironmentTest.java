@@ -1,5 +1,10 @@
 package ecosim;
 
+/**
+ * Test class for Environment functionality in the ecosystem simulator.
+ * @author jjola00
+ */
+
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,12 +18,18 @@ public class EnvironmentTest {
     
     private EnvironmentMan environmentMan;
     
+    /**
+     * Sets up environment manager with desert biome
+     */
     @BeforeEach
     void setUp() {
         environmentMan = new EnvironmentMan();
         environmentMan.setBiome(Biome.DESERT);
     }
     
+    /**
+     * Tests season transition functionality
+     */
     @Test
     void testSeasonTransition() {
         Season initialSeason = environmentMan.getSeason();
@@ -32,6 +43,9 @@ public class EnvironmentTest {
         assertEquals(Season.AUTUMN, newSeason, "New season should be Autumn after one update");
     }
     
+    /**
+     * Tests time of day cycle changes
+     */
     @Test
     void testTimeOfDaySwitch() {
         TimeOfDay initialTime = environmentMan.getTimeOfDay();
@@ -45,6 +59,9 @@ public class EnvironmentTest {
         assertEquals(TimeOfDay.DAY, newTime, "New time should be Day after one update");
     }
     
+    /**
+     * Tests weather update mechanism
+     */
     @Test
     void testWeatherUpdate() {
         environmentMan.updateSeason(); 
@@ -64,7 +81,11 @@ public class EnvironmentTest {
         }
         assertTrue(weatherChanged, "Weather should change at least once in multiple updates");
     }
-        private boolean isValidWeather(Weather weather) {
+    
+    /**
+     * Helper method to validate Weather enum values
+     */
+    private boolean isValidWeather(Weather weather) {
         for (Weather w : Weather.values()) {
             if (w == weather) {
                 return true;

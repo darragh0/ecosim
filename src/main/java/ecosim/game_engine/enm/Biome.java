@@ -1,6 +1,9 @@
 package ecosim.game_engine.enm;
 
-
+/**
+ * Enum representing the different biomes in the game.
+ * @author MiaBorkoo 
+ */
 import static ecosim.common.Util.title;
 
 
