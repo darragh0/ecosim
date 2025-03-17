@@ -148,7 +148,7 @@ public class EcosystemMan {
                 
             if (p.canReproduce()) {
                 float healthReduction = (p.getHealth() * 0.3f);
-                p.adjustHealth(-healthReduction);
+                p.reduceHealth(healthReduction);
 
                 Plant newPlant = p.performAsexualReproduction();
                 if (newPlant != null) {
