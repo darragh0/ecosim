@@ -7,7 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 import ecosim.attrs.Observable;
-import ecosim.attrs.Observer;
+import ecosim.game_engine.misc.Observer;
+
 
 /**
  * Implementation of the ChangeMan interface using the Singleton pattern.

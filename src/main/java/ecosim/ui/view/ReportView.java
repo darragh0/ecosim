@@ -1,53 +1,45 @@
 package ecosim.ui.view;
 
-import java.io.IOException;
+
+import static ecosim.common.io.ConsoleIO.add;
+import static ecosim.common.io.ConsoleIO.strInput;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static ecosim.common.io.ConsoleIO.add;
 import ecosim.game_engine.man.EcosystemMan;
 import ecosim.game_engine.organism.Organism;
 
+
 public class ReportView {
-/**
- * Displays a daily report and prompts the user to press Enter to continue.
- * 
- * @param ecosystem The ecosystem manager containing the current state data
- */
-public void displayDailyReport(EcosystemMan ecosystem) {
-    StringBuilder str = new StringBuilder();
-    add.accept(str, "**✨ [fly:Day %d Report] ✨**\n".formatted(ecosystem.getDayCount()));
-    add.accept(str, "  **[flc:Headcount:]**");
-    add.accept(str, "    Animals: **[flc:%d]**".formatted(ecosystem.getAnimalCount()));
-    add.accept(str, "    Plants:  **[flc:%d]**\n".formatted(ecosystem.getPlantCount()));
-    add.accept(str, "  **[flc:Statistics:]**");
+    /**
+     * Displays a daily report and prompts the user to press Enter to continue.
+     * 
+     * @param ecosystem The ecosystem manager containing the current state data
+     */
+    public void displayDailyReport(EcosystemMan ecosystem) {
+        StringBuilder str = new StringBuilder();
+        add.accept(str, "**✨ [fly:Day %d Report] ✨**\n".formatted(ecosystem.getDayCount()));
+        add.accept(str, "  **[flc:Headcount:]**");
+        add.accept(str, "    Animals: **[flc:%d]**".formatted(ecosystem.getAnimalCount()));
+        add.accept(str, "    Plants:  **[flc:%d]**\n".formatted(ecosystem.getPlantCount()));
+        add.accept(str, "  **[flc:Statistics:]**");
 
-    int maxWidth = calculateMaxWidth(ecosystem);
-    addOrganismReport("Animals", ecosystem.getAnimals(), str, maxWidth);
-    addOrganismReport("Plants", ecosystem.getPlants(), str, maxWidth);
+        int maxWidth = calculateMaxWidth(ecosystem);
+        addOrganismReport("Animals", ecosystem.getAnimals(), str, maxWidth);
+        addOrganismReport("Plants", ecosystem.getPlants(), str, maxWidth);
 
-    addLifeCycleReport("Animals", ecosystem.getNewbornAnimals(), ecosystem.getDeadAnimals(), str, maxWidth);
+        addLifeCycleReport("Animals", ecosystem.getNewbornAnimals(), ecosystem.getDeadAnimals(), str, maxWidth);
 
-    addLifeCycleReport("Plants", ecosystem.getNewbornPlants(), ecosystem.getDeadPlants(), str, maxWidth);
+        addLifeCycleReport("Plants", ecosystem.getNewbornPlants(), ecosystem.getDeadPlants(), str, maxWidth);
 
-    // Display the report
-    System.out.println(str.toString());
-    
-    // Prompt user to press Enter to continue to next day
-    if (ecosystem.getDayCount() < ecosystem.getMaxDays()) {
-        System.out.println("\n[Press Enter to continue to the next day...]");
-        try {
-            System.in.read();
-            // Clear the input buffer (for cases when user inputs more than just Enter)
-            while (System.in.available() > 0) {
-                System.in.read();
-            }
-        } catch (IOException e) {
-            // Handle potential IO exception
-            System.err.println("Error reading user input: " + e.getMessage());
-        }
+        // Display the report
+        System.out.println(str.toString());
+
+        // Prompt user to press Enter to continue to next day
+        if (ecosystem.getDayCount() < ecosystem.getMaxDays())
+            strInput("Press **[flr:Enter]** to continue to the next day >> ", true);
     }
-}
 
 
     private int calculateMaxWidth(EcosystemMan ecosystem) {
@@ -164,37 +156,37 @@ public void displayDailyReport(EcosystemMan ecosystem) {
         add.accept(str, "");
     }
 
-        /**
-     * Displays a comprehensive final report when the ecosystem simulation ends.
-     * 
-     * @param ecosystem The ecosystem manager containing all simulation data
-     * @param totalNewAnimals Total count of animals born throughout the simulation
-     * @param totalDeadAnimals Total count of animals that died throughout the simulation
-     * @param totalDeadPlants Total count of plants that died throughout the simulation
-     */
+    /**
+    * Displays a comprehensive final report when the ecosystem simulation ends.
+    * 
+    * @param ecosystem The ecosystem manager containing all simulation data
+    * @param totalNewAnimals Total count of animals born throughout the simulation
+    * @param totalDeadAnimals Total count of animals that died throughout the simulation
+    * @param totalDeadPlants Total count of plants that died throughout the simulation
+    */
     public void displayFinalReport(EcosystemMan ecosystem) {
         StringBuilder str = new StringBuilder();
-        
+
         // Calculate seasons (each season lasts 5 days)
         int totalSeasons = (int) Math.ceil(ecosystem.getDayCount() / 5.0);
-        
+
         add.accept(str, "\n===========================================================");
         add.accept(str, "**✨ [fly:ECOSYSTEM SIMULATION FINAL REPORT] ✨**");
         add.accept(str, "===========================================================\n");
-        
+
         // Time statistics
         add.accept(str, "**[flc:TIME STATISTICS]**");
         add.accept(str, "  Total Days Simulated:  **[flg:%d]**".formatted(ecosystem.getDayCount()));
         add.accept(str, "  Seasons Experienced:   **[flg:%d]**".formatted(totalSeasons));
         add.accept(str, "  Final Season:          **[flg:%s]**".formatted(ecosystem.getCurrentSeason()));
         add.accept(str, "");
-        
+
         // Population statistics
         add.accept(str, "**[flc:POPULATION STATISTICS]**");
         add.accept(str, "  Final Animal Count:    **[flg:%d]**".formatted(ecosystem.getAnimalCount()));
         add.accept(str, "  Final Plant Count:     **[flg:%d]**".formatted(ecosystem.getPlantCount()));
         add.accept(str, "");
-        
+
         // Lifecycle statistics
         add.accept(str, "**[flc:LIFECYCLE STATISTICS]**");
         add.accept(str, "  New Animals Born:      **[flg:%d]**".formatted(ecosystem.getTotalNewbornAnimals()));
@@ -203,26 +195,25 @@ public void displayDailyReport(EcosystemMan ecosystem) {
         add.accept(str, "  Plants Deceased:       **[flr:%d]**".formatted(ecosystem.getTotalDeadPlants()));
         add.accept(str, "");
 
-         
+
         add.accept(str, "**[flc:ECOSYSTEM ANALYSIS]**");
         // Final ecosystem state
-        if (ecosystem.isAtMaxCapacity()){
+        if (ecosystem.isAtMaxCapacity()) {
             add.accept(str, "  Ecosystem Status:      **[flr:Overpopulated!]**");
         } else if (!ecosystem.isEcosystemAlive()) {
             add.accept(str, "  Ecosystem Status:      **[flr:Collapsed!]**");
         } else {
             add.accept(str, "  Ecosystem Status:      **[flg:Survived!]**");
-        } 
-        
-        
+        }
+
+
         add.accept(str, "\n===========================================================");
         add.accept(str, "**[fly:THANK YOU FOR PLAYING ECOSYSTEM SIMULATOR!]**");
         add.accept(str, "===========================================================");
-    
+
         System.out.println(str.toString());
     }
-    
 
 
-    
+
 }

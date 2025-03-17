@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
+
 /**
  * Utility class for console input/output operations in the ecosystem simulation.
  * Provides methods for terminal control, formatted printing, and user input handling.
@@ -80,6 +81,31 @@ public final class ConsoleIO {
     /**
      * Gets a line of input from the user with a prompt.
      * 
+     * @param prompt The prompt to display
+     * @param allowEmpty Whether to allow empty input
+     * @return The user's input as a string
+     */
+    public static String strInput(final String prompt, final boolean allowEmpty) {
+        while (true) {
+            pprint(prompt);
+            String in;
+
+            try {
+                in = reader.readLine();
+            } catch (IOException e) {
+                return "";
+            }
+
+            if (in.isEmpty() && !allowEmpty)
+                eprint("Input cannot be empty");
+            else
+                return in;
+        }
+    }
+
+    /**
+     * Gets a line of input from the user with a prompt.
+     * 
      * @param prompt The prompt to display to the user
      * @return The user's input as a string
      */
@@ -97,7 +123,6 @@ public final class ConsoleIO {
         return strInput("", allowEmpty);
     }
 
-
     /**
      * Checks if a number is outside a specified range.
      * 
@@ -107,7 +132,6 @@ public final class ConsoleIO {
      * @return True if number is outside the range, false otherwise
      * @throws IllegalArgumentException if min > max
      */
-
     public static boolean ynInput(final String prompt) {
         while (true) {
             final String in = strInput(prompt).toLowerCase();
@@ -123,7 +147,6 @@ public final class ConsoleIO {
                 return result;
         }
     }
-
 
     public static boolean notInRange(int num, int min, int max) {
         if (min > max)
@@ -147,8 +170,6 @@ public final class ConsoleIO {
      * BiConsumer for appending prettified strings to a StringBuilder.
      * Useful for building complex formatted output.
      */
-
-
     public static BiConsumer<StringBuilder, String> add =
 
         (builder, str) -> builder.append(prettify(str)).append("\n");
@@ -202,28 +223,4 @@ public final class ConsoleIO {
         System.err.println(prettify("[flr:%s]".formatted(str), formatArgs));
     }
 
-    /**
-     * Private helper method for getting user input.
-     * 
-     * @param prompt The prompt to display
-     * @param allowEmpty Whether to allow empty input
-     * @return The user's input as a string
-     */
-    private static String strInput(final String prompt, final boolean allowEmpty) {
-        while (true) {
-            pprint(prompt);
-            String in;
-
-            try {
-                in = reader.readLine();
-            } catch (IOException e) {
-                return "";
-            }
-
-            if (in.isEmpty() && !allowEmpty)
-                eprint("Input cannot be empty");
-            else
-                return in;
-        }
-    }
 }
