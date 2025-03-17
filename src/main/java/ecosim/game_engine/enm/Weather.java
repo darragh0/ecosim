@@ -1,5 +1,8 @@
 package ecosim.game_engine.enm;
-
+/**
+ * Enum representing the different weather conditions in the game.
+ * @author darragh0
+ */
 import static ecosim.common.Util.title;
 
 public enum Weather implements Event {

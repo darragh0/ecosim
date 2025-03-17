@@ -1,6 +1,9 @@
 package ecosim.game_engine.enm;
 
-
+/**
+ * Enum representing the different sizes of organisms.
+ * @author MiaBorkoo 
+ */
 public enum Size {
     SMALL(10, 3),
     MEDIUM(20, 9),
