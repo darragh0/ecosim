@@ -5,9 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ecosim.game_engine.enm.*;
-import ecosim.game_engine.man.ChangeMan;
 import ecosim.game_engine.man.EnvironmentMan;
-import ecosim.game_engine.man.SimpleChangeMan;
 import ecosim.game_engine.map.Map;
 import ecosim.game_engine.misc.PlantDescriptor;
 import ecosim.game_engine.organism.builder.DesertPlantBuilder;
@@ -19,13 +17,10 @@ public class PlantTest {
     private Plant desertPlant;
     private Plant grasslandPlant;
     private EnvironmentMan environmentMan;
-    private ChangeMan changeMan;
 
     @BeforeEach
     public void setUp() {
         Map.init(10, 10);
-        changeMan = SimpleChangeMan.getInstance();
-
         environmentMan = new EnvironmentMan();
         environmentMan.setBiome(Biome.DESERT);
 
