@@ -1,18 +1,20 @@
 package ecosim.game_engine.organism.plant.abs;
 
+
 import ecosim.attrs.Observable;
-import ecosim.attrs.Observer;
 import ecosim.common.Util;
 import ecosim.game_engine.enm.EnergyCycle;
 import ecosim.game_engine.enm.Event;
 import ecosim.game_engine.enm.Size;
 import ecosim.game_engine.enm.TimeOfDay;
 import ecosim.game_engine.enm.Weather;
+import ecosim.game_engine.misc.Observer;
 import ecosim.game_engine.misc.SpeciesNumbering;
 import ecosim.game_engine.organism.Organism;
 import ecosim.game_engine.organism.plant.energy_cycle_state.EnergyCycleState;
 import ecosim.game_engine.organism.plant.energy_cycle_state.PhotosynthesisState;
 import ecosim.game_engine.organism.plant.energy_cycle_state.RespirationState;
+
 
 /**
  * Abstract base class for all plants in the ecosystem simulation.
@@ -31,13 +33,13 @@ public abstract class Plant extends Organism implements Observer {
 
     /** Number of bites a plant can withstand before being completely consumed */
     protected int biteCapacity;
-    
+
     /** Divisor used to calculate bite damage as a fraction of max health */
     private static final int BITE_DIVISOR = 10;
-    
+
     /** Current energy cycle state (photosynthesis during day, respiration at night) */
     protected EnergyCycleState energyCycleState;
-    
+
     /** Current growth rate, affected by weather and health */
     protected float growthRate;
 
@@ -45,7 +47,7 @@ public abstract class Plant extends Organism implements Observer {
     private static final float HEALTH_THRESHOLD = 0.0f;
 
     public Plant() {
-      this.energyCycleState = new PhotosynthesisState();
+        this.energyCycleState = new PhotosynthesisState();
     }
 
     public Plant(Plant source) {
@@ -169,7 +171,7 @@ public abstract class Plant extends Organism implements Observer {
         this.updateGrowthRate(weather);
         this.adjustGrowthRateForHealth(); // Apply health effects to growth rate
     }
-    
+
     /**
      * Adjusts growth rate based on current health percentage.
      * Plants with lower health have reduced growth rates:
@@ -180,14 +182,14 @@ public abstract class Plant extends Organism implements Observer {
     protected void adjustGrowthRateForHealth() {
         // Simple threshold-based growth penalty
         float healthPercentage = this.health / this.getMaxHealth();
-        
+
         // Just two simple thresholds
         if (healthPercentage < 0.3f) {
             // Severe growth penalty for very low health
-            this.growthRate *= 0.5f;  // 50% reduction
+            this.growthRate *= 0.5f; // 50% reduction
         } else if (healthPercentage < 0.7f) {
             // Minor growth penalty for moderately low health
-            this.growthRate *= 0.8f;  // 20% reduction
+            this.growthRate *= 0.8f; // 20% reduction
         }
         // No penalty for health >= 70%
     }
@@ -202,7 +204,7 @@ public abstract class Plant extends Organism implements Observer {
         // Handle time of day changes by setting appropriate energy cycle state
         this.energyCycleState = this.energyCycleState.handleTimeOfDayChange(this, timeOfDay);
     }
-    
+
     /**
      * Sets the energy cycle state of the plant.
      * 
@@ -229,20 +231,20 @@ public abstract class Plant extends Organism implements Observer {
      */
     public void performEnergyCycle() {
         if (this.energyCycleState != null && !isDead()) {
-                        // Get base health change from energy cycle
+            // Get base health change from energy cycle
             float healthChange = this.energyCycleState.performEnergyCycle(growthRate);
-            
+
             float healthPercentage = this.health / this.getMaxHealth();
-            
+
             if (healthPercentage < 0.5f) {
                 // Low health plants get less benefit/more harm
                 if (healthChange > 0) {
-                    healthChange *= 0.7f;  // Reduced benefit
+                    healthChange *= 0.7f; // Reduced benefit
                 } else {
-                    healthChange *= 1.3f;  // Increased harm
+                    healthChange *= 1.3f; // Increased harm
                 }
             }
-            
+
             // Replace adjustHealth with reduceHealth/restoreHealth
             if (healthChange > 0) {
                 restoreHealth(healthChange);
@@ -274,20 +276,20 @@ public abstract class Plant extends Organism implements Observer {
         if (this.health < this.getMaxHealth() * 0.6) {
             return false;
         }
-        
+
         // Calculate health percentage (0-100)
         float healthPercentage = (this.health / this.getMaxHealth()) * 100;
-        
+
         // Calculate reproduction chance (0.5-4%)
         // Linear scaling from 0.5% at 60% health to 4% at 100% health
         float reproductionChance = 0.5f + (healthPercentage - 60) * 0.0875f;
-        
+
         // Further reduce chance to make reproduction even rarer
-        reproductionChance *= 0.5f;  // Cut all chances in half
-        
+        reproductionChance *= 0.5f; // Cut all chances in half
+
         // Generate random percentage (0-100)
         float randomChance = Util.randFloat(0, 100);
-        
+
         // Return true if random roll is less than reproduction chance
         return randomChance < reproductionChance;
     }

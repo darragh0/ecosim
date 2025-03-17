@@ -2,7 +2,8 @@ package ecosim.game_engine.man;
 
 
 import ecosim.attrs.Observable;
-import ecosim.attrs.Observer;
+import ecosim.game_engine.misc.Observer;
+
 
 /**
  * Interface for managing the Observer pattern in the ecosystem.

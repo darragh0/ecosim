@@ -1,9 +1,9 @@
 package ecosim.game_engine.organism.animal.abs;
 
 
-import ecosim.attrs.Observable;
-import ecosim.attrs.Observer;
 import static ecosim.common.Util.randFloat;
+
+import ecosim.attrs.Observable;
 import ecosim.game_engine.enm.ActivityState;
 import ecosim.game_engine.enm.ActivityType;
 import ecosim.game_engine.enm.Diet;
@@ -12,6 +12,7 @@ import ecosim.game_engine.enm.Season;
 import ecosim.game_engine.enm.Size;
 import ecosim.game_engine.enm.TimeOfDay;
 import ecosim.game_engine.map.ActionResult;
+import ecosim.game_engine.misc.Observer;
 import ecosim.game_engine.misc.SpeciesNumbering;
 import ecosim.game_engine.organism.Organism;
 import ecosim.game_engine.organism.animal.animal_state.AnimalState;
@@ -54,8 +55,8 @@ public abstract class Animal extends Organism implements Observer {
         this.symbol = source.symbol;
         this.size = source.size;
         this.name = SpeciesNumbering.generateCloneName(source.name);
-        this.health =  (float) (source.getMaxHealth() * 0.75); // New animals start at 75% health
-        
+        this.health = (float) (source.getMaxHealth() * 0.75); // New animals start at 75% health
+
         // Copy Animal-specific properties
         this.diet = source.diet;
         this.activityType = source.activityType;
@@ -65,7 +66,7 @@ public abstract class Animal extends Organism implements Observer {
         this.reproductiveChance = source.reproductiveChance;
         this.state = new AwakeState(); // New animals always start in the awake state
     }
-   
+
 
     @Override
     public Animal setSymbol(String symbol) {
@@ -92,6 +93,7 @@ public abstract class Animal extends Organism implements Observer {
         this.activityType = activityType;
         return this;
     }
+
     public ActivityType getActivityType() {
         return this.activityType;
     }
@@ -115,6 +117,7 @@ public abstract class Animal extends Organism implements Observer {
         this.name = name;
         return this;
     }
+
     public String getSound() {
         return this.sound;
     }
@@ -174,7 +177,7 @@ public abstract class Animal extends Organism implements Observer {
     public boolean eat(Plant plant) {
         this.restoreHealth(plant.getNutritionalValue());
         plant.beEaten();
-        return true;  // Eating was successful, even if plant isn't dead
+        return true; // Eating was successful, even if plant isn't dead
     }
 
     public Animal breed(Animal mate) {
