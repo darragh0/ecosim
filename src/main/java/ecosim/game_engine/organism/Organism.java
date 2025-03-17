@@ -69,6 +69,7 @@ public abstract class Organism extends Movable {
     public float getMaxHealth() {
         return this.size.getMaxHealth();
     }
+    //health methods - new
 
     /**
      * Reduces the organism's health by the specified amount.
