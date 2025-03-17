@@ -226,12 +226,4 @@ public abstract class Animal extends Organism implements Observer {
         return false;
     }
 
-    public void reduceHealth(float amount) {
-        this.health = Math.max(0, this.health - amount);
-    }
-
-    public void restoreHealth(float amount) {
-        this.health = Math.min(this.getMaxHealth(), this.health + amount);
-    }
-
 }

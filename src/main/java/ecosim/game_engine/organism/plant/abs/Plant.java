@@ -243,7 +243,12 @@ public abstract class Plant extends Organism implements Observer {
                 }
             }
             
-            adjustHealth(healthChange);
+            // Replace adjustHealth with reduceHealth/restoreHealth
+            if (healthChange > 0) {
+                restoreHealth(healthChange);
+            } else {
+                reduceHealth(-healthChange); // Convert negative to positive for reduceHealth
+            }
         }
     }
 
@@ -286,16 +291,7 @@ public abstract class Plant extends Organism implements Observer {
         // Return true if random roll is less than reproduction chance
         return randomChance < reproductionChance;
     }
-    /**
-     * Adds specified amount to plant's health, capped at max health.
-     * Health cannot go below zero.
-     * 
-     * @param amount Amount to add to health (can be negative for damage)
-     */
-    public void adjustHealth(float amount) {
-        this.health = Math.min(this.health + amount, this.getMaxHealth());
-        this.health = Math.max(this.health, 0.0f); // Don't allow negative health
-    }
+
     public float getGrowthRate() {
         return growthRate;
     }

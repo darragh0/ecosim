@@ -70,4 +70,24 @@ public abstract class Organism extends Movable {
         return this.size.getMaxHealth();
     }
 
+    /**
+     * Reduces the organism's health by the specified amount.
+     * Health cannot go below zero.
+     * 
+     * @param amount Amount to reduce health by
+     */
+    public void reduceHealth(float amount) {
+        this.health = Math.max(0, this.health - amount);
+    }
+
+    /**
+     * Restores the organism's health by the specified amount.
+     * Health cannot exceed the maximum health for the organism's size.
+     * 
+     * @param amount Amount to increase health by
+     */
+    public void restoreHealth(float amount) {
+        this.health = Math.min(this.getMaxHealth(), this.health + amount);
+    }
+
 }
