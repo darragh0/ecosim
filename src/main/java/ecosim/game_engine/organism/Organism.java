@@ -2,6 +2,8 @@ package ecosim.game_engine.organism;
 
 
 import ecosim.attrs.Movable;
+import ecosim.attrs.Observable;
+import ecosim.attrs.Observer;
 import ecosim.game_engine.enm.Size;
 
 
@@ -10,7 +12,7 @@ import ecosim.game_engine.enm.Size;
  * 
  * @author darragh0
  */
-public abstract class Organism extends Movable {
+public abstract class Organism extends Movable implements Observer {
 
     protected String symbol;
     protected Size size;
@@ -90,5 +92,9 @@ public abstract class Organism extends Movable {
     public void restoreHealth(float amount) {
         this.health = Math.min(this.getMaxHealth(), this.health + amount);
     }
+
+    @Override
+    public abstract void update(Observable observable);
+    
 
 }

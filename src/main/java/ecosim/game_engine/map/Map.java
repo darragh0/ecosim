@@ -87,7 +87,7 @@ public class Map {
         // If we get here, no valid moves were found - animal stays put
     }
 
-    public ActionResult getBreedingActionResult(final Animal an, final Organism otherOrg) {
+    private  ActionResult getBreedingActionResult(final Animal an, final Organism otherOrg) {
         moveAnimalRandomly(an);
         Animal otherAnimal = (Animal) otherOrg;
     
@@ -106,7 +106,7 @@ public class Map {
             an, otherOrg, an.getX(), an.getY());
     }
 
-    public ActionResult getEatingActionResult(final Animal predator, final Organism prey, boolean wasEaten) {
+    private  ActionResult getEatingActionResult(final Animal predator, final Organism prey, boolean wasEaten) {
         // Move the other animal to a random empty cell
         moveAnimalRandomly(predator);
         if (wasEaten) {
