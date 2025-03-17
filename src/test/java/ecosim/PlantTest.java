@@ -119,7 +119,13 @@ public class PlantTest {
         float currentHealth = desertPlant.getHealth();
         float targetHealth = maxHealth * 0.4f;
         float adjustment = targetHealth - currentHealth;
-        desertPlant.adjustHealth(adjustment);
+        
+        if (adjustment > 0) {
+            desertPlant.restoreHealth(adjustment);
+        } else {
+            desertPlant.reduceHealth(-adjustment);
+        }
+        
         assertTrue(desertPlant.getHealth() < maxHealth * 0.5f,
                 "Health should be below 50% of max health");
 
