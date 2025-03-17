@@ -3,8 +3,8 @@ package ecosim.game_engine.organism;
 
 import ecosim.attrs.Movable;
 import ecosim.attrs.Observable;
-import ecosim.attrs.Observer;
 import ecosim.game_engine.enm.Size;
+import ecosim.game_engine.misc.Observer;
 
 
 /**
@@ -20,8 +20,8 @@ public abstract class Organism extends Movable implements Observer {
     protected float health;
     protected String name;
 
-    public Organism() {
-    }
+    public Organism() {}
+
     public Organism(final String name) {
         this.name = name;
     }
@@ -71,7 +71,7 @@ public abstract class Organism extends Movable implements Observer {
     public float getMaxHealth() {
         return this.size.getMaxHealth();
     }
-    //health methods - new
+    // health methods - new
 
     /**
      * Reduces the organism's health by the specified amount.
@@ -95,6 +95,6 @@ public abstract class Organism extends Movable implements Observer {
 
     @Override
     public abstract void update(Observable observable);
-    
+
 
 }
