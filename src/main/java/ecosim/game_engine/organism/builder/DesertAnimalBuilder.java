@@ -9,7 +9,7 @@ import ecosim.game_engine.organism.animal.concrete.DesertAnimal;
  * Creates animals adapted to desert environment conditions.
  * @author Kabidoye-17, jjola00
  */
-public class DesertAnimalBuilder extends AbstractAnimalBuilder {
+public class DesertAnimalBuilder extends AnimalBuilder {
     
     /**
      * Creates a desert animal builder with the provided descriptor.

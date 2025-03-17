@@ -1,6 +1,7 @@
 package ecosim.game_engine.organism.animal.abs;
 
 
+import ecosim.attrs.Observable;
 import static ecosim.common.Util.randFloat;
 
 import ecosim.attrs.Observable;
@@ -26,7 +27,7 @@ import ecosim.game_engine.organism.plant.abs.Plant;
  * 
  * @author jjola00
  */
-public abstract class Animal extends Organism implements Observer {
+public abstract class Animal extends Organism{
 
 
     protected Diet diet;

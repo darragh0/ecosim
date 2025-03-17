@@ -29,7 +29,7 @@ import ecosim.game_engine.organism.plant.energy_cycle_state.RespirationState;
  * 
  * @author MiaBorkoo
  */
-public abstract class Plant extends Organism implements Observer {
+public abstract class Plant extends Organism {
 
     /** Number of bites a plant can withstand before being completely consumed */
     protected int biteCapacity;
