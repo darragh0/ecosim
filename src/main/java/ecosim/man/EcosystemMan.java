@@ -61,7 +61,7 @@ public class EcosystemMan {
         this.newbornPlants = new ArrayList<>();
         this.totalNewbornAnimals = 0;
         this.totalNewbornPlants = 0;
-        this.map = Map.init(6, 6);
+        this.map = Map.init(7, 7);
         this.config = this.loadConfig();
     }
 
@@ -83,6 +83,7 @@ public class EcosystemMan {
                 Animal offspring = result.getOffspring();
                 this.animals.add(offspring);
                 this.newbornAnimals.add(offspring);
+                this.totalNewbornAnimals++;
 
                 // Register the new animal with environment observers
                 this.environment.registerTimeOfDayObservers(offspring);
@@ -132,6 +133,7 @@ public class EcosystemMan {
             this.map.getGrid().rmv(animal);
             this.animals.remove(animal);
             this.deadAnimals.add(animal);
+            this.totalDeadAnimals++;
 
             if (actionListener != null) {
                 ActionResult deathResult = new ActionResult(
@@ -222,6 +224,9 @@ public class EcosystemMan {
         return !this.animals.isEmpty() && !this.plants.isEmpty();
     }
 
+    public boolean isAtMaxCapacity() {
+        return this.animals.size() >= this.config.maxCapacity();
+    }
     public void updateEnvironmentConditions() {
         // Increment day count first
         this.dayCount++;

@@ -3,6 +3,7 @@ package ecosim.organism.animal.abs;
 
 import ecosim.attrs.Observable;
 import ecosim.attrs.Observer;
+import static ecosim.common.Util.randFloat;
 import ecosim.enm.ActivityState;
 import ecosim.enm.ActivityType;
 import ecosim.enm.Diet;
@@ -15,8 +16,6 @@ import ecosim.organism.Organism;
 import ecosim.organism.animal.animal_state.AnimalState;
 import ecosim.organism.animal.animal_state.AwakeState;
 import ecosim.organism.plant.abs.Plant;
-
-import static ecosim.common.Util.randFloat;
 
 
 /**
@@ -127,7 +126,7 @@ public abstract class Animal extends Organism implements Observer {
     public boolean canEatAnimal(Animal potentialPrey) {
         boolean isDietCompatible = this.diet != Diet.HERBIVORE;
         boolean isDifferentSpecies = !this.canBreed(potentialPrey);
-        boolean isPredatorLargeEnough = this.size.ordinal() >= potentialPrey.size.ordinal();
+        boolean isPredatorLargeEnough = this.size.ordinal() >= potentialPrey.getSize().ordinal();
 
         return isDietCompatible && isDifferentSpecies && isPredatorLargeEnough;
     }
@@ -185,6 +184,7 @@ public abstract class Animal extends Organism implements Observer {
         Animal clone = clone();
         clone.symbol = this.symbol;
         clone.setSize(this.size);
+        clone.setSound(this.sound);
         clone.diet = this.diet;
         clone.activityType = this.activityType;
         clone.canHibernate = this.canHibernate;

@@ -206,14 +206,15 @@ public void displayDailyReport(EcosystemMan ecosystem) {
         add.accept(str, "");
 
          
+        add.accept(str, "**[flc:ECOSYSTEM ANALYSIS]**");
         // Final ecosystem state
-        if (ecosystem.getDayCount() < ecosystem.getMaxDays()) {
-            add.accept(str, "**[flc:ECOSYSTEM ANALYSIS]**");
-            add.accept(str, "  Ecosystem Status:     **[flr:Collapsed]**");
+        if (ecosystem.isAtMaxCapacity()){
+            add.accept(str, "  Ecosystem Status:      **[flr:Overpopulated!]**");
+        } else if (!ecosystem.isEcosystemAlive()) {
+            add.accept(str, "  Ecosystem Status:      **[flr:Collapsed!]**");
         } else {
-            add.accept(str, "**[flc:ECOSYSTEM ANALYSIS]**");
-            add.accept(str, "  Ecosystem Status:     **[flg:Surviving]**");
-        }
+            add.accept(str, "  Ecosystem Status:      **[flg:Survived!]**");
+        } 
         
         
         add.accept(str, "\n===========================================================");

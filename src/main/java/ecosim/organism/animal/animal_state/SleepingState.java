@@ -11,7 +11,7 @@ public class SleepingState  implements AnimalState{
 
     @Override
     public ActionResult move(Animal animal) {
-        float healthRecovery = animal.getMaxHealth() * 0.05f;
+        float healthRecovery = animal.getMaxHealth() * 0.025f;
         if (animal.getHealth() < animal.getMaxHealth()) {
             animal.restoreHealth(healthRecovery);
         }
