@@ -23,7 +23,17 @@ public class ExcDispatcher {
     }
 
     public static void dispatchException(final Exception exception, final String caller, final int exitCode) {
-        final ExcCtx ctx = new ExcCtx(exception, caller, exitCode);
+        dispatchException(exception, caller, exitCode, null);
+    }
+
+    public static void dispatchException(
+        final Exception exception,
+        final String caller,
+        final int exitCode,
+        final String logMessage,
+        final Object... args) {
+
+        final ExcCtx ctx = new ExcCtx(exception, caller, exitCode, logMessage, args);
 
         for (final ExcInterceptor in : ExcDispatcher.interceptors) {
             in.intercept(ctx);

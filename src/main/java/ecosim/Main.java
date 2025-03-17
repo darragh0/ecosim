@@ -6,6 +6,11 @@ import ecosim.interceptor.ExcDispatcher;
 import ecosim.interceptor.PrettyExcInterceptor;
 
 
+/**
+ * Main class for the Ecosystem Simulator.
+ * 
+ * @author darragh0
+ */
 public class Main {
 
     public static void main(String[] args) {

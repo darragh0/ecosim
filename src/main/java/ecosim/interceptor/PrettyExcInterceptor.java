@@ -5,6 +5,9 @@ import static ecosim.common.io.ConsoleIO.pprintln;
 import static ecosim.common.io.ConsoleIO.ynInput;
 
 import java.util.Date;
+import java.util.logging.Level;
+
+import ecosim.game_engine.man.LoggerMan;
 
 
 /**
@@ -22,7 +25,13 @@ public class PrettyExcInterceptor implements ExcInterceptor {
         pprintln("[flr:Invoker:] %s", context.getCaller());
         pprintln("[flr:Time:] %s", new Date(context.getTimestamp()));
         pprintln("[flr:Type:] %s", e.getClass().getSimpleName());
-        pprintln("[flr:Message:] %s\n", e.getMessage());
+        pprintln("[flr:Description:] %s", e.getMessage());
+
+        if (context.getLogMessage() != null) {
+            pprintln("[flr:Message:] %s", context.getLogMessage());
+            LoggerMan.log(Level.SEVERE, context.getLogMessage());
+        }
+        pprintln("[flr:Exit code:] %d\n", context.getExitCode());
 
         final boolean showStackTrace = ynInput("Would you like to see the stack trace? (y/n): ");
         if (showStackTrace) {
@@ -31,7 +40,6 @@ public class PrettyExcInterceptor implements ExcInterceptor {
                 pprintln("  ([fly:%d]) at %s", i, e.getStackTrace()[i]);
             }
         }
-        System.out.println();
 
         context.setHandled(true);
     }
