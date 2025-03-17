@@ -1,8 +1,8 @@
-package ecosim.organism.builder;
+package ecosim.game_engine.organism.builder;
 
-import ecosim.misc.PlantDescriptor;
-import ecosim.organism.plant.abs.Plant;
-import ecosim.organism.plant.concrete.DesertPlant;
+import ecosim.game_engine.misc.PlantDescriptor;
+import ecosim.game_engine.organism.plant.abs.Plant;
+import ecosim.game_engine.organism.plant.concrete.DesertPlant;
 
 public class DesertPlantBuilder extends AbstractPlantBuilder {
         

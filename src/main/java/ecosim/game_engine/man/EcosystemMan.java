@@ -1,4 +1,4 @@
-package ecosim.man;
+package ecosim.game_engine.man;
 
 
 import java.util.ArrayList;
@@ -7,25 +7,25 @@ import java.util.Optional;
 import java.util.logging.Level;
 
 import ecosim.common.io.FileIO;
-import ecosim.enm.Biome;
-import ecosim.enm.Season;
-import ecosim.enm.TimeOfDay;
-import ecosim.enm.Weather;
-import ecosim.map.ActionResult;
-import ecosim.map.ActionResult.ActionType;
-import static ecosim.map.ActionResult.ActionType.SUCCESSFUL_EATING;
-import ecosim.map.Grid;
-import ecosim.map.Map;
-import ecosim.map.Map.MapSize;
-import ecosim.misc.AnimalDescriptor;
-import ecosim.misc.EcosystemConfig;
-import ecosim.misc.PlantDescriptor;
-import ecosim.organism.animal.abs.Animal;
-import ecosim.organism.builder.AnimalBuilder;
-import ecosim.organism.builder.PlantBuilder;
-import ecosim.organism.factory.BiomeOrganismFactory;
-import ecosim.organism.factory.BiomeOrganismFactoryProvider;
-import ecosim.organism.plant.abs.Plant;
+import ecosim.game_engine.enm.Biome;
+import ecosim.game_engine.enm.Season;
+import ecosim.game_engine.enm.TimeOfDay;
+import ecosim.game_engine.enm.Weather;
+import ecosim.game_engine.map.ActionResult;
+import ecosim.game_engine.map.ActionResult.ActionType;
+import static ecosim.game_engine.map.ActionResult.ActionType.SUCCESSFUL_EATING;
+import ecosim.game_engine.map.Grid;
+import ecosim.game_engine.map.Map;
+import ecosim.game_engine.map.Map.MapSize;
+import ecosim.game_engine.misc.AnimalDescriptor;
+import ecosim.game_engine.misc.EcosystemConfig;
+import ecosim.game_engine.misc.PlantDescriptor;
+import ecosim.game_engine.organism.animal.abs.Animal;
+import ecosim.game_engine.organism.builder.AnimalBuilder;
+import ecosim.game_engine.organism.builder.PlantBuilder;
+import ecosim.game_engine.organism.factory.BiomeOrganismFactory;
+import ecosim.game_engine.organism.factory.BiomeOrganismFactoryProvider;
+import ecosim.game_engine.organism.plant.abs.Plant;
 import ecosim.ui.view.ActionResultListener;
 
 

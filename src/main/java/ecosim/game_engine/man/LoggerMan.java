@@ -1,4 +1,4 @@
-package ecosim.man;
+package ecosim.game_engine.man;
 
 
 import static ecosim.common.io.ConsoleIO.eprint;

@@ -1,14 +1,14 @@
-package ecosim.organism.animal.decorator;
+package ecosim.game_engine.organism.animal.decorator;
 
 import ecosim.attrs.Observable;
-import ecosim.enm.ActivityState;
-import ecosim.enm.ActivityType;
-import ecosim.enm.Diet;
-import ecosim.enm.Size;
-import ecosim.map.ActionResult;
-import ecosim.organism.Organism;
-import ecosim.organism.animal.abs.Animal;
-import ecosim.organism.plant.abs.Plant;
+import ecosim.game_engine.enm.ActivityState;
+import ecosim.game_engine.enm.ActivityType;
+import ecosim.game_engine.enm.Diet;
+import ecosim.game_engine.enm.Size;
+import ecosim.game_engine.map.ActionResult;
+import ecosim.game_engine.organism.Organism;
+import ecosim.game_engine.organism.animal.abs.Animal;
+import ecosim.game_engine.organism.plant.abs.Plant;
 
 /**
  * Abstract base class for decorating animals using the decorator pattern with pure delegation.

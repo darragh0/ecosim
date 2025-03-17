@@ -1,8 +1,8 @@
-package ecosim.organism;
+package ecosim.game_engine.organism;
 
 
 import ecosim.attrs.Movable;
-import ecosim.enm.Size;
+import ecosim.game_engine.enm.Size;
 
 
 /**

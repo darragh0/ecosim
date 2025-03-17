@@ -1,4 +1,4 @@
-package ecosim.man;
+package ecosim.game_engine.man;
 
 
 import java.io.IOException;
@@ -12,9 +12,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import ecosim.attrs.Observable;
-import ecosim.enm.Biome;
-import ecosim.enm.Season;
-import ecosim.enm.Weather;
+import ecosim.game_engine.enm.Biome;
+import ecosim.game_engine.enm.Season;
+import ecosim.game_engine.enm.Weather;
 
 
 public class WeatherMan extends Observable {

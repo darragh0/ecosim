@@ -1,6 +1,6 @@
 package ecosim.ui.view;
 
-import ecosim.map.ActionResult;
+import ecosim.game_engine.map.ActionResult;
 
 public interface ActionResultListener {
     void onActionPerformed(ActionResult result);

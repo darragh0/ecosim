@@ -1,6 +1,6 @@
-package ecosim.organism.builder;
+package ecosim.game_engine.organism.builder;
 
-import ecosim.organism.animal.abs.Animal;
+import ecosim.game_engine.organism.animal.abs.Animal;
 
 /**
  * Builder interface for creating animals with flexible configuration.

@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static ecosim.common.io.ConsoleIO.add;
-import ecosim.man.EcosystemMan;
-import ecosim.organism.Organism;
+import ecosim.game_engine.man.EcosystemMan;
+import ecosim.game_engine.organism.Organism;
 
 public class ReportView {
 /**

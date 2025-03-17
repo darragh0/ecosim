@@ -1,4 +1,4 @@
-package ecosim.map;
+package ecosim.game_engine.map;
 
 
 import java.util.Arrays;
@@ -8,10 +8,10 @@ import java.util.Optional;
 
 import static ecosim.common.Util.randInt;
 import static ecosim.common.io.ConsoleIO.pprintln;
-import ecosim.enm.Direction;
-import ecosim.organism.Organism;
-import ecosim.organism.animal.abs.Animal;
-import ecosim.organism.plant.abs.Plant;
+import ecosim.game_engine.enm.Direction;
+import ecosim.game_engine.organism.Organism;
+import ecosim.game_engine.organism.animal.abs.Animal;
+import ecosim.game_engine.organism.plant.abs.Plant;
 
 
 /**

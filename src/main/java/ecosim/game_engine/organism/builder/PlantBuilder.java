@@ -1,6 +1,6 @@
-package ecosim.organism.builder;
+package ecosim.game_engine.organism.builder;
 
-import ecosim.organism.plant.abs.Plant;
+import ecosim.game_engine.organism.plant.abs.Plant;
 
 /**
  * Builder interface for creating plants with flexible configuration.

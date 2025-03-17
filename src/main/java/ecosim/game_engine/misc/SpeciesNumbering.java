@@ -1,4 +1,4 @@
-package ecosim.misc;
+package ecosim.game_engine.misc;
 
 import java.util.HashMap;
 import java.util.Map;

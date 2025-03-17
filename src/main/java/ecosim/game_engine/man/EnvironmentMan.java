@@ -1,15 +1,15 @@
-package ecosim.man;
+package ecosim.game_engine.man;
 
 
 import java.util.List;
 
 import ecosim.attrs.Observer;
-import ecosim.enm.Biome;
-import ecosim.enm.Season;
-import ecosim.enm.TimeOfDay;
-import ecosim.enm.Weather;
-import ecosim.misc.AnimalDescriptor;
-import ecosim.misc.PlantDescriptor;
+import ecosim.game_engine.enm.Biome;
+import ecosim.game_engine.enm.Season;
+import ecosim.game_engine.enm.TimeOfDay;
+import ecosim.game_engine.enm.Weather;
+import ecosim.game_engine.misc.AnimalDescriptor;
+import ecosim.game_engine.misc.PlantDescriptor;
 
 
 

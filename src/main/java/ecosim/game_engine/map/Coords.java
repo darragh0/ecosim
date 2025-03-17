@@ -1,4 +1,4 @@
-package ecosim.map;
+package ecosim.game_engine.map;
 
 
 public class Coords {

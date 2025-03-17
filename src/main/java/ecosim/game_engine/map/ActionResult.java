@@ -1,7 +1,7 @@
-package ecosim.map;
+package ecosim.game_engine.map;
 
-import ecosim.organism.Organism;
-import ecosim.organism.animal.abs.Animal;
+import ecosim.game_engine.organism.Organism;
+import ecosim.game_engine.organism.animal.abs.Animal;
 
 public class ActionResult {
     public enum ActionType {

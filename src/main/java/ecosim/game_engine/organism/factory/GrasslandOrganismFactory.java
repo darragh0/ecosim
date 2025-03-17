@@ -1,11 +1,11 @@
-package ecosim.organism.factory;
+package ecosim.game_engine.organism.factory;
 
-import ecosim.misc.AnimalDescriptor;
-import ecosim.misc.PlantDescriptor;
-import ecosim.organism.builder.AnimalBuilder;
-import ecosim.organism.builder.GrasslandAnimalBuilder;
-import ecosim.organism.builder.GrasslandPlantBuilder;
-import ecosim.organism.builder.PlantBuilder;
+import ecosim.game_engine.misc.AnimalDescriptor;
+import ecosim.game_engine.misc.PlantDescriptor;
+import ecosim.game_engine.organism.builder.AnimalBuilder;
+import ecosim.game_engine.organism.builder.GrasslandAnimalBuilder;
+import ecosim.game_engine.organism.builder.GrasslandPlantBuilder;
+import ecosim.game_engine.organism.builder.PlantBuilder;
 
 public class GrasslandOrganismFactory implements BiomeOrganismFactory {
     

@@ -1,12 +1,12 @@
-package ecosim.man;
+package ecosim.game_engine.man;
 
 
 import ecosim.attrs.Observable;
-import ecosim.enm.Season;
-import static ecosim.enm.Season.AUTUMN;
-import static ecosim.enm.Season.SPRING;
-import static ecosim.enm.Season.SUMMER;
-import static ecosim.enm.Season.WINTER;
+import ecosim.game_engine.enm.Season;
+import static ecosim.game_engine.enm.Season.AUTUMN;
+import static ecosim.game_engine.enm.Season.SPRING;
+import static ecosim.game_engine.enm.Season.SUMMER;
+import static ecosim.game_engine.enm.Season.WINTER;
 
 
 public class SeasonMan extends Observable {

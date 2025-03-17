@@ -1,11 +1,11 @@
-package ecosim.organism.animal.animal_state;
+package ecosim.game_engine.organism.animal.animal_state;
 
-import ecosim.enm.ActivityState;
-import ecosim.enm.ActivityType;
-import ecosim.enm.Season;
-import ecosim.enm.TimeOfDay;
-import ecosim.map.ActionResult;
-import ecosim.organism.animal.abs.Animal;
+import ecosim.game_engine.enm.ActivityState;
+import ecosim.game_engine.enm.ActivityType;
+import ecosim.game_engine.enm.Season;
+import ecosim.game_engine.enm.TimeOfDay;
+import ecosim.game_engine.map.ActionResult;
+import ecosim.game_engine.organism.animal.abs.Animal;
 
 public class SleepingState  implements AnimalState{
 

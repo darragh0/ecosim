@@ -1,4 +1,4 @@
-package ecosim.enm;
+package ecosim.game_engine.enm;
 
 import static ecosim.common.Util.title;
 

@@ -1,18 +1,18 @@
-package ecosim.organism.plant.abs;
+package ecosim.game_engine.organism.plant.abs;
 
 import ecosim.attrs.Observable;
 import ecosim.attrs.Observer;
 import ecosim.common.Util;
-import ecosim.enm.EnergyCycle;
-import ecosim.enm.Event;
-import ecosim.enm.Size;
-import ecosim.enm.TimeOfDay;
-import ecosim.enm.Weather;
-import ecosim.misc.SpeciesNumbering;
-import ecosim.organism.Organism;
-import ecosim.organism.plant.energy_cycle_state.EnergyCycleState;
-import ecosim.organism.plant.energy_cycle_state.PhotosynthesisState;
-import ecosim.organism.plant.energy_cycle_state.RespirationState;
+import ecosim.game_engine.enm.EnergyCycle;
+import ecosim.game_engine.enm.Event;
+import ecosim.game_engine.enm.Size;
+import ecosim.game_engine.enm.TimeOfDay;
+import ecosim.game_engine.enm.Weather;
+import ecosim.game_engine.misc.SpeciesNumbering;
+import ecosim.game_engine.organism.Organism;
+import ecosim.game_engine.organism.plant.energy_cycle_state.EnergyCycleState;
+import ecosim.game_engine.organism.plant.energy_cycle_state.PhotosynthesisState;
+import ecosim.game_engine.organism.plant.energy_cycle_state.RespirationState;
 
 /**
  * Abstract base class for all plants in the ecosystem simulation.

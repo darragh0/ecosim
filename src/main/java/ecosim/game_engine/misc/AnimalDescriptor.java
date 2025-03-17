@@ -1,8 +1,8 @@
-package ecosim.misc;
+package ecosim.game_engine.misc;
 
-import ecosim.enm.ActivityType;
-import ecosim.enm.Diet;
-import ecosim.enm.Size;
+import ecosim.game_engine.enm.ActivityType;
+import ecosim.game_engine.enm.Diet;
+import ecosim.game_engine.enm.Size;
 
 public record AnimalDescriptor(
     String name,

@@ -1,7 +1,7 @@
-package ecosim.organism.animal.decorator;
+package ecosim.game_engine.organism.animal.decorator;
 
 import static ecosim.common.Util.randFloat;
-import ecosim.organism.animal.abs.Animal;
+import ecosim.game_engine.organism.animal.abs.Animal;
 
 /**
  * Decorator class that enhances the reproductive chance of an animal.

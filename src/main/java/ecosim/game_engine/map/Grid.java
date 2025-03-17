@@ -1,9 +1,9 @@
-package ecosim.map;
+package ecosim.game_engine.map;
 
 
 import java.util.Optional;
 
-import ecosim.organism.Organism;
+import ecosim.game_engine.organism.Organism;
 
 
 /**

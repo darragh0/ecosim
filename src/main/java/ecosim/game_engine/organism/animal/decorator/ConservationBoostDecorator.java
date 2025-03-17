@@ -1,6 +1,6 @@
-package ecosim.organism.animal.decorator;
+package ecosim.game_engine.organism.animal.decorator;
 
-import ecosim.organism.animal.abs.Animal;
+import ecosim.game_engine.organism.animal.abs.Animal;
 
 /**
  * Decorator class that enhances the health conservation of an animal when it moves.

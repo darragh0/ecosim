@@ -3,11 +3,11 @@ package ecosim;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ecosim.enm.Biome;
-import ecosim.enm.Season;
-import ecosim.enm.TimeOfDay;
-import ecosim.enm.Weather;
-import ecosim.man.EnvironmentMan;
+import ecosim.game_engine.enm.Biome;
+import ecosim.game_engine.enm.Season;
+import ecosim.game_engine.enm.TimeOfDay;
+import ecosim.game_engine.enm.Weather;
+import ecosim.game_engine.man.EnvironmentMan;
 
 public class EnvironmentTest {
     

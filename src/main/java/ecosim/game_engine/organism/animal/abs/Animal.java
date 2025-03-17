@@ -1,22 +1,22 @@
-package ecosim.organism.animal.abs;
+package ecosim.game_engine.organism.animal.abs;
 
 
 import ecosim.attrs.Observable;
 import ecosim.attrs.Observer;
 import static ecosim.common.Util.randFloat;
-import ecosim.enm.ActivityState;
-import ecosim.enm.ActivityType;
-import ecosim.enm.Diet;
-import ecosim.enm.Event;
-import ecosim.enm.Season;
-import ecosim.enm.Size;
-import ecosim.enm.TimeOfDay;
-import ecosim.map.ActionResult;
-import ecosim.misc.SpeciesNumbering;
-import ecosim.organism.Organism;
-import ecosim.organism.animal.animal_state.AnimalState;
-import ecosim.organism.animal.animal_state.AwakeState;
-import ecosim.organism.plant.abs.Plant;
+import ecosim.game_engine.enm.ActivityState;
+import ecosim.game_engine.enm.ActivityType;
+import ecosim.game_engine.enm.Diet;
+import ecosim.game_engine.enm.Event;
+import ecosim.game_engine.enm.Season;
+import ecosim.game_engine.enm.Size;
+import ecosim.game_engine.enm.TimeOfDay;
+import ecosim.game_engine.map.ActionResult;
+import ecosim.game_engine.misc.SpeciesNumbering;
+import ecosim.game_engine.organism.Organism;
+import ecosim.game_engine.organism.animal.animal_state.AnimalState;
+import ecosim.game_engine.organism.animal.animal_state.AwakeState;
+import ecosim.game_engine.organism.plant.abs.Plant;
 
 
 /**

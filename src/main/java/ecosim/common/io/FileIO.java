@@ -10,8 +10,8 @@ import java.util.logging.Level;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import ecosim.man.LoggerMan;
-import ecosim.misc.EcosystemConfig;
+import ecosim.game_engine.man.LoggerMan;
+import ecosim.game_engine.misc.EcosystemConfig;
 
 
 public final class FileIO {

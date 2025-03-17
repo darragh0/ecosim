@@ -1,9 +1,9 @@
 package ecosim.ui.view;
 
 import static ecosim.common.io.ConsoleIO.add;
-import ecosim.map.ActionResult;
-import ecosim.map.ActionResult.ActionType;
-import ecosim.organism.Organism;
+import ecosim.game_engine.map.ActionResult;
+import ecosim.game_engine.map.ActionResult.ActionType;
+import ecosim.game_engine.organism.Organism;
 
 public class ActionsView {
 

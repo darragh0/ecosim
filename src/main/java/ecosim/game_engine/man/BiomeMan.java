@@ -1,4 +1,4 @@
-package ecosim.man;
+package ecosim.game_engine.man;
 
 
 import java.util.ArrayList;
@@ -10,12 +10,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import ecosim.common.io.FileIO;
-import ecosim.enm.ActivityType;
-import ecosim.enm.Biome;
-import ecosim.enm.Diet;
-import ecosim.enm.Size;
-import ecosim.misc.AnimalDescriptor;
-import ecosim.misc.PlantDescriptor;
+import ecosim.game_engine.enm.ActivityType;
+import ecosim.game_engine.enm.Biome;
+import ecosim.game_engine.enm.Diet;
+import ecosim.game_engine.enm.Size;
+import ecosim.game_engine.misc.AnimalDescriptor;
+import ecosim.game_engine.misc.PlantDescriptor;
 
 
 public class BiomeMan {

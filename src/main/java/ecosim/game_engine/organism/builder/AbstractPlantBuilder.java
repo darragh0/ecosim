@@ -1,7 +1,8 @@
-package ecosim.organism.builder;
+package ecosim.game_engine.organism.builder;
 
-import ecosim.misc.PlantDescriptor;
-import ecosim.organism.plant.abs.Plant;
+import ecosim.game_engine.misc.PlantDescriptor;
+import ecosim.game_engine.misc.SpeciesNumbering;
+import ecosim.game_engine.organism.plant.abs.Plant;
 
 public abstract class AbstractPlantBuilder implements PlantBuilder {
     protected PlantDescriptor descriptor;
@@ -37,10 +38,10 @@ public abstract class AbstractPlantBuilder implements PlantBuilder {
     String speciesName = descriptor.name();
     
     // Get the next number for this species
-    int number = ecosim.misc.SpeciesNumbering.getNextNumber(speciesName);
+    int number = SpeciesNumbering.getNextNumber(speciesName);
     
     // Format the name with the number
-    String formattedName = ecosim.misc.SpeciesNumbering.formatName(speciesName, number);
+    String formattedName = SpeciesNumbering.formatName(speciesName, number);
     
     // Set properties directly from descriptor but use formatted name
     plant.setName(formattedName)

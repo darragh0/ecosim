@@ -1,10 +1,10 @@
-package ecosim.man;
+package ecosim.game_engine.man;
 
 
 import ecosim.attrs.Observable;
-import ecosim.enm.TimeOfDay;
-import static ecosim.enm.TimeOfDay.DAY;
-import static ecosim.enm.TimeOfDay.NIGHT;
+import ecosim.game_engine.enm.TimeOfDay;
+import static ecosim.game_engine.enm.TimeOfDay.DAY;
+import static ecosim.game_engine.enm.TimeOfDay.NIGHT;
 
 
 public class TimeOfDayMan extends Observable {

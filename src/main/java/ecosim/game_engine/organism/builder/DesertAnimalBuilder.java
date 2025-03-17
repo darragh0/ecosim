@@ -1,8 +1,8 @@
-package ecosim.organism.builder;
+package ecosim.game_engine.organism.builder;
 
-import ecosim.misc.AnimalDescriptor;
-import ecosim.organism.animal.abs.Animal;
-import ecosim.organism.animal.concrete.DesertAnimal;
+import ecosim.game_engine.misc.AnimalDescriptor;
+import ecosim.game_engine.organism.animal.abs.Animal;
+import ecosim.game_engine.organism.animal.concrete.DesertAnimal;
 
 /**
  * Concrete builder for desert animals.

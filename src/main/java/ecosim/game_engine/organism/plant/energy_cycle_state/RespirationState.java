@@ -1,8 +1,8 @@
-package ecosim.organism.plant.energy_cycle_state;
+package ecosim.game_engine.organism.plant.energy_cycle_state;
 
-import ecosim.enm.EnergyCycle;
-import ecosim.enm.TimeOfDay;
-import ecosim.organism.plant.abs.Plant;
+import ecosim.game_engine.enm.EnergyCycle;
+import ecosim.game_engine.enm.TimeOfDay;
+import ecosim.game_engine.organism.plant.abs.Plant;
 
 /**
  * Implementation of the plant energy cycle state during nighttime (respiration).

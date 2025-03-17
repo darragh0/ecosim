@@ -1,20 +1,23 @@
 package ecosim;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import ecosim.game_engine.enm.*;
+import ecosim.game_engine.man.SeasonMan;
+import ecosim.game_engine.man.TimeOfDayMan;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import ecosim.enm.*;
-import ecosim.man.ChangeMan;
-import ecosim.man.SimpleChangeMan;
-import ecosim.map.Map;
-import ecosim.misc.AnimalDescriptor;
-import ecosim.misc.PlantDescriptor;
-import ecosim.organism.animal.abs.Animal;
-import ecosim.organism.builder.DesertAnimalBuilder;
-import ecosim.organism.builder.GrasslandAnimalBuilder;
-import ecosim.organism.plant.abs.Plant;
-import ecosim.organism.builder.DesertPlantBuilder;
+import ecosim.game_engine.man.ChangeMan;
+import ecosim.game_engine.man.SimpleChangeMan;
+import ecosim.game_engine.map.Map;
+import ecosim.game_engine.misc.AnimalDescriptor;
+import ecosim.game_engine.misc.PlantDescriptor;
+import ecosim.game_engine.organism.animal.abs.Animal;
+import ecosim.game_engine.organism.builder.DesertAnimalBuilder;
+import ecosim.game_engine.organism.builder.GrasslandAnimalBuilder;
+import ecosim.game_engine.organism.plant.abs.Plant;
+import ecosim.game_engine.organism.builder.DesertPlantBuilder;
 
 public class AnimalTest {
     private Animal desertAnimal;
@@ -65,17 +68,17 @@ public class AnimalTest {
 
     @Test
     public void testActivityStateChange() {
-        desertAnimal.update(new ecosim.man.TimeOfDayMan(changeMan) {
+        desertAnimal.update(new TimeOfDayMan(changeMan) {
             @Override public TimeOfDay getCurrentState() { return TimeOfDay.DAY; }
         });
         assertEquals(ActivityState.AWAKE, desertAnimal.getActivityState());
 
-        grasslandAnimal.update(new ecosim.man.TimeOfDayMan(changeMan) {
+        grasslandAnimal.update(new TimeOfDayMan(changeMan) {
             @Override public TimeOfDay getCurrentState() { return TimeOfDay.NIGHT; }
         });
         assertEquals(ActivityState.AWAKE, grasslandAnimal.getActivityState());
 
-        grasslandAnimal.update(new ecosim.man.SeasonMan(changeMan) {
+        grasslandAnimal.update(new SeasonMan(changeMan) {
             @Override public Season getCurrentState() { return Season.WINTER; }
         });
         assertEquals(ActivityState.HIBERNATING, grasslandAnimal.getActivityState());

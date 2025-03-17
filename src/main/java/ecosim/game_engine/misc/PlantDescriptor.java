@@ -1,6 +1,6 @@
-package ecosim.misc;
+package ecosim.game_engine.misc;
 
-import ecosim.enm.Size;
+import ecosim.game_engine.enm.Size;
 
 public record PlantDescriptor(
     String name,

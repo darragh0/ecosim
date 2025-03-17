@@ -1,7 +1,7 @@
-package ecosim.organism.plant.concrete;
+package ecosim.game_engine.organism.plant.concrete;
 
-import ecosim.enm.Weather;
-import ecosim.organism.plant.abs.Plant;
+import ecosim.game_engine.enm.Weather;
+import ecosim.game_engine.organism.plant.abs.Plant;
 
 /**
  * Abstract class for all desert plants in the ecosystem simulation.

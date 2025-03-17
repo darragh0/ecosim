@@ -1,6 +1,6 @@
-package ecosim.organism.factory;
+package ecosim.game_engine.organism.factory;
 
-import ecosim.enm.Biome;
+import ecosim.game_engine.enm.Biome;
 
 /**
  * Provider for biome-specific organism factories.

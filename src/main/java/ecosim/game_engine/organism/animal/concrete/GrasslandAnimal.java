@@ -1,8 +1,8 @@
-package ecosim.organism.animal.concrete;
+package ecosim.game_engine.organism.animal.concrete;
 
-import ecosim.enm.ActivityState;
-import ecosim.map.ActionResult;
-import ecosim.organism.animal.abs.Animal;
+import ecosim.game_engine.enm.ActivityState;
+import ecosim.game_engine.map.ActionResult;
+import ecosim.game_engine.organism.animal.abs.Animal;
 
 public class GrasslandAnimal extends Animal {
 
