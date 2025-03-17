@@ -3,13 +3,16 @@ package ecosim.organism.plant.abs;
 import ecosim.attrs.Observable;
 import ecosim.attrs.Observer;
 import ecosim.common.Util;
+import ecosim.enm.EnergyCycle;
 import ecosim.enm.Event;
 import ecosim.enm.Size;
 import ecosim.enm.TimeOfDay;
 import ecosim.enm.Weather;
+import ecosim.misc.SpeciesNumbering;
 import ecosim.organism.Organism;
 import ecosim.organism.plant.energy_cycle_state.EnergyCycleState;
 import ecosim.organism.plant.energy_cycle_state.PhotosynthesisState;
+import ecosim.organism.plant.energy_cycle_state.RespirationState;
 
 /**
  * Abstract base class for all plants in the ecosystem simulation.
@@ -43,6 +46,24 @@ public abstract class Plant extends Organism implements Observer {
 
     public Plant() {
       this.energyCycleState = new PhotosynthesisState();
+    }
+
+    public Plant(Plant source) {
+        // Copy Organism properties
+        this.symbol = source.symbol;
+        this.size = source.size;
+        this.name = SpeciesNumbering.generateCloneName(source.name);
+        this.health = (float) (source.getMaxHealth() * 0.75); // New plants start at 75% health
+
+        // Copy Plant-specific properties
+        this.biteCapacity = source.biteCapacity;
+        this.growthRate = source.growthRate;
+
+        if (source.energyCycleState.getEnergyCycle() == EnergyCycle.PHOTOSYNTHESIS) {
+            this.energyCycleState = new PhotosynthesisState();
+        } else if (source.energyCycleState.getEnergyCycle() == EnergyCycle.RESPIRATION) {
+            this.energyCycleState = new RespirationState();
+        }
     }
 
     /**
@@ -110,31 +131,6 @@ public abstract class Plant extends Organism implements Observer {
     @Override
     public abstract Plant clone();
 
-    /**
-     * Creates a clone for asexual reproduction.
-     * Reproduction is only possible if plant has sufficient health (at least 40%).
-     * Parent plant loses health when reproducing.
-     * 
-     * @return A new plant instance or null if reproduction fails
-     */
-    public Plant createClone() {
-        
-        Plant clone = clone(); // This calls the concrete subclass implementation
-        if (clone != null) {
-            // Simple health setting - offspring gets 60% of max health
-            clone.size = this.size;
-            clone.health = clone.getMaxHealth() * 0.6f;
-            clone.growthRate = this.growthRate;
-            clone.symbol = this.symbol;
-            clone.energyCycleState = this.energyCycleState;
-            
-            // Simple health cost - reproduction costs 15% of max health
-            this.health -= this.getMaxHealth() * 0.15f;
-            
-            return clone;
-        }
-        return null;
-    }
 
     /**
      * Performs asexual reproduction to create a new plant.
@@ -142,7 +138,7 @@ public abstract class Plant extends Organism implements Observer {
      * @return A new plant created through asexual reproduction, or null if reproduction fails
      */
     public Plant performAsexualReproduction() {
-        return createClone();
+        return clone();
     }
 
     /**
@@ -274,16 +270,21 @@ public abstract class Plant extends Organism implements Observer {
             return false;
         }
         
-        // Make reproduction extremely rare with these rates:
-        // - 1% chance for plants at 60% health
-        // - 2% chance for plants at 80% health 
-        // - 4% chance for plants at 100% health
-        int randomRoll = Util.randInt(0, 100);
+        // Calculate health percentage (0-100)
+        float healthPercentage = (this.health / this.getMaxHealth()) * 100;
         
-        int healthPercentage = (int)((this.health / this.getMaxHealth()) * 100);
-        int chanceThreshold = (healthPercentage - 40) / 15;  // Maps 60-100% to 1-4%
+        // Calculate reproduction chance (0.5-4%)
+        // Linear scaling from 0.5% at 60% health to 4% at 100% health
+        float reproductionChance = 0.5f + (healthPercentage - 60) * 0.0875f;
         
-        return randomRoll < chanceThreshold;
+        // Further reduce chance to make reproduction even rarer
+        reproductionChance *= 0.5f;  // Cut all chances in half
+        
+        // Generate random percentage (0-100)
+        float randomChance = Util.randFloat(0, 100);
+        
+        // Return true if random roll is less than reproduction chance
+        return randomChance < reproductionChance;
     }
     /**
      * Adds specified amount to plant's health, capped at max health.

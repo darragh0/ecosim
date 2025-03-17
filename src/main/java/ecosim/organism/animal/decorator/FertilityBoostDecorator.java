@@ -1,7 +1,6 @@
 package ecosim.organism.animal.decorator;
 
 import static ecosim.common.Util.randFloat;
-
 import ecosim.organism.animal.abs.Animal;
 
 /**
@@ -26,7 +25,7 @@ public class FertilityBoostDecorator extends AnimalDecorator {
         float mateChance = mate.getReproductiveChance();
         float combinedChance = Math.max(boostedChance, mateChance);
         if (randFloat(0.0f, 1.0f) < combinedChance) {
-            return animal.createClone();
+            return animal.clone();
         }
         return null;
     }

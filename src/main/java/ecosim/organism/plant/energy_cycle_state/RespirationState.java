@@ -1,5 +1,6 @@
 package ecosim.organism.plant.energy_cycle_state;
 
+import ecosim.enm.EnergyCycle;
 import ecosim.enm.TimeOfDay;
 import ecosim.organism.plant.abs.Plant;
 
@@ -53,5 +54,10 @@ public class RespirationState implements EnergyCycleState {
             return new PhotosynthesisState();
         }
         return this; // Stay in respiration state during night
+    }
+
+    @Override
+    public EnergyCycle getEnergyCycle() {
+        return EnergyCycle.RESPIRATION;
     }
 }

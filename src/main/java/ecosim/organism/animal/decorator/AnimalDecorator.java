@@ -1,7 +1,10 @@
 package ecosim.organism.animal.decorator;
 
 import ecosim.attrs.Observable;
-import ecosim.enm.*;
+import ecosim.enm.ActivityState;
+import ecosim.enm.ActivityType;
+import ecosim.enm.Diet;
+import ecosim.enm.Size;
 import ecosim.map.ActionResult;
 import ecosim.organism.Organism;
 import ecosim.organism.animal.abs.Animal;
@@ -18,10 +21,7 @@ public abstract class AnimalDecorator extends Animal {
     protected final Animal animal;
 
     public AnimalDecorator(final Animal animal) {
-        super(animal.getName());  // Initialize with wrapped animal’s name
         this.animal = animal;
-        // Sync coordinates with the wrapped animal
-        super.setCoords(animal.getX(), animal.getY());
     }
 
     @Override
@@ -171,12 +171,10 @@ public abstract class AnimalDecorator extends Animal {
     }
 
     @Override
-    public abstract Animal clone();
-
-    @Override
-    public Animal createClone() {
-        return animal.createClone();
+    public  Animal clone(){
+        return animal.clone();
     }
+
 
     @Override
     public ActionResult move() {
