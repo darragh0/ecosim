@@ -1,7 +1,6 @@
 package ecosim.organism.plant.concrete;
 
 import ecosim.enm.Weather;
-import ecosim.misc.SpeciesNumbering;
 import ecosim.organism.plant.abs.Plant;
 
 /**
@@ -14,6 +13,14 @@ import ecosim.organism.plant.abs.Plant;
  * @author MiaBorkoo
  */
 public class DesertPlant extends Plant {
+
+    public DesertPlant() {
+        super();
+    }
+
+    public DesertPlant(DesertPlant source) {
+        super(source);
+    }
 
     /**
      * Updates the growth rate of desert plants based on current weather.
@@ -34,9 +41,7 @@ public class DesertPlant extends Plant {
 
     @Override
     public Plant clone() {
-        DesertPlant clone = new DesertPlant();
-        clone.setName(SpeciesNumbering.generateCloneName(this.getName()));
-        return clone;
+        return new DesertPlant(this);
     }
 
 }

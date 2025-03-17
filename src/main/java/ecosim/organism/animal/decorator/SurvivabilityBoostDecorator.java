@@ -1,7 +1,6 @@
 package ecosim.organism.animal.decorator;
 
 import static ecosim.common.Util.randFloat;
-
 import ecosim.organism.animal.abs.Animal;
 
 /**

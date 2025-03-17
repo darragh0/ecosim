@@ -61,7 +61,7 @@ public class EcosystemMan {
         this.newbornPlants = new ArrayList<>();
         this.totalNewbornAnimals = 0;
         this.totalNewbornPlants = 0;
-        this.map = Map.init(8, 7);
+        this.map = Map.init(8, 8);
         this.config = this.loadConfig();
     }
 

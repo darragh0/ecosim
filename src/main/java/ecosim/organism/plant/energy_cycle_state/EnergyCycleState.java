@@ -1,4 +1,5 @@
 package ecosim.organism.plant.energy_cycle_state;
+import ecosim.enm.EnergyCycle;
 import ecosim.enm.TimeOfDay;
 import ecosim.organism.plant.abs.Plant;
 
@@ -39,5 +40,13 @@ public interface EnergyCycleState {
      * @return The appropriate state after handling time change (this or new state)
      */
     EnergyCycleState handleTimeOfDayChange(Plant plant, TimeOfDay timeOfDay);
+
+    /**
+     * Gets the energy cycle type associated with this state.
+     * 
+     * @return The energy cycle type of this state
+     */
+    EnergyCycle getEnergyCycle();
 }
+
 

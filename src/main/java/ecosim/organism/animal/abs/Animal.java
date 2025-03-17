@@ -12,6 +12,7 @@ import ecosim.enm.Season;
 import ecosim.enm.Size;
 import ecosim.enm.TimeOfDay;
 import ecosim.map.ActionResult;
+import ecosim.misc.SpeciesNumbering;
 import ecosim.organism.Organism;
 import ecosim.organism.animal.animal_state.AnimalState;
 import ecosim.organism.animal.animal_state.AwakeState;
@@ -42,10 +43,29 @@ public abstract class Animal extends Organism implements Observer {
         this.reproductiveChance = 0.5f;
     }
 
-    public Animal(String name) {
-        super(name);
-        this.state = new AwakeState();
+    /**
+     * Copy constructor for Animal class to support the prototype pattern.
+     * Creates a new Animal with the same properties as the original.
+     * 
+     * @param source The Animal instance to copy from
+     */
+    public Animal(Animal source) {
+        // Copy Organism properties
+        this.symbol = source.symbol;
+        this.size = source.size;
+        this.name = SpeciesNumbering.generateCloneName(source.name);
+        this.health =  (float) (source.getMaxHealth() * 0.75); // New animals start at 75% health
+        
+        // Copy Animal-specific properties
+        this.diet = source.diet;
+        this.activityType = source.activityType;
+        this.canHibernate = source.canHibernate;
+        this.sound = source.sound;
+        this.survivalChance = source.survivalChance;
+        this.reproductiveChance = source.reproductiveChance;
+        this.state = new AwakeState(); // New animals always start in the awake state
     }
+   
 
     @Override
     public Animal setSymbol(String symbol) {
@@ -161,23 +181,12 @@ public abstract class Animal extends Organism implements Observer {
         float combinedReproductiveChance = this.reproductiveChance * mate.reproductiveChance;
 
         if (randFloat(0.0f, 1.0f) < combinedReproductiveChance)
-            return this.createClone();
+            return this.clone();
         return null;
     }
 
     @Override
     public abstract Animal clone();
-
-    public Animal createClone() {
-        Animal clone = clone();
-        clone.symbol = this.symbol;
-        clone.setSize(this.size);
-        clone.setSound(this.sound);
-        clone.diet = this.diet;
-        clone.activityType = this.activityType;
-        clone.canHibernate = this.canHibernate;
-        return clone;
-    }
 
     public ActionResult move() {
         // Delegate to the current state
