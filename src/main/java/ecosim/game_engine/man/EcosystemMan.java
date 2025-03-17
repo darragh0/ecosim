@@ -28,7 +28,12 @@ import ecosim.game_engine.organism.factory.BiomeOrganismFactoryProvider;
 import ecosim.game_engine.organism.plant.abs.Plant;
 import ecosim.ui.view.ActionResultListener;
 
-
+/**
+ * Central manager class for the entire ecosystem simulation.
+ * Coordinates organisms, environment, and simulation lifecycle.
+ * Handles creation, movement, interaction, and lifecycle of all organisms.
+ * @author Kabidoye-17
+ */
 public class EcosystemMan {
 
     private final EnvironmentMan environment;
@@ -48,6 +53,10 @@ public class EcosystemMan {
 
     private ActionResultListener actionListener;
 
+    /**
+     * Creates a new ecosystem manager with default settings.
+     * Initializes the environment, organism lists, and map.
+     */
     public EcosystemMan() {
         this.environment = new EnvironmentMan();
         this.dayCount = 0;
@@ -65,7 +74,11 @@ public class EcosystemMan {
         this.config = this.loadConfig();
     }
 
-    private  void processAnimalsTurn() {
+    /**
+     * Processes a turn for all animals in the ecosystem.
+     * Handles movement, breeding, eating, and other actions.
+     */
+    private void processAnimalsTurn() {
         // Create a copy of the animals list to safely iterate through
         List<Animal> currentAnimals = new ArrayList<>(this.animals);
 
@@ -114,7 +127,11 @@ public class EcosystemMan {
         }
     }
 
-    private  void processPlantsTurn(){
+    /**
+     * Processes a turn for all plants in the ecosystem.
+     * Handles reproduction, energy cycle, and other plant-specific actions.
+     */
+    private void processPlantsTurn(){
         // Create a copy of the plants list to safely iterate through
         List<Plant> currentPlants = new ArrayList<>(this.plants);
     
@@ -156,11 +173,19 @@ public class EcosystemMan {
         }
     }
 
+    /**
+     * Processes a turn for all organisms in the ecosystem.
+     * Calls individual turn processors for animals and plants.
+     */
     public void processOrganismsTurn() {
         this.processAnimalsTurn();
         this.processPlantsTurn();
     }
 
+    /**
+     * Clears the lists of new and dead organisms.
+     * Called at the end of a simulation cycle.
+     */
     public void resetNewAndDeadOrganisms() {
         this.deadAnimals.clear();
         this.deadPlants.clear();
@@ -168,6 +193,10 @@ public class EcosystemMan {
         this.newbornPlants.clear();
     }
 
+    /**
+     * Checks the health of all organisms and removes dead ones.
+     * Notifies listeners of organism deaths.
+     */
     public void checkOrganismsHealth() {
 
         List<Animal> animalsToRemove = new ArrayList<>();
@@ -216,6 +245,13 @@ public class EcosystemMan {
 
     }
 
+    /**
+     * Creates an animal from a descriptor and adds it to the ecosystem.
+     * Uses the appropriate biome factory to build the animal.
+     * 
+     * @param descriptor The animal descriptor
+     * @param biomeName The name of the biome
+     */
     private void createAnimal(AnimalDescriptor descriptor, String biomeName) {
     try{
         Biome biome = Biome.valueOf(biomeName);
@@ -240,8 +276,13 @@ public class EcosystemMan {
         }
     }
     
-
-
+    /**
+     * Creates a plant from a descriptor and adds it to the ecosystem.
+     * Uses the appropriate biome factory to build the plant.
+     * 
+     * @param descriptor The plant descriptor
+     * @param biomeName The name of the biome
+     */
     public void createPlant(PlantDescriptor descriptor, String biomeName) {
         try{
             Biome biome = Biome.valueOf(biomeName);
@@ -264,7 +305,14 @@ public class EcosystemMan {
             LoggerMan.log(Level.SEVERE, "Invalid biome name: " + biomeName);
         }
     }
-        // Get the appropriate factory for this biome
+
+    /**
+     * Loads organisms into the ecosystem from descriptor lists.
+     * 
+     * @param animals List of animal descriptors
+     * @param plants List of plant descriptors
+     * @param biome Name of the biome
+     */
     public void loadEcosystem(List<AnimalDescriptor> animals, List<PlantDescriptor> plants, String biome) {
 
         for (AnimalDescriptor animal : animals) {
@@ -276,27 +324,57 @@ public class EcosystemMan {
         }
     }
 
+    /**
+     * Gets the current map size.
+     * 
+     * @return The map size enum
+     */
     public MapSize getMapSize() {
         return map.getMapDimensions();
     }
 
+    /**
+     * Gets the grid representation of the map.
+     * 
+     * @return The grid object
+     */
     public Grid getMapGrid() {
         return this.map.getGrid();
     }
 
+    /**
+     * Places all organisms on the map at random positions.
+     * Called during ecosystem initialization.
+     */
     public void populateMap() {
         // Randomly place all organisms on the map during simulation setup
         this.animals.forEach(a -> this.map.initialisePlacement(a));
         this.plants.forEach(p -> this.map.initialisePlacement(p));
     }
 
+    /**
+     * Checks if the ecosystem is still viable.
+     * An ecosystem requires both animals and plants to be alive.
+     * 
+     * @return True if the ecosystem is alive
+     */
     public boolean isEcosystemAlive() {
         return !this.animals.isEmpty() && !this.plants.isEmpty();
     }
 
+    /**
+     * Checks if the ecosystem has reached maximum capacity.
+     * 
+     * @return True if at max capacity
+     */
     public boolean isAtMaxCapacity() {
         return this.animals.size() + this.plants.size() >= this.config.maxCapacity();
     }
+
+    /**
+     * Updates all environmental conditions.
+     * Advances day count and updates season, time of day, and weather.
+     */
     public void updateEnvironmentConditions() {
         // Increment day count first
         this.dayCount++;
@@ -310,86 +388,189 @@ public class EcosystemMan {
         this.environment.updateWeather();
     }
 
+    /**
+     * Sets the biome for the ecosystem.
+     * 
+     * @param biome The biome to set
+     */
     public void setBiome(Biome biome) {
         this.environment.setBiome(biome);
     }
 
+    /**
+     * Gets the list of animals available for the current biome.
+     * 
+     * @return List of animal descriptors
+     */
     public List<AnimalDescriptor> getBiomeAnimals() {
         return this.environment.getBiomeAnimals();
     }
 
+    /**
+     * Gets the list of plants available for the current biome.
+     * 
+     * @return List of plant descriptors
+     */
     public List<PlantDescriptor> getBiomePlants() {
         return this.environment.getBiomePlants();
     }
 
+    /**
+     * Gets the current day count.
+     * 
+     * @return The day count
+     */
     public int getDayCount() {
         return this.dayCount;
     }
 
+    /**
+     * Updates the time of day.
+     */
     public void updateTimeOfDay() {
         this.environment.updateTimeOfDay();
     }
 
+    /**
+     * Gets the current season.
+     * 
+     * @return The current season
+     */
     public Season getCurrentSeason() {
         return this.environment.getSeason();
     }
 
+    /**
+     * Gets the current weather.
+     * 
+     * @return The current weather
+     */
     public Weather getCurrentWeather() {
         return this.environment.getWeather();
     }
 
+    /**
+     * Gets the current time of day.
+     * 
+     * @return The current time of day
+     */
     public TimeOfDay getCurrentTimeOfDay() {
         return this.environment.getTimeOfDay();
     }
 
+    /**
+     * Gets the count of living animals.
+     * 
+     * @return The animal count
+     */
     public int getAnimalCount() {
         return this.animals.size();
     }
 
+    /**
+     * Gets the count of living plants.
+     * 
+     * @return The plant count
+     */
     public int getPlantCount() {
         return this.plants.size();
     }
 
+    /**
+     * Gets the list of living animals.
+     * 
+     * @return List of animals
+     */
     public List<Animal> getAnimals() {
         return this.animals;
     }
 
+    /**
+     * Gets the list of living plants.
+     * 
+     * @return List of plants
+     */
     public List<Plant> getPlants() {
         return this.plants;
     }
 
+    /**
+     * Gets the list of animals that died in the current cycle.
+     * 
+     * @return List of dead animals
+     */
     public List<Animal> getDeadAnimals() {
         return this.deadAnimals;
     }
 
+    /**
+     * Gets the list of plants that died in the current cycle.
+     * 
+     * @return List of dead plants
+     */
     public List<Plant> getDeadPlants() {
         return this.deadPlants;
     }
 
+    /**
+     * Gets the list of animals born in the current cycle.
+     * 
+     * @return List of newborn animals
+     */
     public List<Animal> getNewbornAnimals() {
         return this.newbornAnimals;
     }
 
+    /**
+     * Gets the list of plants born in the current cycle.
+     * 
+     * @return List of newborn plants
+     */
     public List<Plant> getNewbornPlants() {
         return this.newbornPlants;
     }
 
+    /**
+     * Gets the total count of animals that have died.
+     * 
+     * @return Total dead animals
+     */
     public int getTotalDeadAnimals() {
         return this.totalDeadAnimals;
     }
 
+    /**
+     * Gets the total count of plants that have died.
+     * 
+     * @return Total dead plants
+     */
     public int getTotalDeadPlants() {
         return this.totalDeadPlants;
     }
 
+    /**
+     * Gets the total count of animals that have been born.
+     * 
+     * @return Total newborn animals
+     */
     public int getTotalNewbornAnimals() {
         return this.totalNewbornAnimals;
     }   
 
+    /**
+     * Gets the total count of plants that have been born.
+     * 
+     * @return Total newborn plants
+     */
     public int getTotalNewbornPlants() {
         return this.totalNewbornPlants;
     }   
 
+    /**
+     * Loads the ecosystem configuration from file.
+     * 
+     * @return The ecosystem configuration
+     */
     private EcosystemConfig loadConfig() {
         final Optional<EcosystemConfig> fileCfg = FileIO.parseEcosystemConfig();
         if (fileCfg.isEmpty()) {
@@ -399,23 +580,47 @@ public class EcosystemMan {
         return fileCfg.get();
     }
 
+    /**
+     * Sets the action listener for ecosystem events.
+     * 
+     * @param listener The listener to set
+     */
     public void setActionListener(ActionResultListener listener) {
         this.actionListener = listener;
     }
 
-
+    /**
+     * Gets the initial animal count from config.
+     * 
+     * @return Initial animal count
+     */
     public int getInitialAnimals() {
         return this.config.initialAnimals();
     }
     
+    /**
+     * Gets the maximum days for simulation from config.
+     * 
+     * @return Maximum days
+     */
     public int getMaxDays() {
         return this.config.maxDays();
     }
 
+    /**
+     * Gets hours per day from config.
+     * 
+     * @return Hours per day
+     */
     public int getHoursPerDay() {
         return this.config.hoursPerDay();
     }
 
+    /**
+     * Gets initial plant count from config.
+     * 
+     * @return Initial plant count
+     */
     public int getInitialPlants() {
         return this.config.initialPlants();
     }

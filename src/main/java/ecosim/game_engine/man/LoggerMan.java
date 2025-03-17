@@ -16,20 +16,32 @@ import java.util.logging.Logger;
 
 import ecosim.common.io.FileIO;
 
-
+/**
+ * Utility class for logging ecosystem events to a file.
+ * Provides centralized logging functionality with custom formatting.
+ * @author Kabidoye-17
+ */
 public class LoggerMan {
     private static final Logger LOGGER = Logger.getLogger("ecosim");
     private static final String LOG_FILE_DIR = "src/main/java/ecosim/logs";
     private static final String LOG_FILE_PATH = LOG_FILE_DIR + "/ecosim.log";
 
+    /**
+     * Private constructor to prevent instantiation.
+     */
     private LoggerMan() {
         throw new UnsupportedOperationException("This class cannot be instantiated.");
     }
 
+    // Static initializer to set up the logger when class is loaded
     static {
         initializeLogger();
     }
 
+    /**
+     * Initializes the logger with file output and custom formatter.
+     * Creates log directory if it doesn't exist.
+     */
     private static void initializeLogger() {
         try {
             if (!FileIO.mkdir(LOG_FILE_DIR)) {
@@ -56,10 +68,21 @@ public class LoggerMan {
         }
     }
 
+    /**
+     * Logs a message at the specified level.
+     * 
+     * @param level The logging level
+     * @param message The message to log
+     * @param args Optional arguments for string formatting
+     */
     public static void log(Level level, String message, Object... args) {
         LOGGER.log(level, message, args);
     }
 
+    /**
+     * Custom formatter to create readable log entries.
+     * Formats entries with timestamp, level, class, method, and message.
+     */
     private static class PrettyFormatter extends Formatter {
         private static final DateTimeFormatter DATE_FORMATTER =
             DateTimeFormatter.ISO_INSTANT.withZone(ZoneId.systemDefault());
@@ -76,7 +99,5 @@ public class LoggerMan {
 
             return sb.toString();
         }
-
     }
-
 }
