@@ -15,6 +15,7 @@ import static ecosim.common.io.ConsoleIO.strInput;
 
 /**
  * Base class for all menus in the Ecosim application.
+ * Provides functionality for displaying menu options and handling user input.
  * 
  * @param <T> The type of options in the menu (e.g. `String`)
  * @author darragh0
@@ -25,12 +26,21 @@ public abstract class Menu<T> {
     protected final List<T> options;
     protected final List<String> optionStrings;
 
+    /**
+     * Constructor for creating a menu with a heading and options.
+     * 
+     * @param heading The title of the menu
+     * @param options List of selectable options
+     */
     protected Menu(final String heading, final List<T> options) {
         this.heading = heading;
         this.options = new ArrayList<>(options);
         this.optionStrings = this.options.stream().map(this::optionToString).toList();
     }
 
+    /**
+     * Displays the menu with numbered options.
+     */
     public void print() {
         pprintln("[flg:%s]", this.heading);
         System.out.println("=".repeat(this.heading.length() + 2));
@@ -41,10 +51,23 @@ public abstract class Menu<T> {
         System.out.println();
     }
 
+    /**
+     * Converts an option to its string representation.
+     * 
+     * @param option The option to convert
+     * @return String representation of the option
+     */
     protected String optionToString(final T option) {
         return option.toString();
     }
 
+    /**
+     * Gets user selection from the menu with a custom prompt.
+     * Handles both numeric and text input.
+     * 
+     * @param prompt The prompt to display to the user
+     * @return The selected option
+     */
     public T getUserChoice(final String prompt) {
 
         while (true) {
@@ -71,6 +94,11 @@ public abstract class Menu<T> {
         }
     }
 
+    /**
+     * Gets user selection from the menu with default prompt.
+     * 
+     * @return The selected option
+     */
     public T getUserChoice() {
         return this.getUserChoice("Enter your choice >> ");
     }

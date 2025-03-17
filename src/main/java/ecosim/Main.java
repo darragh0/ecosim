@@ -1,5 +1,8 @@
 package ecosim;
 
+/**
+ * Main class for the ecosystem simulator.
+ */
 
 import ecosim.controller.EcosystemController;
 

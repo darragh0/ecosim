@@ -1,5 +1,10 @@
 package ecosim;
 
+/**
+ * Test class for Animal functionality in the ecosystem simulator.
+ * @author jjola00
+ */
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import ecosim.game_engine.enm.*;
@@ -25,6 +30,9 @@ public class AnimalTest {
     private Plant desertPlant; 
     private ChangeMan changeMan;
 
+    /**
+     * Sets up test environment with animal and plant instances
+     */
     @BeforeEach
     public void setUp() {
         Map.init(10, 10);
@@ -47,6 +55,9 @@ public class AnimalTest {
         desertPlant = plantBuilder.buildBasicProperties().build();
     }
 
+    /**
+     * Tests proper initialization of animal properties
+     */
     @Test
     public void testAnimalInitialization() {
         assertTrue(desertAnimal.getName().startsWith("Lizard ("));
@@ -66,6 +77,9 @@ public class AnimalTest {
         assertEquals(20, grasslandAnimal.getHealth(), 0.001); 
     }
 
+    /**
+     * Tests animal activity state changes based on time of day and season
+     */
     @Test
     public void testActivityStateChange() {
         desertAnimal.update(new TimeOfDayMan(changeMan) {
@@ -84,6 +98,9 @@ public class AnimalTest {
         assertEquals(ActivityState.HIBERNATING, grasslandAnimal.getActivityState());
     }
 
+    /**
+     * Tests animal health reduction mechanism
+     */
     @Test
     public void testHealthAdjustment() {
         float initialHealth = desertAnimal.getHealth(); 
@@ -91,6 +108,9 @@ public class AnimalTest {
         assertEquals(initialHealth - 0.5f, desertAnimal.getHealth(), 0.001);
     }
 
+    /**
+     * Tests animal eating behavior and health restoration
+     */
     @Test
     public void testEating() {
         grasslandAnimal.setHealth(grasslandAnimal.getHealth() - 10);

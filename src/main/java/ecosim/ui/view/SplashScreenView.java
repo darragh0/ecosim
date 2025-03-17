@@ -1,5 +1,9 @@
 package ecosim.ui.view;
 
+/**
+ * Splash screen view for the ecosystem simulator.
+ * @author darragh0 
+ */
 
 import static ecosim.common.io.ConsoleIO.clearTerminal;
 import static ecosim.common.io.ConsoleIO.cursorUp;
