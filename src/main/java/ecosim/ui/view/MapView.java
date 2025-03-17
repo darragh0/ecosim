@@ -3,9 +3,9 @@ package ecosim.ui.view;
 import static ecosim.common.io.ConsoleIO.add;
 import static ecosim.common.io.ConsoleIO.pprintln;
 import ecosim.common.io.enm.BoxDrawingChar;
-import ecosim.man.EcosystemMan;
-import ecosim.map.Grid;
-import ecosim.organism.Organism;
+import ecosim.game_engine.man.EcosystemMan;
+import ecosim.game_engine.map.Grid;
+import ecosim.game_engine.organism.Organism;
 
 public class MapView {
      public void displayEcosytemMap(EcosystemMan ecosystem) {

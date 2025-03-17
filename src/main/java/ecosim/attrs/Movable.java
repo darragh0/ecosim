@@ -1,7 +1,7 @@
 package ecosim.attrs;
 
 
-import ecosim.map.Coords;
+import ecosim.game_engine.map.Coords;
 
 /**
  * An object with *adjustable* 2D coordinates.

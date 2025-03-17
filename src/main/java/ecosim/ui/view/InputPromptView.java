@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import ecosim.enm.Biome;
-import ecosim.misc.AnimalDescriptor;
-import ecosim.misc.PlantDescriptor;
+import ecosim.game_engine.enm.Biome;
+import ecosim.game_engine.misc.AnimalDescriptor;
+import ecosim.game_engine.misc.PlantDescriptor;
 import ecosim.ui.menu.AnimalMenu;
 import ecosim.ui.menu.BiomeMenu;
 import ecosim.ui.menu.PlantMenu;

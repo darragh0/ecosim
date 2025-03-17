@@ -1,8 +1,8 @@
 package ecosim.attrs;
 
 
-import ecosim.enm.Event;
-import ecosim.man.ChangeMan;
+import ecosim.game_engine.enm.Event;
+import ecosim.game_engine.man.ChangeMan;
 
 
 public abstract class Observable {

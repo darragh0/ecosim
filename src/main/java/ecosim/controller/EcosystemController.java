@@ -2,10 +2,10 @@ package ecosim.controller;
 
 import java.util.List;
 
-import ecosim.enm.Biome;
-import ecosim.man.EcosystemMan;
-import ecosim.misc.AnimalDescriptor;
-import ecosim.misc.PlantDescriptor;
+import ecosim.game_engine.enm.Biome;
+import ecosim.game_engine.man.EcosystemMan;
+import ecosim.game_engine.misc.AnimalDescriptor;
+import ecosim.game_engine.misc.PlantDescriptor;
 import ecosim.ui.view.ActionsView;
 import ecosim.ui.view.EnvironmentView;
 import ecosim.ui.view.InputPromptView;

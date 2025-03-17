@@ -1,8 +1,8 @@
 package ecosim.ui.view;
 
 import static ecosim.common.io.ConsoleIO.add;
-import ecosim.enm.ActivityState;
-import ecosim.man.EcosystemMan;
+import ecosim.game_engine.enm.ActivityState;
+import ecosim.game_engine.man.EcosystemMan;
 
 public class EnvironmentView {
 

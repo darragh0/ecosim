@@ -3,7 +3,7 @@ package ecosim.ui.menu;
 
 import java.util.List;
 
-import ecosim.enm.Biome;
+import ecosim.game_engine.enm.Biome;
 
 
 /**
