@@ -13,13 +13,27 @@ import org.json.JSONObject;
 import ecosim.game_engine.man.LoggerMan;
 import ecosim.game_engine.misc.EcosystemConfig;
 
-
+/**
+ * Utility class for file input/output operations in the ecosystem simulation.
+ * Provides methods for reading JSON files, creating directories, and parsing configuration.
+ * @author Kabidoye-17, darragh0
+ */
 public final class FileIO {
 
+    /**
+     * Private constructor to prevent instantiation.
+     * This class should only be used statically.
+     */
     private FileIO() {
         throw new UnsupportedOperationException("This class cannot be instantiated.");
     }
 
+    /**
+     * Reads and parses a JSON file from the resources directory.
+     * 
+     * @param path The relative path to the JSON file within the resources/json directory
+     * @return Optional containing the parsed JSONObject, or empty if file reading or parsing failed
+     */
     public static Optional<JSONObject> readJSONFile(String path) {
         path = "src/main/resources/json/" + path;
         JSONObject json = null;
@@ -36,6 +50,12 @@ public final class FileIO {
         return Optional.ofNullable(json);
     }
 
+    /**
+     * Creates a directory at the specified path.
+     * 
+     * @param path The path for the directory to create
+     * @return true if directory creation succeeded, false otherwise
+     */
     public static boolean mkdir(final String path) {
         try {
             Files.createDirectories(Paths.get(path));
@@ -46,6 +66,12 @@ public final class FileIO {
         }
     }
 
+    /**
+     * Reads and parses the ecosystem configuration from JSON.
+     * Validates that all required configuration keys are present.
+     * 
+     * @return Optional containing the EcosystemConfig if successful, empty otherwise
+     */
     public static Optional<EcosystemConfig> parseEcosystemConfig() {
         final String[] keys = { "initialPlants", "initialAnimals", "maxCapacity", "maxDays", "hoursPerDay" };
 
@@ -82,7 +108,7 @@ public final class FileIO {
             return Optional.empty();
         }
 
-        final EcosystemConfig cfg = new EcosystemConfig(animals, plants,  maxCapacity, maxDays, hoursPerDay);
+        final EcosystemConfig cfg = new EcosystemConfig(animals, plants, maxCapacity, maxDays, hoursPerDay);
         return Optional.ofNullable(cfg);
     }
 

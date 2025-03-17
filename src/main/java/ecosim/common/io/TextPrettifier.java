@@ -11,11 +11,16 @@ import ecosim.common.io.enm.LightFG;
 import ecosim.common.io.enm.Reset;
 import ecosim.common.io.enm.TextStyle;
 
-
+/**
+ * Utility class for text formatting and styling in the console.
+ * Handles ANSI color codes, text styles, and formatted output.
+ * @author Kabidoye-17, darragh0
+ */
 final class TextPrettifier {
 
     private static final Map<String, String> COLOR_MAP = new HashMap<>();
 
+    // Static initializer to set up color code mappings
     static {
         COLOR_MAP.put("flr", LightFG.RED.getCode());
         COLOR_MAP.put("flg", LightFG.GREEN.getCode());
@@ -50,6 +55,13 @@ final class TextPrettifier {
         COLOR_MAP.put("bdw", DarkBG.WHITE.getCode());
     }
 
+    /**
+     * Applies text styling to a string based on markdown-like syntax.
+     * Supports bold, italic, underline, strikethrough, and reverse styling.
+     * 
+     * @param txt The text to apply styles to
+     * @return Text with ANSI style codes applied
+     */
     private static String applyStyle(String txt) {
         txt = txt.replaceAll("\\*\\*(.*?)\\*\\*", TextStyle.BOLD.getCode() + "$1" + Reset.BOLD.getCode());
         txt = txt.replaceAll("\\*(.*?)\\*", TextStyle.ITALIC.getCode() + "$1" + Reset.ITALIC.getCode());
@@ -59,6 +71,13 @@ final class TextPrettifier {
         return txt;
     }
 
+    /**
+     * Applies color formatting to a string based on custom tag syntax.
+     * Handles nested color tags and properly resets colors when tags are closed.
+     * 
+     * @param txt The text to apply colors to
+     * @return Text with ANSI color codes applied
+     */
     private static String applyColor(final String txt) {
         final StringBuilder result = new StringBuilder();
         final Stack<String> tagStack = new Stack<>();
@@ -110,9 +129,15 @@ final class TextPrettifier {
         return result.toString();
     }
 
+    /**
+     * Formats a string with colors and styles, applying String.format if args are provided.
+     * 
+     * @param fstr The format string
+     * @param fargs Format arguments
+     * @return Fully formatted and styled string
+     */
     public static String prettify(String fstr, final Object... fargs) {
         fstr = String.format(fstr, fargs);
         return applyColor(applyStyle(fstr));
     }
-
 }
