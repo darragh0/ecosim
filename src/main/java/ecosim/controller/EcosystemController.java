@@ -82,7 +82,7 @@ public class EcosystemController {
                     this.man.updateTimeOfDay();
                     this.environmentView.displayTimeStatus(man);
                 }
-                this.man.processAnimalsTurn();
+                this.man.processOrganismsTurn();
                 this.man.checkOrganismsHealth();
             }
             

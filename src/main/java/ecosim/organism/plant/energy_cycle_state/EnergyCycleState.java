@@ -1,6 +1,5 @@
 package ecosim.organism.plant.energy_cycle_state;
 import ecosim.enm.TimeOfDay;
-import ecosim.enm.Weather;
 import ecosim.organism.plant.abs.Plant;
 
 /**
@@ -29,7 +28,7 @@ public interface EnergyCycleState {
      * @param currentWeather Current weather affecting the energy cycle
      * @return The amount to adjust the plant's health by (positive or negative)
      */
-    float performEnergyCycle(float growthRate, Weather currentWeather);
+    float performEnergyCycle(float growthRate);
     
     /**
      * Handles time of day changes and determines if a state transition is needed.

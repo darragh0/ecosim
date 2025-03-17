@@ -17,6 +17,7 @@ public class EnvironmentView {
             ecosystem.getCurrentTimeOfDay().getIcon()));
         System.out.println(str.toString());
         this.displaySleepingAnimals(ecosystem);
+        this.displayHibernatingAnimals(ecosystem);
     }
     
     public void displayEnvironmentConditions(EcosystemMan ecosystem) {  

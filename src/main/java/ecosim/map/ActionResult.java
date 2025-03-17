@@ -14,22 +14,19 @@ public class ActionResult {
     }
     
     private final ActionType actionType;
-    private final Animal actor;
-    private final Animal offspring;
+    private final Organism actor; // Changed from Animal to Organism
     private final Organism target;
     private final int newX;
     private final int newY;
+    private final Animal offspring;  // Keep this as Animal for now
     
-    public ActionResult(ActionType actionType, Animal actor, Organism target, int newX, int newY) {
-        this.actionType = actionType;
-        this.actor = actor;
-        this.target = target;
-        this.newX = newX;
-        this.newY = newY;
-        this.offspring = null;
-    }
-
-    public ActionResult(ActionType actionType, Animal actor, Organism target, int newX, int newY, Animal offspring) {
+    public ActionResult(
+            ActionType actionType,
+            Organism actor,  // Changed from Animal to Organism
+            Organism target,
+            int newX,
+            int newY,
+            Animal offspring) {
         this.actionType = actionType;
         this.actor = actor;
         this.target = target;
@@ -37,11 +34,25 @@ public class ActionResult {
         this.newY = newY;
         this.offspring = offspring;
     }
-
-    public ActionType getActionType() { return actionType; }
-    public Animal getActor() { return actor; }
-    public Animal getOffspring() { return offspring;}
-    public Organism getTarget() { return target; }
-    public int getNewX() { return newX; }
-    public int getNewY() { return newY; }
+    
+    public ActionResult(
+            ActionType actionType,
+            Organism actor, // Changed from Animal to Organism
+            Organism target,
+            int newX,
+            int newY) {
+        this(actionType, actor, target, newX, newY, null);
+    }
+    
+    // Update getter to return Organism instead of Animal
+    public Organism getActor() {
+        return this.actor;
+    }
+    
+    // Keep other getters the same
+    public ActionType getActionType() { return this.actionType; }
+    public Organism getTarget() { return this.target; }
+    public int getNewX() { return this.newX; }
+    public int getNewY() { return this.newY; }
+    public Animal getOffspring() { return this.offspring; }
 }

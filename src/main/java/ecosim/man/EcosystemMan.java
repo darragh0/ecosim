@@ -40,7 +40,7 @@ public class EcosystemMan {
     private int totalDeadAnimals;
     private int totalDeadPlants;
     private final List<Animal> newbornAnimals;
-    private List<Plant> newbornPlants;
+    private final List<Plant> newbornPlants;
     private int totalNewbornAnimals;
     private int totalNewbornPlants;
     private final Map map;
@@ -61,11 +61,11 @@ public class EcosystemMan {
         this.newbornPlants = new ArrayList<>();
         this.totalNewbornAnimals = 0;
         this.totalNewbornPlants = 0;
-        this.map = Map.init(7, 7);
+        this.map = Map.init(8, 7);
         this.config = this.loadConfig();
     }
 
-    public void processAnimalsTurn() {
+    private  void processAnimalsTurn() {
         // Create a copy of the animals list to safely iterate through
         List<Animal> currentAnimals = new ArrayList<>(this.animals);
 
@@ -114,10 +114,58 @@ public class EcosystemMan {
         }
     }
 
+    private  void processPlantsTurn(){
+        // Create a copy of the plants list to safely iterate through
+        List<Plant> currentPlants = new ArrayList<>(this.plants);
+    
+        for (Plant p : currentPlants) {
+            // Skip plants that have already been removed
+            if (!this.plants.contains(p)) {
+                continue;
+            }
+            
+            // Create a basic action result by default
+            ActionResult result = new ActionResult(
+                ActionType.BASIC_ACTION,
+                p, null, p.getX(), p.getY());
+                
+            if (p.canReproduce()) {
+                float healthReduction = (p.getHealth() * 0.3f);
+                p.adjustHealth(-healthReduction);
+
+                Plant newPlant = p.performAsexualReproduction();
+                if (newPlant != null) {
+                    this.plants.add(newPlant);
+                    this.map.initialisePlacement(newPlant);
+                    this.newbornPlants.add(newPlant);
+                    this.totalNewbornPlants++;
+                    
+                    // Create successful breeding action result
+                    result = new ActionResult(
+                        ActionType.SUCCESSFUL_BREEDING,
+                        p, null, p.getX(), p.getY(), null);
+                }
+            }
+    
+            p.performEnergyCycle();
+    
+            // Only notify if it's not a basic action
+            if (actionListener != null && result.getActionType() != ActionType.BASIC_ACTION) {
+                actionListener.onActionPerformed(result);
+            }
+        }
+    }
+
+    public void processOrganismsTurn() {
+        this.processAnimalsTurn();
+        this.processPlantsTurn();
+    }
+
     public void resetNewAndDeadOrganisms() {
         this.deadAnimals.clear();
         this.deadPlants.clear();
         this.newbornAnimals.clear();
+        this.newbornPlants.clear();
     }
 
     public void checkOrganismsHealth() {
@@ -140,6 +188,28 @@ public class EcosystemMan {
                     ActionType.DIED,
                     animal, null,
                     animal.getX(), animal.getY());
+                actionListener.onActionPerformed(deathResult);
+            }
+        }
+
+        List<Plant> plantsToRemove = new ArrayList<>();
+
+        for (Plant plant : this.plants) {
+            if (plant.getHealth() <= 0) {
+                plantsToRemove.add(plant);
+            }
+        }
+
+        for (Plant plant : plantsToRemove) {
+            this.map.getGrid().rmv(plant);
+            this.plants.remove(plant);
+            this.deadPlants.add(plant);
+            this.totalDeadPlants++;
+
+            if (actionListener != null) {
+                ActionResult deathResult = new ActionResult(
+                    ActionType.DIED,
+                    plant, null, plant.getX(), plant.getY());
                 actionListener.onActionPerformed(deathResult);
             }
         }
@@ -225,7 +295,7 @@ public class EcosystemMan {
     }
 
     public boolean isAtMaxCapacity() {
-        return this.animals.size() >= this.config.maxCapacity();
+        return this.animals.size() + this.plants.size() >= this.config.maxCapacity();
     }
     public void updateEnvironmentConditions() {
         // Increment day count first
@@ -298,6 +368,10 @@ public class EcosystemMan {
 
     public List<Animal> getNewbornAnimals() {
         return this.newbornAnimals;
+    }
+
+    public List<Plant> getNewbornPlants() {
+        return this.newbornPlants;
     }
 
     public int getTotalDeadAnimals() {

@@ -2,6 +2,7 @@ package ecosim.organism.plant.abs;
 
 import ecosim.attrs.Observable;
 import ecosim.attrs.Observer;
+import ecosim.common.Util;
 import ecosim.enm.Event;
 import ecosim.enm.Size;
 import ecosim.enm.TimeOfDay;
@@ -117,17 +118,14 @@ public abstract class Plant extends Organism implements Observer {
      * @return A new plant instance or null if reproduction fails
      */
     public Plant createClone() {
-        // Simple health check - must be at least 40% healthy to reproduce
-        if (this.health < this.getMaxHealth() * 0.4f) {
-            return null; // Too unhealthy to reproduce
-        }
         
         Plant clone = clone(); // This calls the concrete subclass implementation
         if (clone != null) {
             // Simple health setting - offspring gets 60% of max health
+            clone.size = this.size;
             clone.health = clone.getMaxHealth() * 0.6f;
-            
             clone.growthRate = this.growthRate;
+            clone.symbol = this.symbol;
             clone.energyCycleState = this.energyCycleState;
             
             // Simple health cost - reproduction costs 15% of max health
@@ -174,7 +172,6 @@ public abstract class Plant extends Organism implements Observer {
         // Handle weather changes by updating growth rate
         this.updateGrowthRate(weather);
         this.adjustGrowthRateForHealth(); // Apply health effects to growth rate
-        this.performEnergyCycle(weather);
     }
     
     /**
@@ -234,12 +231,13 @@ public abstract class Plant extends Organism implements Observer {
      * 
      * @param currentWeather Current weather condition affecting energy cycle
      */
-    public void performEnergyCycle(Weather currentWeather) {
+    public void performEnergyCycle() {
         if (this.energyCycleState != null && !isDead()) {
-            // Get base health change from energy cycle
-            float healthChange = this.energyCycleState.performEnergyCycle(growthRate, currentWeather);
+                        // Get base health change from energy cycle
+            float healthChange = this.energyCycleState.performEnergyCycle(growthRate);
             
             float healthPercentage = this.health / this.getMaxHealth();
+            
             if (healthPercentage < 0.5f) {
                 // Low health plants get less benefit/more harm
                 if (healthChange > 0) {
@@ -249,7 +247,6 @@ public abstract class Plant extends Organism implements Observer {
                 }
             }
             
-            // Apply the health change
             adjustHealth(healthChange);
         }
     }
@@ -271,6 +268,23 @@ public abstract class Plant extends Organism implements Observer {
         return this.health <= HEALTH_THRESHOLD || biteCapacity <= 0;
     }
 
+    public boolean canReproduce() {
+        // Only attempt reproduction if health is above 60% of max health
+        if (this.health < this.getMaxHealth() * 0.6) {
+            return false;
+        }
+        
+        // Make reproduction extremely rare with these rates:
+        // - 1% chance for plants at 60% health
+        // - 2% chance for plants at 80% health 
+        // - 4% chance for plants at 100% health
+        int randomRoll = Util.randInt(0, 100);
+        
+        int healthPercentage = (int)((this.health / this.getMaxHealth()) * 100);
+        int chanceThreshold = (healthPercentage - 40) / 15;  // Maps 60-100% to 1-4%
+        
+        return randomRoll < chanceThreshold;
+    }
     /**
      * Adds specified amount to plant's health, capped at max health.
      * Health cannot go below zero.
