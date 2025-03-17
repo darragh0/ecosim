@@ -9,7 +9,7 @@ import ecosim.game_engine.organism.animal.concrete.GrasslandAnimal;
  * Creates animals adapted to grassland environment conditions.
  * @author Kabidoye-17, jjola00
  */
-public class GrasslandAnimalBuilder extends AbstractAnimalBuilder {
+public class GrasslandAnimalBuilder extends AnimalBuilder {
     
     /**
      * Creates a grassland animal builder with the provided descriptor.

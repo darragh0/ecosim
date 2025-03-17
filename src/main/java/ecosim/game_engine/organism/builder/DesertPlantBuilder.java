@@ -9,7 +9,7 @@ import ecosim.game_engine.organism.plant.concrete.DesertPlant;
  * Creates plants adapted to desert environment conditions.
  * @author Kabidoye-17, MiaBorkoo
  */
-public class DesertPlantBuilder extends AbstractPlantBuilder {
+public class DesertPlantBuilder extends PlantBuilder {
         
     /**
      * Creates a new desert plant builder.

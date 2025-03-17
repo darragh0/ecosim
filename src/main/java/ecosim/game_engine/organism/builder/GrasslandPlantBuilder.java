@@ -9,7 +9,7 @@ import ecosim.game_engine.organism.plant.concrete.GrasslandPlant;
  * Creates plants adapted to grassland environment conditions.
  * @author Kabidoye-17, MiaBorkoo
  */
-public class GrasslandPlantBuilder extends AbstractPlantBuilder {
+public class GrasslandPlantBuilder extends PlantBuilder {
       
     /**
      * Creates a new grassland plant builder.
@@ -25,7 +25,7 @@ public class GrasslandPlantBuilder extends AbstractPlantBuilder {
      * 
      * @return A grassland-specific plant instance
      */
-    @Override
+
     protected Plant createPlantInstance() {
         return new GrasslandPlant();
     }
