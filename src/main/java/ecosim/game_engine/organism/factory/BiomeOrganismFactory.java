@@ -1,5 +1,10 @@
-
 package ecosim.game_engine.organism.factory;
+
+/**
+ * Interface for biome-specific organism factories.
+ * Provides methods to create appropriate builders for each biome.
+ * @author Kabidoye-17
+ */
 
 import ecosim.game_engine.misc.AnimalDescriptor;
 import ecosim.game_engine.misc.PlantDescriptor;

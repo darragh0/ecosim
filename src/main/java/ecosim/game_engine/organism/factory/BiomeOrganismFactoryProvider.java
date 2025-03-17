@@ -4,6 +4,8 @@ import ecosim.game_engine.enm.Biome;
 
 /**
  * Provider for biome-specific organism factories.
+ * Selects the appropriate factory implementation based on the biome type.
+ * @author Kabidoye-17
  */
 public class BiomeOrganismFactoryProvider {
     
@@ -12,6 +14,7 @@ public class BiomeOrganismFactoryProvider {
      * 
      * @param biome The biome to get a factory for
      * @return A factory instance for the biome
+     * @throws IllegalArgumentException if an unsupported biome is provided
      */
     public static BiomeOrganismFactory getFactory(Biome biome) {
         return switch (biome) {
