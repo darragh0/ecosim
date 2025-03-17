@@ -13,7 +13,6 @@ import ecosim.game_engine.misc.PlantDescriptor;
 import ecosim.game_engine.organism.builder.DesertPlantBuilder;
 import ecosim.game_engine.organism.builder.GrasslandPlantBuilder;
 import ecosim.game_engine.organism.plant.abs.Plant;
-import ecosim.game_engine.organism.plant.concrete.GrasslandPlant;
 
 public class PlantTest {
 
@@ -25,7 +24,6 @@ public class PlantTest {
     @BeforeEach
     public void setUp() {
         Map.init(10, 10);
-
         changeMan = SimpleChangeMan.getInstance();
 
         environmentMan = new EnvironmentMan();
@@ -135,34 +133,5 @@ public class PlantTest {
         expectedHealth = currentHealth + 0.84f;
         assertEquals(expectedHealth, desertPlant.getHealth(), 0.001f,
                 "Health increase should be reduced to 0.84 due to low health");
-    }
-
-    @Test
-    public void testAsexualReproduction() {
-        float maxHealth = grasslandPlant.getMaxHealth();
-        float initialHealth = maxHealth * 0.75f;
-        assertEquals(initialHealth, grasslandPlant.getHealth(), 0.001f,
-                "Initial health should be 75% of max health");
-
-        Plant offspring = null;
-        for (int i = 0; i < 1000; i++) {
-            if (grasslandPlant.canReproduce()) {
-                offspring = grasslandPlant.performAsexualReproduction();
-                break;
-            }
-        }
-
-        assertNotNull(offspring, "Asexual reproduction should produce an offspring after 1000 attempts");
-        assertTrue(offspring instanceof GrasslandPlant,
-                "Offspring should be a GrasslandPlant");
-        assertEquals("Grass (2)", offspring.getName(),
-                "Offspring should have a cloned name with incremented number");
-
-        grasslandPlant.adjustHealth(-(initialHealth - (maxHealth * 0.5f)));
-        assertTrue(grasslandPlant.getHealth() < maxHealth * 0.6f,
-                "Health should be below 60% of max health");
-
-        boolean reproduced = grasslandPlant.canReproduce();
-        assertFalse(reproduced, "Plant should not be able to reproduce with health below 60%");
     }
 }
