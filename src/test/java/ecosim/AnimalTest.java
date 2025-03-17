@@ -34,7 +34,7 @@ public class AnimalTest {
             "Lizard", Size.SMALL, Diet.OMNIVORE, ActivityType.DIURNAL, false, "Hiss", "🦎");
         DesertAnimalBuilder desertBuilder = new DesertAnimalBuilder(desertDesc);
         desertAnimal = desertBuilder.buildBasicProperties().applyDecorators().build();
-        desertAnimal.setHealth(desertAnimal.getMaxHealth()); // Initialize health
+        desertAnimal.setHealth(desertAnimal.getMaxHealth()); 
 
         AnimalDescriptor grassDesc = new AnimalDescriptor(
             "Rabbit", Size.MEDIUM, Diet.HERBIVORE, ActivityType.NOCTURNAL, true, "Squeak", "🐰");

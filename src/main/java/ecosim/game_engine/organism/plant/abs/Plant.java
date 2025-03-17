@@ -79,6 +79,18 @@ public abstract class Plant extends Organism implements Observer {
         return this;
     }
 
+    public float getGrowthRate() {
+        return growthRate;
+    }
+
+    public void setGrowthRate(float growthRate) {
+        this.growthRate = growthRate;
+    }
+
+    public EnergyCycleState getEnergyCycleState() {
+        return energyCycleState;
+    }
+
     /**
      * Sets the display symbol for this plant.
      * 

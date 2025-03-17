@@ -1,0 +1,3756 @@
+enm\ActivityState.java:
+<code>
+package ecosim.game_engine.enm;
+
+import static ecosim.common.Util.title;
+
+/**
+ * Enum representing the various activity states
+ * an organism can be in, such as sleeping or hibernating.
+ * 
+ * @author jjola00
+ */
+public enum ActivityState {
+    SLEEPING,
+    HIBERNATING,
+    AWAKE;
+
+    @Override
+    public String toString() {
+        return title(this.name());
+    }
+}
+
+</code>
+
+enm\ActivityType.java:
+<code>
+package ecosim.game_engine.enm;
+
+
+public enum ActivityType {
+    DIURNAL,
+    NOCTURNAL;
+}
+
+</code>
+
+enm\Biome.java:
+<code>
+package ecosim.game_engine.enm;
+
+
+import static ecosim.common.Util.title;
+
+
+public enum Biome {
+    DESERT,
+    GRASSLAND;
+
+    @Override
+    public String toString() {
+        return title(this.name());
+    }
+
+}
+
+</code>
+
+enm\Diet.java:
+<code>
+package ecosim.game_engine.enm;
+
+
+public enum Diet {
+    HERBIVORE,
+    CARNIVORE,
+    OMNIVORE;
+}
+
+</code>
+
+enm\Direction.java:
+<code>
+package ecosim.game_engine.enm;
+
+
+public enum Direction {
+    NORTH(0, 1),
+    EAST(1, 0),
+    SOUTH(0, -1),
+    WEST(-1, 0);
+
+    private final int dx;
+    private final int dy;
+
+    Direction(final int dx, final int dy) {
+        this.dx = dx;
+        this.dy = dy;
+    }
+
+    public int getDx() {
+        return this.dx;
+    }
+
+    public int getDy() {
+        return this.dy;
+    }
+
+}
+
+</code>
+
+enm\EnergyCycle.java:
+<code>
+package ecosim.game_engine.enm;
+
+
+import static ecosim.common.Util.title;
+
+
+public enum EnergyCycle {
+    PHOTOSYNTHESIS,
+    RESPIRATION;
+
+    @Override
+    public String toString() {
+        return title(this.name());
+    }
+
+}
+
+
+</code>
+
+enm\Event.java:
+<code>
+package ecosim.game_engine.enm;
+
+public interface Event {
+    String getIcon();
+}
+</code>
+
+enm\Season.java:
+<code>
+package ecosim.game_engine.enm;
+
+import static ecosim.common.Util.title;
+
+public enum Season implements Event {
+    SPRING("🌸"),
+    SUMMER("🏖️"),
+    AUTUMN("🍂"),
+    WINTER("☃️");
+
+    private final String icon;
+
+    @Override
+    public String getIcon() {
+        return this.icon;
+    }
+
+    @Override
+    public String toString() {
+        return title(this.name());
+    }
+
+    Season(String icon) {   
+        this.icon = icon;
+    }
+    
+}
+
+
+</code>
+
+enm\Size.java:
+<code>
+package ecosim.game_engine.enm;
+
+
+public enum Size {
+    SMALL(10, 3),
+    MEDIUM(20, 9),
+    LARGE(30, 15);
+
+    private final int maxHealth;
+    private final int nutritionalValue;
+
+    Size(int maxHealth, int nutritionalValue) {
+        this.maxHealth = maxHealth;
+        this.nutritionalValue = nutritionalValue;
+    }
+
+    public int getMaxHealth() {
+        return this.maxHealth;
+    }
+
+    public int getNutritionalValue() {
+        return this.nutritionalValue;
+    }
+
+}
+
+</code>
+
+enm\TimeOfDay.java:
+<code>
+package ecosim.game_engine.enm;
+
+import static ecosim.common.Util.title;
+
+public enum TimeOfDay implements Event {
+    DAY("🌅"),
+    NIGHT("🌙");
+
+    private final String icon;
+
+    @Override
+    public String getIcon() {
+        return this.icon;
+    }
+
+    @Override
+    public String toString() {
+        return title(this.name());
+    }
+
+    TimeOfDay(String icon) {
+        this.icon = icon;
+    }
+}
+
+
+</code>
+
+enm\Weather.java:
+<code>
+package ecosim.game_engine.enm;
+
+import static ecosim.common.Util.title;
+
+public enum Weather implements Event {
+    RAINY("🌧️"),
+    SUNNY("☀️"),
+    DRY("💨"),
+    CLOUDY("☁️"),
+    SNOWY("❄️");
+
+    private final String icon;
+
+    @Override
+    public String getIcon() {
+        return this.icon;
+    }
+
+
+    @Override
+    public String toString() {
+       return title(this.name());
+    }
+
+    Weather(String icon) {
+        this.icon = icon ;
+    }
+}
+
+</code>
+
+man\BiomeMan.java:
+<code>
+package ecosim.game_engine.man;
+
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.logging.Level;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import ecosim.common.io.FileIO;
+import ecosim.game_engine.enm.ActivityType;
+import ecosim.game_engine.enm.Biome;
+import ecosim.game_engine.enm.Diet;
+import ecosim.game_engine.enm.Size;
+import ecosim.game_engine.misc.AnimalDescriptor;
+import ecosim.game_engine.misc.PlantDescriptor;
+
+
+public class BiomeMan {
+
+    private static final String JSON_FILE = "biome_natives.json";
+
+    private final Biome biome;
+    private final List<AnimalDescriptor> animals;
+    private final List<PlantDescriptor> plants;
+
+    public BiomeMan(final Biome biome) {
+        this.biome = biome;
+        this.animals = new ArrayList<>();
+        this.plants = new ArrayList<>();
+        LoggerMan.log(Level.INFO, "Biome created: " + this.biome.name());
+    }
+
+    public void setupBiome() {
+        final String biomeName = this.biome.name();
+        LoggerMan.log(Level.INFO, "Setting up biome: {0}", biomeName);
+        final Optional<JSONObject> jsonFile = FileIO.readJSONFile(JSON_FILE);
+
+        if (jsonFile.isEmpty()) {
+            LoggerMan.log(Level.SEVERE, "Could not setup biome: {0}", biomeName);
+            return;
+        }
+
+        final JSONObject json = jsonFile.get();
+        if (!json.has(biomeName)) {
+            LoggerMan.log(Level.SEVERE, "Biome not found: {0}", biomeName);
+            return;
+        }
+
+        final JSONObject biomeData = json.getJSONObject(biomeName);
+
+        // TODO: Make this a single method maybe (DRY principle and all that)
+        this.initAnimalList(biomeData);
+        this.initPlantList(biomeData);
+
+        LoggerMan.log(Level.INFO, "Biome setup complete: {0}", biomeName);
+    }
+
+    private void initAnimalList(JSONObject biomeData) {
+        final String key = "ANIMALS";
+        
+        if (!biomeData.has(key)) {
+            LoggerMan.log(Level.SEVERE, "No animals found for biome: {0}", biome.name());
+            return;
+        }
+        final JSONObject animalJson = biomeData.getJSONObject(key);
+
+        for (final String animalKey : animalJson.keySet()) {
+            final JSONObject animalData = animalJson.getJSONObject(animalKey);
+            
+            try {
+                // Get the display name (either from JSON or use the key)
+                final String displayName = animalData.optString("name", animalKey);
+                
+                // Create size enum
+                final Size size;
+                try {
+                    size = Size.valueOf(animalData.getString("size"));
+                } catch (IllegalArgumentException e) {
+                    LoggerMan.log(Level.SEVERE, "Invalid size for animal: {0}", displayName);
+                    continue;
+                }
+                
+                // Create diet enum
+                final Diet diet;
+                try {
+                    diet = Diet.valueOf(animalData.getString("diet"));
+                } catch (IllegalArgumentException e) {
+                    LoggerMan.log(Level.SEVERE, "Invalid diet for animal: {0}", displayName);
+                    continue;
+                }
+                final ActivityType activityType;
+                try {
+                    activityType = ActivityType.valueOf(animalData.getString("activityType"));
+                } catch (IllegalArgumentException e) {
+                    LoggerMan.log(Level.SEVERE, "Invalid activity type for animal: {0}", displayName);
+                    continue;
+                }
+
+                // Create animal descriptor without biome field
+                final AnimalDescriptor animalDescriptor = new AnimalDescriptor(
+                    displayName,
+                    size,
+                    diet,
+                    activityType,
+                    animalData.getBoolean("canHibernate"),
+                    animalData.getString("sound"),
+                    animalData.getString("symbol"));
+
+                this.animals.add(animalDescriptor);
+                LoggerMan.log(Level.INFO, "Loaded animal: {0}", displayName);
+            } catch (JSONException ex) {
+                LoggerMan.log(Level.SEVERE, "Error loading animal: {0}", ex.getMessage());
+            }
+        }
+
+        LoggerMan.log(Level.INFO, "Loaded native {0} for biome: {1}", key, biome.name());
+    }
+
+    private void initPlantList(JSONObject biomeData) {
+        final String key = "PLANTS";
+        
+        if (!biomeData.has(key)) {
+            LoggerMan.log(Level.SEVERE, "No plants found for biome: {0}", biome.name());
+            return;
+        }
+
+        final JSONObject plantJson = biomeData.getJSONObject(key);
+
+        for (final String plantKey : plantJson.keySet()) {
+            final JSONObject plantData = plantJson.getJSONObject(plantKey);
+            
+            try {
+                // Get display name (either from JSON or use the key)
+                final String displayName = plantData.optString("name", plantKey);
+                
+                // Create size enum
+                final Size size;
+                try {
+                    size = Size.valueOf(plantData.optString("size", "MEDIUM"));
+                } catch (IllegalArgumentException e) {
+                    LoggerMan.log(Level.SEVERE, "Invalid size for plant: {0}", displayName);
+                    continue;
+                }
+
+                final PlantDescriptor plantDescriptor = new PlantDescriptor(
+                    displayName,
+                    size,
+                    plantData.getString("symbol"));
+
+                this.plants.add(plantDescriptor);
+                LoggerMan.log(Level.INFO, "Loaded plant: {0}", displayName);
+            } catch (JSONException ex) {
+                LoggerMan.log(Level.SEVERE, "Error loading plant: {0}", ex.getMessage());
+            }
+        }
+
+        LoggerMan.log(Level.INFO, "Loaded native {0} for biome: {1}", key, biome.name());
+    }
+
+    public Biome getBiome() {
+        return this.biome;
+    }
+
+    public List<AnimalDescriptor> getAnimals() {
+        return this.animals;
+    }
+
+    public List<PlantDescriptor> getPlants() {
+        return this.plants;
+    }
+
+}
+
+</code>
+
+man\ChangeMan.java:
+<code>
+package ecosim.game_engine.man;
+
+
+import ecosim.attrs.Observable;
+import ecosim.attrs.Observer;
+
+
+public interface ChangeMan {
+    void register(Observable observable, Observer observer);
+
+    void unregister(Observable observable, Observer observer);
+
+    void notifyObservers(Observable subject);
+
+}
+
+</code>
+
+man\EcosystemMan.java:
+<code>
+package ecosim.game_engine.man;
+
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.logging.Level;
+
+import ecosim.common.io.FileIO;
+import ecosim.game_engine.enm.Biome;
+import ecosim.game_engine.enm.Season;
+import ecosim.game_engine.enm.TimeOfDay;
+import ecosim.game_engine.enm.Weather;
+import ecosim.game_engine.map.ActionResult;
+import ecosim.game_engine.map.ActionResult.ActionType;
+import static ecosim.game_engine.map.ActionResult.ActionType.SUCCESSFUL_EATING;
+import ecosim.game_engine.map.Grid;
+import ecosim.game_engine.map.Map;
+import ecosim.game_engine.map.Map.MapSize;
+import ecosim.game_engine.misc.AnimalDescriptor;
+import ecosim.game_engine.misc.EcosystemConfig;
+import ecosim.game_engine.misc.PlantDescriptor;
+import ecosim.game_engine.organism.animal.abs.Animal;
+import ecosim.game_engine.organism.builder.AnimalBuilder;
+import ecosim.game_engine.organism.builder.PlantBuilder;
+import ecosim.game_engine.organism.factory.BiomeOrganismFactory;
+import ecosim.game_engine.organism.factory.BiomeOrganismFactoryProvider;
+import ecosim.game_engine.organism.plant.abs.Plant;
+import ecosim.ui.view.ActionResultListener;
+
+
+public class EcosystemMan {
+
+    private final EnvironmentMan environment;
+    private int dayCount;
+    private final ArrayList<Animal> animals;
+    private final ArrayList<Plant> plants;
+    private final List<Animal> deadAnimals;
+    private final List<Plant> deadPlants;
+    private int totalDeadAnimals;
+    private int totalDeadPlants;
+    private final List<Animal> newbornAnimals;
+    private final List<Plant> newbornPlants;
+    private int totalNewbornAnimals;
+    private int totalNewbornPlants;
+    private final Map map;
+    private final EcosystemConfig config;
+
+    private ActionResultListener actionListener;
+
+    public EcosystemMan() {
+        this.environment = new EnvironmentMan();
+        this.dayCount = 0;
+        this.animals = new ArrayList<>();
+        this.plants = new ArrayList<>();
+        this.deadAnimals = new ArrayList<>();
+        this.deadPlants = new ArrayList<>();
+        this.totalDeadAnimals = 0;
+        this.totalDeadPlants = 0;
+        this.newbornAnimals = new ArrayList<>();
+        this.newbornPlants = new ArrayList<>();
+        this.totalNewbornAnimals = 0;
+        this.totalNewbornPlants = 0;
+        this.map = Map.init(8, 8);
+        this.config = this.loadConfig();
+    }
+
+    private  void processAnimalsTurn() {
+        // Create a copy of the animals list to safely iterate through
+        List<Animal> currentAnimals = new ArrayList<>(this.animals);
+
+        for (Animal a : currentAnimals) {
+            // Skip animals that have already been removed
+            if (!this.animals.contains(a)) {
+                continue;
+            }
+
+            ActionResult result = a.move();
+            ActionType actionType = result.getActionType();
+
+            // Handle new offspring from breeding
+            if (actionType == ActionType.SUCCESSFUL_BREEDING && result.getOffspring() != null) {
+                Animal offspring = result.getOffspring();
+                this.animals.add(offspring);
+                this.newbornAnimals.add(offspring);
+                this.totalNewbornAnimals++;
+
+                // Register the new animal with environment observers
+                this.environment.registerTimeOfDayObservers(offspring);
+                this.environment.registerSeasonObservers(offspring);
+            }
+
+            if (actionType == SUCCESSFUL_EATING) {
+                switch (result.getTarget()) {
+                    case Plant plant -> {
+                        if (plant.isDead()) {
+                            this.plants.remove(plant);
+                            this.deadPlants.add(plant);
+                            this.totalDeadPlants++;
+                        }
+                    }
+                    case Animal animal -> {
+                        this.animals.remove(animal);
+                        this.deadAnimals.add(animal);
+                        this.totalDeadAnimals++;
+                    }
+                    default -> LoggerMan.log(Level.WARNING, "Unknown target type: " + result.getTarget());
+                }
+            }
+
+            if (actionListener != null) {
+                actionListener.onActionPerformed(result);
+            }
+        }
+    }
+
+    private  void processPlantsTurn(){
+        // Create a copy of the plants list to safely iterate through
+        List<Plant> currentPlants = new ArrayList<>(this.plants);
+    
+        for (Plant p : currentPlants) {
+            // Skip plants that have already been removed
+            if (!this.plants.contains(p)) {
+                continue;
+            }
+            
+            // Create a basic action result by default
+            ActionResult result = new ActionResult(
+                ActionType.BASIC_ACTION,
+                p, null, p.getX(), p.getY());
+                
+            if (p.canReproduce()) {
+                float healthReduction = (p.getHealth() * 0.3f);
+                p.adjustHealth(-healthReduction);
+
+                Plant newPlant = p.performAsexualReproduction();
+                if (newPlant != null) {
+                    this.plants.add(newPlant);
+                    this.map.initialisePlacement(newPlant);
+                    this.newbornPlants.add(newPlant);
+                    this.totalNewbornPlants++;
+                    
+                    // Create successful breeding action result
+                    result = new ActionResult(
+                        ActionType.SUCCESSFUL_BREEDING,
+                        p, null, p.getX(), p.getY(), null);
+                }
+            }
+    
+            p.performEnergyCycle();
+    
+            // Only notify if it's not a basic action
+            if (actionListener != null && result.getActionType() != ActionType.BASIC_ACTION) {
+                actionListener.onActionPerformed(result);
+            }
+        }
+    }
+
+    public void processOrganismsTurn() {
+        this.processAnimalsTurn();
+        this.processPlantsTurn();
+    }
+
+    public void resetNewAndDeadOrganisms() {
+        this.deadAnimals.clear();
+        this.deadPlants.clear();
+        this.newbornAnimals.clear();
+        this.newbornPlants.clear();
+    }
+
+    public void checkOrganismsHealth() {
+
+        List<Animal> animalsToRemove = new ArrayList<>();
+
+        for (Animal animal : this.animals) {
+            if (animal.getHealth() <= 0) {
+                animalsToRemove.add(animal);
+            }
+        }
+        for (Animal animal : animalsToRemove) {
+            this.map.getGrid().rmv(animal);
+            this.animals.remove(animal);
+            this.deadAnimals.add(animal);
+            this.totalDeadAnimals++;
+
+            if (actionListener != null) {
+                ActionResult deathResult = new ActionResult(
+                    ActionType.DIED,
+                    animal, null,
+                    animal.getX(), animal.getY());
+                actionListener.onActionPerformed(deathResult);
+            }
+        }
+
+        List<Plant> plantsToRemove = new ArrayList<>();
+
+        for (Plant plant : this.plants) {
+            if (plant.getHealth() <= 0) {
+                plantsToRemove.add(plant);
+            }
+        }
+
+        for (Plant plant : plantsToRemove) {
+            this.map.getGrid().rmv(plant);
+            this.plants.remove(plant);
+            this.deadPlants.add(plant);
+            this.totalDeadPlants++;
+
+            if (actionListener != null) {
+                ActionResult deathResult = new ActionResult(
+                    ActionType.DIED,
+                    plant, null, plant.getX(), plant.getY());
+                actionListener.onActionPerformed(deathResult);
+            }
+        }
+
+    }
+
+    private void createAnimal(AnimalDescriptor descriptor, String biomeName) {
+    try{
+        Biome biome = Biome.valueOf(biomeName);
+
+        BiomeOrganismFactory factory = BiomeOrganismFactoryProvider.getFactory(biome);
+    
+    // Use the factory to get a builder
+        AnimalBuilder builder = factory.createAnimalBuilder(descriptor);
+        
+        // Build the animal with basic properties and apply decorators
+        Animal animal = builder
+            .buildBasicProperties()
+            .applyDecorators()
+            .build();
+        
+        // Register observers and add to the ecosystem
+        this.environment.registerTimeOfDayObservers(animal);
+            this.environment.registerSeasonObservers(animal);
+            this.animals.add(animal);
+        } catch (IllegalArgumentException e) {
+            LoggerMan.log(Level.SEVERE, "Invalid biome name: " + biomeName);
+        }
+    }
+    
+
+
+    public void createPlant(PlantDescriptor descriptor, String biomeName) {
+        try{
+            Biome biome = Biome.valueOf(biomeName);
+
+            BiomeOrganismFactory factory = BiomeOrganismFactoryProvider.getFactory(biome);
+            
+            // Use the factory to get a builder
+            PlantBuilder builder = factory.createPlantBuilder(descriptor);
+            
+            // Build the plant with basic properties
+            Plant plant = builder
+                .buildBasicProperties()
+                .build();
+            
+            // Register observers and add to the ecosystem
+            this.environment.registerTimeOfDayObservers(plant);
+            this.environment.registerWeatherObservers(plant);
+            this.plants.add(plant);
+        } catch (IllegalArgumentException e) {
+            LoggerMan.log(Level.SEVERE, "Invalid biome name: " + biomeName);
+        }
+    }
+        // Get the appropriate factory for this biome
+    public void loadEcosystem(List<AnimalDescriptor> animals, List<PlantDescriptor> plants, String biome) {
+
+        for (AnimalDescriptor animal : animals) {
+            this.createAnimal(animal, biome);
+        }
+
+        for (PlantDescriptor plant : plants) {
+            this.createPlant(plant, biome);
+        }
+    }
+
+    public MapSize getMapSize() {
+        return map.getMapDimensions();
+    }
+
+    public Grid getMapGrid() {
+        return this.map.getGrid();
+    }
+
+    public void populateMap() {
+        // Randomly place all organisms on the map during simulation setup
+        this.animals.forEach(a -> this.map.initialisePlacement(a));
+        this.plants.forEach(p -> this.map.initialisePlacement(p));
+    }
+
+    public boolean isEcosystemAlive() {
+        return !this.animals.isEmpty() && !this.plants.isEmpty();
+    }
+
+    public boolean isAtMaxCapacity() {
+        return this.animals.size() + this.plants.size() >= this.config.maxCapacity();
+    }
+    public void updateEnvironmentConditions() {
+        // Increment day count first
+        this.dayCount++;
+
+        // Check if it's time to change the season (every 5 days)
+        if (this.dayCount == 1 || this.dayCount % 5 == 0) {
+            this.environment.updateSeason();
+        }
+
+        this.environment.updateTimeOfDay();
+        this.environment.updateWeather();
+    }
+
+    public void setBiome(Biome biome) {
+        this.environment.setBiome(biome);
+    }
+
+    public List<AnimalDescriptor> getBiomeAnimals() {
+        return this.environment.getBiomeAnimals();
+    }
+
+    public List<PlantDescriptor> getBiomePlants() {
+        return this.environment.getBiomePlants();
+    }
+
+    public int getDayCount() {
+        return this.dayCount;
+    }
+
+    public void updateTimeOfDay() {
+        this.environment.updateTimeOfDay();
+    }
+
+    public Season getCurrentSeason() {
+        return this.environment.getSeason();
+    }
+
+    public Weather getCurrentWeather() {
+        return this.environment.getWeather();
+    }
+
+    public TimeOfDay getCurrentTimeOfDay() {
+        return this.environment.getTimeOfDay();
+    }
+
+    public int getAnimalCount() {
+        return this.animals.size();
+    }
+
+    public int getPlantCount() {
+        return this.plants.size();
+    }
+
+    public List<Animal> getAnimals() {
+        return this.animals;
+    }
+
+    public List<Plant> getPlants() {
+        return this.plants;
+    }
+
+    public List<Animal> getDeadAnimals() {
+        return this.deadAnimals;
+    }
+
+    public List<Plant> getDeadPlants() {
+        return this.deadPlants;
+    }
+
+    public List<Animal> getNewbornAnimals() {
+        return this.newbornAnimals;
+    }
+
+    public List<Plant> getNewbornPlants() {
+        return this.newbornPlants;
+    }
+
+    public int getTotalDeadAnimals() {
+        return this.totalDeadAnimals;
+    }
+
+    public int getTotalDeadPlants() {
+        return this.totalDeadPlants;
+    }
+
+    public int getTotalNewbornAnimals() {
+        return this.totalNewbornAnimals;
+    }   
+
+    public int getTotalNewbornPlants() {
+        return this.totalNewbornPlants;
+    }   
+
+    private EcosystemConfig loadConfig() {
+        final Optional<EcosystemConfig> fileCfg = FileIO.parseEcosystemConfig();
+        if (fileCfg.isEmpty()) {
+            LoggerMan.log(Level.SEVERE, "Could not setup ecosystem controller");
+            return null;
+        }
+        return fileCfg.get();
+    }
+
+    public void setActionListener(ActionResultListener listener) {
+        this.actionListener = listener;
+    }
+
+
+    public int getInitialAnimals() {
+        return this.config.initialAnimals();
+    }
+    
+    public int getMaxDays() {
+        return this.config.maxDays();
+    }
+
+    public int getHoursPerDay() {
+        return this.config.hoursPerDay();
+    }
+
+    public int getInitialPlants() {
+        return this.config.initialPlants();
+    }
+
+}
+
+</code>
+
+man\EnvironmentMan.java:
+<code>
+package ecosim.game_engine.man;
+
+
+import java.util.List;
+
+import ecosim.attrs.Observer;
+import ecosim.game_engine.enm.Biome;
+import ecosim.game_engine.enm.Season;
+import ecosim.game_engine.enm.TimeOfDay;
+import ecosim.game_engine.enm.Weather;
+import ecosim.game_engine.misc.AnimalDescriptor;
+import ecosim.game_engine.misc.PlantDescriptor;
+
+
+
+public class EnvironmentMan {
+    private final WeatherMan weatherMan;
+    private final SeasonMan seasonMan;
+    private final TimeOfDayMan timeOfDayMan;
+    private final ChangeMan changeMan;
+    private BiomeMan biomeMan;
+
+    public EnvironmentMan() {
+        this.changeMan = SimpleChangeMan.getInstance();
+        this.timeOfDayMan = new TimeOfDayMan(this.changeMan);
+        this.seasonMan = new SeasonMan(this.changeMan);
+        this.weatherMan = new WeatherMan(this.changeMan);
+    }
+
+    public void setBiome(final Biome biome) {
+        this.biomeMan = new BiomeMan(biome);
+        this.biomeMan.setupBiome();
+    }
+
+    public void updateSeason() {
+        this.seasonMan.getNextSeason();
+        // load probabilities for new season
+        weatherMan.loadWeatherProbabilities(
+            this.biomeMan.getBiome(),
+            this.seasonMan.getCurrentState());
+    }
+
+    public void updateTimeOfDay() {
+        this.timeOfDayMan.switchTimeOfDay();
+    }
+
+    public void updateWeather() {
+        this.weatherMan.updateRandomWeather();
+    }
+
+    public Weather getWeather() {
+        return this.weatherMan.getCurrentState();
+    }
+
+    public Season getSeason() {
+        return this.seasonMan.getCurrentState();
+    }
+
+    public TimeOfDay getTimeOfDay() {
+        return this.timeOfDayMan.getCurrentState();
+    }
+
+    public List<AnimalDescriptor> getBiomeAnimals() {
+        return this.biomeMan.getAnimals();
+    }
+
+    public List<PlantDescriptor> getBiomePlants() {
+        return this.biomeMan.getPlants();
+    }
+
+    public void registerTimeOfDayObservers(Observer observer) {
+        this.timeOfDayMan.attach(observer);
+    }
+
+    public void registerSeasonObservers(Observer observer) {
+        this.seasonMan.attach(observer);
+    }
+
+    public void registerWeatherObservers(Observer observer) {
+        this.weatherMan.attach(observer);
+    }
+
+}
+
+</code>
+
+man\LoggerMan.java:
+<code>
+package ecosim.game_engine.man;
+
+
+import static ecosim.common.io.ConsoleIO.eprint;
+
+import java.io.IOException;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.logging.FileHandler;
+import java.util.logging.Formatter;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
+
+import ecosim.common.io.FileIO;
+
+
+public class LoggerMan {
+    private static final Logger LOGGER = Logger.getLogger("ecosim");
+    private static final String LOG_FILE_DIR = "src/main/java/ecosim/logs";
+    private static final String LOG_FILE_PATH = LOG_FILE_DIR + "/ecosim.log";
+
+    private LoggerMan() {
+        throw new UnsupportedOperationException("This class cannot be instantiated.");
+    }
+
+    static {
+        initializeLogger();
+    }
+
+    private static void initializeLogger() {
+        try {
+            if (!FileIO.mkdir(LOG_FILE_DIR)) {
+                throw new IOException("Failed to create log directory");
+            }
+
+            // Remove any default handlers i.e the console logger
+            for (Handler handler : LOGGER.getHandlers()) {
+                LOGGER.removeHandler(handler);
+            }
+
+            // Disable use of parent handlers to prevent logging to console
+            LOGGER.setUseParentHandlers(false);
+
+            FileHandler fileHandler = new FileHandler(LOG_FILE_PATH, true);
+            fileHandler.setLevel(Level.ALL);
+            fileHandler.setFormatter(new PrettyFormatter());
+            LOGGER.addHandler(fileHandler);
+
+            // Set logger level
+            LOGGER.setLevel(Level.ALL);
+        } catch (IOException e) {
+            eprint("Logger setup failed: " + e.getMessage());
+        }
+    }
+
+    public static void log(Level level, String message, Object... args) {
+        LOGGER.log(level, message, args);
+    }
+
+    private static class PrettyFormatter extends Formatter {
+        private static final DateTimeFormatter DATE_FORMATTER =
+            DateTimeFormatter.ISO_INSTANT.withZone(ZoneId.systemDefault());
+
+        @Override
+        public String format(LogRecord record) {
+            StringBuilder sb = new StringBuilder();
+
+            sb.append("[").append(record.getLevel()).append("] ");
+            sb.append("(").append(DATE_FORMATTER.format(Instant.ofEpochMilli(record.getMillis()))).append(") ");
+            sb.append(":: ").append(record.getSourceClassName()).append(".").append(record.getSourceMethodName())
+                .append(" ");
+            sb.append(":: ").append(formatMessage(record)).append(System.lineSeparator());
+
+            return sb.toString();
+        }
+
+    }
+
+}
+
+</code>
+
+man\SeasonMan.java:
+<code>
+package ecosim.game_engine.man;
+
+
+import ecosim.attrs.Observable;
+import ecosim.game_engine.enm.Season;
+import static ecosim.game_engine.enm.Season.AUTUMN;
+import static ecosim.game_engine.enm.Season.SPRING;
+import static ecosim.game_engine.enm.Season.SUMMER;
+import static ecosim.game_engine.enm.Season.WINTER;
+
+
+public class SeasonMan extends Observable {
+    private Season currentSeason;
+
+    public SeasonMan(ChangeMan changeManager) {
+        // Start the year in Autumn
+        super(changeManager);
+        this.currentSeason = SUMMER;
+    }
+
+    public void getNextSeason() {
+        switch (currentSeason) {
+            case SPRING -> this.currentSeason = SUMMER;
+            case SUMMER -> this.currentSeason = AUTUMN;
+            case AUTUMN -> this.currentSeason = WINTER;
+            case WINTER -> this.currentSeason = SPRING;
+        }
+        changeManager.notifyObservers(this);
+    }
+
+    @Override
+    public Season getCurrentState() {
+        return this.currentSeason;
+    }
+
+}
+
+</code>
+
+man\SimpleChangeMan.java:
+<code>
+package ecosim.game_engine.man;
+
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import ecosim.attrs.Observable;
+import ecosim.attrs.Observer;
+
+
+public class SimpleChangeMan implements ChangeMan {
+
+    private static SimpleChangeMan instance;
+    private final Map<Observable, List<Observer>> observableObserverMap = new HashMap<>();
+
+    private SimpleChangeMan() {}
+
+    public static SimpleChangeMan getInstance() {
+        if (instance == null) {
+            instance = new SimpleChangeMan();
+        }
+        return instance;
+    }
+
+    @Override
+    public void register(Observable observable, Observer observer) {
+        List<Observer> observers = observableObserverMap.computeIfAbsent(observable, _ -> new ArrayList<>());
+        if (!observers.contains(observer)) {
+            observers.add(observer);
+        }
+    }
+
+    @Override
+    public void unregister(Observable observable, Observer observer) {
+        List<Observer> observers = observableObserverMap.get(observable);
+        if (observers != null) {
+            observers.remove(observer);
+            if (observers.isEmpty()) {
+                observableObserverMap.remove(observable);
+            }
+        }
+    }
+
+
+    @Override
+    public void notifyObservers(Observable observable) {
+        List<Observer> observers = observableObserverMap.get(observable);
+        if (observers != null) {
+            for (Observer obs : observers) {
+                obs.update(observable);
+            }
+        }
+    }
+
+}
+
+</code>
+
+man\TimeOfDayMan.java:
+<code>
+package ecosim.game_engine.man;
+
+
+import ecosim.attrs.Observable;
+import ecosim.game_engine.enm.TimeOfDay;
+import static ecosim.game_engine.enm.TimeOfDay.DAY;
+import static ecosim.game_engine.enm.TimeOfDay.NIGHT;
+
+
+public class TimeOfDayMan extends Observable {
+
+    TimeOfDay currentTimeOfDay;
+
+    public TimeOfDayMan(ChangeMan changeManager) {
+        // Start time of day at night so that when time switchTimeOfDay is called, it will be day
+        super(changeManager);
+        this.currentTimeOfDay = NIGHT;
+    }
+
+    public void switchTimeOfDay() {
+        switch (currentTimeOfDay) {
+            case DAY -> this.currentTimeOfDay = NIGHT;
+            case NIGHT -> this.currentTimeOfDay = DAY;
+        };
+        this.changeManager.notifyObservers(this);
+    }
+
+    @Override
+    public TimeOfDay getCurrentState() {
+        return this.currentTimeOfDay;
+    }
+
+}
+
+</code>
+
+man\WeatherMan.java:
+<code>
+package ecosim.game_engine.man;
+
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import ecosim.attrs.Observable;
+import ecosim.game_engine.enm.Biome;
+import ecosim.game_engine.enm.Season;
+import ecosim.game_engine.enm.Weather;
+
+
+public class WeatherMan extends Observable {
+
+    private Weather currentWeather;
+    private Map<Weather, Double> weatherProbabilities;
+
+    public WeatherMan(ChangeMan changeManager) {
+        super(changeManager);
+        weatherProbabilities = new HashMap<>();
+    }
+
+    @Override
+    public Weather getCurrentState() {
+        return this.currentWeather;
+    }
+
+    public void loadWeatherProbabilities(final Biome biome, final Season season) {
+        String biomeName = biome.name();
+        String seasonName = season.name();
+        Map<Weather, Double> tempProbabilities = new HashMap<>();
+
+        try {
+            String content =
+                new String(Files.readAllBytes(Paths.get("src/main/resources/json/weather_probabilities.json")));
+            JSONObject json = new JSONObject(content);
+
+            if (json.has(biomeName)) {
+                JSONObject biomeData = json.getJSONObject(biomeName);
+                if (biomeData.has(seasonName)) {
+                    JSONObject seasonData = biomeData.getJSONObject(seasonName);
+                    for (String key : seasonData.keySet()) {
+                        Weather weather = Weather.valueOf(key.toUpperCase());
+                        double probability = seasonData.getDouble(key);
+                        tempProbabilities.put(weather, probability);
+                    }
+                } else {
+                    LoggerMan.log(Level.WARNING, "Season not found for biome: {0}", seasonName);
+                }
+            } else {
+                LoggerMan.log(Level.WARNING, "Biome not found: {0}", biomeName);
+            }
+        } catch (IOException | JSONException | IllegalArgumentException e) {
+            LoggerMan.log(Level.SEVERE, "Error loading weather probabilities: {0}", e.getMessage());
+        }
+
+        this.weatherProbabilities = tempProbabilities;
+    }
+
+
+    public void updateRandomWeather() {
+        double random = Math.random();
+        double cumulative = 0.0;
+        for (Map.Entry<Weather, Double> entry : this.weatherProbabilities.entrySet()) {
+            cumulative += entry.getValue();
+            if (random <= cumulative) {
+                this.currentWeather = entry.getKey();
+                changeManager.notifyObservers(this); 
+                return;
+            }
+        }
+        this.currentWeather = Weather.CLOUDY; // fallback
+        changeManager.notifyObservers(this);
+    }
+}
+
+</code>
+
+map\ActionResult.java:
+<code>
+package ecosim.game_engine.map;
+
+import ecosim.game_engine.organism.Organism;
+import ecosim.game_engine.organism.animal.abs.Animal;
+
+public class ActionResult {
+    public enum ActionType {
+        BASIC_ACTION,
+        DIED,
+        ATTEMPTED_BREEDING,
+        SUCCESSFUL_BREEDING,
+        ATTEMPTED_EATING,
+        SUCCESSFUL_EATING
+    }
+    
+    private final ActionType actionType;
+    private final Organism actor; // Changed from Animal to Organism
+    private final Organism target;
+    private final int newX;
+    private final int newY;
+    private final Animal offspring;  // Keep this as Animal for now
+    
+    public ActionResult(
+            ActionType actionType,
+            Organism actor,  // Changed from Animal to Organism
+            Organism target,
+            int newX,
+            int newY,
+            Animal offspring) {
+        this.actionType = actionType;
+        this.actor = actor;
+        this.target = target;
+        this.newX = newX;
+        this.newY = newY;
+        this.offspring = offspring;
+    }
+    
+    public ActionResult(
+            ActionType actionType,
+            Organism actor, // Changed from Animal to Organism
+            Organism target,
+            int newX,
+            int newY) {
+        this(actionType, actor, target, newX, newY, null);
+    }
+    
+    // Update getter to return Organism instead of Animal
+    public Organism getActor() {
+        return this.actor;
+    }
+    
+    // Keep other getters the same
+    public ActionType getActionType() { return this.actionType; }
+    public Organism getTarget() { return this.target; }
+    public int getNewX() { return this.newX; }
+    public int getNewY() { return this.newY; }
+    public Animal getOffspring() { return this.offspring; }
+}
+</code>
+
+map\Coords.java:
+<code>
+package ecosim.game_engine.map;
+
+
+public class Coords {
+
+    private int x;
+    private int y;
+
+    public Coords(final int x, final int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public int getX() {
+        return this.x;
+    }
+
+    public int getY() {
+        return this.y;
+    }
+
+    public void setX(final int x) {
+        this.x = x;
+    }
+
+    public void setY(final int y) {
+        this.y = y;
+    }
+
+}
+
+</code>
+
+map\Grid.java:
+<code>
+package ecosim.game_engine.map;
+
+
+import java.util.Optional;
+
+import ecosim.game_engine.organism.Organism;
+
+
+/**
+ * 2D grid that holds entities (animals & plants).
+ *  
+ * @author darragh0
+ */
+public class Grid {
+
+    private final Organism[][] data;
+
+    public Grid(final int width, final int height) {
+        this.data = new Organism[height][width];
+    }
+
+    public void add(final Organism org) {
+        this.data[org.getY()][org.getX()] = org;
+    }
+
+    public void rmv(final Organism org) {
+        this.data[org.getY()][org.getX()] = null;
+    }
+
+    public Optional<Organism> get(final int x, final int y) {
+        return Optional.ofNullable(this.data[y][x]);
+    }
+
+}
+
+</code>
+
+map\Map.java:
+<code>
+package ecosim.game_engine.map;
+
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+
+import static ecosim.common.Util.randInt;
+import static ecosim.common.io.ConsoleIO.pprintln;
+import ecosim.game_engine.enm.Direction;
+import ecosim.game_engine.organism.Organism;
+import ecosim.game_engine.organism.animal.abs.Animal;
+import ecosim.game_engine.organism.plant.abs.Plant;
+
+
+/**
+ * Physical ecosystem of the given dimensions in which
+ * organisms (animals & plants) exist together.
+ * 
+ * @author darragh0
+ */
+public class Map {
+
+    private static Map inst = null;
+
+    private final int width;
+    private final int height;
+    private final Grid grid;
+    public record MapSize(int width, int height) {};
+
+    private Map(final int width, final int height) {
+        this.width = width;
+        this.height = height;
+        this.grid = new Grid(width, height);
+    }
+
+    public static Map init(final int width, final int height) {
+        if (inst == null)
+            inst = new Map(width, height);
+        return inst;
+    }
+
+    public static Map getInstance() {
+        if (inst == null)
+            throw new IllegalStateException("Call Map.init(int, int) first");
+        return inst;
+    }
+
+    public void add(final Organism org) {
+        this.grid.add(org);
+    }
+
+    public void initialisePlacement(final Organism org) {
+        while (true) {
+            final int x = randInt(0, this.width - 1);
+            final int y = randInt(0, this.height - 1);
+
+            if (this.get(x, y).isEmpty()) {
+                org.setCoords(x, y);
+                this.add(org);
+                return;
+            }
+        }
+    }
+
+    private void moveAnimalRandomly(Animal an) {
+        List<Direction> directions = Arrays.asList(Direction.values());
+        Collections.shuffle(directions);
+        
+        for (Direction dir : directions) {
+            int newX = an.getX() + dir.getDx();
+            int newY = an.getY() + dir.getDy();
+           
+            // Check if position is out of bounds
+            if (outOfBounds(newX, newY)) {
+                continue;
+            }
+            
+            // Check if the position is empty (null means empty space)
+            if (canMove(newX, newY) == null) {
+                // Found valid empty cell, move there
+                moveAnimal(an, newX, newY);
+                return;
+            }
+        }
+        // If we get here, no valid moves were found - animal stays put
+    }
+
+    public ActionResult getBreedingActionResult(final Animal an, final Organism otherOrg) {
+        moveAnimalRandomly(an);
+        Animal otherAnimal = (Animal) otherOrg;
+    
+        Animal offspring = an.breed(otherAnimal);
+    
+        if (offspring != null) {
+            this.initialisePlacement(offspring);
+    
+            return new ActionResult(
+                ActionResult.ActionType.SUCCESSFUL_BREEDING,
+                an, otherOrg, an.getX(), an.getY(), offspring);  
+        }
+        
+        return new ActionResult(
+            ActionResult.ActionType.ATTEMPTED_BREEDING,
+            an, otherOrg, an.getX(), an.getY());
+    }
+
+    public ActionResult getEatingActionResult(final Animal predator, final Organism prey, boolean wasEaten) {
+        // Move the other animal to a random empty cell
+        moveAnimalRandomly(predator);
+        if (wasEaten) {
+            // Only remove if it's an animal OR a plant that's completely dead
+            switch (prey) {
+                case Animal _ -> this.grid.rmv(prey);
+                case Plant plant -> {
+                    if (plant.isDead()) {
+                        this.grid.rmv(prey);
+                    }
+                }
+                default -> {} 
+            }
+            
+            return new ActionResult(
+                ActionResult.ActionType.SUCCESSFUL_EATING,
+                predator, prey, predator.getX(), predator.getY());
+        }
+        
+        return new ActionResult(
+            ActionResult.ActionType.ATTEMPTED_EATING,
+            predator, prey, predator.getX(), predator.getY());
+    }
+    
+    public ActionResult move(final Animal an) {
+        for (final Direction dir : Direction.values()) {
+            int targetX = an.getX() + dir.getDx();
+            int targetY = an.getY() + dir.getDy();
+    
+    
+            Organism otherOrg = canMove(targetX, targetY);
+            if (otherOrg == null) {
+                continue;
+            }
+    
+            // Handle each organism type with a single pattern match
+            ActionResult result = switch (otherOrg) {
+                case Animal otherAnimal -> {
+                    // Check breeding first
+                    if (an.canBreed(otherAnimal)) {
+                        yield getBreedingActionResult(an, otherAnimal);
+                    } 
+                    // Then check eating
+                    else if (an.canEatAnimal(otherAnimal)) {
+                        boolean eaten = an.eat(otherAnimal);
+                        yield getEatingActionResult(an, otherAnimal, eaten);
+                    }
+                
+                    yield null;
+                }
+                case Plant plant -> {
+                    // Only check eating for plants
+                    if (an.canEatPlant()) {
+                        boolean eaten = an.eat(plant);
+                        yield getEatingActionResult(an, plant, eaten);
+                    }
+                    yield null;
+                }
+                default -> null;
+            };
+
+            // If we found a valid action, return it
+            if (result != null) {
+                return result;
+            }
+        }
+        
+        // No valid action found
+        moveAnimalRandomly(an);
+        return new ActionResult(ActionResult.ActionType.BASIC_ACTION, an, null, an.getX(), an.getY());
+    }
+    
+    private void moveAnimal(Animal an, int newX, int newY) {
+        this.grid.rmv(an);
+        an.setCoords(newX, newY);
+        this.grid.add(an);
+    }
+
+    public void display() {
+        pprintln(this.toString());
+    }
+
+    public MapSize getMapDimensions() {
+        return new MapSize(this.width, this.height);
+    }
+
+    public Grid getGrid() {
+        return this.grid;
+    }
+
+    Optional<Organism> get(final int x, final int y) {
+        return this.grid.get(x, y);
+    }
+
+    private boolean outOfBounds(final int x, final int y) {
+        return x < 0 || x >= this.width || y < 0 || y >= this.height;
+    }
+
+    private Organism canMove(final int x, final int y) {
+        if (!this.outOfBounds(x, y)){
+            Optional<Organism> cell = this.get(x, y);
+            if (cell.isPresent()) {
+                return cell.get();
+            } else {
+                return null;
+            }
+        }
+        return null;
+    }
+
+}
+
+</code>
+
+misc\AnimalDescriptor.java:
+<code>
+package ecosim.game_engine.misc;
+
+import ecosim.game_engine.enm.ActivityType;
+import ecosim.game_engine.enm.Diet;
+import ecosim.game_engine.enm.Size;
+
+public record AnimalDescriptor(
+    String name,
+    Size size,
+    Diet diet,
+    ActivityType activityType,
+    boolean canHibernate,
+    String sound,
+    String symbol) implements Descriptor {
+}
+</code>
+
+misc\Descriptor.java:
+<code>
+package ecosim.game_engine.misc;
+
+
+import ecosim.game_engine.enm.Size;
+
+
+public interface Descriptor {
+
+    Size size();
+
+    String symbol();
+
+}
+
+</code>
+
+misc\EcosystemConfig.java:
+<code>
+package ecosim.game_engine.misc;
+
+
+public record EcosystemConfig(int initialAnimals, int initialPlants, int maxCapacity, int maxDays, int hoursPerDay) {
+}
+
+</code>
+
+misc\PlantDescriptor.java:
+<code>
+package ecosim.game_engine.misc;
+
+import ecosim.game_engine.enm.Size;
+
+public record PlantDescriptor(
+    String name,
+    Size size,
+    String symbol) implements Descriptor {
+}
+</code>
+
+misc\SpeciesNumbering.java:
+<code>
+package ecosim.game_engine.misc;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Central service for managing species numbering across the ecosystem.
+ */
+public class SpeciesNumbering {
+    private static final Map<String, Integer> speciesCounter = new HashMap<>();
+    
+    /**
+     * Gets the next number for a given species name.
+     * 
+     * @param speciesName The base name of the species
+     * @return The next sequential number for this species
+     */
+    public static synchronized int getNextNumber(String speciesName) {
+        // Add null check to prevent NullPointerException
+        if (speciesName == null) {
+            return 1;  // Default to 1 for null species names
+        }
+        
+        // Trim the species name to handle any whitespace
+        speciesName = speciesName.trim();
+        
+        int nextNumber = speciesCounter.getOrDefault(speciesName, 0) + 1;
+        speciesCounter.put(speciesName, nextNumber);
+        return nextNumber;
+    }
+    
+    /**
+     * Formats a species name with its number.
+     * 
+     * @param speciesName The base name of the species
+     * @param number The instance number
+     * @return Formatted name like "Lion (3)"
+     */
+    public static String formatName(String speciesName, int number) {
+        // Add null check to prevent NullPointerException
+        if (speciesName == null) {
+            return "Unknown (" + number + ")";
+        }
+        
+        return speciesName.trim() + " (" + number + ")";
+    }
+    
+    /**
+     * Extracts the base species name from a formatted name.
+     * 
+     * @param formattedName The formatted name like "Lion (3)"
+     * @return The base species name like "Lion"
+     */
+    public static String extractBaseSpeciesName(String formattedName) {
+        if (formattedName == null) {
+            return "Unknown";
+        }
+        
+        int openParenIndex = formattedName.indexOf('(');
+        if (openParenIndex > 0) {
+            return formattedName.substring(0, openParenIndex).trim();
+        }
+        return formattedName.trim();
+    }
+    
+    /** 
+    * Generates a new name for a cloned organism based on the parent's name.
+    * This method extracts the base name from the parent, gets the next number
+    * for this species type, and formats a new name accordingly.
+    *
+    * @param parentName The name of the parent organism
+    * @return A new name for the cloned organism
+    */
+   public static String generateCloneName(String parentName) {
+       // Extract base species name
+       String baseName = extractBaseSpeciesName(parentName);
+       // Get next number for this species
+       int nextNumber = getNextNumber(baseName);
+       // Format name with base and number
+       return formatName(baseName, nextNumber);
+   }
+}
+</code>
+
+organism\Organism.java:
+<code>
+package ecosim.game_engine.organism;
+
+
+import ecosim.attrs.Movable;
+import ecosim.game_engine.enm.Size;
+
+
+/**
+ * Physical animal or plant entity.
+ * 
+ * @author darragh0
+ */
+public abstract class Organism extends Movable {
+
+    protected String symbol;
+    protected Size size;
+
+    protected float health;
+    protected String name;
+
+    public Organism() {
+    }
+    public Organism(final String name) {
+        this.name = name;
+    }
+
+    public abstract Organism clone();
+
+    public Organism setSymbol(String symbol) {
+        this.symbol = symbol;
+        return this;
+    }
+
+    public Organism setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public void getName(String name) {
+        this.name = name;
+    }
+
+    public String getSymbol() {
+        return this.symbol;
+    }
+
+    public Organism setSize(Size size) {
+        this.size = size;
+        this.health = (float) (this.getMaxHealth() * 0.75);
+        return this;
+    }
+
+    public Size getSize() {
+        return this.size;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public float getHealth() {
+        return this.health;
+    }
+
+    public float getNutritionalValue() {
+        return this.size.getNutritionalValue();
+    }
+
+    public float getMaxHealth() {
+        return this.size.getMaxHealth();
+    }
+
+}
+
+</code>
+
+organism\animal\abs\Animal.java:
+<code>
+package ecosim.game_engine.organism.animal.abs;
+
+
+import ecosim.attrs.Observable;
+import ecosim.attrs.Observer;
+import static ecosim.common.Util.randFloat;
+import ecosim.game_engine.enm.ActivityState;
+import ecosim.game_engine.enm.ActivityType;
+import ecosim.game_engine.enm.Diet;
+import ecosim.game_engine.enm.Event;
+import ecosim.game_engine.enm.Season;
+import ecosim.game_engine.enm.Size;
+import ecosim.game_engine.enm.TimeOfDay;
+import ecosim.game_engine.map.ActionResult;
+import ecosim.game_engine.misc.SpeciesNumbering;
+import ecosim.game_engine.organism.Organism;
+import ecosim.game_engine.organism.animal.animal_state.AnimalState;
+import ecosim.game_engine.organism.animal.animal_state.AwakeState;
+import ecosim.game_engine.organism.plant.abs.Plant;
+
+
+/**
+ * Abstract class representing an animal in the ecosystem,
+ * defining its properties, behaviors, and interactions.
+ * 
+ * @author jjola00
+ */
+public abstract class Animal extends Organism implements Observer {
+
+
+    protected Diet diet;
+    protected ActivityType activityType;
+    protected boolean canHibernate;
+    protected String sound;
+
+    protected float survivalChance;
+    protected float reproductiveChance;
+    protected AnimalState state;
+
+    public Animal() {
+        this.state = new AwakeState();
+        this.survivalChance = 0.5f;
+        this.reproductiveChance = 0.5f;
+    }
+
+    /**
+     * Copy constructor for Animal class to support the prototype pattern.
+     * Creates a new Animal with the same properties as the original.
+     * 
+     * @param source The Animal instance to copy from
+     */
+    public Animal(Animal source) {
+        // Copy Organism properties
+        this.symbol = source.symbol;
+        this.size = source.size;
+        this.name = SpeciesNumbering.generateCloneName(source.name);
+        this.health =  (float) (source.getMaxHealth() * 0.75); // New animals start at 75% health
+        
+        // Copy Animal-specific properties
+        this.diet = source.diet;
+        this.activityType = source.activityType;
+        this.canHibernate = source.canHibernate;
+        this.sound = source.sound;
+        this.survivalChance = source.survivalChance;
+        this.reproductiveChance = source.reproductiveChance;
+        this.state = new AwakeState(); // New animals always start in the awake state
+    }
+   
+
+    @Override
+    public Animal setSymbol(String symbol) {
+        super.setSymbol(symbol);
+        return this;
+    }
+
+    @Override
+    public Animal setSize(Size size) {
+        super.setSize(size);
+        return this;
+    }
+
+    public Animal setDiet(Diet diet) {
+        this.diet = diet;
+        return this;
+    }
+
+    public Diet getDiet() {
+        return this.diet;
+    }
+
+    public Animal setActivityType(ActivityType activityType) {
+        this.activityType = activityType;
+        return this;
+    }
+    public ActivityType getActivityType() {
+        return this.activityType;
+    }
+
+    public Animal setCanHibernate(boolean canHibernate) {
+        this.canHibernate = canHibernate;
+        return this;
+    }
+
+    public boolean canHibernate() {
+        return this.canHibernate;
+    }
+
+    public Animal setSound(String sound) {
+        this.sound = sound;
+        return this;
+    }
+
+    @Override
+    public Animal setName(String name) {
+        this.name = name;
+        return this;
+    }
+    public String getSound() {
+        return this.sound;
+    }
+
+    public void setHealth(float health) {
+        this.health = health;
+    }
+
+    public float getSurvivalChance() {
+        return this.survivalChance;
+    }
+
+    public float getReproductiveChance() {
+        return this.reproductiveChance;
+    }
+
+    public boolean canEatAnimal(Animal potentialPrey) {
+        boolean isDietCompatible = this.diet != Diet.HERBIVORE;
+        boolean isDifferentSpecies = !this.canBreed(potentialPrey);
+        boolean isPredatorLargeEnough = this.size.ordinal() >= potentialPrey.getSize().ordinal();
+
+        return isDietCompatible && isDifferentSpecies && isPredatorLargeEnough;
+    }
+
+    public boolean canBreed(Animal potentialMate) {
+        // Extract the base type from both animal names
+        String thisBaseType = extractBaseType(this.getName());
+        String mateBaseType = extractBaseType(potentialMate.getName());
+
+        // Compare the base types
+        return thisBaseType.equals(mateBaseType);
+    }
+
+    // Helper method to extract the base animal type from the name
+    private String extractBaseType(String name) {
+        // Extract the base name (e.g., "Lion" from "Lion (1)")
+        int parenthesisIndex = name.indexOf('(');
+        if (parenthesisIndex > 0) {
+            return name.substring(0, parenthesisIndex).trim();
+        }
+        return name.trim();
+    }
+
+
+    public boolean canEatPlant() {
+        return this.diet != Diet.CARNIVORE;
+    }
+
+    public boolean eat(Animal animal) {
+        if (randFloat(0.0f, 1.0f) < animal.survivalChance) {
+            this.restoreHealth(animal.getNutritionalValue());
+            return true;
+        }
+        return false;
+    };
+
+    public boolean eat(Plant plant) {
+        this.restoreHealth(plant.getNutritionalValue());
+        plant.beEaten();
+        return true;  // Eating was successful, even if plant isn't dead
+    }
+
+    public Animal breed(Animal mate) {
+        float combinedReproductiveChance = this.reproductiveChance * mate.reproductiveChance;
+
+        if (randFloat(0.0f, 1.0f) < combinedReproductiveChance)
+            return this.clone();
+        return null;
+    }
+
+    @Override
+    public abstract Animal clone();
+
+    public ActionResult move() {
+        // Delegate to the current state
+        return this.state.move(this);
+    }
+
+    @Override
+    public void update(Observable observable) {
+        Event event = observable.getCurrentState();
+        switch (event) {
+            case Season season -> handleSeasonUpdate(season);
+            case TimeOfDay timeOfDay -> handleTimeOfDayUpdate(timeOfDay);
+            default -> {
+            }
+        }
+    }
+
+    public void handleSeasonUpdate(Season season) {
+        AnimalState newState = this.state.handleSeasonChange(this, season);
+        if (newState != this.state) {
+            this.state = newState;
+        }
+    }
+
+    public void handleTimeOfDayUpdate(TimeOfDay timeOfDay) {
+        AnimalState newState = this.state.handleTimeOfDayChange(this, timeOfDay);
+        if (newState != this.state) {
+            this.state = newState;
+        }
+    }
+
+    public ActivityState getActivityState() {
+        return this.state.getActivityState();
+    }
+
+    public boolean isEdible(Organism organism) {
+        return false;
+    }
+
+    public void reduceHealth(float amount) {
+        this.health = Math.max(0, this.health - amount);
+    }
+
+    public void restoreHealth(float amount) {
+        this.health = Math.min(this.getMaxHealth(), this.health + amount);
+    }
+
+}
+</code>
+
+organism\animal\animal_state\AnimalState.java:
+<code>
+package ecosim.game_engine.organism.animal.animal_state;
+
+
+import ecosim.game_engine.enm.ActivityState;
+import ecosim.game_engine.enm.Season;
+import ecosim.game_engine.enm.TimeOfDay;
+import ecosim.game_engine.map.ActionResult;
+import ecosim.game_engine.organism.animal.abs.Animal;
+
+
+/**
+ * Interface representing the conscious state of an animal,
+ * defining the movement behavior for different states.
+ * 
+ * @author jjola00
+ */
+
+public interface AnimalState {
+   
+    ActionResult move(Animal animal);
+    
+    AnimalState handleSeasonChange(Animal animal, Season season);
+    
+    AnimalState handleTimeOfDayChange(Animal animal, TimeOfDay timeOfDay);
+
+    ActivityState getActivityState();
+}
+</code>
+
+organism\animal\animal_state\AwakeState.java:
+<code>
+package ecosim.game_engine.organism.animal.animal_state;
+
+
+import ecosim.game_engine.enm.ActivityState;
+import ecosim.game_engine.enm.ActivityType;
+import ecosim.game_engine.enm.Season;
+import ecosim.game_engine.enm.TimeOfDay;
+import ecosim.game_engine.map.ActionResult;
+import ecosim.game_engine.map.Map;
+import ecosim.game_engine.organism.animal.abs.Animal;
+
+
+/**
+ * Represents the conscious state of an animal,
+ * defining its movement behavior within the ecosystem.
+ * 
+ * @author jjola00
+ */
+public class AwakeState implements AnimalState {
+
+    @Override
+public ActionResult move(Animal animal) {
+    
+    // Reduce health by 35% of max health when moving
+    float healthReduction = animal.getMaxHealth() * 0.035f;
+    animal.reduceHealth(healthReduction);
+    
+    // Get movement result from map
+    ActionResult result = Map.getInstance().move(animal);
+    
+    return result;
+}
+
+    @Override
+    public AnimalState handleSeasonChange(Animal animal, Season season) {
+        switch (season) {
+                    case WINTER -> {
+                        if (animal.canHibernate()) {
+                            return new HibernatingState();
+                        }
+                    }
+                    default -> {} // Do nothing
+
+        }
+        return this; // Stay awake
+    }
+
+    @Override
+    public AnimalState handleTimeOfDayChange(Animal animal, TimeOfDay timeOfDay) {
+        ActivityType activityType = animal.getActivityType();
+        
+        if ((timeOfDay == TimeOfDay.DAY && activityType != ActivityType.DIURNAL) || 
+            (timeOfDay == TimeOfDay.NIGHT && activityType != ActivityType.NOCTURNAL)) {
+            return new SleepingState();
+        }
+        
+        return this; // Stay awake
+    }
+
+     @Override
+    public ActivityState getActivityState() {
+        return ActivityState.AWAKE;
+    }
+}
+    
+
+
+</code>
+
+organism\animal\animal_state\HibernatingState.java:
+<code>
+package ecosim.game_engine.organism.animal.animal_state;
+
+import ecosim.game_engine.enm.ActivityState;
+import ecosim.game_engine.enm.Season;
+import ecosim.game_engine.enm.TimeOfDay;
+import ecosim.game_engine.map.ActionResult;
+import ecosim.game_engine.organism.animal.abs.Animal;
+
+public class HibernatingState implements AnimalState {
+
+    @Override
+    public ActionResult move(Animal animal) {
+        float healthRecovery = animal.getMaxHealth() * 0.03f;
+        if (animal.getHealth() < animal.getMaxHealth()) {
+            animal.restoreHealth(healthRecovery);
+        }
+
+        return new ActionResult(
+            ActionResult.ActionType.BASIC_ACTION,
+            animal,
+            null,
+            animal.getX(),
+            animal.getY()
+        );
+    }
+
+
+    @Override
+    public AnimalState handleSeasonChange(Animal animal, Season season) {
+        switch (season) {
+                    case SPRING, SUMMER, AUTUMN -> {
+                        if (animal.canHibernate()) {
+                            return new AwakeState();
+                        }
+                    }
+                    default -> {} // Do nothing
+
+        }
+        return this; // hibernating
+    }
+    @Override
+    public AnimalState handleTimeOfDayChange(Animal animal, TimeOfDay timeOfDay) {
+       return this; // Stay hibernating
+    }
+
+    @Override
+    public ActivityState getActivityState() {
+        return ActivityState.HIBERNATING;
+    }
+    
+}
+</code>
+
+organism\animal\animal_state\SleepingState.java:
+<code>
+package ecosim.game_engine.organism.animal.animal_state;
+
+import ecosim.game_engine.enm.ActivityState;
+import ecosim.game_engine.enm.ActivityType;
+import ecosim.game_engine.enm.Season;
+import ecosim.game_engine.enm.TimeOfDay;
+import ecosim.game_engine.map.ActionResult;
+import ecosim.game_engine.organism.animal.abs.Animal;
+
+public class SleepingState  implements AnimalState{
+
+    @Override
+    public ActionResult move(Animal animal) {
+        float healthRecovery = animal.getMaxHealth() * 0.025f;
+        if (animal.getHealth() < animal.getMaxHealth()) {
+            animal.restoreHealth(healthRecovery);
+        }
+
+        return new ActionResult(
+            ActionResult.ActionType.BASIC_ACTION,
+            animal,
+            null,
+            animal.getX(),
+            animal.getY()
+        );
+    }
+
+    @Override
+    public AnimalState handleSeasonChange(Animal animal, Season season) {
+        switch (season) {
+                    case WINTER -> {
+                        if (animal.canHibernate()) {
+                            return new HibernatingState();
+                        }
+                    }
+                    default -> {} // Do nothing
+
+        }
+        return this; // Stay asleep
+    }
+
+     @Override
+    public AnimalState handleTimeOfDayChange(Animal animal, TimeOfDay timeOfDay) {
+        ActivityType activityType = animal.getActivityType();
+        
+        if ((timeOfDay == TimeOfDay.DAY && activityType == ActivityType.DIURNAL) || 
+            (timeOfDay == TimeOfDay.NIGHT && activityType == ActivityType.NOCTURNAL)) {
+            return new AwakeState();
+        }
+        
+        return this; // Stay asleep
+    }
+
+
+    @Override
+    public ActivityState getActivityState() {
+        return ActivityState.SLEEPING;
+    }
+    
+}
+</code>
+
+organism\animal\concrete\DesertAnimal.java:
+<code>
+package ecosim.game_engine.organism.animal.concrete;
+
+import ecosim.game_engine.enm.ActivityState;
+import ecosim.game_engine.map.ActionResult;
+import ecosim.game_engine.organism.animal.abs.Animal;
+
+public class DesertAnimal extends Animal {
+    
+    public DesertAnimal() {
+            super();
+    }
+
+    public DesertAnimal(DesertAnimal desertAnimal) {
+            super(desertAnimal);
+        }
+    
+        @Override
+        public ActionResult move() {
+            if (this.state.getActivityState() == ActivityState.AWAKE) {
+                float healthLoss = this.getMaxHealth() * 0.025f;
+                this.reduceHealth(healthLoss);
+            }
+            
+            return this.state.move(this);
+        }
+    
+        @Override
+        public Animal clone() {
+            return new DesertAnimal(this);
+    }
+}
+</code>
+
+organism\animal\concrete\GrasslandAnimal.java:
+<code>
+package ecosim.game_engine.organism.animal.concrete;
+
+import ecosim.game_engine.enm.ActivityState;
+import ecosim.game_engine.map.ActionResult;
+import ecosim.game_engine.organism.animal.abs.Animal;
+
+public class GrasslandAnimal extends Animal {
+
+    public GrasslandAnimal() {
+        super();
+    }
+
+    public GrasslandAnimal(GrasslandAnimal grasslandAnimal) {
+        super(grasslandAnimal);
+    }
+    
+    @Override
+    public ActionResult move() {
+        if (this.state.getActivityState() == ActivityState.AWAKE) {
+            float healthLoss = this.getMaxHealth() * 0.025f;
+            this.reduceHealth(healthLoss);
+        }
+        
+        return this.state.move(this);
+    }
+
+    @Override
+    public Animal clone() {
+        return new GrasslandAnimal(this);
+    }
+    
+}
+</code>
+
+organism\animal\decorator\AnimalDecorator.java:
+<code>
+package ecosim.game_engine.organism.animal.decorator;
+
+import ecosim.attrs.Observable;
+import ecosim.game_engine.enm.ActivityState;
+import ecosim.game_engine.enm.ActivityType;
+import ecosim.game_engine.enm.Diet;
+import ecosim.game_engine.enm.Size;
+import ecosim.game_engine.map.ActionResult;
+import ecosim.game_engine.organism.Organism;
+import ecosim.game_engine.organism.animal.abs.Animal;
+import ecosim.game_engine.organism.plant.abs.Plant;
+
+/**
+ * Abstract base class for decorating animals using the decorator pattern with pure delegation.
+ * All behavior is delegated to the wrapped animal, with specific enhancements provided by subclasses.
+ * 
+ * @author jjola00
+ */
+public abstract class AnimalDecorator extends Animal {
+
+    protected final Animal animal;
+
+    public AnimalDecorator(final Animal animal) {
+        this.animal = animal;
+    }
+
+    @Override
+    public String getSymbol() {
+        return animal.getSymbol();
+    }
+
+    @Override
+    public Animal setSymbol(String symbol) {
+        animal.setSymbol(symbol);
+        return this;
+    }
+
+    @Override
+    public Size getSize() {
+        return animal.getSize();
+    }
+
+    @Override
+    public Animal setSize(Size size) {
+        animal.setSize(size);
+        return this;
+    }
+
+    @Override
+    public float getHealth() {
+        return animal.getHealth();
+    }
+
+    @Override
+    public float getMaxHealth() {
+        return animal.getMaxHealth();
+    }
+
+    @Override
+    public String getName() {
+        return animal.getName();
+    }
+
+    @Override
+    public Animal setName(String name) {
+        animal.setName(name);
+        return this;
+    }
+
+    @Override
+    public void getName(String name) {
+        animal.getName(name);
+    }
+
+    @Override
+    public float getNutritionalValue() {
+        return animal.getNutritionalValue();
+    }
+
+    // Removed @Override for getX() and getY() since they’re final in Movable
+    // Use inherited implementations from Movable instead
+
+    @Override
+    public void setCoords(int x, int y) {
+        animal.setCoords(x, y);
+        super.setCoords(x, y);  // Sync decorator’s coords
+    }
+
+    @Override
+    public Diet getDiet() {
+        return animal.getDiet();
+    }
+
+    @Override
+    public Animal setDiet(Diet diet) {
+        animal.setDiet(diet);
+        return this;
+    }
+
+    @Override
+    public ActivityType getActivityType() {
+        return animal.getActivityType();
+    }
+
+    @Override
+    public Animal setActivityType(ActivityType activityType) {
+        animal.setActivityType(activityType);
+        return this;
+    }
+
+    @Override
+    public boolean canHibernate() {
+        return animal.canHibernate();
+    }
+
+    @Override
+    public Animal setCanHibernate(boolean canHibernate) {
+        animal.setCanHibernate(canHibernate);
+        return this;
+    }
+
+    @Override
+    public String getSound() {
+        return animal.getSound();
+    }
+
+    @Override
+    public Animal setSound(String sound) {
+        animal.setSound(sound);
+        return this;
+    }
+
+    @Override
+    public float getSurvivalChance() {
+        return animal.getSurvivalChance();
+    }
+
+    @Override
+    public float getReproductiveChance() {
+        return animal.getReproductiveChance();
+    }
+
+    @Override
+    public boolean canEatAnimal(Animal potentialPrey) {
+        return animal.canEatAnimal(potentialPrey);
+    }
+
+    @Override
+    public boolean canBreed(Animal potentialMate) {
+        return animal.canBreed(potentialMate);
+    }
+
+    @Override
+    public boolean canEatPlant() {
+        return animal.canEatPlant();
+    }
+
+    @Override
+    public boolean eat(Animal prey) {
+        return animal.eat(prey);
+    }
+
+    @Override
+    public boolean eat(Plant plant) {
+        return animal.eat(plant);
+    }
+
+    @Override
+    public Animal breed(Animal mate) {
+        return animal.breed(mate);
+    }
+
+    @Override
+    public  Animal clone(){
+        return animal.clone();
+    }
+
+
+    @Override
+    public ActionResult move() {
+        return animal.move();
+    }
+
+    @Override
+    public void update(Observable observable) {
+        animal.update(observable);
+    }
+
+    @Override
+    public ActivityState getActivityState() {
+        return animal.getActivityState();
+    }
+
+    @Override
+    public boolean isEdible(Organism organism) {
+        return animal.isEdible(organism);
+    }
+
+    @Override
+    public void reduceHealth(float amount) {
+        animal.reduceHealth(amount);
+    }
+
+    @Override
+    public void restoreHealth(float amount) {
+        animal.restoreHealth(amount);
+    }
+
+    @Override
+    public void setHealth(float health) {
+        animal.setHealth(health);
+    }
+}
+</code>
+
+organism\animal\decorator\ConservationBoostDecorator.java:
+<code>
+package ecosim.game_engine.organism.animal.decorator;
+
+import ecosim.game_engine.organism.animal.abs.Animal;
+
+/**
+ * Decorator class that enhances the health conservation of an animal when it moves.
+ * 
+ * @author jjola00
+ */
+public class ConservationBoostDecorator extends AnimalDecorator {
+
+    public ConservationBoostDecorator(Animal animal) {
+        super(animal);
+    }
+
+    @Override
+    public void reduceHealth(float amount) {
+        animal.reduceHealth(amount * 0.7f);  // Reduce damage by 70%
+    }
+
+    @Override
+    public Animal clone() {
+        return new ConservationBoostDecorator(animal.clone());
+    }
+}
+</code>
+
+organism\animal\decorator\FertilityBoostDecorator.java:
+<code>
+package ecosim.game_engine.organism.animal.decorator;
+
+import static ecosim.common.Util.randFloat;
+import ecosim.game_engine.organism.animal.abs.Animal;
+
+/**
+ * Decorator class that enhances the reproductive chance of an animal.
+ * 
+ * @author jjola00
+ */
+public class FertilityBoostDecorator extends AnimalDecorator {
+
+    public FertilityBoostDecorator(Animal animal) {
+        super(animal);
+    }
+
+    @Override
+    public float getReproductiveChance() {
+        return animal.getReproductiveChance() + 0.2f;  // Boost by 0.2
+    }
+
+    @Override
+    public Animal breed(Animal mate) {
+        float boostedChance = getReproductiveChance();
+        float mateChance = mate.getReproductiveChance();
+        float combinedChance = Math.max(boostedChance, mateChance);
+        if (randFloat(0.0f, 1.0f) < combinedChance) {
+            return animal.clone();
+        }
+        return null;
+    }
+
+    @Override
+    public Animal clone() {
+        return new FertilityBoostDecorator(animal.clone());
+    }
+}
+</code>
+
+organism\animal\decorator\SurvivabilityBoostDecorator.java:
+<code>
+package ecosim.game_engine.organism.animal.decorator;
+
+import static ecosim.common.Util.randFloat;
+import ecosim.game_engine.organism.animal.abs.Animal;
+
+/**
+ * Decorator class that enhances the survival chance of an animal.
+ * 
+ * @author jjola00
+ */
+public class SurvivabilityBoostDecorator extends AnimalDecorator {
+
+    public SurvivabilityBoostDecorator(Animal animal) {
+        super(animal);
+    }
+
+    @Override
+    public float getSurvivalChance() {
+        return animal.getSurvivalChance() + 0.2f;  // Boost by 0.2
+    }
+
+    @Override
+    public boolean eat(Animal prey) {
+        if (randFloat(0.0f, 1.0f) < prey.getSurvivalChance()) {
+            animal.restoreHealth(prey.getNutritionalValue());
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public Animal clone() {
+        return new SurvivabilityBoostDecorator(animal.clone());
+    }
+}
+</code>
+
+organism\builder\AbstractAnimalBuilder.java:
+<code>
+package ecosim.game_engine.organism.builder;
+
+import ecosim.common.Util;
+import ecosim.game_engine.misc.AnimalDescriptor;
+import ecosim.game_engine.misc.SpeciesNumbering;
+import ecosim.game_engine.organism.animal.abs.Animal;
+import ecosim.game_engine.organism.animal.decorator.ConservationBoostDecorator;
+import ecosim.game_engine.organism.animal.decorator.FertilityBoostDecorator;
+import ecosim.game_engine.organism.animal.decorator.SurvivabilityBoostDecorator;
+
+/**
+ * Abstract implementation of the AnimalBuilder with common functionality.
+ */
+public abstract class AbstractAnimalBuilder implements AnimalBuilder {
+    protected AnimalDescriptor descriptor;
+    protected Animal animal;
+    
+    public AbstractAnimalBuilder(AnimalDescriptor descriptor) {
+        this.descriptor = descriptor;
+        initializeAnimal();
+    }
+
+    /**
+     * Initializes the animal instance.
+     */
+    private void initializeAnimal() {
+        this.animal = createAnimalInstance();
+    }
+
+    /**
+     * Creates the appropriate animal instance for this builder.
+     * Each specific builder must implement this to create the right type.
+     * 
+     * @return A new animal instance of the appropriate biome type
+     */
+    protected abstract Animal createAnimalInstance();
+    
+    @Override
+    public AnimalBuilder buildBasicProperties() {
+
+        String speciesName = descriptor.name();
+    
+        // Get the next number for this species
+        int number = SpeciesNumbering.getNextNumber(speciesName);
+        
+        // Format the name with the number
+        String formattedName = SpeciesNumbering.formatName(speciesName, number);
+        animal.setName(formattedName)
+              .setSize(descriptor.size())
+              .setDiet(descriptor.diet())
+              .setActivityType(descriptor.activityType())
+              .setCanHibernate(descriptor.canHibernate())
+              .setSound(descriptor.sound())
+              .setSymbol(descriptor.symbol());
+        return this;
+    }
+    
+    @Override
+    public AnimalBuilder applyDecorators() {
+        int randomDecorator = Util.randInt(0, 6);
+        switch (randomDecorator) {
+            case 0 -> animal = new ConservationBoostDecorator(animal);
+            case 1 -> animal = new FertilityBoostDecorator(animal);
+            case 2 -> animal = new SurvivabilityBoostDecorator(animal);
+            default -> {
+            }
+        }
+        
+        return this;
+    }
+    
+    @Override
+    public Animal build() {
+        return animal;
+    }
+}
+
+</code>
+
+organism\builder\AbstractPlantBuilder.java:
+<code>
+package ecosim.game_engine.organism.builder;
+
+import ecosim.game_engine.misc.PlantDescriptor;
+import ecosim.game_engine.misc.SpeciesNumbering;
+import ecosim.game_engine.organism.plant.abs.Plant;
+
+public abstract class AbstractPlantBuilder implements PlantBuilder {
+    protected PlantDescriptor descriptor;
+    protected Plant plant;
+    /**
+     * Creates a builder with the provided descriptor.
+     * 
+     * @param descriptor The descriptor containing plant specifications
+     */
+    public AbstractPlantBuilder(PlantDescriptor descriptor) {
+        this.descriptor = descriptor;
+        initializePlant();
+    }
+    
+    /**
+     * Initializes the plant instance.
+     */
+    private void initializePlant() {
+        this.plant = createPlantInstance();
+    }
+
+     /**
+     * Creates the appropriate plant instance for this builder.
+     * Each specific builder must implement this to create the right type.
+     * 
+     * @return A new plant instance of the appropriate biome type
+     */
+    protected abstract Plant createPlantInstance();
+    
+    @Override
+    public PlantBuilder buildBasicProperties() {
+           // Get the species name from the descriptor
+    String speciesName = descriptor.name();
+    
+    // Get the next number for this species
+    int number = SpeciesNumbering.getNextNumber(speciesName);
+    
+    // Format the name with the number
+    String formattedName = SpeciesNumbering.formatName(speciesName, number);
+    
+    // Set properties directly from descriptor but use formatted name
+    plant.setName(formattedName)
+             .setSymbol(descriptor.symbol())
+             .setSize(descriptor.size());
+             
+        return this;
+    }
+
+      @Override
+    public Plant build() {
+        return plant;
+    }
+    
+}
+
+</code>
+
+organism\builder\AnimalBuilder.java:
+<code>
+package ecosim.game_engine.organism.builder;
+
+import ecosim.game_engine.organism.animal.abs.Animal;
+
+/**
+ * Builder interface for creating animals with flexible configuration.
+ */
+public interface AnimalBuilder {
+    /**
+     * Builds the basic properties of the animal.
+     * 
+     * @return This builder for method chaining
+     */
+    AnimalBuilder buildBasicProperties();
+    
+    /**
+     * Applies any decorator enhancements to the animal.
+     * 
+     * @return This builder for method chaining
+     */
+    AnimalBuilder applyDecorators();
+    
+       /**
+     * Creates the animal instance.
+     * 
+     * @return A fully constructed animal
+     */
+    Animal build();
+}
+    
+</code>
+
+organism\builder\DesertAnimalBuilder.java:
+<code>
+package ecosim.game_engine.organism.builder;
+
+import ecosim.game_engine.misc.AnimalDescriptor;
+import ecosim.game_engine.organism.animal.abs.Animal;
+import ecosim.game_engine.organism.animal.concrete.DesertAnimal;
+
+/**
+ * Concrete builder for desert animals.
+ */
+public class DesertAnimalBuilder extends AbstractAnimalBuilder {
+    
+    public DesertAnimalBuilder(AnimalDescriptor descriptor) {
+        super(descriptor);
+    }
+    
+    @Override
+    protected Animal createAnimalInstance() {
+    
+        return new DesertAnimal();
+    }
+}
+
+
+</code>
+
+organism\builder\DesertPlantBuilder.java:
+<code>
+package ecosim.game_engine.organism.builder;
+
+import ecosim.game_engine.misc.PlantDescriptor;
+import ecosim.game_engine.organism.plant.abs.Plant;
+import ecosim.game_engine.organism.plant.concrete.DesertPlant;
+
+public class DesertPlantBuilder extends AbstractPlantBuilder {
+        
+    /**
+     * Creates a new desert plant builder.
+     * 
+     * @param descriptor The plant descriptor
+     */
+    public DesertPlantBuilder(PlantDescriptor descriptor) {
+        super(descriptor);
+    }
+
+    @Override
+    protected Plant createPlantInstance() {
+        return new DesertPlant();
+    }
+    
+}
+
+</code>
+
+organism\builder\GrasslandAnimalBuilder.java:
+<code>
+package ecosim.game_engine.organism.builder;
+
+import ecosim.game_engine.misc.AnimalDescriptor;
+import ecosim.game_engine.organism.animal.abs.Animal;
+import ecosim.game_engine.organism.animal.concrete.GrasslandAnimal;
+
+/**
+ * Concrete builder for grassland animals.
+ */
+public class GrasslandAnimalBuilder extends AbstractAnimalBuilder {
+    
+    public GrasslandAnimalBuilder(AnimalDescriptor descriptor) {
+        super(descriptor);
+    }
+
+    @Override
+    protected Animal createAnimalInstance() {
+        return new GrasslandAnimal();
+    }
+
+    
+    
+
+}
+</code>
+
+organism\builder\GrasslandPlantBuilder.java:
+<code>
+package ecosim.game_engine.organism.builder;
+
+import ecosim.game_engine.misc.PlantDescriptor;
+import ecosim.game_engine.organism.plant.abs.Plant;
+import ecosim.game_engine.organism.plant.concrete.GrasslandPlant;
+
+public class GrasslandPlantBuilder extends AbstractPlantBuilder {
+      
+    /**
+     * Creates a new grassland plant builder.
+     * 
+     * @param descriptor The plant descriptor
+     */
+    public GrasslandPlantBuilder(PlantDescriptor descriptor) {
+        super(descriptor);
+    }
+
+    @Override
+    protected Plant createPlantInstance() {
+        return new GrasslandPlant();
+    }
+    
+}
+
+</code>
+
+organism\builder\PlantBuilder.java:
+<code>
+package ecosim.game_engine.organism.builder;
+
+import ecosim.game_engine.organism.plant.abs.Plant;
+
+/**
+ * Builder interface for creating plants with flexible configuration.
+ */
+public interface PlantBuilder {
+    /**
+     * Builds the basic properties of the plant.
+     * 
+     * @return This builder for method chaining
+     */
+    PlantBuilder buildBasicProperties();
+    
+    /**
+     * Creates the plant instance.
+     * 
+     * @return A fully constructed plant
+     */
+    Plant build();
+}
+</code>
+
+organism\factory\BiomeOrganismFactory.java:
+<code>
+
+package ecosim.game_engine.organism.factory;
+
+import ecosim.game_engine.misc.AnimalDescriptor;
+import ecosim.game_engine.misc.PlantDescriptor;
+import ecosim.game_engine.organism.builder.AnimalBuilder;
+import ecosim.game_engine.organism.builder.PlantBuilder;
+
+public interface BiomeOrganismFactory {
+    /**
+     * Creates an animal builder for the specific biome.
+     * 
+     * @param descriptor The descriptor containing the animal specifications
+     * @return An animal builder
+     */
+    AnimalBuilder createAnimalBuilder(AnimalDescriptor descriptor);
+    
+    /**
+     * Creates a plant builder for the specific biome.
+     * 
+     * @param descriptor The descriptor containing the plant specifications
+     * @return A plant builder
+     */
+    PlantBuilder createPlantBuilder(PlantDescriptor descriptor);
+    
+}
+</code>
+
+organism\factory\BiomeOrganismFactoryProvider.java:
+<code>
+package ecosim.game_engine.organism.factory;
+
+import ecosim.game_engine.enm.Biome;
+
+/**
+ * Provider for biome-specific organism factories.
+ */
+public class BiomeOrganismFactoryProvider {
+    
+    /**
+     * Get the appropriate factory for the specified biome.
+     * 
+     * @param biome The biome to get a factory for
+     * @return A factory instance for the biome
+     */
+    public static BiomeOrganismFactory getFactory(Biome biome) {
+        return switch (biome) {
+            case DESERT -> new DesertOrganismFactory();
+            case GRASSLAND -> new GrasslandOrganismFactory();
+            default -> throw new IllegalArgumentException("Unsupported biome: " + biome);
+        };
+    }
+}
+</code>
+
+organism\factory\DesertOrganismFactory.java:
+<code>
+package ecosim.game_engine.organism.factory;
+
+import ecosim.game_engine.misc.AnimalDescriptor;
+import ecosim.game_engine.misc.PlantDescriptor;
+import ecosim.game_engine.organism.builder.AnimalBuilder;
+import ecosim.game_engine.organism.builder.DesertAnimalBuilder;
+import ecosim.game_engine.organism.builder.DesertPlantBuilder;
+import ecosim.game_engine.organism.builder.PlantBuilder;
+
+public class DesertOrganismFactory implements BiomeOrganismFactory {
+
+    @Override
+    public AnimalBuilder createAnimalBuilder(AnimalDescriptor descriptor) {
+        return new DesertAnimalBuilder(descriptor);
+    }
+    
+    @Override
+    public PlantBuilder createPlantBuilder(PlantDescriptor descriptor) {
+        return new DesertPlantBuilder(descriptor);
+    }
+    
+}
+
+</code>
+
+organism\factory\GrasslandOrganismFactory.java:
+<code>
+package ecosim.game_engine.organism.factory;
+
+import ecosim.game_engine.misc.AnimalDescriptor;
+import ecosim.game_engine.misc.PlantDescriptor;
+import ecosim.game_engine.organism.builder.AnimalBuilder;
+import ecosim.game_engine.organism.builder.GrasslandAnimalBuilder;
+import ecosim.game_engine.organism.builder.GrasslandPlantBuilder;
+import ecosim.game_engine.organism.builder.PlantBuilder;
+
+public class GrasslandOrganismFactory implements BiomeOrganismFactory {
+    
+    @Override
+    public AnimalBuilder createAnimalBuilder(AnimalDescriptor descriptor) {
+        return new GrasslandAnimalBuilder(descriptor);
+    }
+    
+    @Override
+    public PlantBuilder createPlantBuilder(PlantDescriptor descriptor) {
+        return new GrasslandPlantBuilder(descriptor);
+    }
+}
+</code>
+
+organism\plant\abs\Plant.java:
+<code>
+package ecosim.game_engine.organism.plant.abs;
+
+import ecosim.attrs.Observable;
+import ecosim.attrs.Observer;
+import ecosim.common.Util;
+import ecosim.game_engine.enm.EnergyCycle;
+import ecosim.game_engine.enm.Event;
+import ecosim.game_engine.enm.Size;
+import ecosim.game_engine.enm.TimeOfDay;
+import ecosim.game_engine.enm.Weather;
+import ecosim.game_engine.misc.SpeciesNumbering;
+import ecosim.game_engine.organism.Organism;
+import ecosim.game_engine.organism.plant.energy_cycle_state.EnergyCycleState;
+import ecosim.game_engine.organism.plant.energy_cycle_state.PhotosynthesisState;
+import ecosim.game_engine.organism.plant.energy_cycle_state.RespirationState;
+
+/**
+ * Abstract base class for all plants in the ecosystem simulation.
+ * 
+ * This class implements core plant functionality including:
+ * - Energy cycle management (photosynthesis/respiration)
+ * - Growth rate calculations based on environmental factors
+ * - Health management and its impact on other plant functions
+ * - Reproduction through asexual reproduction
+ * - Response to being eaten by herbivores
+ * - Environmental event observation (weather, time of day)
+ * 
+ * @author MiaBorkoo
+ */
+public abstract class Plant extends Organism implements Observer {
+
+    /** Number of bites a plant can withstand before being completely consumed */
+    protected int biteCapacity;
+    
+    /** Divisor used to calculate bite damage as a fraction of max health */
+    private static final int BITE_DIVISOR = 10;
+    
+    /** Current energy cycle state (photosynthesis during day, respiration at night) */
+    protected EnergyCycleState energyCycleState;
+    
+    /** Current growth rate, affected by weather and health */
+    protected float growthRate;
+
+    /** Health threshold below which the plant is considered dead */
+    private static final float HEALTH_THRESHOLD = 0.0f;
+
+    public Plant() {
+      this.energyCycleState = new PhotosynthesisState();
+    }
+
+    public Plant(Plant source) {
+        // Copy Organism properties
+        this.symbol = source.symbol;
+        this.size = source.size;
+        this.name = SpeciesNumbering.generateCloneName(source.name);
+        this.health = (float) (source.getMaxHealth() * 0.75); // New plants start at 75% health
+
+        // Copy Plant-specific properties
+        this.biteCapacity = source.biteCapacity;
+        this.growthRate = source.growthRate;
+
+        if (source.energyCycleState.getEnergyCycle() == EnergyCycle.PHOTOSYNTHESIS) {
+            this.energyCycleState = new PhotosynthesisState();
+        } else if (source.energyCycleState.getEnergyCycle() == EnergyCycle.RESPIRATION) {
+            this.energyCycleState = new RespirationState();
+        }
+    }
+
+    /**
+     * Sets the size of the plant and calculates bite capacity based on max health.
+     * 
+     * @param size The size to set for this plant
+     * @return 
+     */
+    @Override
+    public Plant setSize(Size size) {
+        super.setSize(size);
+        this.biteCapacity = this.size.getMaxHealth() / BITE_DIVISOR;
+        return this;
+    }
+
+    /**
+     * Sets the display symbol for this plant.
+     * 
+     * @param symbol The symbol to represent this plant
+     * @return This plant instance (for method chaining)
+     */
+    @Override
+    public Plant setSymbol(String symbol) {
+        super.setSymbol(symbol);
+        return this;
+    }
+
+    /**
+     * Updates growth rate based on current weather conditions.
+     * Different plant types respond differently to weather.
+     * 
+     * @param weather Current weather condition
+     */
+    @Override
+    public Plant setName(String name) {
+        super.setName(name);
+        return this;
+    }
+
+    /**
+     * Updates the growth rate based on current weather conditions.
+     * This is a template method that defines the algorithm structure.
+     * 
+     * @param currentWeather Current weather condition
+     */
+    public final void updateGrowthRate(Weather currentWeather) {
+        float growthAdjustment = getWeatherGrowthAdjustment(currentWeather);
+        this.growthRate += this.growthRate * growthAdjustment;
+    }
+
+    /**
+     * Gets the growth adjustment factor for a specific weather condition.
+     * This is meant to be implemented by subclasses to provide specialized behavior.
+     * 
+     * @param weather The current weather condition
+     * @return A float value representing the growth rate adjustment factor
+     */
+    protected abstract float getWeatherGrowthAdjustment(Weather weather);
+
+    /**
+     * Creates a copy of this plant. Must be implemented by concrete subclasses.
+     * 
+     * @return A new instance of the same plant type
+     */
+    @Override
+    public abstract Plant clone();
+
+
+    /**
+     * Performs asexual reproduction to create a new plant.
+     * 
+     * @return A new plant created through asexual reproduction, or null if reproduction fails
+     */
+    public Plant performAsexualReproduction() {
+        return clone();
+    }
+
+    /**
+     * Handles environmental events that the plant is observing.
+     * Currently responds to weather changes and time of day changes.
+     * 
+     * @param observable The observable object that triggered the update
+     */
+    @Override
+    public void update(Observable observable) {
+        Event event = observable.getCurrentState();
+        switch (event) {
+            case Weather newWeather -> handleWeatherUpdate(newWeather);
+            case TimeOfDay newTimeOfDay -> handleTimeOfDayUpdate(newTimeOfDay);
+            default -> {
+            }
+        }
+    }
+
+    /**
+     * Handles weather changes by updating growth rate and performing energy cycle.
+     * Also applies health-based adjustments to growth rate.
+     * 
+     * @param weather The new weather condition
+     */
+    public void handleWeatherUpdate(Weather weather) {
+        // Handle weather changes by updating growth rate
+        this.updateGrowthRate(weather);
+        this.adjustGrowthRateForHealth(); // Apply health effects to growth rate
+    }
+    
+    /**
+     * Adjusts growth rate based on current health percentage.
+     * Plants with lower health have reduced growth rates:
+     * - Below 30% health: 50% growth reduction
+     * - 30-70% health: 20% growth reduction
+     * - Above 70% health: No reduction
+     */
+    protected void adjustGrowthRateForHealth() {
+        // Simple threshold-based growth penalty
+        float healthPercentage = this.health / this.getMaxHealth();
+        
+        // Just two simple thresholds
+        if (healthPercentage < 0.3f) {
+            // Severe growth penalty for very low health
+            this.growthRate *= 0.5f;  // 50% reduction
+        } else if (healthPercentage < 0.7f) {
+            // Minor growth penalty for moderately low health
+            this.growthRate *= 0.8f;  // 20% reduction
+        }
+        // No penalty for health >= 70%
+    }
+
+    /**
+     * Handles time of day changes by updating the plant's energy cycle state.
+     * Transitions between photosynthesis (day) and respiration (night).
+     * 
+     * @param timeOfDay The new time of day
+     */
+    public void handleTimeOfDayUpdate(TimeOfDay timeOfDay) {
+        // Handle time of day changes by setting appropriate energy cycle state
+        this.energyCycleState = this.energyCycleState.handleTimeOfDayChange(this, timeOfDay);
+    }
+    
+    /**
+     * Sets the energy cycle state of the plant.
+     * 
+     * @param state The new energy cycle state
+     */
+    public void setEnergyCycleState(EnergyCycleState state) {
+        this.energyCycleState = state;
+    }
+
+    /**
+     * Performs the plant's energy cycle based on current state and weather.
+     * This method:
+     * 1. Calls the current energy cycle state to calculate health changes and modify growth rate
+     * 2. Applies health-based efficiency modifiers to the health change
+     * 3. Updates plant health with the final adjusted value
+     * 
+     * Note: Growth rate is modified directly by the energy cycle state, while
+     * health changes are returned and then adjusted based on current health before being applied.
+     * 
+     * Plants with lower health (below 50%) get less benefit from positive energy cycles
+     * and take more damage from negative energy cycles.
+     * 
+     * @param currentWeather Current weather condition affecting energy cycle
+     */
+    public void performEnergyCycle() {
+        if (this.energyCycleState != null && !isDead()) {
+                        // Get base health change from energy cycle
+            float healthChange = this.energyCycleState.performEnergyCycle(growthRate);
+            
+            float healthPercentage = this.health / this.getMaxHealth();
+            
+            if (healthPercentage < 0.5f) {
+                // Low health plants get less benefit/more harm
+                if (healthChange > 0) {
+                    healthChange *= 0.7f;  // Reduced benefit
+                } else {
+                    healthChange *= 1.3f;  // Increased harm
+                }
+            }
+            
+            adjustHealth(healthChange);
+        }
+    }
+
+    /**
+     * Called when an animal eats this plant. Reduces health based on bite damage.
+     * Healthier plants (above 70% health) have 20% damage resistance.
+     */
+    public void beEaten() {
+        biteCapacity--;
+    }
+
+    /**
+     * Checks if the plant is dead based on its health. Implemented in EcosystemMan?
+     * 
+     * @return true if the plant is dead (health <= threshold), false otherwise
+     */
+    public boolean isDead() {
+        return this.health <= HEALTH_THRESHOLD || biteCapacity <= 0;
+    }
+
+    public boolean canReproduce() {
+        // Only attempt reproduction if health is above 60% of max health
+        if (this.health < this.getMaxHealth() * 0.6) {
+            return false;
+        }
+        
+        // Calculate health percentage (0-100)
+        float healthPercentage = (this.health / this.getMaxHealth()) * 100;
+        
+        // Calculate reproduction chance (0.5-4%)
+        // Linear scaling from 0.5% at 60% health to 4% at 100% health
+        float reproductionChance = 0.5f + (healthPercentage - 60) * 0.0875f;
+        
+        // Further reduce chance to make reproduction even rarer
+        reproductionChance *= 0.5f;  // Cut all chances in half
+        
+        // Generate random percentage (0-100)
+        float randomChance = Util.randFloat(0, 100);
+        
+        // Return true if random roll is less than reproduction chance
+        return randomChance < reproductionChance;
+    }
+    /**
+     * Adds specified amount to plant's health, capped at max health.
+     * Health cannot go below zero.
+     * 
+     * @param amount Amount to add to health (can be negative for damage)
+     */
+    public void adjustHealth(float amount) {
+        this.health = Math.min(this.health + amount, this.getMaxHealth());
+        this.health = Math.max(this.health, 0.0f); // Don't allow negative health
+    }
+}
+
+
+</code>
+
+organism\plant\concrete\DesertPlant.java:
+<code>
+package ecosim.game_engine.organism.plant.concrete;
+
+import ecosim.game_engine.enm.Weather;
+import ecosim.game_engine.organism.plant.abs.Plant;
+
+/**
+ * Abstract class for all desert plants in the ecosystem simulation.
+ * 
+ * This class provides desert-specific implementation of growth rate adjustments
+ * based on weather conditions. Desert plants generally favor sunny weather
+ * and are less affected by dry conditions than other plant types.
+ * 
+ * @author MiaBorkoo
+ */
+public class DesertPlant extends Plant {
+
+    public DesertPlant() {
+        super();
+    }
+
+    public DesertPlant(DesertPlant source) {
+        super(source);
+    }
+
+    /**
+     * Updates the growth rate of desert plants based on current weather.
+     * Desert plants have specialized responses to different weather conditions, e.g Snowy weather is bad for them.
+     * 
+     * @param currentWeather Current weather condition
+     */
+    @Override
+    protected float getWeatherGrowthAdjustment(Weather weather) {
+        return switch (weather) {
+            case SUNNY -> 0.1f;
+            case RAINY -> 0.05f;
+            case DRY -> -0.2f;
+            case CLOUDY -> 0.02f;
+            case SNOWY -> -0.3f;
+        };
+    }
+
+    @Override
+    public Plant clone() {
+        return new DesertPlant(this);
+    }
+
+}
+
+</code>
+
+organism\plant\concrete\GrasslandPlant.java:
+<code>
+package ecosim.game_engine.organism.plant.concrete;
+
+import ecosim.game_engine.enm.Weather;
+import ecosim.game_engine.organism.plant.abs.Plant;
+
+/**
+ * Abstract class for all grassland plants in the ecosystem simulation.
+ * 
+ * This class provides grassland-specific implementation of growth rate adjustments
+ * based on weather conditions. Grassland plants generally favor a balance of
+ * sun and rain, and suffer significantly during dry periods.
+ * 
+ * @author MiaBorkoo
+ */
+public class GrasslandPlant extends Plant {
+
+    public GrasslandPlant() {
+        super();
+    }
+
+    public GrasslandPlant(GrasslandPlant source) {
+        super(source);
+    }
+
+    /**
+     * Updates the growth rate of grassland plants based on current weather.
+     * 
+     * @param currentWeather Current weather condition
+     */
+    @Override
+    protected float getWeatherGrowthAdjustment(Weather weather) {
+        return switch (weather) {
+            case SUNNY -> 0.08f;
+            case RAINY -> 0.12f;
+            case DRY -> -0.25f;
+            case CLOUDY -> 0.04f;
+            case SNOWY -> -0.15f;
+        };
+    }
+
+    @Override
+    public Plant clone() {
+        return new GrasslandPlant(this);
+    }
+
+}
+
+</code>
+
+organism\plant\energy_cycle_state\EnergyCycleState.java:
+<code>
+package ecosim.game_engine.organism.plant.energy_cycle_state;
+import ecosim.game_engine.enm.EnergyCycle;
+import ecosim.game_engine.enm.TimeOfDay;
+import ecosim.game_engine.organism.plant.abs.Plant;
+
+/**
+ * Interface representing a plant's energy cycle state.
+ * 
+ * This interface is part of the State pattern implementation for plant energy cycles.
+ * Plants alternate between different energy states (photosynthesis/respiration)
+ * based on time of day. Each state affects plant health and growth differently.
+ * 
+ * The energy cycle state:
+ * - Determines how the plant generates/consumes energy
+ * - Adjusts plant health based on current conditions
+ * - Modifies growth rate based on environmental factors
+ * - Handles transitions between different energy states
+ * 
+ * @author MiaBorkoo
+ */
+public interface EnergyCycleState {
+    /**
+     * Performs the energy cycle calculation with dual effects on health and growth.
+     * This method:
+     * 1. Calculates health adjustment based on weather and plant state
+     * 2. Modifies the plant's growth rate (applied to the passed parameter)
+
+     * @param growthRate Current growth rate of the plant (modified by this method)
+     * @param currentWeather Current weather affecting the energy cycle
+     * @return The amount to adjust the plant's health by (positive or negative)
+     */
+    float performEnergyCycle(float growthRate);
+    
+    /**
+     * Handles time of day changes and determines if a state transition is needed.
+     * For example, transitions from photosynthesis to respiration at nightfall.
+     * 
+     * @param plant The plant affected by the time change
+     * @param timeOfDay The new time of day
+     * @return The appropriate state after handling time change (this or new state)
+     */
+    EnergyCycleState handleTimeOfDayChange(Plant plant, TimeOfDay timeOfDay);
+
+    /**
+     * Gets the energy cycle type associated with this state.
+     * 
+     * @return The energy cycle type of this state
+     */
+    EnergyCycle getEnergyCycle();
+}
+
+
+
+</code>
+
+organism\plant\energy_cycle_state\PhotosynthesisState.java:
+<code>
+package ecosim.game_engine.organism.plant.energy_cycle_state;
+
+import ecosim.game_engine.enm.EnergyCycle;
+import ecosim.game_engine.enm.TimeOfDay;
+import ecosim.game_engine.organism.plant.abs.Plant;
+
+/**
+ * Implementation of the plant energy cycle state during daytime (photosynthesis).
+ * 
+ * This class represents the active energy production state of plants, where they:
+ * - Convert sunlight, water and CO2 into energy
+ * - Generally increase in health during favorable conditions
+ * - Adjust growth rates based on weather conditions
+ * 
+ * Photosynthesis is most effective in sunny conditions, but still functions
+ * in other weather types with varying degrees of efficiency. This state
+ * transitions to the respiration state when night falls.
+ * 
+ * @author MiaBorkoo
+ */
+public class PhotosynthesisState implements EnergyCycleState {
+    /**
+     * Performs the photosynthesis energy cycle, calculating health adjustments
+     * and growth rate changes based on current weather conditions.
+     * 
+     * This method has two effects:
+     * 1. It calculates and returns a health adjustment value (usually positive during day)
+     * 2. It directly modifies the provided growthRate parameter based on weather
+     * 
+     * @param growthRate Current growth rate of the plant (modified by this method)
+     * @param currentWeather Current weather affecting photosynthesis
+     * @return Amount to adjust plant health (usually positive during day)
+     */
+    @Override
+    public float performEnergyCycle(float growthRate) {
+        // Increase daytime health gain significantly
+        float baseIncrease = 1.2f;  // Increased from 0.45f
+        float healthAdjustment = baseIncrease * (1.0f + (growthRate / 15f));  
+        
+        return healthAdjustment; // Now much more positive during day
+    }
+    /**
+     * Handles time of day transitions, switching to respiration state at night.
+     * 
+     * @param plant The plant experiencing the time change
+     * @param timeOfDay The new time of day
+     * @return This state if still day, or a new RespirationState if night
+     */
+    @Override
+    public EnergyCycleState handleTimeOfDayChange(Plant plant, TimeOfDay timeOfDay) {
+        if (timeOfDay == TimeOfDay.NIGHT) {
+            return new RespirationState();
+        }
+        return this; // Stay in photosynthesis state during day
+    }
+
+    @Override
+    public EnergyCycle getEnergyCycle() {
+        return EnergyCycle.PHOTOSYNTHESIS;
+    }
+}
+</code>
+
+organism\plant\energy_cycle_state\RespirationState.java:
+<code>
+package ecosim.game_engine.organism.plant.energy_cycle_state;
+
+import ecosim.game_engine.enm.EnergyCycle;
+import ecosim.game_engine.enm.TimeOfDay;
+import ecosim.game_engine.organism.plant.abs.Plant;
+
+/**
+ * Implementation of the plant energy cycle state during nighttime (respiration).
+ * 
+ * This class represents the energy consumption state of plants, where they:
+ * - Consume stored energy for cellular maintenance
+ * - Generally decrease in health as they use resources
+ * - Experience reduced growth rates during all weather conditions
+ * 
+ * Respiration is a necessary process for plants, but results in net energy consumption
+ * rather than production. The severity of health decrease varies by weather condition,
+ * with harsh weather causing more significant health decreases. This state
+ * transitions back to the photosynthesis state when day returns.
+ * 
+ * @author MiaBorkoo
+ */
+public class RespirationState implements EnergyCycleState {
+    /**
+     * Performs the respiration energy cycle, calculating health adjustments
+     * and growth rate changes based on current weather conditions.
+     * 
+     * This method has two effects:
+     * 1. It calculates and returns a health adjustment value (usually negative during night)
+     * 2. It directly modifies the provided growthRate parameter based on weather
+     * 
+     * @param growthRate Current growth rate of the plant (modified by this method)
+     * @param currentWeather Current weather affecting respiration
+     * @return Amount to adjust plant health (usually negative during night)
+     */
+    @Override
+    public float performEnergyCycle(float growthRate) {
+        // Make nighttime health decrease more moderate
+        float baseDecrease = -0.7f;  // Changed from -0.5f
+        float healthAdjustment = baseDecrease * (1.0f + (Math.abs(growthRate) / 25f));
+        
+        return healthAdjustment; 
+    }
+
+    /**
+     * Handles time of day transitions, switching to photosynthesis state at day.
+     * 
+     * @param plant The plant experiencing the time change
+     * @param timeOfDay The new time of day
+     * @return This state if still night, or a new PhotosynthesisState if day
+     */
+    @Override
+    public EnergyCycleState handleTimeOfDayChange(Plant plant, TimeOfDay timeOfDay) {
+        if (timeOfDay == TimeOfDay.DAY) {
+            return new PhotosynthesisState();
+        }
+        return this; // Stay in respiration state during night
+    }
+
+    @Override
+    public EnergyCycle getEnergyCycle() {
+        return EnergyCycle.RESPIRATION;
+    }
+}
+</code>
+
