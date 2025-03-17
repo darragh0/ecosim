@@ -1,5 +1,8 @@
 package ecosim.controller;
 
+
+import static ecosim.common.io.ConsoleIO.pprintln;
+
 import java.util.List;
 
 import ecosim.game_engine.enm.Biome;
@@ -13,16 +16,20 @@ import ecosim.ui.view.MapView;
 import ecosim.ui.view.ReportView;
 import ecosim.ui.view.SplashScreenView;
 
+
 /**
  * Main controller for the ecosystem simulation.
  * Coordinates interactions between the ecosystem manager and view components.
  * Handles simulation setup, execution, and user interface flow.
  * @author Kabidoye-17
  */
+
+
+
 public class EcosystemController {
 
     private final EcosystemMan man;
-    
+
     // Individual view components
     private final InputPromptView inputView;
     private final MapView mapView;
@@ -36,7 +43,7 @@ public class EcosystemController {
      */
     public EcosystemController() {
         this.man = new EcosystemMan();
-        
+
         // Initialize individual view components
         this.inputView = new InputPromptView();
         this.mapView = new MapView();
@@ -62,8 +69,8 @@ public class EcosystemController {
      */
     private void showWelcomeScreen() {
         SplashScreenView.show();
-        System.out.println("Welcome to the *Ecosystem Simulator* 🌳");
-        System.out.println("To setup the ecosystem, please follow the prompts below.\n");
+        pprintln("Welcome to the *Ecosystem Simulator* 🌳");
+        pprintln("To setup the ecosystem, please follow the prompts below.\n");
     }
 
     /**
@@ -71,8 +78,7 @@ public class EcosystemController {
      * Displays exit message with status code.
      */
     private void exit() {
-        // Using console output directly for exit message
-        System.out.println("\n[flr:(Simulator finished w/ exit code 0)]");
+        pprintln("\n[flr:(Simulator finished w/ exit code 0)]");
     }
 
     /**
@@ -99,28 +105,32 @@ public class EcosystemController {
      * Displays ecosystem status and reports after each day.
      */
     public void runSimulation() {
-        while (this.man.getDayCount() < man.getMaxDays() && this.man.isEcosystemAlive() && !this.man.isAtMaxCapacity()) {
+        while (this.man.getDayCount() < man.getMaxDays() && this.man.isEcosystemAlive()
+            && !this.man.isAtMaxCapacity()) {
             this.man.updateEnvironmentConditions();
             this.environmentView.displayEnvironmentConditions(this.man);
             this.environmentView.displayTimeStatus(man);
-            
+
             // Set up action listener to display animal actions
             this.man.setActionListener(result -> this.actionsView.displayAnimalActions(result));
-            
+
             this.actionsView.displayAnimalActionsHeader();
             for (int hour = 0; hour < man.getHoursPerDay(); hour++) {
-                if (hour == man.getHoursPerDay()/2) {
+                if (hour == man.getHoursPerDay() / 2) {
                     this.man.updateTimeOfDay();
                     this.environmentView.displayTimeStatus(man);
                 }
                 this.man.processOrganismsTurn();
                 this.man.checkOrganismsHealth();
             }
-            
+
             this.mapView.displayEcosytemMap(this.man);
             this.reportView.displayDailyReport(this.man);
             this.man.resetNewAndDeadOrganisms();
         }
         this.reportView.displayFinalReport(man);
     }
+
 }
+
+

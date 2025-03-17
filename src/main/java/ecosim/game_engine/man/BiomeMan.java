@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import ecosim.common.io.FileIO;
@@ -16,6 +15,7 @@ import ecosim.game_engine.enm.Diet;
 import ecosim.game_engine.enm.Size;
 import ecosim.game_engine.misc.AnimalDescriptor;
 import ecosim.game_engine.misc.PlantDescriptor;
+import ecosim.interceptor.Try;
 
 /**
  * Manager class responsible for handling biome-specific data and resources.
@@ -65,7 +65,6 @@ public class BiomeMan {
 
         final JSONObject biomeData = json.getJSONObject(biomeName);
 
-        // TODO: Make this a single method maybe (DRY principle and all that)
         this.initAnimalList(biomeData);
         this.initPlantList(biomeData);
 
@@ -80,7 +79,7 @@ public class BiomeMan {
      */
     private void initAnimalList(JSONObject biomeData) {
         final String key = "ANIMALS";
-        
+
         if (!biomeData.has(key)) {
             LoggerMan.log(Level.SEVERE, "No animals found for biome: {0}", biome.name());
             return;
@@ -89,37 +88,28 @@ public class BiomeMan {
 
         for (final String animalKey : animalJson.keySet()) {
             final JSONObject animalData = animalJson.getJSONObject(animalKey);
-            
-            try {
-                // Get the display name (either from JSON or use the key)
-                final String displayName = animalData.optString("name", animalKey);
-                
-                // Create size enum
-                final Size size;
-                try {
-                    size = Size.valueOf(animalData.getString("size"));
-                } catch (IllegalArgumentException e) {
-                    LoggerMan.log(Level.SEVERE, "Invalid size for animal: {0}", displayName);
-                    continue;
-                }
-                
-                // Create diet enum
-                final Diet diet;
-                try {
-                    diet = Diet.valueOf(animalData.getString("diet"));
-                } catch (IllegalArgumentException e) {
-                    LoggerMan.log(Level.SEVERE, "Invalid diet for animal: {0}", displayName);
-                    continue;
-                }
-                final ActivityType activityType;
-                try {
-                    activityType = ActivityType.valueOf(animalData.getString("activityType"));
-                } catch (IllegalArgumentException e) {
-                    LoggerMan.log(Level.SEVERE, "Invalid activity type for animal: {0}", displayName);
-                    continue;
-                }
 
-                // Create animal descriptor without biome field
+            Try.exec(() -> {
+                final String displayName = animalData.optString("name", animalKey);
+
+                final Size size = Try.exec(
+                    () -> Size.valueOf(animalData.getString("size")),
+                    1,
+                    "Invalid size for animal: %s",
+                    displayName);
+
+                final Diet diet = Try.exec(
+                    () -> Diet.valueOf(animalData.getString("diet")),
+                    1,
+                    "Invalid diet for animal: %s",
+                    displayName);
+
+                final ActivityType activityType = Try.exec(
+                    () -> ActivityType.valueOf(animalData.getString("activityType")),
+                    1,
+                    "Invalid activity type for animal: %s",
+                    displayName);
+
                 final AnimalDescriptor animalDescriptor = new AnimalDescriptor(
                     displayName,
                     size,
@@ -131,12 +121,14 @@ public class BiomeMan {
 
                 this.animals.add(animalDescriptor);
                 LoggerMan.log(Level.INFO, "Loaded animal: {0}", displayName);
-            } catch (JSONException ex) {
-                LoggerMan.log(Level.SEVERE, "Error loading animal: {0}", ex.getMessage());
-            }
+            },
+                1,
+                "Error loading animal: %s",
+                animalKey);
         }
 
         LoggerMan.log(Level.INFO, "Loaded native {0} for biome: {1}", key, biome.name());
+
     }
 
     /**
@@ -147,7 +139,7 @@ public class BiomeMan {
      */
     private void initPlantList(JSONObject biomeData) {
         final String key = "PLANTS";
-        
+
         if (!biomeData.has(key)) {
             LoggerMan.log(Level.SEVERE, "No plants found for biome: {0}", biome.name());
             return;
@@ -157,19 +149,15 @@ public class BiomeMan {
 
         for (final String plantKey : plantJson.keySet()) {
             final JSONObject plantData = plantJson.getJSONObject(plantKey);
-            
-            try {
-                // Get display name (either from JSON or use the key)
+
+            Try.exec(() -> {
                 final String displayName = plantData.optString("name", plantKey);
-                
-                // Create size enum
-                final Size size;
-                try {
-                    size = Size.valueOf(plantData.optString("size", "MEDIUM"));
-                } catch (IllegalArgumentException e) {
-                    LoggerMan.log(Level.SEVERE, "Invalid size for plant: {0}", displayName);
-                    continue;
-                }
+
+                final Size size = Try.exec(
+                    () -> Size.valueOf(plantData.optString("size", "MEDIUM")),
+                    1,
+                    "Invalid size for plant: %s",
+                    displayName);
 
                 final PlantDescriptor plantDescriptor = new PlantDescriptor(
                     displayName,
@@ -178,9 +166,10 @@ public class BiomeMan {
 
                 this.plants.add(plantDescriptor);
                 LoggerMan.log(Level.INFO, "Loaded plant: {0}", displayName);
-            } catch (JSONException ex) {
-                LoggerMan.log(Level.SEVERE, "Error loading plant: {0}", ex.getMessage());
-            }
+            },
+                1,
+                "Error loading plant: %s",
+                plantKey);
         }
 
         LoggerMan.log(Level.INFO, "Loaded native {0} for biome: {1}", key, biome.name());

@@ -97,6 +97,7 @@ public final class ConsoleIO {
         return strInput("", allowEmpty);
     }
 
+
     /**
      * Checks if a number is outside a specified range.
      * 
@@ -106,6 +107,24 @@ public final class ConsoleIO {
      * @return True if number is outside the range, false otherwise
      * @throws IllegalArgumentException if min > max
      */
+
+    public static boolean ynInput(final String prompt) {
+        while (true) {
+            final String in = strInput(prompt).toLowerCase();
+            final Boolean result = switch (in) {
+                case "y", "yes" -> true;
+                case "n", "no" -> false;
+                default -> {
+                    eprint("Invalid input");
+                    yield null;
+                }
+            };
+            if (result != null)
+                return result;
+        }
+    }
+
+
     public static boolean notInRange(int num, int min, int max) {
         if (min > max)
             throw new IllegalArgumentException("Min cannot be greater than max");
@@ -123,11 +142,15 @@ public final class ConsoleIO {
         return TextPrettifier.prettify(str, formatArgs);
     }
 
+
     /**
      * BiConsumer for appending prettified strings to a StringBuilder.
      * Useful for building complex formatted output.
      */
-    public static BiConsumer<StringBuilder, String> add = 
+
+
+    public static BiConsumer<StringBuilder, String> add =
+
         (builder, str) -> builder.append(prettify(str)).append("\n");
 
     /**
