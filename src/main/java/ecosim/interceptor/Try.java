@@ -9,14 +9,14 @@ import java.util.function.Supplier;
  * 
  * @author darragh0
  */
-public class Interceptor {
+public class Try {
 
     public static void exec(final Runnable runnable, final int exitCode) {
-        Interceptor.exec(runnable, Interceptor.getCaller(), exitCode);
+        Try.exec(runnable, Try.getCaller(), exitCode);
     }
 
     public static <T> T exec(final Supplier<T> supplier, final int exitCode) {
-        return Interceptor.exec(supplier, Interceptor.getCaller(), exitCode);
+        return Try.exec(supplier, Try.getCaller(), exitCode);
     }
 
     private static void exec(final Runnable runnable, final String caller, final int exitCode) {
