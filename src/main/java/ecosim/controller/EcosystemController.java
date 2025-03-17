@@ -6,12 +6,12 @@ import ecosim.enm.Biome;
 import ecosim.man.EcosystemMan;
 import ecosim.misc.AnimalDescriptor;
 import ecosim.misc.PlantDescriptor;
-import ecosim.view.ActionsView;
-import ecosim.view.EnvironmentView;
-import ecosim.view.InputPromptView;
-import ecosim.view.MapView;
-import ecosim.view.ReportView;
-import ecosim.view.SplashScreenView;
+import ecosim.ui.view.ActionsView;
+import ecosim.ui.view.EnvironmentView;
+import ecosim.ui.view.InputPromptView;
+import ecosim.ui.view.MapView;
+import ecosim.ui.view.ReportView;
+import ecosim.ui.view.SplashScreenView;
 
 public class EcosystemController {
 

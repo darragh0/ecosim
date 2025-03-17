@@ -1,10 +1,5 @@
-package ecosim.menu;
+package ecosim.ui.menu;
 
-
-import static ecosim.common.io.ConsoleIO.eprint;
-import static ecosim.common.io.ConsoleIO.notInRange;
-import static ecosim.common.io.ConsoleIO.pprintln;
-import static ecosim.common.io.ConsoleIO.strInput;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +7,10 @@ import java.util.OptionalInt;
 import java.util.stream.IntStream;
 
 import ecosim.common.Util;
+import static ecosim.common.io.ConsoleIO.eprint;
+import static ecosim.common.io.ConsoleIO.notInRange;
+import static ecosim.common.io.ConsoleIO.pprintln;
+import static ecosim.common.io.ConsoleIO.strInput;
 
 
 /**

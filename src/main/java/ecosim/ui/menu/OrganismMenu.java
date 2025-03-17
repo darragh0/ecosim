@@ -1,4 +1,4 @@
-package ecosim.menu;
+package ecosim.ui.menu;
 
 
 import java.util.List;
