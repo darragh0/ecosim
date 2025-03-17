@@ -296,5 +296,17 @@ public abstract class Plant extends Organism implements Observer {
         this.health = Math.min(this.health + amount, this.getMaxHealth());
         this.health = Math.max(this.health, 0.0f); // Don't allow negative health
     }
+    public float getGrowthRate() {
+        return growthRate;
+    }
+
+    public void setGrowthRate(float growthRate) {
+        this.growthRate = growthRate;
+    }
+
+    public EnergyCycleState getEnergyCycleState() {
+        return energyCycleState;
+    }
+
 }
 
