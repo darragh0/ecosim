@@ -1,7 +1,6 @@
 package ecosim.organism.plant.energy_cycle_state;
 
 import ecosim.enm.TimeOfDay;
-import ecosim.enm.Weather;
 import ecosim.organism.plant.abs.Plant;
 
 /**
@@ -33,37 +32,12 @@ public class RespirationState implements EnergyCycleState {
      * @return Amount to adjust plant health (usually negative during night)
      */
     @Override
-    public float performEnergyCycle(float growthRate, Weather currentWeather) {
-        float adjustedGrowthRate;
-        float healthAdjustment;
+    public float performEnergyCycle(float growthRate) {
+        // Make nighttime health decrease more moderate
+        float baseDecrease = -0.7f;  // Changed from -0.5f
+        float healthAdjustment = baseDecrease * (1.0f + (Math.abs(growthRate) / 25f));
         
-        // Handle both growth and health adjustments
-        switch (currentWeather) {
-            case SUNNY -> {
-                adjustedGrowthRate = growthRate * -0.05f; // Minor growth decrease even in good conditions
-                healthAdjustment = -0.2f; // Minimal health decrease in good conditions
-            }
-            case DRY -> {
-                adjustedGrowthRate = growthRate * -0.15f; // More significant growth decrease
-                healthAdjustment = -1.0f; // More health decrease in dry conditions at night
-            }
-            case RAINY -> {
-                adjustedGrowthRate = growthRate * -0.08f; // Moderate growth decrease
-                healthAdjustment = -0.4f; // Moderate health decrease during rain at night
-            }
-            case SNOWY -> {
-                adjustedGrowthRate = growthRate * -0.25f; // Significant growth decrease
-                healthAdjustment = -1.5f; // Significant health decrease in snow at night
-            }
-            default -> {
-                adjustedGrowthRate = growthRate * -0.1f; // Default growth decrease
-                healthAdjustment = -0.5f; // Default health decrease during night
-            }
-        }
-        
-        growthRate += adjustedGrowthRate; // Update the growth rate
-
-        return healthAdjustment;
+        return healthAdjustment; 
     }
 
     /**

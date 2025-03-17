@@ -47,18 +47,6 @@ public abstract class Animal extends Organism implements Observer {
         this.state = new AwakeState();
     }
 
-    public Animal(Animal animal) {
-        super(animal.name);
-        this.state = new AwakeState();
-        this.symbol = animal.symbol;
-        this.size = animal.size;
-        this.canHibernate = animal.canHibernate;
-        this.diet = animal.diet;
-        this.activityType = animal.activityType;
-        this.survivalChance = animal.survivalChance;
-        this.reproductiveChance = animal.reproductiveChance;
-    }
-
     @Override
     public Animal setSymbol(String symbol) {
         super.setSymbol(symbol);
@@ -166,8 +154,8 @@ public abstract class Animal extends Organism implements Observer {
     public boolean eat(Plant plant) {
         this.restoreHealth(plant.getNutritionalValue());
         plant.beEaten();
-        return true;
-    };
+        return true;  // Eating was successful, even if plant isn't dead
+    }
 
     public Animal breed(Animal mate) {
         float combinedReproductiveChance = this.reproductiveChance * mate.reproductiveChance;

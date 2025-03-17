@@ -4,7 +4,7 @@
       "CactusMouse": {
         "name": "Cactus Mouse",
         "size": "SMALL",
-        "diet": "HERBIVORE",
+        "diet": "OMNIVORE",
         "activityType": "NOCTURNAL",
         "canHibernate": false,
         "sound": "Squeal!",
@@ -13,7 +13,7 @@
       "Camel": {
         "name": "Camel",
         "size": "MEDIUM",
-        "diet": "CARNIVORE",
+        "diet": "OMNIVORE",
         "activityType": "DIURNAL",
         "canHibernate": false,
         "sound": "Grunt!",
@@ -31,7 +31,7 @@
       "Lizard": {
         "name": "Lizard",
         "size": "SMALL",
-        "diet": "CARNIVORE",
+        "diet": "OMNIVORE",
         "activityType": "DIURNAL",
         "canHibernate": true,
         "sound": "Chirp!",
@@ -79,7 +79,7 @@
       "Fox": {
         "name": "Fox",
         "size": "MEDIUM",
-        "diet": "CARNIVORE",
+        "diet": "OMNIVORE",
         "activityType": "NOCTURNAL",
         "canHibernate": false,
         "sound": "Ring-ding-ding-ding-dingeringeding! Wa-pa-pa-pa-pa-pa-pow!",

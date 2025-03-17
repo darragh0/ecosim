@@ -1,14 +1,12 @@
 package ecosim.view;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static ecosim.common.io.ConsoleIO.add;
 import ecosim.man.EcosystemMan;
 import ecosim.organism.Organism;
-import ecosim.organism.plant.abs.Plant;
 
 public class ReportView {
 /**
@@ -30,15 +28,14 @@ public void displayDailyReport(EcosystemMan ecosystem) {
 
     addLifeCycleReport("Animals", ecosystem.getNewbornAnimals(), ecosystem.getDeadAnimals(), str, maxWidth);
 
-    List<Plant> emptyPlantsList = new ArrayList<>(); // placeholder
-    addLifeCycleReport("Plants", emptyPlantsList, ecosystem.getDeadPlants(), str, maxWidth);
+    addLifeCycleReport("Plants", ecosystem.getNewbornPlants(), ecosystem.getDeadPlants(), str, maxWidth);
 
     // Display the report
     System.out.println(str.toString());
     
     // Prompt user to press Enter to continue to next day
     if (ecosystem.getDayCount() < ecosystem.getMaxDays()) {
-        System.out.println("\n[flc:Press Enter to continue to the next day...]");
+        System.out.println("\n[Press Enter to continue to the next day...]");
         try {
             System.in.read();
             // Clear the input buffer (for cases when user inputs more than just Enter)
@@ -201,6 +198,7 @@ public void displayDailyReport(EcosystemMan ecosystem) {
         // Lifecycle statistics
         add.accept(str, "**[flc:LIFECYCLE STATISTICS]**");
         add.accept(str, "  New Animals Born:      **[flg:%d]**".formatted(ecosystem.getTotalNewbornAnimals()));
+        add.accept(str, "  New Plants Born:       **[flg:%d]**".formatted(ecosystem.getTotalNewbornPlants()));
         add.accept(str, "  Animals Deceased:      **[flr:%d]**".formatted(ecosystem.getTotalDeadAnimals()));
         add.accept(str, "  Plants Deceased:       **[flr:%d]**".formatted(ecosystem.getTotalDeadPlants()));
         add.accept(str, "");

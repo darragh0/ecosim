@@ -108,10 +108,19 @@ public class Map {
 
     public ActionResult getEatingActionResult(final Animal predator, final Organism prey, boolean wasEaten) {
         // Move the other animal to a random empty cell
-        // Able to do this before the action because an action is guaranteed to happen an is not affected by position at this point
         moveAnimalRandomly(predator);
         if (wasEaten) {
-            this.grid.rmv(prey);
+            // Only remove if it's an animal OR a plant that's completely dead
+            switch (prey) {
+                case Animal _ -> this.grid.rmv(prey);
+                case Plant plant -> {
+                    if (plant.isDead()) {
+                        this.grid.rmv(prey);
+                    }
+                }
+                default -> {} 
+            }
+            
             return new ActionResult(
                 ActionResult.ActionType.SUCCESSFUL_EATING,
                 predator, prey, predator.getX(), predator.getY());
