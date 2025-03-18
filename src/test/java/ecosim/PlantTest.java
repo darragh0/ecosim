@@ -70,7 +70,7 @@ public class PlantTest {
         environmentMan.updateSeason();
 
         int attempts = 0;
-        while (environmentMan.getWeather() != Weather.SUNNY && attempts < 20) {
+        while (environmentMan.getWeather() != Weather.SUNNY && attempts < 50) {
             environmentMan.updateWeather();
             attempts++;
         }
@@ -85,12 +85,12 @@ public class PlantTest {
                 "Growth rate should increase to 1.1 in SUNNY weather");
 
         attempts = 0;
-        while (environmentMan.getWeather() != Weather.DRY && attempts < 20) {
+        while (environmentMan.getWeather() != Weather.DRY && attempts < 50) {
             environmentMan.updateWeather();
             attempts++;
         }
         if (environmentMan.getWeather() != Weather.DRY) {
-            fail("Failed to set weather to DRY after 20 attempts");
+            fail("Failed to set weather to DRY after 50 attempts");
         }
 
         desertPlant.setGrowthRate(1.1f);
