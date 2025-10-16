@@ -35,11 +35,15 @@ public final class FileIO {
      * @return Optional containing the parsed JSONObject, or empty if file reading or parsing failed
      */
     public static Optional<JSONObject> readJSONFile(String path) {
-        path = "src/main/resources/json/" + path;
         JSONObject json = null;
 
         try {
-            final String content = new String(Files.readAllBytes(Paths.get(path)));
+            var stream = FileIO.class.getClassLoader().getResourceAsStream("json/" + path);
+            if (stream == null) {
+                LoggerMan.log(Level.SEVERE, "Resource not found: json/{0}", path);
+                return Optional.empty();
+            }
+            final String content = new String(stream.readAllBytes());
             json = new JSONObject(content);
         } catch (IOException e) {
             LoggerMan.log(Level.SEVERE, "Error reading JSON file: {0}", e.getMessage());
@@ -78,7 +82,7 @@ public final class FileIO {
         final Optional<JSONObject> jsonFile = FileIO.readJSONFile("ecosystem_config.json");
         if (jsonFile.isEmpty()) {
             LoggerMan.log(Level.SEVERE, "Could not parse ecosystem config");
-            return null;
+            return Optional.empty();
         }
 
         final JSONObject json = jsonFile.get();

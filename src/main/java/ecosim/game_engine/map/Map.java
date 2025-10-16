@@ -112,7 +112,7 @@ public class Map {
         if (wasEaten) {
             // Only remove if it's an animal OR a plant that's completely dead
             switch (prey) {
-                case Animal _ -> this.grid.rmv(prey);
+                case Animal animal -> this.grid.rmv(prey);
                 case Plant plant -> {
                     if (plant.isDead()) {
                         this.grid.rmv(prey);

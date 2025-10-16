@@ -45,7 +45,7 @@ public class SimpleChangeMan implements ChangeMan {
      */
     @Override
     public void register(Observable observable, Observer observer) {
-        List<Observer> observers = observableObserverMap.computeIfAbsent(observable, _ -> new ArrayList<>());
+        List<Observer> observers = observableObserverMap.computeIfAbsent(observable, key -> new ArrayList<>());
         if (!observers.contains(observer)) {
             observers.add(observer);
         }
